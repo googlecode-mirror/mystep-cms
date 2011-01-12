@@ -114,6 +114,14 @@ class MyStep extends class_common {
 
 		$this->getLanguage(ROOT_PATH."/source/language/");
 		$GLOBALS['language']=$this->language;
+
+		$host = $req->getServer("HTTP_HOST");
+		includeCache("website");
+		if($web_info = getParaInfo("website", "host", $host)) {
+			if(is_file(ROOT_PATH."/include/config_".$web_info['idx'].".php")) {
+				include_once(ROOT_PATH."/include/config_".$web_info['idx'].".php");
+			}
+		}
 		
 		$max_count = count($this->func_start);
 		for($i=0; $i<$max_count; $i++) {

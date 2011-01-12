@@ -18,14 +18,6 @@ class plugin_offical implements plugin {
 		global $setting, $req;
 		$GLOBALS['time_start'] = GetMicrotime();
 		$GLOBALS['self'] = strtolower(basename($req->getServer("PHP_SELF")));
-
-		$host = $req->getServer("HTTP_HOST");
-		includeCache("website");
-		if($web_info = getParaInfo("website", "host", $host)) {
-			if(is_file(ROOT_PATH."/include/config_".$web_info['idx'].".php")) {
-				include_once(ROOT_PATH."/include/config_".$web_info['idx'].".php");
-			}
-		}
 	}
 	
 	public static function page_end() {
