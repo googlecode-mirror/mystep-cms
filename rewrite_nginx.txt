@@ -1,0 +1,7 @@
+rewrite ^/rss.xml$ /rss.php last;
+rewrite ^/html/print/(\d+)_(\d+)\.html$   /print.php?id=$1&page=$2 last;
+rewrite ^/html/tag/(.+?)(_(\d+))?\.html$   /tag.php?tag=$1&page=$3 last;
+rewrite ^/html/survey/survey_(\d+)\.html$   /survey.php?id=$1 last;
+rewrite ^/html/(.+?)/rss.xml$   /rss.php?idx=$1 last;
+rewrite ^/html/(\w+?)/?(index(_(\d+))?\.html)?$   /list.php?cat=$1&page=$4 last;
+rewrite ^/html/[\w\d/]+/(\d+)(_(\d+))?\.html$   /read.php?id=$1&page=$3 last;

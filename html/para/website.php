@@ -1,0 +1,10 @@
+<?php
+$GLOBALS['website'] = array(
+	'0' => array(
+		'web_id' => '1',
+		'name' => 'Ö÷Õ¾',
+		'idx' => 'main',
+		'host' => 'www.mystep.com',
+	),
+);
+?>

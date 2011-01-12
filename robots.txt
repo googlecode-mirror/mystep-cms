@@ -1,0 +1,15 @@
+#
+# robots.txt
+# A9VG.COM
+#
+
+User-agent: *
+Disallow: /admin/
+Disallow: /source/
+Disallow: /files/
+Disallow: /include/
+Disallow: /module/
+Disallow: /template/
+Disallow: /script/
+Disallow: /plugin/
+Disallow: /install/

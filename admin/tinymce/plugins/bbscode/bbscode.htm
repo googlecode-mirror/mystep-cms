@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{#bbscode_dlg.title}</title>
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="js/bbscode.js"></script>
+</head>
+<body onresize="BBSCodeDialog.resize();">
+
+<form onsubmit="BBSCodeDialog.insert();return false;" action="#">
+	<div>
+		<p><b>{#bbscode_dlg.title}</b></p>
+		<p>{#bbscode_dlg.desc}</p>
+		<p>
+			<textarea id="content" name="content" rows="20" cols="100" style="width: 100%; height: 100%; font-family: 'Courier New',Courier,mono; font-size: 12px;" dir="ltr" wrap="soft" class="mceFocus"></textarea>
+		</p>
+	</div>
+	<div class="mceActionPanel">
+		<div style="float: left">
+			<input type="button" id="insert" name="insert" value="{#insert}" onclick="BBSCodeDialog.insert();" />
+		</div>
+		<div style="float: right">
+			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+		</div>
+	</div>
+</form>
+
+</body>
+</html>
