@@ -33,17 +33,19 @@ CREATE TABLE `{pre}admin_cat` (
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='管理目录';
 
 INSERT INTO `{pre}admin_cat` VALUES 
-		(1, 0, '设置', '###', 0, '网站管理'),
+		(1, 0, '首页', '###', 0, '管理首页'),
 		(2, 0, '用户', '###', 0, '用户管理'),
 		(3, 0, '功能', '###', 0, '网站功能'),
 		(4, 0, '内容', '###', 0, '内容管理'),
 		(5, 0, '信息', '###', 0, '站点信息'),
-		(6, 0, '扩展', '###', 0, '扩展功能'),
-		
-		(0, 1, '参数设定', 'web_setting.php', 0, '参数设定'),
-		(0, 1, '子站管理', 'web_subweb.php', 0, '子站管理'),
-		(0, 1, '语言管理', 'web_language.php', 0, '语言管理'),
-		(0, 1, '缓存管理', 'web_cache.php', 0, '缓存管理'),
+		(6, 0, '设置', '###', 0, '网站管理'),
+		(7, 0, '扩展', '###', 0, '扩展功能'),
+
+		(0, 1, '网站信息', 'info.php', 0, '网站信息'),
+		(0, 1, '服务器信息', 'info.php?server', 0, '服务器信息'),
+		(0, 1, 'MySQL 信息', 'info.php?mysql', 0, 'MySQL 信息'),
+		(0, 1, 'PHP 信息', 'info.php?php', 0, 'PHP 信息'),
+		(0, 1, 'phpinfo()', 'info.php?phpinfo', 0, 'phpinfo()'),
 		
 		(0, 2, '用户群组', 'user_group.php', 0, '组群维护'),
 		(0, 2, '用户管理', 'user_detail.php', 0, '用户管理'),
@@ -62,7 +64,12 @@ INSERT INTO `{pre}admin_cat` VALUES
 		(0, 5, '错误察看', 'info_err.php', 0, '错误察看'),
 		(0, 5, '访问统计', 'info_count.php', 0, '访问统计'),
 		
-		(0, 6, '插件管理', 'web_plugin.php', 0, '插件管理');
+		(0, 6, '参数设定', 'web_setting.php', 0, '参数设定'),
+		(0, 6, '子站管理', 'web_subweb.php', 0, '子站管理'),
+		(0, 6, '语言管理', 'web_language.php', 0, '语言管理'),
+		(0, 6, '缓存管理', 'web_cache.php', 0, '缓存管理'),
+		
+		(0, 7, '插件管理', 'web_plugin.php', 0, '插件管理');
 		
 # ---------------------------------------------------------------------------------------------------------------
 
@@ -111,6 +118,7 @@ CREATE TABLE `{pre}news_show` (
 	`cat_id` SMALLINT UNSIGNED NOT NULL,								#新闻类型索引
 	`web_id` TINYINT DEFAULT 0,													#所属子站
 	`subject` Char(120) NOT NULL,												#新闻标题
+	`style` Char(40) NOT NULL,													#标题样式
 	`views` MEDIUMINT UNSIGNED DEFAULT 0,								#浏览次数
 	`describe` Char(255) DEFAULT '',										#新闻描述
 	`original` Char(40) NOT NULL DEFAULT '',						#作者/出处
@@ -249,7 +257,6 @@ CREATE TABLE `{pre}user_online` (
 	`ip` Char(50) NOT NULL,															#ip地址
 	`username` Char(40) NOT NULL DEFAULT 'guest',				#用户名称
 	`usertype` TINYINT UNSIGNED NOT NULL DEFAULT 0,			#用户类型
-	`userpower` Char(40) NOT NULL DEFAULT '',						#用户权限
 	`reflash` Char(15) DEFAULT 0,												#最近刷新时间（unixtimestamp）
 	`url` Char(150),																		#当前访问页面
 	PRIMARY KEY (`sid`)

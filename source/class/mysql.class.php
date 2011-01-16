@@ -34,7 +34,7 @@
 	$MySQL->GetTabData($the_tab)			// Get All of The Data of a Table
 	$MySQL->GetTabFields($the_db, $the_tab)		// Get the Columns List of a Table as an Array
 	$MySQL->GetQueryFields()			// Get the Columns List of Current Query
-	$MySQL->buildSQL($table, $data, $insert = true, $addon = "") // Build SQL string for insert or update
+	$MySQL->buildSQL($table, $data, $mode = "insert", $addon = "") // Build SQL string for insert or update
 	$MySQL->ReadSqlFile($file)			// Read SQL File And Send Content of the File to HandleSQL($strSQL)
 	$MySQL->ExeSqlFile($file)			// Read SQL File And Send Content of the File to HandleSQL($strSQL)
 	$MySQL->HandleSQL($strSQL)			// Split the SQL Query String into a array from a whole String (Maybe Read from a File)
@@ -401,28 +401,27 @@ class MySQL extends class_common {
 		return $fields;
 	}
 
-	public function buildSQL($table, $data, $insert = true, $addon = "") {
+	public function buildSQL($table, $data, $mode = "replace", $addon = "") {
 		$fields = "";
 		$values = "";
 		$tmp = "||||||";
 		
-		switch($insert) {
-			case 0:
-				$sql = "update `{$table}` set ";
-				break;
-			case 1:
+		switch($mode) {
+			case "insert":
 				$sql = "insert into `{$table}` ";
 				break;
+			case "update":
+				$sql = "update `{$table}` set ";
+				break;
 			default:
-				$sql = "replace into `{$table}` ";
+				$sql = "replace into `{$table}` set ";
 		}
-		//$sql = $insert ? "insert into `{$table}` " : "update `{$table}` set ";
 
 		foreach($data as $key => $value) {
 			if(strtolower($key) == 'submit') continue;
-			if($insert && $addon != "" && $value==="") continue;
+			if($mode=="insert" && $addon != "" && $value==="") continue;
 			if(!preg_match("/^\w+\(\)$/", $value)) $value = "'{$value}'";
-			if($insert) {
+			if($mode=="insert") {
 				$fields .= "`{$key}`, ";
 				$values .= "{$value}, ";
 			} else {
@@ -430,18 +429,20 @@ class MySQL extends class_common {
 			}
 		}
 
-		if($insert) {
+		if($mode=="insert") {
 			$fields .= $tmp;
 			$fields = str_replace(", {$tmp}", "", $fields);
 		}
 		$values .= $tmp;
 		$values = str_replace(", {$tmp}", "", $values);
 
-		if($insert) {
+		if($mode=="insert") {
 			$sql .= "({$fields}) values ({$values})";
-		} else {
+		} elseif($mode=="update") {
 			if(empty($addon)) $addon= "1=1";
 			$sql .= $values . " where {$addon}";
+		} else {
+			$sql .= $values;
 		}
 		return $sql;
 	}

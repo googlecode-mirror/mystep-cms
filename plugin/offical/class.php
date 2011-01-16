@@ -15,9 +15,7 @@ class plugin_offical implements plugin {
 	}
 	
 	public static function page_start() {
-		global $setting, $req;
-		$GLOBALS['time_start'] = GetMicrotime();
-		$GLOBALS['self'] = strtolower(basename($req->getServer("PHP_SELF")));
+		set_error_handler("ErrorHandler");
 	}
 	
 	public static function page_end() {

@@ -28,13 +28,15 @@ class sess_mystep {
 		global $setting;
 		extract(MyReq::sessDecode($sess_data));
 		$reflash = time();
+		if(empty($username)) $username = "guest";
 		if(empty($usertype)) $usertype = 2;
-		$result = mysql_query("REPLACE INTO ".$setting['db']['pre']."user_online (sid, ip, username, usertype, reflash, url) VALUES ('{$sid}', '{$ip}', '{$useranme}', '{$usertype}', '{$reflash}', '{$url}')", self::$cnt);
+		$result = mysql_query("REPLACE INTO ".$setting['db']['pre']."user_online (sid, ip, username, usertype, reflash, url) VALUES ('{$sid}', '{$ip}', '{$username}', '{$usertype}', '{$reflash}', '{$url}')", self::$cnt);
 		return $result;
 	}
 	
 	public static function sess_destroy($sid) {
-		return mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE sid=".$sid, self::$cnt);
+		global $setting;
+		return mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE sid='".$sid."'", self::$cnt);
 	}
 	
 	public static function sess_gc($maxlifetime) {

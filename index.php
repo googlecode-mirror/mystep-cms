@@ -21,7 +21,7 @@ if($tpl->Is_Cached()) {
 	$mystep->pageEnd();
 }
 
-includeCache("catalog");
+includeCache("news_cat");
 $max_count = count($news_cat);
 for($i=0; $i<$max_count; $i++) {
 	if($news_cat[$i]['cat_layer']==1) {

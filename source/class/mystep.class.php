@@ -1,7 +1,7 @@
 <?php
 /********************************************
 *                                           *
-* Name    : Core of the Web				      	  *
+* Name    : Core of the Web                 *
 * Author  : Windy2000                       *
 * Time    : 2010-12-16                      *
 * Email   : windy2006@gmail.com             *
@@ -95,22 +95,27 @@ class MyStep extends class_common {
 	}
 	
 	public function pageStart() {
-		global $setting;
-		header("Expires: Tue, 1 Jan 1980 00:00:00 GMT");
-		header("Cache-Control: no-store, no-cache, must-revalidate");
-		header("Pragma: no-cache");
-		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
+		global $setting, $req;
 		
+		if($setting['gen']['cache']) {
+			header("Expires: -1");
+			header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0", false);
+			header("Pragma: no-cache");
+		}
+		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
+
 		date_default_timezone_set("PRC");
 		set_magic_quotes_runtime(0);
 		set_time_limit(30);
 		ini_set('memory_limit', '32M');
 		
 		error_reporting(E_ALL ^ E_NOTICE);
-		set_error_handler("ErrorHandler");
 		
 		ob_start();
 		ob_implicit_flush(false);
+
+		$GLOBALS['time_start'] = GetMicrotime();
+		$GLOBALS['self'] = strtolower(basename($req->getServer("PHP_SELF")));
 
 		$this->getLanguage(ROOT_PATH."/source/language/");
 		$GLOBALS['language']=$this->language;
@@ -127,6 +132,14 @@ class MyStep extends class_common {
 		for($i=0; $i<$max_count; $i++) {
 			call_user_func($this->func_start[$i]);
 		}
+
+		includeCache("user_group");
+		//$setting['session']['path'] = ROOT_PATH."/".$setting['path']['cache']."/session/".date("Ymd")."/";
+		$req->SessionStart($GLOBALS['sess_handle']);
+		$username = $req->getSession("username");
+		if((empty($username) || $username=="guest") && $req->getCookie('ms_user')!=null) checkUser();
+		$req->setSession("url", $req->getServer("URL"));
+		$req->setSession("ip", GetIp());
 	}
 	
 	public function pageEnd($show_info = true) {

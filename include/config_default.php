@@ -47,6 +47,7 @@ $setting['session']['mode'] = "sess_mystep";
 // Cookie
 $setting['cookie']['domain'] = ".mystepcms.com";
 $setting['cookie']['path'] = "/";
+$setting['cookie']['prefix'] = "ms_";
 
 // Path
 $setting['path']['upload'] = "files/";
@@ -62,4 +63,13 @@ $setting['watermark']['mode'] = 3;
 $setting['watermark']['pic'] = "images/logo.png";
 $setting['watermark']['txt'] = "MyStep CMS";
 $setting['watermark']['credit'] = "Original From MyStep 2010";
+
+// Cache expire
+$expire_list = array(
+	"default" => 60*10,
+	"index" => 60*30,
+	"list" => 60*60,
+	"tag" => 60*60*24,
+	"read" => 60*60*24*7,
+);
 ?>

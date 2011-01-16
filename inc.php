@@ -14,10 +14,4 @@ $req = $mystep->getInstance("MyReq", $setting['cookie'], $setting['session']);
 $db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 $mystep->setPlugin();
 $mystep->pageStart();
-
-//$setting['session']['path'] = ROOT_PATH."/".$setting['path']['cache']."/session/".date("Ymd")."/";
-$req->SessionStart($sess_handle);
-unset($sess_handle);
-$req->setSession("url", $req->getServer("URL"));
-$req->setSession("ip", GetIp());
 ?>

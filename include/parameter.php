@@ -1,12 +1,4 @@
 <?php
-$expire_list = array(
-		"default"	=> 60*10,
-		"index"	=> 60*30,
-		"list"	=> 60*60,
-		"tag"	=> 60*60*24,
-		"read"	=> 60*60*24*7,
-	);
-
 $class_list = array(
 		"MyStep" => "mystep.class.php",
 		"class_common" => "abstract.class.php",
@@ -42,4 +34,6 @@ $sess_handle = array(
 	array($setting['session']['mode'], "sess_destroy"), 
 	array($setting['session']['mode'], "sess_gc")
 );
+
+$setting['cookie']['prefix'] .= substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_";
 ?>

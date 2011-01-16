@@ -24,33 +24,12 @@ $top_list = array(
 		"4"	=>	"内容页",
 		);
 
-$power_func_list = array(
-		"all"	=>	"全部权限",
-		"list"	=>	"后台浏览",
-		"user"	=>	"用户管理",
-		"biz"	=>	"事务管理",
-		"news_add"	=>	"新闻添加",
-		"news_edit"	=>	"新闻修改",
-		"file"	=>	"文件管理",
-		);
-
 /*--------------------------------Website Functions Start-----------------------------------------*/
 function CheckPower($power) {
 	//Coded By Windy2000 20040526 v1.0
 	if(empty($_SESSION['username'])) return false;
 	if($power=="manager" && $_SESSION['usertype']==1) return true;
-	return ($_SESSION['userpower']=="all" || strpos($_SESSION['userpower'], $power)!==false);
-}
-
-function check_power($power){
-	$power = strtolower($power);
-	if(CheckPower($power)) return;
-	global $req;
-	if(empty($req)) exit();
-	$err_msg = '由于您权限不足，无法察看相关内容，如果您具有高级帐户请重新登陆！';
-	$req->setCookie("err_msg", $err_msg, 30);
-	header("location: login.php");
-	exit();
+	return ($_SESSION['userpower']=="all" || strpos(",".$_SESSION['userpower'].",", ",".$power.",")!==false);
 }
 
 function write_log($link, $comment="") {
@@ -74,6 +53,7 @@ function GetPageList($counter, $qry_str="", $page=1, $page_size=20) {
 	$page_start = ($page-1) * $page_size;
 	if($page_start < 0) $page_start = 0;
 	$page_arr = array();
+	$page_arr['page_total'] = $counter;
 	$page_arr['page_cur'] = $page;
 	$page_arr['page_count'] = $page_count;
 	$page_arr['page_first'] = ($page<=1 ? "###" : $qry_str."&page=1");

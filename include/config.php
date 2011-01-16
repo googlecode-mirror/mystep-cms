@@ -3,7 +3,7 @@ $setting = array();
 
 $setting['web'] = array();
 $setting['web']['url'] = 'http://www.mystep.com/';
-$setting['web']['email'] = 'windy2006@gmail.com';
+$setting['web']['email'] = 'winyd2006@gmail.com';
 $setting['web']['title'] = 'MyStep';
 $setting['web']['keyword'] = 'mystep,cms,free';
 $setting['web']['description'] = '开源网站内容管理系统';
@@ -47,6 +47,7 @@ $setting['session']['mode'] = 'sess_mystep';
 $setting['cookie'] = array();
 $setting['cookie']['domain'] = '.mystep.com';
 $setting['cookie']['path'] = '/';
+$setting['cookie']['prefix'] = 'ms_';
 
 $setting['path'] = array();
 $setting['path']['upload'] = 'files/';
@@ -64,4 +65,12 @@ $setting['watermark']['img'] = '';
 $setting['watermark']['credit'] = 'Original From Garlic 2010';
 
 
+
+$expire_list = array(
+	"default" => 60*10,
+	"index" => 60*30,
+	"list" => 60*60,
+	"tag" => 60*60*24,
+	"read" => 60*60*24*7,
+);
 ?>

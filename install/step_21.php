@@ -89,6 +89,7 @@ $cookie_domain = ".".implode(".", array_slice(explode(".", $req->getServer("SERV
 						<input type="hidden" name="setting[session][mode]" value="<?=$setting['session']['mode']?>">
 						<input type="hidden" name="setting[cookie][domain]" value="<?=$cookie_domain?>">
 						<input type="hidden" name="setting[cookie][path]" value="<?=$setting['cookie']['path']?>">
+						<input type="hidden" name="setting[cookie][prefix]" value="ms_">
 						<input type="hidden" name="setting[path][upload]" value="<?=$setting['path']['upload']?>">
 						<input type="hidden" name="setting[path][cache]" value="<?=$setting['path']['cache']?>">
 						<input type="hidden" name="setting[path][template]" value="<?=$setting['path']['template']?>">

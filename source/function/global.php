@@ -282,7 +282,7 @@ function WriteFile($file_name, $content, $mode="ab") {
 			fwrite($fp, $content);
 		}
 		fclose($fp);
-		//chmod($file_name, 0766);
+		chmod($file_name, 0777);
 	}
 	return $fp;
 }

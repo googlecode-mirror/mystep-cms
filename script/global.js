@@ -21,6 +21,10 @@ function reportError(msg, url, line) {
 
 window.onerror = reportError;
 
+function $id(id) {
+	return document.getElementById(id);
+}
+
 String.prototype.Tlength = function() {
 	var arr=this.match(/[^\x00-\xff]/ig);
 	return this.length+(arr==null?0:arr.length);

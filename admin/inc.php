@@ -1,28 +1,45 @@
 <?php
 define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 require_once(ROOT_PATH."/include/config.php");
-if($setting['web']['close'] && !isset($_COOKIE['force'])) {
-	header("location: ".$setting['web']['url'].$setting['web']['close_page']);
-	exit();
-}
-
 require_once(ROOT_PATH."/include/parameter.php");
 require_once(ROOT_PATH."/source/function/global.php");
 require_once(ROOT_PATH."/source/function/web.php");
+require_once(ROOT_PATH."/source/function/admin.php");
 
 $mystep = new MyStep();
-
-$setting['session']['path'] = ROOT_PATH."/".$setting['path']['cache']."/session/".date("Ymd")."/";
 $req = $mystep->getInstance("MyReq", $setting['cookie'], $setting['session']);
 $db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
-
 $mystep->pageStart();
 
-$req->SessionStart($sess_handle);
-unset($sess_handle);
-$req->setSession("url", $req->getServer("URL"));
-$req->setSession("ip", GetIp());
+$usertype = $req->getSession("usertype");
+$group = getParaInfo("user_group", "group_id", $usertype);
+if($self=="login.php") {
+	$method = $req->getServer("QUERY_STRING");
+	if(!empty($group['power_func']) && $method!="logout") {
+		$goto_url = "./index.php";
+		$mystep->pageEnd(false);
+	}
+} else {
+	if(empty($group['power_func']) ) {
+		$goto_url = "./login.php";
+		$mystep->pageEnd(false);
+	}
+}
 
-$time_start = GetMicrotime();
-$self = strtolower(basename($req->getServer("PHP_SELF")));
+includeCache("admin_cat");
+if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "url", $self)) {
+	if(strpos(",".$group['power_func'].",", ",".$cat_info['id'].",")===false) {
+		echo '
+		<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">您无权进行该操作！</div>
+		';
+		$mystep->pageEnd(false);
+	}
+}
+
+$tpl_info = array(
+		"idx" => "main",
+		"style" => "admin",
+		"path" => ROOT_PATH."/".$setting['path']['template'],
+		);
+$tpl = $mystep->getInstance("MyTpl", $tpl_info);
 ?>

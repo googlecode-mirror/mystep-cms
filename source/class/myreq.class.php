@@ -50,6 +50,7 @@ class MyReq extends class_common {
 	protected
 		$cookie_path = "",
 		$cookie_domain = "",
+		$cookie_prefix = "",
 		$session_flag	= false,
 		$session_expire = 30,
 		$session_gc = false,
@@ -63,6 +64,7 @@ class MyReq extends class_common {
 	public function setCookieOpt($setting) {
 		if(isset($setting['path'])) $this->cookie_path = $setting['path'];
 		if(isset($setting['domain'])) $this->cookie_domain = $setting['domain'];
+		if(isset($setting['prefix'])) $this->cookie_prefix = $setting['prefix'];
 	}
 	
 	public function setSessionOpt($setting) {
@@ -92,7 +94,7 @@ class MyReq extends class_common {
 			$path = "/";
 		}
 		if(empty($domain) && !empty($this->cookie_domain)) $domain = $this->cookie_domain;
-		setcookie($name, $value, $expire, $path, $domain, $secure);
+		setcookie($this->cookie_prefix.$name, $value, $expire, $path, $domain, $secure);
 		return;
 	}
 
@@ -166,7 +168,7 @@ class MyReq extends class_common {
 			$this->getPara("cookie");
 			return count($_COOKIE);
 		} else {
-			return $this->getPara("cookie", $para);
+			return $this->getPara("cookie", $this->cookie_prefix.$para);
 		}
 	}
 	

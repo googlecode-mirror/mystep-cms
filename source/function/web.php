@@ -103,7 +103,7 @@ function buildParaList($idx) {
 	global $db, $setting;
 	$cache_para = array();
 	switch($idx) {
-		case "catalog":
+		case "news_cat":
 			$catalog = array();
 			$max_layer = $db->GetSingleResult("select max(cat_layer) from ".$setting['db']['pre']."news_cat");
 			if(empty($max_layer)) break;
@@ -175,6 +175,14 @@ function buildParaList($idx) {
 				}
 			}
 			$cache_para[$idx] = $theList;
+			
+			$theList = array();
+			$db->Query("select * from ".$setting['db']['pre']."admin_cat order by id");
+			while($record=$db->GetRS()) {
+				HtmlTrans(&$record);
+				$theList[] = $record;
+			}
+			$cache_para[$idx."_plat"] = $theList;
 			break;
 		case "plugin":
 			$theList = array();
@@ -207,6 +215,21 @@ function getParaInfo($idx, $col, $value) {
 /*---------------------------------------Functions For Parameter End-------------------------------------*/
 
 /*---------------------------------------Functions For Web Start-------------------------------------*/
+function checkUser() {
+	global $req, $db, $setting;
+	$ms_user = $req->getCookie('ms_user');
+	if(!is_null($ms_user)) {
+		list($user_id, $user_pwd)=explode("\t",$ms_user);
+		if($userinfo = $db->GetSingleRecord("SELECT username, group_id from ".$setting['db']['pre']."users where user_id='{$user_id}'")) {
+			$req->setSession("username", $userinfo['username']);
+			$req->setSession("usertype", $userinfo['group_id']);
+		} elseif($user_id==0 && $user_pwd==$setting['web']['s_pass']) {
+			$req->setSession("username", $setting['web']['s_user']);
+			$req->setSession("usertype", 1);
+		}
+	}
+}
+
 function getFileURL($news_id=0, $cat_idx="", $page=1) {
 	global $setting;
 	$url = "";
