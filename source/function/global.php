@@ -176,6 +176,32 @@ function txt2html($content) {
 	return $content;
 }
 
+function str2any($var) {
+	if($var=="true") {
+		$var = true;
+	} elseif($var="false") {
+		$var = false;
+	} elseif(is_numeric($var)) {
+		$var = (INT)$var;
+	} else {
+		$var = (STRING)$var;
+	}
+	return $var;
+}
+
+function any2str($var) {
+	if(is_bool($var)) {
+		$var = $var?"true":"false";
+	} elseif(is_numeric($var)) {
+		$var = "{$var}";
+	} elseif(is_array($var)) {
+		$var = implode(",", $var);
+	} else {
+		$var = (STRING)$var;
+	}
+	return $var;
+}
+
 function html2js($str){
 	//Coded By Windy2000 20080721 v1.0
 	$result = "";

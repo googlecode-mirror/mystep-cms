@@ -94,7 +94,7 @@ class MyStep extends class_common {
 		}
 	}
 	
-	public function pageStart() {
+	public function pageStart($subsetting = true) {
 		global $setting, $req;
 		
 		if($setting['gen']['cache']) {
@@ -122,9 +122,9 @@ class MyStep extends class_common {
 
 		$host = $req->getServer("HTTP_HOST");
 		includeCache("website");
-		if($web_info = getParaInfo("website", "host", $host)) {
-			if(is_file(ROOT_PATH."/include/config_".$web_info['idx'].".php")) {
-				include_once(ROOT_PATH."/include/config_".$web_info['idx'].".php");
+		if($GLOBALS['web_info'] = getParaInfo("website", "host", $host) && $subsetting) {
+			if(is_file(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php")) {
+				include_once(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php");
 			}
 		}
 		

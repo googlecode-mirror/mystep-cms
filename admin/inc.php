@@ -9,7 +9,7 @@ require_once(ROOT_PATH."/source/function/admin.php");
 $mystep = new MyStep();
 $req = $mystep->getInstance("MyReq", $setting['cookie'], $setting['session']);
 $db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
-$mystep->pageStart();
+$mystep->pageStart(false);
 
 $usertype = $req->getSession("usertype");
 $group = getParaInfo("user_group", "group_id", $usertype);

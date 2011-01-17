@@ -66,8 +66,8 @@ TABLE .row {border:1px solid #629DC5; padding:5px 5px; vertical-align:middle;}
 #input_area {width:800px; border:1px solid #629DC5; margin:10px;}
 #input_area td {padding:5px 10px;}
 #input_area input,
-#input_area select {width:300px; background-color:#DAE7F2; color:#15324A; font-weight:bold; font-size:12px; border:1px inset #A9A9A9; padding-top:3px;}
-#input_area span {color:white; font-family:Tahoma,Verdana,Arial,Sans-Serif; font-size:12px;}
+#input_area select {width:280px; background-color:#DAE7F2; color:#15324A; font-weight:bold; font-size:12px; border:1px inset #A9A9A9; padding-top:3px;}
+#input_area span {color:#00a; font-family:Tahoma,Verdana,Arial,Sans-Serif; font-size:12px; margin-left:10px;}
 #input_area .btn {width:90px; background-color:#DAE7F2; color:black; font-weight:normal; border:1px solid black; padding:4px 10px 4px 10px;}
 #input_area .cbox {width:20px; background-color:transparent; border:0px;}
 

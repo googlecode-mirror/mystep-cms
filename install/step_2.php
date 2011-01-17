@@ -29,7 +29,7 @@ $cookie_domain = ".".implode(".", array_slice(explode(".", $req->getServer("SERV
 				<tr>
 					<th class="tbopt">网站邮件：</th>
 					<td><input type="text" name="setting[web][email]" value="" size="35" class="txt" need="email"></td>
-					<td>用于网站问题的回报</td>
+					<td>用于与站长取得联系的电子邮箱</td>
 				</tr>
 				<tr>
 					<th class="tbopt">网站名称：</th>

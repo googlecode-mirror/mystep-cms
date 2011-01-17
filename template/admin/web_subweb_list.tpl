@@ -19,7 +19,7 @@
 						<td class="row"><!--record_name--></td>
 						<td class="row"><!--record_idx--></td>
 						<td class="row"><!--record_host--></td>
-						<td class="row" align="center"><a href="?method=edit&web_id=<!--record_web_id-->">修改</a> <a href="?method=delete&web_id=<!--record_web_id-->" onclick="return confirm('该操作将影响所有组用户！ 请按确定继续。')">删除</a></td>
+						<td class="row" align="center"><a href="?method=edit&web_id=<!--record_web_id-->">修改</a> <a href="?method=delete&web_id=<!--record_web_id-->" onclick="return confirm('该操作将所有网站相关信息！ 请按确定继续。')">删除</a></td>
 					</tr>
 <!--loop:end-->
 				</table>

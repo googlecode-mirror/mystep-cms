@@ -51,6 +51,7 @@ mystep;
 		} else {
 			mysql_close($link);
 			WriteFile(ROOT_PATH."/include/config.php", $result, "w");
+			WriteFile(ROOT_PATH."/include/config-default.php", $result, "w");
 		}
 		break;
 	case 4:
