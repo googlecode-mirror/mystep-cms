@@ -107,7 +107,17 @@ class plugin_offical implements plugin {
 \$n = 0;
 \$db->Query("{$str_sql}");
 while(\$record = \$db->GetRS()) {
-	\$record['subject'] = trans_title(\$record['subject']);
+	HtmlTrans(&\$record);
+	\$theStyle = explode(",", \$record['style']);
+	for(\$i=0;\$i<count(\$theStyle);\$i++) {
+		if(\$theStyle[\$i]=="i") {
+			\$record['subject'] = "<i>".\$record['subject']."</i>";
+		} elseif((\$theStyle[\$i]=="b")) {
+			\$record['subject'] = "<b>".\$record['subject']."</b>";
+		} else {
+			\$record['subject'] = "<font color=\"".\$theStyle[\$i]."\">".\$record['subject']."</font>";
+		}
+	}
 	\$record['style'] = \$n++%2 ? "{$att_list['css1']}" : "{$att_list['css2']}";
 	\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
 	if(empty(\$record['link'])) \$record['link'] = getFileURL(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:""));

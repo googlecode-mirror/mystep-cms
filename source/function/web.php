@@ -473,42 +473,6 @@ function __autoload($class_name) {
 }
 /*--------------------------------Functions For Web End--------------------------------------------*/
 
-
-/*--------------------------------Functions For HTC Start--------------------------------------------*/
-function htc_remove($str="") {
-	/*
-	while(preg_match("/\[(\w+)(=[^\]]+)?\](.*)\[\/\\1\]/ixsU", $str)) {
-		$str = preg_replace("/\[(\w+)(=[^\]]+)?\](.*)\[\/\\1\]/ixsU", "\\3", $str);
-	}
-	*/
-	$str = preg_replace("/\[attach=\d+\].*\[\/attach\]/ixsU", "", $str);
-	$str = preg_replace("/[\r\n]*\[quote\].*\[\/quote\][\r\n]*/ixsU", "\n", $str);
-	$str = preg_replace("/\[\w+(=[^\]]+)?\]/","",$str);
-	$str = preg_replace("/\[\/\w+]/","",$str);
-	$str = preg_replace("/\[s:\d+\]/i","",$str);
-	return $str;
-}
-
-function trans_title($str) {
-	$str = preg_replace("/\[b\](.*)\[\/b\]/ixsU", "<b>\\1</b>", $str);
-	$str = preg_replace("/\[i\](.*)\[\/i\]/ixsU", "<i>\\1</i>", $str);
-	$str = preg_replace("/\[color=([^\]]+)\](.*?)\[\/color\]/ixs", "<font color='\\1'>\\2</font>", $str);
-	return $str;
-}
-
-function get_title($str) {
-	$str = preg_replace("/\[(\/)?(b|i)\]/ixs", "", $str);
-	$str = preg_replace("/\[(\/)?color(=[^\]]+)?\]/ixs", "", $str);
-	return $str;
-}
-
-function get_img($str) {
-	preg_match_all("/\[IMG\](.*)\[\/IMG\]/ixsU", $str, $arr);
-	return $arr[1];
-}
-/*--------------------------------Functions For HTC End--------------------------------------------*/
-
-
 /*--------------------------------Functions For Error Start------------------------------------------*/
 function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 	$err_type = array(
