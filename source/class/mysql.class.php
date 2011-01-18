@@ -418,6 +418,7 @@ class MySQL extends class_common {
 		}
 
 		foreach($data as $key => $value) {
+			$value = mysql_real_escape_string($value);
 			if(strtolower($key) == 'submit') continue;
 			if($mode=="insert" && $addon != "" && $value==="") continue;
 			if(!preg_match("/^\w+\(\)$/", $value)) $value = "'{$value}'";

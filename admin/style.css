@@ -59,16 +59,15 @@ BODY {text-align:center; font-family:ËÎÌו, Tahoma, Verdana, Arial; padding:0px; 
 DIV .title {border:1px solid #629DC5; padding:5px 5px 5px 25px; font-weight:bold; color:#fff; background-color:#3275AB; background-image:url("images/arrow.gif"); background-repeat:no-repeat; background-position:5px center;}
 DIV .nav {margin:20px auto 20px auto; text-align:center; font-size:12px; font-weight:bold;}
 DIV .addnew {position:absolute; top:36px; left:10px; width:120px; height:32px; padding:5px 0px; font-size:14px; text-align:center; font-weight:bold; background-image:url("images/btn.gif"); background-repeat:no-repeat;}
-TABLE .cat {border:1px solid #629DC5; padding:5px 5px; vertical-align:middle; font-weight:bold; background-color:#F2F9FD;}
-TABLE .row {border:1px solid #629DC5; padding:5px 5px; vertical-align:middle;}
+TABLE .cat {border:1px solid #629DC5; padding:5px 10px; vertical-align:middle; font-weight:bold; background-color:#F2F9FD;}
+TABLE .row {border:1px solid #629DC5; padding:5px 10px; vertical-align:middle;}
 
 #list_area,
 #input_area {width:800px; border:1px solid #629DC5; margin:10px;}
-#input_area td {padding:5px 10px;}
 #input_area input,
 #input_area select {width:280px; background-color:#DAE7F2; color:#15324A; font-weight:bold; font-size:12px; border:1px inset #A9A9A9; padding-top:3px;}
-#input_area span {color:#00a; font-family:Tahoma,Verdana,Arial,Sans-Serif; font-size:12px; margin-left:10px;}
-#input_area .btn {width:90px; background-color:#DAE7F2; color:black; font-weight:normal; border:1px solid black; padding:4px 10px 4px 10px;}
+#input_area span.comment {color:#00a; font-family:Tahoma,Verdana,Arial,Sans-Serif; font-size:12px; margin-left:10px;}
+#input_area .btn {width:90px; background-color:#DAE7F2; color:black; font-weight:normal; border:1px solid black; padding:1px 10px 1px 10px;}
 #input_area .cbox {width:20px; background-color:transparent; border:0px;}
 
 #page_bottom {clear:both; line-height:20px; text-align:center; margin:0px auto 10px auto; padding-top:10px; width:100%; border-top:2px solid #739ace;}

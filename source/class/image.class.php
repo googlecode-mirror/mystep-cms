@@ -1137,7 +1137,7 @@ class imageCreator_file extends imageCreator {
 		return;
 	}
 
-	public function createImage($trueImage = false, $background = NULL) {
+	public function createImage() {
 		return;
 	}
 }

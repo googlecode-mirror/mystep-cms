@@ -286,7 +286,7 @@ mytpl;
 		}
 		$tpl_cache = preg_replace("/[\r\n]+/", "\n", $tpl_cache);
 		$tpl_cache = "<!--".filemtime($this->tpl_info['file'])."-->"."\n".$tpl_cache;
-		$this->WriteFile($cache_file, $tpl_cache, 'w');
+		$this->WriteFile($cache_file, $tpl_cache, 'wb');
 		return $cache_file;
 	}
 	
@@ -386,7 +386,7 @@ mytpl;
 					ob_clean();
 				}
 			}
-			$content = preg_replace("/[\s\t ]*[\r\n]+[\s\t ]*/", "", $content);
+			//$content = preg_replace("/[\s\t ]*[\r\n]+[\s\t ]*/", "", $content);
 			$content = preg_replace("/^".preg_quote($this->delimiter_l)."\d+".preg_quote($this->delimiter_r)."/", "", $content);
 			//$content = preg_replace("/".preg_quote($this->delimiter_l).".+?".preg_quote($this->delimiter_r)."/", "", $content);
 			if($this->cache['use'] && $this->cache['expire'] > 0) $this->WriteFile($this->cache['file'], $content, 'w');

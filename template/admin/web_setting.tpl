@@ -73,7 +73,7 @@ content;
 				<td class="cat" align="right">{$cur_comment}</td>
 				<td class="row">
 					{$cur_component}
-					<span>{$cur_description}</span>
+					<span class="comment">{$cur_description}</span>
 				</td>
 			</tr>
 content;

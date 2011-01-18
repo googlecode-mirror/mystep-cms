@@ -3,7 +3,7 @@ $setting = array();
 
 $setting['web'] = array();
 $setting['web']['url'] = 'http://www.mystep.com/';
-$setting['web']['email'] = 'winyd2006@gmail.com';
+$setting['web']['email'] = 'windy2006@gmail.com';
 $setting['web']['title'] = 'MyStep';
 $setting['web']['keyword'] = 'mystep,cms,free';
 $setting['web']['description'] = '开源网站内容管理系统';

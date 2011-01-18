@@ -11,19 +11,6 @@
 *                                           *
 ********************************************/
 
-// Misc varabiles
-$top_mode_list = array(
-		"0"	=>	"²»ÖÃ¶¥",
-		"128"	=>	"ÎÄ×ÖÖÃ¶¥",
-		"64"	=>	"»ÃµÆÍ¼Æ¬",
-		);
-
-$top_list = array(
-		"1"	=>	"Ê×Ò³",
-		"2"	=>	"ÁĞ±íÒ³",
-		"4"	=>	"ÄÚÈİÒ³",
-		);
-
 /*--------------------------------Website Functions Start-----------------------------------------*/
 function CheckPower($power) {
 	//Coded By Windy2000 20040526 v1.0
@@ -118,7 +105,7 @@ function GetPictures_news($news_id, $content, $zoom = 600) {
 			}
 		}
 		$attach_list .= "0";
-		$db->Query("update ".$setting['db']['pre']."news_detail set content='{$tmp[$n]}' where news_id={$news_id} and page=".($n+1));
+		$db->Query("update ".$setting['db']['pre']."news_detail set content='".mysql_real_escape_string($tmp[$n])."' where news_id={$news_id} and page=".($n+1));
 		$db->Query("update ".$setting['db']['pre']."attachment set news_id={$news_id} where id in ({$attach_list})");
 	}
 	return;

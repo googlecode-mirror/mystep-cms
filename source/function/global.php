@@ -385,9 +385,10 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 		header("location: {$img_dst}");
 		exit();
 	} else {
-		Make_Dir(dirname($img_dst));
+		MakeDir(dirname($img_dst));
 	}
-	$img = new imageCreator_file($img_src);
+	$img = new imageCreator_file;
+	$img->init($img_src);
 	if(!$img->img) {
 		header("location: {$img_src}");
 		return false;
@@ -461,7 +462,8 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 			$font_size = $img->getFontSize($watermark, $fontsize);
 			$font_size[0] += 10;
 			$font_size[1] += 10;
-			$img_txt = new imageCreator($font_size[0], $font_size[1]);
+			$img_txt = new imageCreator;
+			$img_txt->init($font_size[0], $font_size[1]);
 			$img_txt->createImage(true, $bgcolor);
 			$img_txt->drawString($img_txt->transString($watermark), array(5,$font_size[1]-5), $fontcolor, $font, $fontsize);
 
@@ -487,7 +489,8 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 					$height = $img->height;
 					brak;
 			}
-			$img_out = new imageCreator($width, $height);
+			$img_out = new imageCreator;
+			$img_out->init($width, $height);
 			$img_out->createImage(true, $bgcolor);
 
 			switch($position) {
@@ -535,14 +538,15 @@ function img_thumb($img_src, $dstW, $dstH, $img_dst="") {
 		header("location: {$img_src}");
 		return;
 	}
-	$img = new imageCreator_file($img_src);
+	$img = new imageCreator_file;
+	$img->init($img_src);
 	if(!$img->img) return false;
 
 	$dst_type = "jpg";
 	if(!empty($img_dst)) {
 		$dst_type = GetFileExt($img_dst);
 	} else {
-		Make_Dir(dirname($img_dst));
+		MakeDir(dirname($img_dst));
 	}
 
 	$srcW = $img->width;
@@ -550,7 +554,8 @@ function img_thumb($img_src, $dstW, $dstH, $img_dst="") {
 	$rate = min($dstW/$srcW, $dstH/$srcH);
 	$img->resizeImage($rate);
 
-	$img_out = new imageCreator($dstW, $dstH);
+	$img_out = new imageCreator;
+	$img_out->init($dstW, $dstH);
 	$img_out->createImage(true, array(0xff,0xff,0xff));
 	$img_out->setTransparent("white");
 	$img_out->pasteImage($img->img, array(($dstW-$srcW*$rate)/2, ($dstH-$srcH*$rate)/2));
@@ -633,9 +638,11 @@ function GetTimeDiff($time_start, $decimal = 3, $micro = true) {
 
 function debug() {
 	//Coded By Windy2000 20040410 v1.5
+	echo "<pre>";
 	for($i = 0; $i < func_num_args(); $i++) {
 		var_dump(func_get_arg($i));
 	}
+	echo "</pre>";
 	exit;
 }
 /*---------------------------------------Misc Functions Endt------------------------------------------*/
