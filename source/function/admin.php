@@ -110,5 +110,17 @@ function GetPictures_news($news_id, $content, $zoom = 600) {
 	}
 	return;
 }
+
+function delTplCache($tpl="", $file="") {
+	global $setting;
+	$cache_pathe = ROOT_PATH."/".$setting['path']['template']."/cache/";
+	if(empty($tpl)) {
+		MultiDel($cache_pathe);
+	} elseif(empty($file)) {
+		MultiDel($cache_pathe.$tpl);
+	} else {
+		MultiDel($cache_pathe.$tpl."/".$file.".php");
+	}
+}
 /*--------------------------------Website Functions End-----------------------------------------*/
 ?>

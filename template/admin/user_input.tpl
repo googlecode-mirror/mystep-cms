@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="center">
-	<script src="../script/check_form.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(password.value==password_c.value){return checkForm(this)}else{alert('两次输入的密码不一致！');return false;}">
 		<table id="input_area" width="400" cellspacing="0" cellpadding="0" align="center">
 			<tr> 
@@ -40,7 +40,7 @@
 				</td>
 			</tr>
 			<tr> 
-				<td colspan="4" class="cat" align="center">
+				<td colspan="2" class="row" align="center">
 					<input class="btn" type="Submit" value=" 确 定 ">&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 ">&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回	" onClick="location.href='<!--back_url-->'">

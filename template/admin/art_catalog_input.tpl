@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="center">
-	<script src="../script/check_form.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(checkForm(this)){$id('web_id').disabled=false;return true;}else{return false;}">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
@@ -83,12 +83,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-					<div align="center"><br>
-						<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
-						<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
-						<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'">
-					</div>
+				<td colspan="2" align="center" class="row">
+					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'">
 				</td>
 			</tr>
 		</table>

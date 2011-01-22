@@ -65,37 +65,41 @@ switch($method) {
 		break;
 	case "add_ok":
 	case "edit_ok":
-		if($_POST['cat_main']==0) {
-			$_POST['cat_layer'] = 1;
+		if(count($_POST) == 0) {
+			$goto_url = $self;
 		} else {
-			$_POST['cat_layer'] = 1 + $db->GetSingleResult("select cat_layer from ".$setting['db']['pre']."news_cat where cat_id='".$_POST['cat_main']."'");
-		}
-		$_POST['cat_show'] = array_sum($_POST['cat_show']);
-		if(is_null($_POST['cat_show'])) $_POST['cat_show'] = 0;
-		if($method=="add_ok") {
-			$log_info = "添加分类";
-			$_POST['cat_order'] = 1 + $db->GetSingleResult("select max(cat_order) from ".$setting['db']['pre']."news_cat");
-			$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "insert", "a");
-		} else {
-			$log_info = "编辑分类";
-			function multiChange($catid, $layer) {
-				global $db, $setting;
-				$db->Query("update ".$setting['db']['pre']."news_cat set cat_layer='{$layer}' where cat_id = '{$catid}'");
-				$catid_list = array();
-				$db->Query("select cat_id from ".$setting['db']['pre']."news_cat where cat_main = '{$catid}'");
-				while($record = $db->GetRS()) {$catid_list[] = $record['cat_id'];}
-				$db->free();
-				$max_count = count($catid_list);
-				for($i=0; $i<$max_count; $i++) {
-					multiChange($catid_list[$i], $layer+1);
-				}
-				return;
+			if($_POST['cat_main']==0) {
+				$_POST['cat_layer'] = 1;
+			} else {
+				$_POST['cat_layer'] = 1 + $db->GetSingleResult("select cat_layer from ".$setting['db']['pre']."news_cat where cat_id='".$_POST['cat_main']."'");
 			}
-			multiChange($cat_id, $_POST['cat_layer']);
-			$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "update", "cat_id={$cat_id}");
+			$_POST['cat_show'] = array_sum($_POST['cat_show']);
+			if(is_null($_POST['cat_show'])) $_POST['cat_show'] = 0;
+			if($method=="add_ok") {
+				$log_info = "添加分类";
+				$_POST['cat_order'] = 1 + $db->GetSingleResult("select max(cat_order) from ".$setting['db']['pre']."news_cat");
+				$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "insert", "a");
+			} else {
+				$log_info = "编辑分类";
+				function multiChange($catid, $layer) {
+					global $db, $setting;
+					$db->Query("update ".$setting['db']['pre']."news_cat set cat_layer='{$layer}' where cat_id = '{$catid}'");
+					$catid_list = array();
+					$db->Query("select cat_id from ".$setting['db']['pre']."news_cat where cat_main = '{$catid}'");
+					while($record = $db->GetRS()) {$catid_list[] = $record['cat_id'];}
+					$db->free();
+					$max_count = count($catid_list);
+					for($i=0; $i<$max_count; $i++) {
+						multiChange($catid_list[$i], $layer+1);
+					}
+					return;
+				}
+				multiChange($cat_id, $_POST['cat_layer']);
+				$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "update", "cat_id={$cat_id}");
+			}
+			$db->Query($str_sql);
+			deleteCache("news_cat");
 		}
-		$db->Query($str_sql);
-		deleteCache("news_cat");
 		break;
 	default:
 		$goto_url = $self;
@@ -108,7 +112,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $user_id, $user_group, $tpl_info, $setting, $news_cat, $cat_id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $cat_id;
 
 	$tpl_info['idx'] = "art_catalog_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -118,7 +122,7 @@ function build_page($method) {
 		for($i=0; $i<$max_count; $i++) {
 			$news_cat[$i]['cat_name'] = ((isset($news_cat[$i+1]) && $news_cat[$i+1]['cat_layer']==$news_cat[$i]['cat_layer'])?"├ ":"└ ").$news_cat[$i]['cat_name'];
 			for($j=1; $j<$news_cat[$i]['cat_layer']; $j++) {
-				$news_cat[$i]['cat_name'] = " &nbsp;".$news_cat[$i]['cat_name'];
+				$news_cat[$i]['cat_name'] = "&nbsp;".$news_cat[$i]['cat_name'];
 			}
 			$news_cat[$i]['cat_name'] = preg_replace("/^├ /", "", preg_replace("/^└ /", "", $news_cat[$i]['cat_name']));
 			$web = getParaInfo("website", "web_id", $news_cat[$i]['web_id']);
@@ -149,11 +153,23 @@ function build_page($method) {
 			$record['cat_id'] = 0;
 			$record['web_id'] = 0;
 			$record['cat_main'] = 0;
+			$record['cat_name'] = "";
+			$record['cat_idx'] = "";
+			$record['cat_sub'] = "";
+			$record['cat_comment'] = "";
+			$record['cat_image'] = "";
+			$record['cat_link'] = "";
 			$record['cat_show_1'] = "checked";
 			$record['cat_type_0'] = "selected";
 			$web_disabled = "";
+			$record['cat_show_1'] = "";
+			$record['cat_show_2'] = "";
+			$record['cat_show_4'] = "";
+			$record['cat_type_0'] = "";
+			$record['cat_type_1'] = "";
+			$record['cat_type_2'] = "";
 		}
-			
+		
 		$max_count = count($GLOBALS['website']);
 		for($i=0; $i<$max_count; $i++) {
 			$GLOBALS['website'][$i]['selected'] = $GLOBALS['website'][$i]['web_id']==$record['web_id']?"selected":"";
@@ -177,7 +193,7 @@ function build_page($method) {
 			}
 			$news_cat[$i]['cat_name'] = ((isset($news_cat[$i+1]) && $news_cat[$i+1]['cat_layer']==$news_cat[$i]['cat_layer'])?"├ ":"└ ").$news_cat[$i]['cat_name'];
 			for($j=1; $j<$news_cat[$i]['cat_layer']; $j++) {
-				$news_cat[$i]['cat_name'] = " &nbsp;".$news_cat[$i]['cat_name'];
+				$news_cat[$i]['cat_name'] = "&nbsp;".$news_cat[$i]['cat_name'];
 			}
 			$news_cat[$i] = preg_replace("/^├ /", "", preg_replace("/^└ /", "", $news_cat[$i]));
 			$tpl_tmp->Set_Loop('catalog', array('cat_id'=>$news_cat[$i]['cat_id'], 'cat_name'=>$news_cat[$i]['cat_name'], 'web_id'=>$news_cat[$i]['web_id'],'selected'=>($record['cat_main']==$news_cat[$i]['cat_id']?"selected":"")));

@@ -311,7 +311,7 @@ class MySQL extends class_common {
 		$result = "#Table Name: ".$row["Name"]."\n# Create Time: ".$row["Create_time"]."\n# Update Time: ".$row["Update_time"]."\n";
 		$this->Free();
 		$tblInfo = array_values($this->getSingleRecord("show create table ".$the_tab));
-		$result .= $tblInfo[1];
+		$result .= $tblInfo[1].";\n";
 		return $result;
 	}
 /*
@@ -479,7 +479,7 @@ class MySQL extends class_common {
 						$result[] = array($theTBL[1], "create", $theTBL[2], $return);
 						break;
 					case strpos($theSQL, "drop")===0:
-						preg_match("/^drop\s+(\w+)\s+(\w+).+/m", $theSQL, $theTBL);
+						preg_match("/^drop\s+(\w+)\s+(\w+).*/m", $theSQL, $theTBL);
 						$result[] = array($theTBL[1], "drop", $theTBL[2], $return);
 						break;
 					case strpos($theSQL, "alter"===0):

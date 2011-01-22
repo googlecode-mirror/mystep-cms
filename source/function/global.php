@@ -293,8 +293,8 @@ function GetFile($file, $length=0, $offset=0) {
 }
 
 function GetFileExt($file) {
-	//return pathinfo($file, PATHINFO_EXTENSION);
-	return str_replace(".", "", strrchr($file, "."));
+	return strtolower(pathinfo($file, PATHINFO_EXTENSION));
+	//return strtolower(str_replace(".", "", strrchr($file, ".")));
 }
 
 function WriteFile($file_name, $content, $mode="ab") {
@@ -342,7 +342,7 @@ function MultiDel($dir){
 	if(empty($dir)) return;
 	if(is_dir($dir)){
 		$mydir = opendir($dir);
-		while($file = readdir($mydir)) {
+		while(($file = readdir($mydir)) !== false) {
 			if($file!="." && $file!="..") {
 				$the_name = $dir."/".$file;
 				is_dir($the_name) ? MultiDel($the_name) : unlink($the_name);

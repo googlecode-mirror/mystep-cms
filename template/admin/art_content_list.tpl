@@ -1,19 +1,19 @@
 <div class="title"><!--title--></div>
 <div class="addnew"><a href="?method=add&cat_id=<!--cat_id-->">添加文章</a></div>
 <div class="nav">
-	<select onchange="location.href='?cat_id='+this.options[this.selectedIndex].value+''" style="width:80px;">
+	<select onchange="location.href='?cat_id='+this.options[this.selectedIndex].value+''" style="width:100px;">
 		<option value="">全部文章</option>
 <!--loop:start key="catalog"-->
 		<option value="<!--catalog_cat_id-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
-	</select> &nbsp;
-	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页， &nbsp;
-	<a href="<!--page_first-->">首页</a> &nbsp;
-	<a href="<!--page_prev-->">上页</a> &nbsp;
-	<a href="<!--page_next-->">下页</a> &nbsp;
-	<a href="<!--page_last-->">末页</a> &nbsp;
-	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.previousSibling.value">
- &nbsp; | &nbsp;
+	</select>&nbsp;
+	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，
+	<a href="<!--page_first-->">首页</a>&nbsp;
+	<a href="<!--page_prev-->">上页</a>&nbsp;
+	<a href="<!--page_next-->">下页</a>&nbsp;
+	<a href="<!--page_last-->">末页</a>&nbsp;
+	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value">
+&nbsp;|&nbsp;
 	关键字：<input type="text" size="8" value="<!--keyword-->"><input type="button" value="检索" onclick="location.href='?keyword='+this.previousSibling.value">
 </div>
 <div align="center">
@@ -43,18 +43,18 @@
 	</table>
 </div>
 <div class="nav">
-	<select onchange="location.href='?cat_id='+this.options[this.selectedIndex].value+''" style="width:80px;">
+	<select onchange="location.href='?cat_id='+this.options[this.selectedIndex].value+''" style="width:100px;">
 		<option>全部文章</option>
 <!--loop:start key="catalog"-->
 		<option value="<!--catalog_cat_id-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
-	</select> &nbsp;
-	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页， &nbsp;
-	<a href="<!--page_first-->">首页</a> &nbsp;
-	<a href="<!--page_prev-->">上页</a> &nbsp;
-	<a href="<!--page_next-->">下页</a> &nbsp;
-	<a href="<!--page_last-->">末页</a> &nbsp;
-	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.previousSibling.value">
- &nbsp; | &nbsp;
+	</select>&nbsp;
+	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，
+	<a href="<!--page_first-->">首页</a>&nbsp;
+	<a href="<!--page_prev-->">上页</a>&nbsp;
+	<a href="<!--page_next-->">下页</a>&nbsp;
+	<a href="<!--page_last-->">末页</a>&nbsp;
+	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value">
+&nbsp;|&nbsp;
 	关键字：<input type="text" size="8" value="<!--keyword-->"><input type="button" value="检索" onclick="location.href='?keyword='+this.previousSibling.value">
 </div>

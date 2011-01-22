@@ -157,8 +157,7 @@ function build_page($method) {
 				$news_cat[$i]['cat_name'] = " &nbsp;".$news_cat[$i]['cat_name'];
 			}
 			$news_cat[$i]['cat_name'] = preg_replace("/^©À /", "", preg_replace("/^©¸ /", "", $news_cat[$i]['cat_name']));
-			$news_cat[$i]['checked'] = $record['power_cat']==$news_cat[$i]['cat_id']?"checked":"";
-			
+			$news_cat[$i]['checked'] = (strpos(",".$record['power_cat'].",", ",".$news_cat[$i]['cat_id'].",")!==false)?"checked":"";
 			$tpl_tmp->Set_Loop('power_cat', $news_cat[$i]);
 		}
 

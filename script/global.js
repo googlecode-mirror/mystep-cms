@@ -51,24 +51,15 @@ Date.prototype.format = function(format){  //eg:format="YYYY-MM-dd hh:mm:ss";
 	return format;
 }
 
-Array.prototype.clone = function() {
-	var copy = new Array();
-	for (var i = 0; i < this.length; i++) {
-		copy[i] = this[i];
-	}
-	return copy;
-}
-
-Array.prototype.append = function (secondArray) {
-	var firstArray = this.clone();
-	if(typeof(secondArray.length)=="undefined" || secondArray.length==0) {
-		firstArray[firstArray.length] = secondArray;
+Array.prototype.append = function (newArray) {
+	if(typeof(newArray.length)=="undefined" || newArray.length==0) {
+		this[this.length] = newArray;
 	} else {
-		for (var i = 0; i < secondArray.length; i++) {
-			firstArray[firstArray.length] = secondArray[i];
+		for (var i = 0; i < newArray.length; i++) {
+			this[this.length] = newArray[i];
 		}
 	}
-	return firstArray;
+	return;
 }
 
 function openDialog(url, width, height, mode) {

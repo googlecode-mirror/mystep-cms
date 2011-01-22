@@ -50,7 +50,7 @@ class MyFSO extends class_common {
 	public function Judge_Child($dir, $only_dir = true){
 		$mydir	= dir($dir);
 		if(!$mydir) return false;
-		while($file = $mydir->read()){
+		while(($file = $mydir->read()) !== false){
 			if($file!="." && $file!=".."){
 				if($only_dir) {
 					if(is_dir($dir."/".$file)) return true;
@@ -67,7 +67,7 @@ class MyFSO extends class_common {
 		if(empty($dir)) return;
 		if(is_dir($dir)){
 			$mydir = opendir($dir);
-			while($file = readdir($mydir)) {
+			while(($file = readdir($mydir))!==false) {
 				if($file!="." && $file!="..") {
 					$the_name = $dir."/".$file;
 					is_dir($the_name) ? $this->Multi_Del($the_name) : unlink($the_name);
@@ -177,7 +177,7 @@ class MyFSO extends class_common {
 	public function Search_File($keyword, $inc_word, $deep, $dir, $html, $php) {
 		$mydir	= dir($dir);
 		if(!$mydir) return false;
-		while($file = $mydir->read()) {
+		while(($file = $mydir->read()) !== false) {
 			$the_name = str_replace("//","/",$dir."/".$file);
 			if(is_dir($the_name)) {
 				if(strpos(strtolower(basename($the_name)), strtolower($keyword))!==false || empty($keyword)) {
@@ -224,7 +224,7 @@ class MyFSO extends class_common {
 		$mydir	= dir($dir);
 		if(!$mydir) return false;
 		$file_list = array("dir" => array(), "file" => array(), "custom" => array());
-		while($file = $mydir->read()){
+		while(($file = $mydir->read()) !== false){
 			if(!$file) continue;
 			if($file!="."  && $file!=".."){
 				$string = str_replace("//","/",$dir."/".$file);

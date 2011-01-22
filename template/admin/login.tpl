@@ -1,6 +1,6 @@
 <div align="center">
 	<script Language="JavaScript1.2">if(top != window) top.location.href="login.php";</script>
-	<script src="../script/check_form.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<FORM name="login" action="?login" method="post" onsubmit="return checkForm(this)">
 	<div style="font-size:12px; font-weight:bold; font-size:14px; line-height:20px; color:red; padding:10px; text-align:center;"><!--err_msg--></div>
 	<TABLE cellSpacing="0" cellPadding="0" width="350" border="0" align="center" style="border: 1px black dotted">

@@ -30,10 +30,10 @@ switch($method) {
 				$db->Query("drop table ".$setting['db']['pre']."news_tag");
 				$db->Query("drop table ".$setting['db']['pre']."attachment");
 				$db->Query("drop table ".$setting['db']['pre']."links");
-				$db->Query("drop table ".$setting['db']['pre']."counter");
+				$db->Query("drop table ".$web_info['idx']."_counter");
 			} else {
-				$db->Query("update news_cat set web_id=1 where web_id='{$web_id}'");
-				$db->Query("update news_show set web_id=1 where web_id='{$web_id}'");
+				$db->Query("update ".$setting['db']['pre']."news_cat set web_id=1 where web_id='{$web_id}'");
+				$db->Query("update ".$setting['db']['pre']."news_show set web_id=1 where web_id='{$web_id}'");
 			}
 			@unlink($cfg_file);
 			$db->Query("delete from ".$setting['db']['pre']."website where web_id='{$web_id}'");
@@ -58,8 +58,8 @@ switch($method) {
 mystep;
 			$result = str_replace("/*--settings--*/", makeVarsCode($new_setting, '$setting'), $result);
 			if($method=="add_ok" && ($setting['db']['name']!=$new_setting['db']['name'] || $setting['db']['pre']!=$new_setting['db']['pre'])) {
-				$strFind = array("{db_name}", "{pre}", "{charset}", "{host}");
-				$strReplace = array($new_setting['db']['name'], $new_setting['db']['pre'], $setting['db']['charset'], $_POST['host']);
+				$strFind = array("{db_name}", "{pre}", "{charset}", "{host}", "{idx}");
+				$strReplace = array($new_setting['db']['name'], $new_setting['db']['pre'], $setting['db']['charset'], $_POST['host'], $_POST['idx']);
 				$info = $db->ExeSqlFile("subweb.sql", $strFind, $strReplace);
 			}
 			WriteFile(ROOT_PATH."/include/config_".$_POST['idx'].".php", $result, "w");

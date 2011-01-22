@@ -6,7 +6,6 @@
 <meta http-equiv="Expires" contect="-1">
 <meta http-equiv="windows-Target" contect="_top">
 <meta http-equiv="Content-Type" content="text/html; charset=<!--charset-->" />
-<meta http-equiv="Pragma" content="no-cache" />
 <link rel="stylesheet" type="text/css" media="all" href="style.css" />
 <script language="JavaScript" src="../script/global.js"></script>
 <script language="JavaScript" src="../script/jquery.js"></script>
@@ -17,5 +16,14 @@
 <!--main-->
 	</div>
 </div>
+<script language="JavaScript">
+/*
+$(function(){
+	var obj = $("#page_main div:first").clone();
+	obj.css({position:'fixed',top:0,left:0,width:'100%'});
+	obj.prependTo("#page_main");
+});
+*/
+</script>
 </body>
 </html>

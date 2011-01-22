@@ -2,14 +2,11 @@
 <html>
 <head>
 <title><!--web_title--></title>
-<link rel="stylesheet" type="text/css" href="images/<!--template-->/style.css" />
-<meta http-equiv="Pragma" contect="no-cache">
-<meta http-equiv="Expires" contect="-1">
 <meta http-equiv="windows-Target" contect="_top">
 <meta http-equiv="Content-Type" content="text/html; charset=<!--charset-->" />
-<meta http-equiv="Pragma" content="no-cache" />
 <meta name="keywords" content="<!--page_keywords-->">
 <meta name="description" content="<!--page_description-->">
+<link rel="stylesheet" type="text/css" href="images/<!--template-->/style.css" />
 <link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 <link rel="Shortcut Icon" href="favicon.ico" />
 <!--page_start-->

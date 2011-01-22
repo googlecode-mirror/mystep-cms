@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="center">
-	<script src="../script/check_form.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
@@ -13,7 +13,7 @@
 			<tr> 
 				<td class="cat">ÍøÕ¾Ë÷Òı£º</td>
 				<td class="row">
-					<input type="text" name="idx" value="<!--idx-->"  need=""/>
+					<input type="text" name="idx" value="<!--idx-->"  need="" onkeyup="if('<!--method-->'=='add'){var obj=document.getElementsByName('setting[db][pre]')[0];obj.value=obj.defaultValue+this.value+'_';}" />
 				</td>
 			</tr>
 			<tr> 
@@ -63,8 +63,6 @@ $setting_skip['cookie'] = array();
 $setting_skip['cookie']['path'] = '';
 $setting_skip['cookie']['prefix'] = '';
 $setting_skip['path'] = array();
-$setting_skip['path']['upload'] = '';
-$setting_skip['path']['cache'] = '';
 $setting_skip['path']['template'] = '';
 $setting_skip['content'] = array();
 $setting_skip['content']['max_length'] = '';

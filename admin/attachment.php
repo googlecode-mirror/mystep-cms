@@ -15,7 +15,6 @@ switch($method) {
 		$upload->DoIt(false);
 		echo <<<mystep
 			<script language="JavaScript">
-					parent.document.forms[0].Submit.disabled = false;
 mystep;
 		$err_msg = array();
 		$add_str = array();
@@ -27,7 +26,7 @@ mystep;
 				$name = str_replace($ext, "", $upload->upload_result[$i]['name']);
 				$upload->upload_result[$i]['name'] = substrPro($name, 0, 80).$ext;
 				$upload->upload_result[$i]['new_name'] = str_replace(".upload", "", $upload->upload_result[$i]['new_name']);
-				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, '".$upload->upload_result[$i]['name']."', '".$upload->upload_result[$i]['type']."', '".$upload->upload_result[$i]['size']."', '{$comment}', '".str_replace(strrchr($upload->upload_result[$i]['new_name'],"."),"",$upload->upload_result[$i]['new_name'])."', 0, '', '{$user['username']}', {$watermark})";
+				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, '".$upload->upload_result[$i]['name']."', '".$upload->upload_result[$i]['type']."', '".$upload->upload_result[$i]['size']."', '{$comment}', '".str_replace(strrchr($upload->upload_result[$i]['new_name'],"."),"",$upload->upload_result[$i]['new_name'])."', 0, '', '".$req->getSession('username')."', {$watermark})";
 				$db->Query($qrl_str);
 				$new_id = $db->GetInsertId();
 				if($new_id != 0) {
@@ -84,7 +83,6 @@ mystep;
 				} else {
 					document.getElementById("load").style.display = "none";
 					document.getElementById("wait").style.display = "";
-					parent.document.forms[0].Submit.disabled = true;
 					document.upload.submit();
 				}
 			}

@@ -1,7 +1,7 @@
 <div class="title"><!--title--></div>
 <div align="center">
-	<script src="../script/check_form.js" Language="JavaScript1.2"></script>
-	<form name="news_<!--method-->" method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this, checkForm_append)">
+	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this, checkForm_append)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
 				<td class="cat" width="120">所属栏目：</td>
@@ -86,7 +86,7 @@
 				<td>
 			</tr>
 			<tr>
-				<td class="cat" colspan="2" align="center">
+				<td colspan="2" align="center" class="row">
 					<input class="btn" name="attach_list" type="hidden" value="|">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;

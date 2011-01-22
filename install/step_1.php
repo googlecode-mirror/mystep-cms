@@ -83,12 +83,12 @@ $sign = $free>10 ? "w" : "nw";
 $theList = array(
 	"template/",
 	"plugin/",
+	"include/",
 	"include/config.php",
-	"include/parameter.php",
 	"files/",
 	"html/",
-	"html/para",
-	"html/session",
+	"html/para/",
+	"html/session/",
 );
 
 foreach($theList as $cur) {

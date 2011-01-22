@@ -9,6 +9,12 @@ if(empty($method)) $method = "list";
 $news_id = $req->getReq("news_id");
 $cat_id = $req->getReq("cat_id");
 $log_info = "";
+if($method=="delete" || $method=="unlock") $cat_id = $db->GetSingleResult("select cat_id from ".$setting['db']['pre']."news_show where `news_id` = '{$news_id}'");
+
+if($group['power_cat']!="all" && !empty($cat_id) && strpos(",".$group['power_cat'].",", ",".$cat_id.",")===false) {
+	echo '<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">您无权管理该栏目的文章！</div>';
+	$mystep->pageEnd(false);
+}
 
 switch($method) {
 	case "add":
@@ -25,10 +31,16 @@ switch($method) {
 		}
 		$db->Query("delete from ".$setting['db']['pre']."news_show where news_id = '{$news_id}'");
 		$db->Query("delete from ".$setting['db']['pre']."news_detail where news_id = '{$news_id}'");
-		$db->Query("delete from ".$setting['db']['pre']."news_count where news_id = '{$news_id}'");
-		$db->Query("delete from ".$setting['db']['pre']."news_theme_link where news_id = '{$news_id}'");
-		$db->Query("delete from ".$setting['db']['pre']."comment where news_id = '{$news_id}'");
-		$db->Query("delete from ".$setting['db']['pre']."attachment where news_id = '{$news_id}'");
+		$db->Query("select * from ".$setting['db']['pre']."attachment where news_id={$news_id}");
+		while($record = $db->GetRS()) {
+			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/", substr($record['file_time'],0, 10));
+			$the_ext = GetFileExt($record['file_name']);
+			if($the_ext=="php") $the_ext = "txt";
+			$the_file = $record['file_time'].".".$the_ext;
+			@unlink($the_path.$the_file);
+			@unlink($the_path."preview/".$the_file);
+			$db->Query("delete from ".$setting['db']['pre']."attachment where id=".$record['id']);
+		}
 		delCacheFile($news_id);
 		break;
 	case "unlock":
@@ -37,102 +49,106 @@ switch($method) {
 		break;
 	case "add_ok":
 	case "edit_ok":
-		$_POST['style'] = implode(",", $_POST['style']);
-		if(get_magic_quotes_gpc()) strip_slash($_POST);
-		$content = explode("<!-- pagebreak -->", str_replace("=\"../", "=\"{$web_url}/", $_POST['content']));
-		unset($_POST['content']);
-		
-		$sub_title = array();
-		$max_count = count($content);
-		for($i=0; $i<$max_count; $i++) {
-			if(preg_match("/<span.+?mceSubtitle.+?>(.+)<\/span>/i",$content[$i], $matches)) {
-				$sub_title[$i] = $matches[1];
-				$sub_title[$i] = strip_tags($sub_title[$i]);
-				$sub_title[$i] = substrPro($sub_title[$i], 0, 98);
-				$content[$i] = preg_replace("/(<(\w+)>)?<span.+?mceSubtitle.+?>.+<\/span>(<\/\1>)?/i", "", $content[$i]);
-				$sub_title[$i] = str_replace("&nbsp;", " ", $sub_title[$i]);
-				if(strlen(preg_replace("/[\s\r\n\t]/", "", $sub_title[$i]))<4) {
+		if(count($_POST) == 0) {
+			$goto_url = $self;
+		} else {
+			$_POST['style'] = implode(",", $_POST['style']);
+			if(get_magic_quotes_gpc()) strip_slash($_POST);
+			$content = explode("<!-- pagebreak -->", str_replace("=\"../", "=\"{$web_url}/", $_POST['content']));
+			unset($_POST['content']);
+			
+			$sub_title = array();
+			$max_count = count($content);
+			for($i=0; $i<$max_count; $i++) {
+				if(preg_match("/<span.+?mceSubtitle.+?>(.+)<\/span>/i",$content[$i], $matches)) {
+					$sub_title[$i] = $matches[1];
+					$sub_title[$i] = strip_tags($sub_title[$i]);
+					$sub_title[$i] = substrPro($sub_title[$i], 0, 98);
+					$content[$i] = preg_replace("/(<(\w+)>)?<span.+?mceSubtitle.+?>.+<\/span>(<\/\1>)?/i", "", $content[$i]);
+					$sub_title[$i] = str_replace("&nbsp;", " ", $sub_title[$i]);
+					if(strlen(preg_replace("/[\s\r\n\t]/", "", $sub_title[$i]))<4) {
+						$sub_title[$i] = $_POST['subject']." - ".($i+1);
+					}
+				} else {
 					$sub_title[$i] = $_POST['subject']." - ".($i+1);
 				}
-			} else {
-				$sub_title[$i] = $_POST['subject']." - ".($i+1);
 			}
-		}
-		$attach_list = $_POST['attach_list'];
-		unset($_POST['attach_list']);
-		$_POST['tag'] = str_replace("，", ",", $_POST['tag']);
-		$_POST['tag'] = str_replace(" ", "_", $_POST['tag']);
-		if($_POST['setop_mode']==0) {
-			$_POST['setop'] = 0;
-		} else {
-			if(!isset($_POST['setop'])) {
+			$attach_list = $_POST['attach_list'];
+			unset($_POST['attach_list']);
+			$_POST['tag'] = str_replace("，", ",", $_POST['tag']);
+			$_POST['tag'] = str_replace(" ", "_", $_POST['tag']);
+			if($_POST['setop_mode']==0) {
 				$_POST['setop'] = 0;
 			} else {
-				$_POST['setop'] = array_sum($_POST['setop']);
-				if(is_null($_POST['setop'])) $_POST['setop'] = 0;
-			}
-			$_POST['setop'] += $_POST['setop_mode'];
-		}
-		unset($_POST['setop_mode']);
-		$get_remote_file = $_POST['get_remote_file'];
-		unset($_POST['get_remote_file']);
-		$db->ReConnect(true);
-		
-		if($method=="add_ok") {
-			$log_info = "添加文章";
-			$_POST['add_user'] = $req->getSession("username");
-			$_POST['add_date'] = "now()";
-			
-			$tag = explode(",", $_POST['tag']);
-			$max_count = count($tag);
-			for($n=0; $n<$max_count; $n++) {
-				$tag[$n] = trim($tag[$n], "_");
-				if(strlen(trim($tag[$n]))<2) continue;
-				$tag[$n] = substrPro($tag[$n], 0, 15);
-				$tag[$n] = mysql_real_escape_string($tag[$n]);
-				if($db->GetSingleResult("select id from ".$setting['db']['pre']."news_tag where `tag` = '{$tag[$n]}'")) {
-					$db->Query("update ".$setting['db']['pre']."news_tag set `count` = `count` + 1, update_date = UNIX_TIMESTAMP() where `tag` = '{$tag[$n]}'");
+				if(!isset($_POST['setop'])) {
+					$_POST['setop'] = 0;
 				} else {
-					$db->Query("insert into ".$setting['db']['pre']."news_tag values(0, '{$tag[$n]}', 1, 0, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+					$_POST['setop'] = array_sum($_POST['setop']);
+					if(is_null($_POST['setop'])) $_POST['setop'] = 0;
 				}
+				$_POST['setop'] += $_POST['setop_mode'];
+			}
+			unset($_POST['setop_mode']);
+			$get_remote_file = $_POST['get_remote_file'];
+			unset($_POST['get_remote_file']);
+			$db->ReConnect(true);
+			
+			if($method=="add_ok") {
+				$log_info = "添加文章";
+				$_POST['add_user'] = $req->getSession("username");
+				$_POST['add_date'] = "now()";
+				
+				$tag = explode(",", $_POST['tag']);
+				$max_count = count($tag);
+				for($n=0; $n<$max_count; $n++) {
+					$tag[$n] = trim($tag[$n], "_");
+					if(strlen(trim($tag[$n]))<2) continue;
+					$tag[$n] = substrPro($tag[$n], 0, 15);
+					$tag[$n] = mysql_real_escape_string($tag[$n]);
+					if($db->GetSingleResult("select id from ".$setting['db']['pre']."news_tag where `tag` = '{$tag[$n]}'")) {
+						$db->Query("update ".$setting['db']['pre']."news_tag set `count` = `count` + 1, update_date = UNIX_TIMESTAMP() where `tag` = '{$tag[$n]}'");
+					} else {
+						$db->Query("insert into ".$setting['db']['pre']."news_tag values(0, '{$tag[$n]}', 1, 0, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+					}
+				}
+				
+				$str_sql = $db->buildSQL($setting['db']['pre']."news_show", $_POST, "insert");
+			} else {
+				$log_info = "编辑文章";
+				unset($_POST['news_id']);
+				$db->Query("delete from ".$setting['db']['pre']."news_detail where news_id = '{$news_id}'");
+				$str_sql = $db->buildSQL($setting['db']['pre']."news_show", $_POST, "update", "news_id={$news_id}");
+				delCacheFile($news_id);
+			}
+			$db->Query($str_sql);
+	
+			if($method=="add_ok") $news_id = $db->GetInsertId();
+			$cur_rec = array();
+			$max_count = count($sub_title);
+			for($i=0; $i<$max_count; $i++) {
+				$cur_rec['id'] = 0;
+				$cur_rec['cat_id'] = $_POST['cat_id'];
+				$cur_rec['news_id'] = $news_id;
+				$cur_rec['page'] = $i+1;
+				$cur_rec['sub_title'] = $sub_title[$i];
+				$cur_rec['content'] = $content[$i];
+				$db->Query($db->buildSQL($setting['db']['pre']."news_detail", $cur_rec, "insert"));
 			}
 			
-			$str_sql = $db->buildSQL($setting['db']['pre']."news_show", $_POST, "insert");
-		} else {
-			$log_info = "编辑文章";
-			unset($_POST['news_id']);
-			$db->Query("delete from ".$setting['db']['pre']."news_detail where news_id = '{$news_id}'");
-			$str_sql = $db->buildSQL($setting['db']['pre']."news_show", $_POST, "update", "news_id={$news_id}");
-			delCacheFile($news_id);
+			$attach_list = split("\|", $attach_list);
+			$att_chg = "";
+			$max_count = count($attach_list);
+			for($i=0; $i<$max_count; $i++) {
+				if(!empty($attach_list[$i])) $att_chg .= "id={$attach_list[$i]} or ";
+			}
+			if(!empty($att_chg)) {
+				$db->Query("update ".$setting['db']['pre']."attachment set news_id='{$news_id}' where ({$att_chg} 1=0)");
+			}
+			$db->Query("update ".$setting['db']['pre']."attachment set tag='".mysql_real_escape_string($_POST['tag'])."' where news_id='{$news_id}'");
+			$db->Query("update ".$setting['db']['pre']."news_show set pages='".count($sub_title)."' where news_id='{$news_id}'");
+	
+			if($get_remote_file) GetPictures_news($news_id, $content);
 		}
-		$db->Query($str_sql);
-
-		if($method=="add_ok") $news_id = $db->GetInsertId();
-		$cur_rec = array();
-		$max_count = count($sub_title);
-		for($i=0; $i<$max_count; $i++) {
-			$cur_rec['id'] = 0;
-			$cur_rec['cat_id'] = $_POST['cat_id'];
-			$cur_rec['news_id'] = $news_id;
-			$cur_rec['page'] = $i+1;
-			$cur_rec['sub_title'] = $sub_title[$i];
-			$cur_rec['content'] = $content[$i];
-			$db->Query($db->buildSQL($setting['db']['pre']."news_detail", $cur_rec, "insert"));
-		}
-		
-		$attach_list = split("\|", $attach_list);
-		$att_chg = "";
-		$max_count = count($attach_list);
-		for($i=0; $i<$max_count; $i++) {
-			if(!empty($attach_list[$i])) $att_chg .= "id={$attach_list[$i]} or ";
-		}
-		if(!empty($att_chg)) {
-			$db->Query("update ".$setting['db']['pre']."attachment set news_id='{$news_id}' where ({$att_chg} 1=0)");
-		}
-		$db->Query("update ".$setting['db']['pre']."attachment set tag='".mysql_real_escape_string($_POST['tag'])."' where news_id='{$news_id}'");
-		$db->Query("update ".$setting['db']['pre']."news_show set pages='".count($sub_title)."' where news_id='{$news_id}'");
-
-		if($get_remote_file) GetPictures_news($news_id, $content);
 		break;
 	default:
 		$goto_url = $self;
@@ -145,7 +161,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $user_id, $user_group, $tpl_info, $setting, $news_cat, $news_id, $cat_id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $news_id, $cat_id, $group;
 	$top_mode_list = array(
 			"0"	=>	"不置顶",
 			"128"	=>	"文字置顶",
@@ -176,6 +192,7 @@ function build_page($method) {
 		$condition = "1=1";
 		$condition .= empty($cat_id)?"":" and a.cat_id ='{$cat_id}'";
 		$condition .= empty($keyword)?"":" and (a.subject like '%$keyword%' or a.tag like '%$keyword%')";
+		$condition .= $group['power_cat']=="all"?"":" and a.cat_id in (".$group['power_cat'].")";
 
 		//navigation
 		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."news_show a where {$condition}");
@@ -190,7 +207,6 @@ function build_page($method) {
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if(empty($record['link'])) $record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['add_date']);
-			$record['subject'] = trans_title($record['subject']);
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		
@@ -274,7 +290,7 @@ function build_page($method) {
 		if(!empty($news_cat[$i]['cat_link'])) continue;
 		$news_cat[$i]['cat_name'] = ((isset($news_cat[$i+1]) && $news_cat[$i+1]['cat_layer']==$news_cat[$i]['cat_layer'])?"├ ":"└ ").$news_cat[$i]['cat_name'];
 		for($j=1; $j<$news_cat[$i]['cat_layer']; $j++) {
-			$news_cat[$i]['cat_name'] = "  ".$news_cat[$i]['cat_name'];
+			$news_cat[$i]['cat_name'] = "&nbsp;".$news_cat[$i]['cat_name'];
 		}
 		$news_cat[$i] = preg_replace("/^├ /", "", preg_replace("/^└ /", "", $news_cat[$i]));
 		$tpl_tmp->Set_Loop('catalog', array('cat_id'=>$news_cat[$i]['cat_id'], 'cat_name'=>$news_cat[$i]['cat_name'], 'selected'=>($cat_id==$news_cat[$i]['cat_id']?"selected":"")));

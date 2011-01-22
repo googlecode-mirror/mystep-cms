@@ -13,7 +13,7 @@ switch($method) {
 				if($user_info)  list($uid, $groupid) = array_values($user_info);
 				if($user_name==$setting['web']['s_user'] && md5($user_psw)==$setting['web']['s_pass']) $uid = 0;
 				if(isset($uid)) {
-					$req->setCookie("ms_user", $uid."\t".md5($user_psw), $_SERVER['REQUEST_TIME']+60*60*24*(int)$keep);
+					$req->setCookie("ms_user", $uid."\t".md5($user_psw), 60*60*24*(int)$keep);
 					$goto_url = "index.php";
 				} else {
 					$err_msg = "登录错误，错误的用户名或密码！";
