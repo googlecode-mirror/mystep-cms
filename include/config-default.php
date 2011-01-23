@@ -64,8 +64,6 @@ $setting['watermark']['txt'] = 'MyStep CMS';
 $setting['watermark']['img'] = 'images/logo.png';
 $setting['watermark']['credit'] = 'Original From Garlic 2010';
 
-
-
 $expire_list = array(
 	"default" => 60*10,
 	"index" => 60*30,

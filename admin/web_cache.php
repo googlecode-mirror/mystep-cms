@@ -1,0 +1,48 @@
+<?php
+require("inc.php");
+
+$method = $req->getServer("QUERY_STRING");
+$log_info = "";
+
+if($method=="update" && count($_POST)>0) {
+	$log_info = "更新缓存设置";
+	$setting['gen']['cache'] = ($_POST['cache']=="true");
+	$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);
+	$expire_list = array();
+	for($i=0; $i<count($_POST['page']); $i++) {
+		if($i==0) $_POST['page'][0] = "default";
+		if(empty($_POST['page'][$i])) continue;
+		eval('$value = '.$_POST['expire'][$i].';');
+		$expire_list[$_POST['page'][$i]] = $value;
+	}
+	$expire_list = var_export($expire_list, true);
+	$content = <<<mystep
+<?php
+\$setting = array();
+
+/*--settings--*/
+\$expire_list = {$expire_list};
+?>
+mystep;
+	$content = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $content);
+	WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+
+	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"], $log_info);
+	$goto_url = $self;
+} else {
+	$tpl_info['idx'] = "web_cache";
+	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
+	$tpl_tmp->Set_Variable('title', "网站缓存设置");
+	$i=1;
+	foreach($expire_list as $key => $value) {
+		$tpl_tmp->Set_Loop("expire", array("idx"=>$i++, "page"=>$key, "expire"=>$value));
+	}
+	$tpl_tmp->Set_Variable('cache_1', $setting['gen']['cache']?"checked":"");
+	$tpl_tmp->Set_Variable('cache_2', $setting['gen']['cache']?"":"checked");
+	
+	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
+	unset($tpl_temp);
+	$mystep->show($tpl);
+}
+$mystep->pageEnd(false);
+?>

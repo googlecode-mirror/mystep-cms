@@ -1,4 +1,11 @@
 <?php
+$language_info = array(
+	"author" => "Windy2000",
+	"email" => "windy2006@gmail.com",
+	"update" => "2010-12-28",
+	"for" => "Current Version"
+);
+
 $language = array(
 	"ajax_sending" => "正在发送数据",
 	"page_main" => "首页",

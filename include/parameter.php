@@ -1,4 +1,6 @@
 <?php
+$mystep_ver = "0.65";
+
 $class_list = array(
 	"MyStep" => "mystep.class.php",
 	"class_common" => "abstract.class.php",

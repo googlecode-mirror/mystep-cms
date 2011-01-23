@@ -73,12 +73,12 @@ class MyStep extends class_common {
 	
 	public function getLanguage($dir) {
 		global $setting;
-		if(file_exists($dir."/default.php")) {
+		if(is_file($dir."/default.php")) {
 			include_once($dir."/default.php");
 			if(isset($language)) $this->setLanguage($language);
 			unset($language);
 		}
-		if(file_exists($dir."/".$setting['gen']['language'].".php")) {
+		if(is_file($dir."/".$setting['gen']['language'].".php")) {
 			include_once($dir."/".$setting['gen']['language'].".php");
 			if(isset($language)) $this->setLanguage($language);
 		}

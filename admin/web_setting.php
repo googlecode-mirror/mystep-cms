@@ -16,19 +16,14 @@ if($method=="update") {
 		$_POST['setting']['db']['pass'] = $setting['db']['pass'];
 	}
 	unset($_POST['setting']['web']['s_pass_r'], $_POST['setting']['db']['pass_r']);
+	$expire_list = var_export($expire_list);
+	
 	$content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
-
-\$expire_list = array(
-	"default" => 60*10,
-	"index" => 60*30,
-	"list" => 60*60,
-	"tag" => 60*60*24,
-	"read" => 60*60*24*7,
-);
+\$expire_list = {$expire_list};
 ?>
 mystep;
 	$content = str_replace("/*--settings--*/", makeVarsCode($_POST['setting'], '$setting'), $content);

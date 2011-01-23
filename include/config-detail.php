@@ -131,11 +131,11 @@ $setting_type['web']['close_page'] = array("text", "", "100");
 
 $setting_type['db'] = array();
 $setting_type['db']['host'] = array("text", "", "30");
-$setting_type['db']['user'] = array("text", "word", "20");
+$setting_type['db']['user'] = array("text", "alpha", "20");
 $setting_type['db']['pass'] = array("password", "", "40");
 $setting_type['db']['charset'] = array("select", array("GBK"=>"gbk", "UTF-8"=>"utf8", "Latin1"=>"latin1"));
-$setting_type['db']['name'] = array("text", "word", "20");
-$setting_type['db']['pre'] = array("text", "word", "10");
+$setting_type['db']['name'] = array("text", "alpha", "20");
+$setting_type['db']['pre'] = array("text", "alpha", "10");
 $setting_type['db']['pconnect'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
 
 $setting_type['gen'] = array();
@@ -145,7 +145,7 @@ $setting_type['gen']['gzip_level'] = array("text", "digital", "1");
 $setting_type['gen']['cache'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
 $setting_type['gen']['rewrite'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
 $setting_type['gen']['cache_ext'] = array("text", "", "10");
-$setting_type['gen']['template'] = array("text", "word", "20");
+$setting_type['gen']['template'] = array("text", "alpha", "20");
 
 $setting_type['list'] = array();
 $setting_type['list']['txt'] = array("text", "digital", "2");
@@ -164,7 +164,7 @@ $setting_type['session']['mode'] = array("select", array("MyStep模式"=>"sess_mys
 $setting_type['cookie'] = array();
 $setting_type['cookie']['domain'] = array("text", "", "20");
 $setting_type['cookie']['path'] = array("text", "", "30");
-$setting_type['cookie']['prefix'] = array("text", "word", "10");
+$setting_type['cookie']['prefix'] = array("text", "alpha", "10");
 
 $setting_type['path'] = array();
 $setting_type['path']['upload'] = array("text", "", "20");

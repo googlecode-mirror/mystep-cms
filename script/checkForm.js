@@ -91,7 +91,7 @@ function checkForm(the_form, myChecker){
 				}
 				break;
 			case "alpha":
-				if(!/^[a-z]+$/i.test(the_value)) {
+				if(!/^\w+$/i.test(the_value)) {
 					alert("English letters only!");
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;

@@ -9,7 +9,7 @@ $setting['web']['keyword'] = 'mystep,cms,free';
 $setting['web']['description'] = '开源网站内容管理系统';
 $setting['web']['s_user'] = 'mystep';
 $setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
-$setting['web']['close'] = false;
+$setting['web']['close'] = '';
 $setting['web']['close_page'] = '/index.html';
 
 $setting['db'] = array();
@@ -19,14 +19,14 @@ $setting['db']['pass'] = 123456;
 $setting['db']['charset'] = 'gbk';
 $setting['db']['name'] = 'mystep';
 $setting['db']['pre'] = 'ms_';
-$setting['db']['pconnect'] = true;
+$setting['db']['pconnect'] = 1;
 
 $setting['gen'] = array();
-$setting['gen']['language'] = 'chs';
+$setting['gen']['language'] = 'cht';
 $setting['gen']['charset'] = 'gbk';
 $setting['gen']['gzip_level'] = 4;
-$setting['gen']['cache'] = false;
-$setting['gen']['rewrite'] = false;
+$setting['gen']['cache'] = 1;
+$setting['gen']['rewrite'] = '';
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'default';
 
@@ -39,8 +39,8 @@ $setting['list']['rss'] = 50;
 $setting['session'] = array();
 $setting['session']['expire'] = 20;
 $setting['session']['path'] = '';
-$setting['session']['gc'] = true;
-$setting['session']['trans_sid'] = false;
+$setting['session']['gc'] = 1;
+$setting['session']['trans_sid'] = '';
 $setting['session']['name'] = 'MyStepSession';
 $setting['session']['mode'] = 'sess_mystep';
 
@@ -56,7 +56,7 @@ $setting['path']['template'] = 'template/';
 
 $setting['content'] = array();
 $setting['content']['max_length'] = 10000;
-$setting['content']['get_remote_img'] = true;
+$setting['content']['get_remote_img'] = 1;
 
 $setting['watermark'] = array();
 $setting['watermark']['mode'] = 3;
@@ -65,12 +65,11 @@ $setting['watermark']['img'] = 'images/logo.png';
 $setting['watermark']['credit'] = 'Original From Garlic 2010';
 
 
-
-$expire_list = array(
-	"default" => 60*10,
-	"index" => 60*30,
-	"list" => 60*60,
-	"tag" => 60*60*24,
-	"read" => 60*60*24*7,
+$expire_list = array (
+  'default' => 600,
+  'index' => 1800,
+  'list' => 3600,
+  'tag' => 86400,
+  'read' => 604800,
 );
 ?>
