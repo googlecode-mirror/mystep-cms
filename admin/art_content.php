@@ -30,6 +30,7 @@ switch($method) {
 			unlink($root_path.$path_upload.date("Y/m/d", substr($record['file_time'],0, 10))."/preview/".$record['file_time'].strrchr($record['file_name'],"."));
 		}
 		$db->Free();
+		$sql_list = array();
 		$db->Query("delete from ".$setting['db']['pre']."news_show where news_id = '{$news_id}'");
 		$db->Query("delete from ".$setting['db']['pre']."news_detail where news_id = '{$news_id}'");
 		$db->Query("select * from ".$setting['db']['pre']."attachment where news_id={$news_id}");
@@ -40,9 +41,10 @@ switch($method) {
 			$the_file = $record['file_time'].".".$the_ext;
 			@unlink($the_path.$the_file);
 			@unlink($the_path."preview/".$the_file);
-			$db->Query("delete from ".$setting['db']['pre']."attachment where id=".$record['id']);
+			$sql_list[] = "delete from ".$setting['db']['pre']."attachment where id=".$record['id'];
 		}
 		$db->Free();
+		$db->BatchExec($sql_list);
 		delCacheFile($news_id);
 		break;
 	case "unlock":

@@ -9,7 +9,7 @@ $setting['web']['keyword'] = 'mystep,cms,free';
 $setting['web']['description'] = '开源网站内容管理系统';
 $setting['web']['s_user'] = 'mystep';
 $setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
-$setting['web']['close'] = '';
+$setting['web']['close'] = false;
 $setting['web']['close_page'] = '/index.html';
 $setting['web']['cache_mode'] = 'file';
 
@@ -27,7 +27,6 @@ $setting['gen']['charset'] = 'gbk';
 $setting['gen']['gzip_level'] = 4;
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'default';
-$setting['gen']['cache'] = '';
 
 $setting['list'] = array();
 $setting['list']['txt'] = 30;
@@ -39,8 +38,8 @@ $setting['session'] = array();
 $setting['session']['expire'] = 20;
 $setting['session']['name'] = 'MyStepSession';
 $setting['session']['mode'] = 'sess_mystep';
-$setting['session']['gc'] = 1;
-$setting['session']['trans_sid'] = '';
+$setting['session']['gc'] = true;
+$setting['session']['trans_sid'] = false;
 
 $setting['cookie'] = array();
 $setting['cookie']['domain'] = '.mystep.com';
@@ -54,7 +53,7 @@ $setting['path']['template'] = 'template/';
 
 $setting['content'] = array();
 $setting['content']['max_length'] = 10000;
-$setting['content']['get_remote_img'] = 1;
+$setting['content']['get_remote_img'] = true;
 
 $setting['watermark'] = array();
 $setting['watermark']['mode'] = 3;

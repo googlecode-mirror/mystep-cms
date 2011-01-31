@@ -47,7 +47,7 @@ if(!empty($log_info)) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	$tpl_tmp->Set_Variable('title', "ÍøÕ¾²ÎÊýÉèÖÃ");
-	$setting['watermark']['mode'] = array($setting['watermark']['mode']&1==1, $setting['watermark']['mode']&2==2);
+	$setting['watermark']['mode'] = array(($setting['watermark']['mode']&1)==1, ($setting['watermark']['mode']&2)==2);
 	
 	include(ROOT_PATH."/include/config-detail.php");
 	foreach($setting_comm as $key => $value) {

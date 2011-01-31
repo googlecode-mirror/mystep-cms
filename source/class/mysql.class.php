@@ -75,7 +75,7 @@ class MySQL extends class_common {
 		return;
 	}
 
-	public function Connect($pconnect = false) {
+	public function Connect($pconnect = false, $the_db = "") {
 		if($pconnect) {
 			$this->DB_conn = mysql_pconnect($this->DB_host, $this->DB_user, $this->DB_pass, CLIENT_MULTI_RESULTS);
 		} else {
@@ -97,12 +97,13 @@ class MySQL extends class_common {
 			}
 			if($this->CheckError())	$this->Error("Unknow CharSet Name");
 		}
+		if(!empty($the_db)) $this->SelectDB($the_db);
 		return;
 	}
 
-	public function ReConnect($pconnect = false) {
+	public function ReConnect($pconnect = false, $the_db = "") {
 		if($this->DB_conn != NULL) $this->Close();
-		$this->Connect($pconnect);
+		$this->Connect($pconnect, $the_db);
 		return;
 	}
 

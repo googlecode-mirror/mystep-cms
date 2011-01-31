@@ -26,8 +26,7 @@ class MyStep extends class_common {
 		$obj = call_user_func_array(array($this, 'parent::getInstance'), $argList);
 		switch($calledClass) {
 			case 'MySQL':
-				$obj->Connect($setting['db']['pconnect']);
-				$obj->SelectDB($setting['db']['name']);
+				$obj->Connect($setting['db']['pconnect'], $setting['db']['name']);
 				break;
 			case 'MyTpl':
 				$obj->Reg_Tags($this->func_tag);

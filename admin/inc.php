@@ -8,6 +8,7 @@ require_once(ROOT_PATH."/source/function/admin.php");
 
 $mystep = new MyStep();
 $mystep->pageStart(false);
+$db->Reconnect(true, $setting['db']['name']);
 
 $usertype = $req->getSession("usertype");
 $group = getParaInfo("user_group", "group_id", $usertype);
