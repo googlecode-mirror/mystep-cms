@@ -41,6 +41,7 @@ switch($method) {
 			list($cat_main, $cat_layer)=array_values($db->GetSingleRecord("select cat_main, cat_layer from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'"));
 			$db->Query("select cat_id, cat_order from ".$setting['db']['pre']."news_cat where cat_layer='{$cat_layer}' and cat_main='{$cat_main}' order by cat_order");
 			while($record[] = $db->GetRS()) {}
+			$db->Free();
 			$max_count = count($record)-1;
 			for($i=0; $i<$max_count; $i++) {
 				if($record[$i]['cat_id']!=$cat_id) continue;
@@ -205,7 +206,7 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-	unset($tpl_temp);
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 	return;
 }

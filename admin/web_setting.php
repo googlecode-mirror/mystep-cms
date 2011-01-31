@@ -16,7 +16,7 @@ if($method=="update") {
 		$_POST['setting']['db']['pass'] = $setting['db']['pass'];
 	}
 	unset($_POST['setting']['web']['s_pass_r'], $_POST['setting']['db']['pass_r']);
-	$expire_list = var_export($expire_list);
+	$expire_list = var_export($expire_list, true);
 	
 	$content = <<<mystep
 <?php
@@ -57,7 +57,7 @@ if(!empty($log_info)) {
 	}
 	$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-	unset($tpl_temp);
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 }
 $mystep->pageEnd(false);

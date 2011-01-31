@@ -116,7 +116,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-	unset($tpl_temp);
+	$db->Free();
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 	return;
 }

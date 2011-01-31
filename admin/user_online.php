@@ -39,10 +39,10 @@ while($record = $db->GetRS()) {
 	$tpl_tmp->Set_Loop('record', $record);
 }
 $tpl_tmp->Set_Variable('title', '在线用户列表');
-
+$db->Free();
 
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-unset($tpl_temp);
+unset($tpl_tmp);
 
 $mystep->show($tpl);
 $mystep->pageEnd(false);

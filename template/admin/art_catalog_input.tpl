@@ -28,32 +28,32 @@
 			<tr>
 				<td class="cat">分类名称：</td>
 				<td class="row">
-					<input class="input" name="cat_name" type="text" size="20" maxlength="20" value="<!--cat_name-->" need="">
-					<input name="cat_id" type="hidden" value="<!--cat_id-->">
+					<input class="input" name="cat_name" type="text" size="20" maxlength="20" value="<!--cat_name-->" need="" />
+					<input name="cat_id" type="hidden" value="<!--cat_id-->" />
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">分类索引：</td>
 				<td class="row">
-					<input class="input" name="cat_idx" type="text" size="20" maxlength="20" value="<!--cat_idx-->" need="">
+					<input class="input" name="cat_idx" type="text" size="20" maxlength="20" value="<!--cat_idx-->" need="" />
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">子 分 类：</td>
 				<td class="row">
-					<input class="input" name="cat_sub" type="text" size="20" maxlength="80" value="<!--cat_sub-->">
+					<input class="input" name="cat_sub" type="text" size="20" maxlength="80" value="<!--cat_sub-->" />
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">分类描述：</td>
 				<td class="row">
-					<input class="input" name="cat_comment" type="text" size="20" maxlength="50" value="<!--cat_comment-->" need="">
+					<input class="input" name="cat_comment" type="text" size="20" maxlength="50" value="<!--cat_comment-->" need="" />
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">分类图示：</td>
 				<td class="row">
-					<input class="input" style="width:205px" name="cat_image" type="text" size="40" maxlength="50" value="<!--cat_image-->">
+					<input class="input" style="width:205px" name="cat_image" type="text" size="40" maxlength="50" value="<!--cat_image-->" />
 					<input class="btn" type="button" onClick="openDialog('upload_img.php?cat_image', 400, 180, 1)" value="上传" />
 				</td>
 			</tr>
@@ -70,23 +70,23 @@
 			<tr>
 				<td class="cat">显示位置：</td>
 				<td class="row">
-					<input type="checkbox" id="cat_show_1" class="cbox" name="cat_show[]" value="1" <!--cat_show_1-->><label for="cat_show_1"> 主页导航</label> &nbsp;
-					<input type="checkbox" id="cat_show_2" class="cbox" name="cat_show[]" value="2" <!--cat_show_2-->><label for="cat_show_2"> 列表页导航</label> &nbsp;
-					<input type="checkbox" id="cat_show_4" class="cbox" name="cat_show[]" value="4" <!--cat_show_4-->><label for="cat_show_4"> 内容页导航</label> &nbsp;
-					<input1 class="input" name="cat_show" type="text" size="20" maxlength="7" value="<!--cat_show-->">
+					<input type="checkbox" id="cat_show_1" class="cbox" name="cat_show[]" value="1" <!--cat_show_1--> /><label for="cat_show_1"> 主页导航</label> &nbsp;
+					<input type="checkbox" id="cat_show_2" class="cbox" name="cat_show[]" value="2" <!--cat_show_2--> /><label for="cat_show_2"> 列表页导航</label> &nbsp;
+					<input type="checkbox" id="cat_show_4" class="cbox" name="cat_show[]" value="4" <!--cat_show_4--> /><label for="cat_show_4"> 内容页导航</label> &nbsp;
+					<input1 class="input" name="cat_show" type="text" size="20" maxlength="7" value="<!--cat_show-->" />
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">外部链接：</td>
 				<td class="row">
-					<input class="input" name="cat_link" type="text" size="20" maxlength="100" value="<!--cat_link-->">
+					<input class="input" name="cat_link" type="text" size="20" maxlength="100" value="<!--cat_link-->" />
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center" class="row">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
-					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'">
+					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
 			</tr>
 		</table>

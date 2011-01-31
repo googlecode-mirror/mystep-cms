@@ -120,7 +120,7 @@ function build_page($method) {
 	$db->Free();
 	
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-	unset($tpl_temp);
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 	return;
 }

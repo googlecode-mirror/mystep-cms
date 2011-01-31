@@ -13,7 +13,7 @@ switch($method) {
 				if($user_info)  list($uid, $groupid) = array_values($user_info);
 				if($user_name==$setting['web']['s_user'] && md5($user_psw)==$setting['web']['s_pass']) $uid = 0;
 				if(isset($uid)) {
-					$req->setCookie("ms_user", $uid."\t".md5($user_psw), 60*60*24*(int)$keep);
+					$req->setCookie("ms_user", $uid."\t".md5($user_psw), 60*60*24*(float)$keep);
 					$goto_url = "index.php";
 				} else {
 					$err_msg = "µÇÂ¼´íÎó£¬´íÎóµÄÓÃ»§Ãû»òÃÜÂë£¡";
@@ -29,6 +29,7 @@ switch($method) {
 		$req->destroySession();
 		break;
 }
+
 if(empty($goto_url)) build_page();
 $mystep->pageEnd(false);
 
@@ -41,7 +42,7 @@ function build_page() {
 	$tpl_tmp->Set_Variable('err_msg', $err_msg);
 	$req->setCookie("err_msg");
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-	unset($tpl_temp);
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 	return;
 }

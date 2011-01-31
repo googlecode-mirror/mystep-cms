@@ -268,6 +268,7 @@ mytpl;
 					$cur_result = "";
 					break;	
 			}
+			$cur_result = preg_replace("/<\?\=(.+?)\?>/", "{\\1}", $cur_result);
 			$tpl_cache = str_replace($block_all[0][$i], $cur_result, $tpl_cache);
 			unset($cur_attrib, $cur_content);
 		}

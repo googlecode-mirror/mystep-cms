@@ -26,7 +26,7 @@ switch($step) {
 	case 2:
 		break;
 	case 3:
-		$setting = $_POST['setting'];
+		$setting = array_merge($setting, $_POST['setting']);
 		$setting['web']['s_pass'] = md5($setting['web']['s_pass']);
 		unset($_POST);
 		$result = <<<mystep

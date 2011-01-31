@@ -11,6 +11,7 @@ $setting['web']['s_user'] = 'mystep';
 $setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
 $setting['web']['close'] = '';
 $setting['web']['close_page'] = '/index.html';
+$setting['web']['cache_mode'] = 'file';
 
 $setting['db'] = array();
 $setting['db']['host'] = '127.0.0.1:3306';
@@ -19,16 +20,14 @@ $setting['db']['pass'] = 123456;
 $setting['db']['charset'] = 'gbk';
 $setting['db']['name'] = 'mystep';
 $setting['db']['pre'] = 'ms_';
-$setting['db']['pconnect'] = 1;
 
 $setting['gen'] = array();
-$setting['gen']['language'] = 'cht';
+$setting['gen']['language'] = 'chs';
 $setting['gen']['charset'] = 'gbk';
 $setting['gen']['gzip_level'] = 4;
-$setting['gen']['cache'] = 1;
-$setting['gen']['rewrite'] = '';
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'default';
+$setting['gen']['cache'] = '';
 
 $setting['list'] = array();
 $setting['list']['txt'] = 30;
@@ -38,11 +37,10 @@ $setting['list']['rss'] = 50;
 
 $setting['session'] = array();
 $setting['session']['expire'] = 20;
-$setting['session']['path'] = '';
-$setting['session']['gc'] = 1;
-$setting['session']['trans_sid'] = '';
 $setting['session']['name'] = 'MyStepSession';
 $setting['session']['mode'] = 'sess_mystep';
+$setting['session']['gc'] = 1;
+$setting['session']['trans_sid'] = '';
 
 $setting['cookie'] = array();
 $setting['cookie']['domain'] = '.mystep.com';
@@ -51,7 +49,7 @@ $setting['cookie']['prefix'] = 'ms_';
 
 $setting['path'] = array();
 $setting['path']['upload'] = 'files/';
-$setting['path']['cache'] = 'html/';
+$setting['path']['cache'] = 'cache/';
 $setting['path']['template'] = 'template/';
 
 $setting['content'] = array();
@@ -62,7 +60,16 @@ $setting['watermark'] = array();
 $setting['watermark']['mode'] = 3;
 $setting['watermark']['txt'] = 'MyStep CMS';
 $setting['watermark']['img'] = 'images/logo.png';
-$setting['watermark']['credit'] = 'Original From Garlic 2010';
+$setting['watermark']['credit'] = 'Original From MyStep';
+
+$setting['memcache'] = array();
+$setting['memcache']['server'] = '';
+$setting['memcache']['weight'] = 2;
+$setting['memcache']['timeout'] = 1;
+$setting['memcache']['retry_interval'] = 30;
+$setting['memcache']['expire'] = 86400;
+$setting['memcache']['threshold'] = 10240;
+$setting['memcache']['min_savings'] = 0.5;
 
 
 $expire_list = array (

@@ -146,7 +146,7 @@ $tpl_tmp->Set_Variable('import_info', $import_info);
 $db->Free();
 
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-unset($tpl_temp);
+unset($tpl_tmp);
 $mystep->show($tpl);
 
 $mystep->pageEnd(false);

@@ -24,15 +24,16 @@
 			</tr>
 <!--loop:end-->
 			<tr>
-				<td class="row" colspan="4">缓存模式：
-					<input type="radio" class="cbox" id="cache_1" name="cache" value="true" <!--cache_1--> /><label for="cache_1">开启</label>
-					<input type="radio" class="cbox" id="cache_2" name="cache" value="false" <!--cache_2--> /><label for="cache_2">关闭</label>
+				<td class="row" colspan="4">页面缓存：
+					<input type="radio" class="cbox" id="cache_1" name="cache" value="true" <!--cache_1--> / /><label for="cache_1">开启</label>
+					<input type="radio" class="cbox" id="cache_2" name="cache" value="false" <!--cache_2--> / /><label for="cache_2">关闭</label>
 				</td>
 			</tr>
 			<tr>
 				<td class="row" colspan="4" align="center">
 					<input class="btn" type="Submit" value=" 确认修改 " />&nbsp;&nbsp;
-					<input class="btn" type="reset" value=" 重置数据 " />
+					<input class="btn" type="reset" value=" 重置数据 " />&nbsp;&nbsp;
+					<input class="btn" type="button" onclick="location.href='?clear'" value="清空缓存" />
 				</td>
 			</tr>
 		</table>

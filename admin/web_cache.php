@@ -29,6 +29,29 @@ mystep;
 
 	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"], $log_info);
 	$goto_url = $self;
+} elseif($method=="clear") {
+	$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
+	if($handle = opendir($cache_path)) {
+		while (false !== ($file = readdir($handle))) {
+			$file = strtolower($file);
+			if($file!="." && $file!="..") {
+				MultiDel($cache_path.$file);
+			}
+		}
+		closedir($handle);
+	}
+	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/para/";
+	if($handle = opendir($cache_path)) {
+		while (false !== ($file = readdir($handle))) {
+			$file = strtolower($file);
+			if($file!="." && $file!="..") {
+				MultiDel($cache_path.$file);
+			}
+		}
+		closedir($handle);
+	}
+	$cache->clean();
+	$goto_url = $self;
 } else {
 	$tpl_info['idx'] = "web_cache";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -41,7 +64,7 @@ mystep;
 	$tpl_tmp->Set_Variable('cache_2', $setting['gen']['cache']?"":"checked");
 	
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-	unset($tpl_temp);
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 }
 $mystep->pageEnd(false);

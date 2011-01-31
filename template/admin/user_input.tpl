@@ -6,27 +6,27 @@
 			<tr> 
 				<td class="cat" width="80">用户名称：</td>
 				<td class="row">
-					<input name="user_id" type="hidden" value="<!--user_id-->">
-					<input name="username" type="text" size="20" maxlength="20" value="<!--username-->" need="">
-					<input name="username_org" type="hidden" size="20" maxlength="20" value="<!--username-->">
+					<input name="user_id" type="hidden" value="<!--user_id-->" />
+					<input name="username" type="text" size="20" maxlength="20" value="<!--username-->" need="" />
+					<input name="username_org" type="hidden" size="20" maxlength="20" value="<!--username-->" />
 				</td>
 			</tr>
 			<tr> 
 				<td class="cat" width="80">用户密码：</td>
 				<td class="row">
-					<input name="password" type="password" size="20" maxlength="20" value="">
+					<input name="password" type="password" size="20" maxlength="20" value="" />
 				</td>
 			</tr>
 			<tr> 
 				<td class="cat" width="80">密码确认：</td>
 				<td class="row">
-					<input name="password_c" type="password" size="20" maxlength="20" value="">
+					<input name="password_c" type="password" size="20" maxlength="20" value="" />
 				</td>
 			</tr>
 			<tr> 
 				<td class="cat" width="80">电子邮件：</td>
 				<td class="row">
-					<input name="email" type="email" size="20" maxlength="20" need="email" value="<!--email-->">
+					<input name="email" type="email" size="20" maxlength="20" need="email" value="<!--email-->" />
 				</td>
 			</tr>
 			<tr> 
@@ -41,9 +41,9 @@
 			</tr>
 			<tr> 
 				<td colspan="2" class="row" align="center">
-					<input class="btn" type="Submit" value=" 确 定 ">&nbsp;&nbsp;
-					<input class="btn" type="reset" value=" 重 置 ">&nbsp;&nbsp;
-					<input class="btn" type="button" value=" 返 回	" onClick="location.href='<!--back_url-->'">
+					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
 			</tr>
 		</table>

@@ -117,7 +117,7 @@ $(function(){
 		if(group.power_func!=",all," && group.power_func.indexOf(","+admin_cat[i].id+",")==-1) continue;
 		newItem = $("<li/>");
 		newItem.append("<a href=\""+admin_cat[i].url+"\" class=\"nav\">"+admin_cat[i].name+"</a>");
-		if(admin_cat[i].sub!=null  && admin_cat[i].sub.length>0) {
+		if(admin_cat[i].sub!=null && admin_cat[i].sub.length>0) {
 			newSubItem = $("<ul/>");
 			for(var j=0; j<admin_cat[i].sub.length; j++) {
 				if(group.power_func!=",all," && group.power_func.indexOf(","+admin_cat[i].sub[j].id+",")==-1) continue;
@@ -144,7 +144,7 @@ $(function(){
 	});
 	
 	$("a[href='###']").bind('click', function() {
-	  return false;
+	 return false;
 	});
 	
 	showCat($id("cat_tree"), getWebCat());

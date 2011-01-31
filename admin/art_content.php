@@ -29,6 +29,7 @@ switch($method) {
 			unlink($root_path.$path_upload.date("Y/m/d", substr($record['file_time'],0, 10))."/".$record['file_time'].strrchr($record['file_name'],"."));
 			unlink($root_path.$path_upload.date("Y/m/d", substr($record['file_time'],0, 10))."/preview/".$record['file_time'].strrchr($record['file_name'],"."));
 		}
+		$db->Free();
 		$db->Query("delete from ".$setting['db']['pre']."news_show where news_id = '{$news_id}'");
 		$db->Query("delete from ".$setting['db']['pre']."news_detail where news_id = '{$news_id}'");
 		$db->Query("select * from ".$setting['db']['pre']."attachment where news_id={$news_id}");
@@ -41,6 +42,7 @@ switch($method) {
 			@unlink($the_path."preview/".$the_file);
 			$db->Query("delete from ".$setting['db']['pre']."attachment where id=".$record['id']);
 		}
+		$db->Free();
 		delCacheFile($news_id);
 		break;
 	case "unlock":
@@ -209,7 +211,6 @@ function build_page($method) {
 			if(empty($record['link'])) $record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['add_date']);
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		
 		$title = empty($cat_id)?"总列表":$db->GetSingleResult("select cat_name from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
 		$tpl_tmp->Set_Variable('title', "文章列表 - ".$title);
 		$tpl_tmp->Set_Variable('keyword', $keyword);
@@ -306,9 +307,9 @@ function build_page($method) {
 	$tpl_tmp->Set_Variable('cat_id', $cat_id);
 	$tpl_tmp->Set_Variable('news_id', $news_id);
 	$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
-
+	$db->Free();
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-	unset($tpl_temp);
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 	return;
 }

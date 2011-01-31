@@ -1,20 +1,16 @@
 <?php
 class sess_mystep {
-	private static $cnt;
-	public static function sess_open($sess_path, $sess_name) {
-		global $setting;
-		return self::$cnt = mysql_pconnect($setting['db']['host'], $setting['db']['user'], $setting['db']['pass']);
-	}
+	public static $cnt;
+	public static function sess_open($sess_path, $sess_name) {}
 	
 	public static function sess_close() {
-		self::sess_gc(ini_get('session.gc_maxlifetime'));
-		mysql_close(self::$cnt);
-	  return(true);
+		self::sess_gc();
+	  return;
 	}
 	
 	public static function sess_read($sid) {
 		global $setting;
-		if($result = mysql_query("SELECT * FROM ".$setting['db']['pre']."user_online WHERE sid = '{$sid}' AND reflash > ".(time()-($setting['session']['expire']*60)), self::$cnt)) {
+		if($result = mysql_query("SELECT * FROM ".$setting['db']['pre']."user_online WHERE sid = '{$sid}' AND reflash > ".(time()-($setting['session']['expire']*60)))) {
 			if (mysql_num_rows($result)) {
 				$record = mysql_fetch_assoc($result);
 				return MyReq::sessEncode($record);
@@ -30,18 +26,28 @@ class sess_mystep {
 		$reflash = time();
 		if(empty($username)) $username = "guest";
 		if(empty($usertype)) $usertype = 2;
+		self::$cnt = mysql_connect($setting['db']['host'], $setting['db']['user'], $setting['db']['pass']);
+		mysql_select_db($setting['db']['name']);
 		$result = mysql_query("REPLACE INTO ".$setting['db']['pre']."user_online (sid, ip, username, usertype, reflash, url) VALUES ('{$sid}', '{$ip}', '{$username}', '{$usertype}', '{$reflash}', '{$url}')", self::$cnt);
 		return $result;
 	}
 	
 	public static function sess_destroy($sid) {
 		global $setting;
-		return mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE sid='".$sid."'", self::$cnt);
+		return mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE sid='".$sid."'");
 	}
 	
-	public static function sess_gc($maxlifetime) {
+	public static function sess_gc() {
 		global $setting;
-		return mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE reflash < " . (time() - ($setting['session']['expire']*60) - $maxlifetime), self::$cnt);
+		if(is_resource(self::$cnt)) {
+			mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE reflash < " . (time() - $setting['session']['expire'] * 60), self::$cnt);
+			mysql_close(self::$cnt);
+		}
+		return;
+	}
+	
+	private function getConn() {
+		
 	}
 }
 
@@ -53,7 +59,7 @@ class sess_mysql {
 		global $setting;
 		$result = false;
 		if (self::$cnt = mysql_connect($setting['db']['host'], $setting['db']['user'], $setting['db']['pass'])) {
-			mysql_select_db($setting['db']['name'], self::$cnt);
+			mysql_select_db($setting['db']['name']);
 			$str_sql = "
 CREATE TABLE IF NOT EXISTS `my_session` (
 	`SID` char(32) NOT NULL,
@@ -62,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `my_session` (
 	PRIMARY KEY (`SID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;	
 ";
-			$result = mysql_query($sql, self::$cnt);
+			$result = mysql_query($sql);
 		}
 		return($result);
 	}
@@ -125,7 +131,7 @@ class sess_file {
 	
 	public static function sess_destroy($sid) {
 		global $setting;
-		return(unlink($setting['session']['path']."/sess_".$sid));
+		return(@unlink($setting['session']['path']."/sess_".$sid));
 	}
 	
 	public static function sess_gc($maxlifetime) {

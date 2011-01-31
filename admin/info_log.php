@@ -7,7 +7,7 @@ $log_info = "";
 
 if($method=="clear") {
 	$log_info = "清空日志";
-	$db->Query("delete from ".$setting['db']['pre']."modify_log");
+	$db->Query("truncate table ".$setting['db']['pre']."modify_log");
 	$goto_url = $self;
 } elseif($method=="download") {
 	$log_info = "导入日志";
@@ -70,8 +70,8 @@ while($record = $db->GetRS()) {
 $tpl_tmp->Set_Variable('keyword', $keyword);
 $tpl_tmp->Set_Variable('title', '网站维护日志');
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-unset($tpl_temp);
-
+unset($tpl_tmp);
+$db->Free();
 $mystep->show($tpl);
 $mystep->pageEnd(false);
 ?>

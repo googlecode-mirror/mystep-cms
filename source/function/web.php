@@ -230,6 +230,30 @@ function checkUser() {
 	}
 }
 
+function getData($query, $mode="all", $ttl = 600) {
+	global $db, $cache;
+	$key = md5($query);
+	$result = $cache->get($key);
+	if(!$result) {
+		switch($mode) {
+			case "record":
+				$result = $db->GetSingleRecord($query);
+				break;
+			case "result":
+				$result = $db->GetSingleResult($query);
+				break;
+			default:
+				$result = array();
+				$db->Query($query);
+				while($record = $db->GetRS()) $result[]=$record;
+				break;
+		}
+		$db->Free();
+		$cache->set($key, $result, $ttl);
+	}
+	return $result;
+}
+
 function getFileURL($news_id=0, $cat_idx="", $page=1) {
 	global $setting;
 	$url = "";
@@ -428,7 +452,7 @@ function GzDocOut($level = 3, $show = false) {
 		
 		if($show) {
 			$Content .= "
-<div align='center' style='color:gray;'>
+<div align='center' style='color:#ccc; margin-top:5px;'>
 {$language['info_compressmode']} $ENCODING &nbsp; | &nbsp;
 {$language['info_compresslevel']} $level &nbsp; | &nbsp;
 {$language['info_compressrate']} $rate &nbsp; | &nbsp;
@@ -450,7 +474,7 @@ function GzDocOut($level = 3, $show = false) {
 		if(!empty($Content)) ob_end_flush();
 		if($show) {
 			echo "
-<div align='center' style='color:gray;'>
+<div align='center' style='color:#ccc; margin-top:5px;'>
 {$language['info_querycount']}".(empty($query_count)?0:$query_count)." &nbsp; | &nbsp;
 {$language['info_exectime']}".(gettimediff($time_start)/1000)." ms &nbsp; | &nbsp;
 {$language['info_cacheuse']}".($cache_use?"Yes":"No")."

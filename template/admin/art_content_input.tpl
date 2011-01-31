@@ -6,10 +6,10 @@
 			<tr>
 				<td class="cat" width="120">所属栏目：</td>
 				<td class="row" width="680">
-					<input type="hidden" name="news_id" value="<!--record_news_id-->">
-					<input type="hidden" name="web_id" value="<!--record_web_id-->">
-					<input type="hidden" name="pages" value="<!--record_pages-->">
-					<select id="cat_id" name="cat_id" onchange="profix_changed(this.value)" need="">
+					<input type="hidden" name="news_id" value="<!--record_news_id-->" />
+					<input type="hidden" name="web_id" value="<!--record_web_id-->" />
+					<input type="hidden" name="pages" value="<!--record_pages-->" />
+					<select id="cat_id" name="cat_id" onchange="profix_changed(this.value)" need="" />
 						<option value="">请选择</option>
 <!--loop:start key="catalog"-->
 						<option value="<!--catalog_cat_id-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
@@ -20,25 +20,25 @@
 			<tr>
 				<td class="cat" width="80">文章标题：</td>
 				<td class="row">
-					<input name="subject" type="text" id="title" value="<!--record_subject-->" maxlength="100" need=""> &nbsp; 
+					<input name="subject" type="text" id="title" value="<!--record_subject-->" maxlength="100" need="" /> &nbsp; 
 					<select id="profix" onchange="title_change()" style="width:80px"></select> &nbsp; 
-					<input type="checkbox" class="cbox" name="style[]" id="style_b" value="b" <!--check_b--> /><label for="style_b">粗体</label> &nbsp; 
-					<input type="checkbox" class="cbox" name="style[]" id="style_i" value="i" <!--check_i--> /><label for="style_i">斜体</label> &nbsp; 
+					<input type="checkbox" class="cbox" name="style[]" id="style_b" value="b" <!--check_b--> / /><label for="style_b">粗体</label> &nbsp; 
+					<input type="checkbox" class="cbox" name="style[]" id="style_i" value="i" <!--check_i--> / /><label for="style_i">斜体</label> &nbsp; 
 					<select id="color_list_title" name="style[]" style="width:60px"></select>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat" width="80">关 键 字：</td>
-				<td class="row"><input name="tag" type="text" value="<!--record_tag-->" maxlength="30" need=""> 
+				<td class="row"><input name="tag" type="text" value="<!--record_tag-->" maxlength="30" need="" /> 
 				<span class="comment">（用于搜索相关资讯，多个关键字用逗号分隔）</span></td>
 			</tr>
 			<tr>
 				<td class="cat" width="80">作者出处：</td>
-				<td class="row"><input name="original" type="text" maxlength="50" value="<!--record_original-->"> <span class="comment">（文章来源）</span></td>
+				<td class="row"><input name="original" type="text" maxlength="50" value="<!--record_original-->" /> <span class="comment">（文章来源）</span></td>
 			</tr>
 			<tr>
 				<td class="cat" width="80">跳转网址：</td>
-				<td class="row"><input name="link" type="text" maxlength="100" value="<!--record_link-->"> <span class="comment">（点击文章标题所链接到的网址）</span></td>
+				<td class="row"><input name="link" type="text" maxlength="100" value="<!--record_link-->" /> <span class="comment">（点击文章标题所链接到的网址）</span></td>
 			</tr>
 			<tr>
 				<td class="cat">文章图示：</td>
@@ -51,7 +51,7 @@
 				<td class="cat" width="80">置顶模式：</td>
 				<td class="row">
 <!--loop:start key="setop_mode"-->
-					<input type="radio" id="setop_mode_<!--setop_mode_key-->" class="cbox" name="setop_mode" value="<!--setop_mode_key-->" <!--setop_mode_checked-->><label for="setop_mode_<!--setop_mode_key-->"> <!--setop_mode_value--></label> &nbsp;
+					<input type="radio" id="setop_mode_<!--setop_mode_key-->" class="cbox" name="setop_mode" value="<!--setop_mode_key-->" <!--setop_mode_checked--> /><label for="setop_mode_<!--setop_mode_key-->" /> <!--setop_mode_value--></label> &nbsp;
 <!--loop:end--> <span class="comment">（文章置顶模式）</span>
 				</td>
 			</tr>
@@ -59,20 +59,20 @@
 				<td class="cat" width="80">置顶位置：</td>
 				<td class="row">
 <!--loop:start key="setop"-->
-				<input type="checkbox" id="setop_<!--setop_key-->" class="cbox" name="setop[]" value="<!--setop_key-->" <!--setop_checked-->><label for="setop_<!--setop_key-->"> <!--setop_value--></label> &nbsp;
+				<input type="checkbox" id="setop_<!--setop_key-->" class="cbox" name="setop[]" value="<!--setop_key-->" <!--setop_checked--> /><label for="setop_<!--setop_key-->" /> <!--setop_value--></label> &nbsp;
 <!--loop:end--> <span class="comment">（文章置顶位置，可复选）</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat" width="80">文章描述：</td>
 				<td class="row">
-					<textarea name="describe" style="width:100%;height:54px;" need=""><!--record_describe--></textarea>
+					<textarea name="describe" style="width:100%;height:54px;" need="" /><!--record_describe--></textarea>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat" width="80" valign="top">主要内容：</td>
 				<td class="row">
-					<input name="get_remote_file" class="cbox" id="get_remote_file" type="checkbox" value="1" <!--get_remote_file-->><label for="get_remote_file">自动复制外网图片到本地</label>&nbsp; 
+					<input name="get_remote_file" class="cbox" id="get_remote_file" type="checkbox" value="1" <!--get_remote_file--> /><label for="get_remote_file">自动复制外网图片到本地</label>&nbsp; 
 				</td>
 			</tr>
 			<tr>
@@ -90,8 +90,8 @@
 					<input class="btn" name="attach_list" type="hidden" value="|">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
-					<input class="btn" type="button" value=" 附 件 " onclick="attach_edit()">&nbsp;&nbsp;
-					<input class="btn" type="button" value=" 返 回	" onClick="location.href='<!--back_url-->'">
+					<input class="btn" type="button" value=" 附 件 " onclick="attach_edit()" />&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
 			</tr>
 		</table>

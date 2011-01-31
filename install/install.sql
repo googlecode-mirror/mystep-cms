@@ -64,10 +64,11 @@ INSERT INTO `{pre}admin_cat` VALUES
 		(0, 5, '错误察看', 'info_err.php', 0, '错误察看'),
 		(0, 5, '访问统计', 'info_count.php', 0, '访问统计'),
 		
-		(0, 6, '参数设定', 'web_setting.php', 0, '参数设定'),
 		(0, 6, '子站管理', 'web_subweb.php', 0, '子站管理'),
-		(0, 6, '语言管理', 'web_language.php', 0, '语言管理'),
+		(0, 6, '参数设定', 'web_setting.php', 0, '参数设定'),
 		(0, 6, '缓存管理', 'web_cache.php', 0, '缓存管理'),
+		(0, 6, '语言管理', 'web_language.php', 0, '语言管理'),
+		(0, 6, '模板管理', 'web_template.php', 0, '模板管理'),
 		
 		(0, 7, '插件管理', 'web_plugin.php', 0, '插件管理');
 		

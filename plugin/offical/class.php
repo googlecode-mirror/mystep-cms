@@ -19,7 +19,6 @@ class plugin_offical implements plugin {
 	}
 	
 	public static function page_end() {
-		// Website Counter
 		global $db, $req, $setting;
 		$ip = getIp();
 		$cnt_visitor	= $req->getCookie('cnt_visitor');
@@ -27,7 +26,7 @@ class plugin_offical implements plugin {
 		$pv = 0;
 		$iv = 0;
 		if (empty($cnt_visitor) || $cnt_visitor!=$ip){
-			$req->setCookie("cnt_visitor", $ip, $_SERVER['REQUEST_TIME']+3600*24);
+			$req->setCookie("cnt_visitor", $ip, 60*60*24);
 			$add_ip = 1;
 		}
 		$count_online = $db->GetSingleResult("select count(*) from ".$setting['db']['pre']."user_online");
@@ -41,12 +40,6 @@ class plugin_offical implements plugin {
 			$online = 1;
 		}
 		$result = $db->Query("replace into ".$setting['db']['pre']."counter values(curdate(), $pv, $iv, $online)");
-		
-		// release source
-		$GLOBALS['query_count'] = $GLOBALS['db']->Close();
-		unset($GLOBALS['db'],
-					$GLOBALS['req'],
-					$GLOBALS['tpl']);
 	}
 	
 	public static function parse_news(MyTPL $tpl, $att_list = array()) {
@@ -105,8 +98,10 @@ class plugin_offical implements plugin {
 		$result = <<<mytpl
 <?php
 \$n = 0;
-\$db->Query("{$str_sql}");
-while(\$record = \$db->GetRS()) {
+\$result = getData("{$str_sql}", "all", 600);
+\$max_count = count(\$result);
+for(\$num=0; \$num<\$max_count; \$num++) {
+	\$record = \$result[\$num];
 	HtmlTrans(&\$record);
 	\$theStyle = explode(",", \$record['style']);
 	for(\$i=0;\$i<count(\$theStyle);\$i++) {
@@ -134,7 +129,6 @@ while(\$record = \$db->GetRS()) {
 content;
 	echo "\\n";
 }
-\$db->Free();
 for(; \$n<={$att_list['loop']}; \$n++) {
 	\$unit = str_replace("style=\"\"", "style=\"".(\$n%2?"{$att_list['css1']}":"{$att_list['css2']}")."\"", "{$unit_blank}");
 	echo \$unit;
@@ -160,7 +154,7 @@ mytpl;
 		if(!empty($str_sql)) {
 			$result = <<<mytpl
 <?php
-echo \$db->getSingleResult("{$str_sql}");
+echo getData("{$str_sql}", "result", 3600);
 ?>
 mytpl;
 		}
@@ -225,9 +219,11 @@ mytpl;
 \$base_size = 8;
 \$dyn_size = 32;
 \$count_max = 0;
-\$db->Query("{$str_sql}");
 \$tag_list = array();
-while(\$record = \$db->GetRS()) {
+\$result = getData("{$str_sql}", "all", 600);
+\$max_count = count(\$result);
+for(\$num=0; \$num<\$max_count; \$num++) {
+	\$record = \$result[\$num];
 	if(\$setting['gen']['rewrite']) {
 		\$record['link'] = \$setting['web']['url'].\$path_cache."/tag/".urlencode(\$record['tag']).\$setting['gen']['cache_ext'];
 	} else {
@@ -239,7 +235,6 @@ while(\$record = \$db->GetRS()) {
 	if(\$count_max<\$record['count']) \$count_max = \$record['count'];
 	\$tag_list[] = \$record;
 }
-\$db->Free();
 \$max_count = count(\$tag_list);
 for(\$i=0; \$i<\$max_count; \$i++) {
 	\$tag_list[\$i]['size'] = \$base_size + round(\$dyn_size * \$tag_list[\$i]['count'] / \$count_max);

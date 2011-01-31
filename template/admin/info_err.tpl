@@ -6,7 +6,7 @@
 		</tr>
 <!--loop:start key="err"-->
 		<tr>
-			<td class="<!--err_class-->"><!--err_content--></td>
+			<td class="<!--err_class-->" /><!--err_content--></td>
 		</tr>
 <!--loop:end-->
 		<tr>

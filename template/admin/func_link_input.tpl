@@ -33,7 +33,7 @@
 				<td class="row" colspan="2" align="center">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
-					<input class="btn" type="button" value=" 返 回	" onClick="location.href='<!--back_url-->'">
+					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
 			</tr>
 		</table>

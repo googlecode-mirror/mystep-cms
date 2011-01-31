@@ -12,9 +12,9 @@
 	<a href="<!--page_prev-->">ÉÏÒ³</a>&nbsp;
 	<a href="<!--page_next-->">ÏÂÒ³</a>&nbsp;
 	<a href="<!--page_last-->">Ä©Ò³</a>&nbsp;
-	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value">
+	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
 &nbsp;|&nbsp;
-	¹Ø¼ü×Ö£º<input type="text" size="8" value="<!--keyword-->"><input type="button" value="¼ìË÷" onclick="location.href='?keyword='+this.previousSibling.value">
+	¹Ø¼ü×Ö£º<input type="text" size="8" value="<!--keyword-->" /><input type="button" value="¼ìË÷" onclick="location.href='?keyword='+this.previousSibling.value" />
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
@@ -28,8 +28,8 @@
 		</tr>
 <!--loop:start key="record" time="20"-->
 		<tr align="center">
-			<td class="row"><a href="?method=edit&news_id=<!--record_news_id-->"><!--record_news_id--></a></td>
-			<td class="row"><a href="?cat_id=<!--record_cat_id-->"><!--record_cat_name--></a></td>
+			<td class="row"><a href="?method=edit&news_id=<!--record_news_id-->" /><!--record_news_id--></a></td>
+			<td class="row"><a href="?cat_id=<!--record_cat_id-->" /><!--record_cat_name--></a></td>
 			<td class="row" align="left"><a href="<!--record_link-->" target="_blank"><!--record_subject--></a></td>
 			<td class="row"><a href="http://bbs.a9vg.com/profile.php?action=show&username=<!--record_add_user-->" target="_blank"><!--record_add_user--></a></td>
 			<td class="row"><!--record_add_date--></td>
@@ -54,7 +54,7 @@
 	<a href="<!--page_prev-->">ÉÏÒ³</a>&nbsp;
 	<a href="<!--page_next-->">ÏÂÒ³</a>&nbsp;
 	<a href="<!--page_last-->">Ä©Ò³</a>&nbsp;
-	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value">
+	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
 &nbsp;|&nbsp;
-	¹Ø¼ü×Ö£º<input type="text" size="8" value="<!--keyword-->"><input type="button" value="¼ìË÷" onclick="location.href='?keyword='+this.previousSibling.value">
+	¹Ø¼ü×Ö£º<input type="text" size="8" value="<!--keyword-->" /><input type="button" value="¼ìË÷" onclick="location.href='?keyword='+this.previousSibling.value" />
 </div>

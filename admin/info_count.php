@@ -36,8 +36,8 @@ while($record = $db->GetRS()) {
 
 $tpl_tmp->Set_Variable('title', '网站流量统计');
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-unset($tpl_temp);
-
+unset($tpl_tmp);
+$db->Free();
 $mystep->show($tpl);
 $mystep->pageEnd(false);
 ?>

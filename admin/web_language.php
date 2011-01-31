@@ -83,7 +83,7 @@ mystep;
 	$language = $org_lng;
 	$tpl_tmp->Set_Variables($language_info, "lng_info");
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-	unset($tpl_temp);
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 }
 $mystep->pageEnd(false);

@@ -12,16 +12,6 @@
 ********************************************/
 
 class MyFSO extends class_common {
-	public
-		$main_dir	= "./",
-		$dir_map	= "",
-		$search	= array();
-
-	public function init($main_dir = "./") {
-		$this->main_dir = $main_dir;
-		return;
-	}
-
 	public function Get_Attrib($file_att){
 		if(strlen($file_att)!=3) return "Error";
 		$att_list	= array("---", "--x", "-w-", "-wx", "r--", "r-x", "rw-", "rwx");
@@ -64,13 +54,13 @@ class MyFSO extends class_common {
 	}
 
 	public function Multi_Del($dir){
-		if(empty($dir)) return;
+		if(!file_exists($dir)) return;
 		if(is_dir($dir)){
 			$mydir = opendir($dir);
 			while(($file = readdir($mydir))!==false) {
 				if($file!="." && $file!="..") {
 					$the_name = $dir."/".$file;
-					is_dir($the_name) ? $this->Multi_Del($the_name) : unlink($the_name);
+					is_dir($the_name) ? self::Multi_Del($the_name) : unlink($the_name);
 				}
 			}
 			closedir($mydir);
@@ -150,10 +140,11 @@ class MyFSO extends class_common {
 	}
 
 	public function Write_File($file, $content) {
-		if(file_exists($file))
+		if(file_exists($file)) {
 			$this->Set_Attrib($file, 0777);
-		else
+		} else {
 			$this->Make_Dir(dirname($file));
+		}
 		if($fp = fopen($file,"w")) {
 			flock($fp,LOCK_EX);
 			fputs($fp,$content);
@@ -174,58 +165,50 @@ class MyFSO extends class_common {
 		return;
 	}
 
-	public function Search_File($keyword, $inc_word, $deep, $dir, $html, $php) {
+	public function Search_File($dir, $keyword="", $inc_word="", $recursive=false, $html=false, $php=false) {
 		$mydir	= dir($dir);
 		if(!$mydir) return false;
+		$result = array();
 		while(($file = $mydir->read()) !== false) {
 			$the_name = str_replace("//","/",$dir."/".$file);
 			if(is_dir($the_name)) {
 				if(strpos(strtolower(basename($the_name)), strtolower($keyword))!==false || empty($keyword)) {
-					array_push($this->search, $the_name);
+					$result[] = $the_name;
 				}
-				if($deep && $file!="." && $file!=".."){
-					$this->Search_File($keyword, $inc_word, $deep, $the_name, $html, $php);
+				if($recursive && $file!="." && $file!=".."){
+					$result = self::Search_File($the_name, $keyword, $inc_word, true, $html, $php);
 				}
 			} else {
 				if(strpos(strtolower(basename($the_name)), strtolower($keyword))!==false || empty($keyword)) {
 					if(!empty($inc_word)) {
-						if($this->Search_File_Content($the_name, $inc_word, $html, $php)) array_push($this->search, $the_name);
+						if($this->Search_File_Content($the_name, $inc_word, $html, $php)) $result[] = $the_name;
 					} else {
-						array_push($this->search, $the_name);
+						$result[] = $the_name;
 					}
 				}
 			}
 		}
 		$mydir->close();
-		return;
+		return $result;
 	}
 
 	public function Search_File_Content($file, $inc_word, $html, $php) {
 		$str = $this->Get_File($file);
-		if($php) $str = preg_replace("/<\?(php)?.*\?>/isU", "", $str);
-		if($html) {
+		if(!$php) $str = preg_replace("/<\?(php)?.*\?>/isU", "", $str);
+		if(!$html) {
 			$str = preg_replace("/<head>(.*)<\/head>/isU", "", $str);
 			$str = preg_replace("/<script([^>]*)>(.*)<\/script>/isU", "", $str);
 			$str = preg_replace("/<style([^>]*)>(.*)<\/style>/isU", "", $str);
 			$str = preg_replace("/<.*>/isU", "", $str);
 		}
-		//return (preg_match("/".preg_quote($inc_word)."/i", $str));
 		return (stripos($str, $inc_word) !== false);
 	}
 
-	public function Search($keyword="", $inc_word="", $deep=false, $dir="", $html = true, $php = true) {
-		if(empty($dir)) $dir = $this->main_dir;
-		$this->search = array();
-		$this->Search_File($keyword, $inc_word, $deep, $dir, $html, $php);
-		return $this->search;
-	}
-
-	public function Get_Tree($dir, $filetype = ""){
+	public function Get_List($dir, $filetype = ""){
 		$mydir	= dir($dir);
 		if(!$mydir) return false;
 		$file_list = array("dir" => array(), "file" => array(), "custom" => array());
 		while(($file = $mydir->read()) !== false){
-			if(!$file) continue;
 			if($file!="."  && $file!=".."){
 				$string = str_replace("//","/",$dir."/".$file);
 				if(is_dir($string)){
@@ -233,7 +216,7 @@ class MyFSO extends class_common {
 				}else{
 					$file_list["file"][] = $string;
 					if(!empty($filetype)) {
-						$ext = str_replace(".", "", strrchr($string ,"."));
+						$ext = Get_File_Ext($string);
 						if(strpos($filetype, $ext)!==false) $file_list["custom"][] = $string;
 					}
 				}
@@ -246,33 +229,25 @@ class MyFSO extends class_common {
 		return $file_list;
 	}
 
-	public function Make_DirMap($dir, $simple = false, $loop = true) {
-		if(!is_dir($dir)) return;
-		$file_list = $this->Get_Tree($dir);
-		$max_count = count($file_list["dir"]);
-		for($i=0; $i<$max_count; $i++) {
-			$the_name = $file_list["dir"][$i];
-			$the_name = str_replace("&", "&amp;", $the_name);
-			$this->dir_map .= "<Directory Name=\"".basename($the_name)."\"".($simple?"":" Attrib=\"".$this->Get_Attrib(substr(DecOct(fileperms($the_name)),-3))."\" Time=\"".date("m/d/y H:i:s", filemtime($the_name))."\"").">\n";
-			if($loop) $this->Make_DirMap($the_name, $simple, $loop);
-			$this->dir_map .= "</Directory>\n";
+	public function Get_Tree($dir, $recursive = false, $filter = ""){
+		$tree = array();
+		$mydir	= dir($dir);
+		if(!$mydir) return array();
+		while(($file = $mydir->read()) !== false){
+			if($file=="." || $file=="..") continue;
+			if(!empty($filter) && strpos($file, $filter)===false) continue;
+			$theFile = $dir."/".$file;
+			if(is_dir($theFile)){
+				if($recursive) $tree[$file]["sub"] = $this->Get_Tree($dir."/".$file, true);
+				$tree[$file]["size"] = "---";
+			} else {
+				$tree[$file]["size"] = $this->Get_Size(filesize($theFile));
+			}
+			$tree[$file]["attr"] = $this->Get_Attrib(substr(DecOct(fileperms($theFile)),-3));
+			$tree[$file]["time"] = date("Y/d/y H:i:s", filemtime($theFile));
 		}
-		$max_count = count($file_list["file"]);
-		for($i=0; $i<$max_count; $i++) {
-			$the_name = $file_list["file"][$i];
-			$the_name = str_replace("&", "&amp;", $the_name);
-			$this->dir_map .= "<File Name=\"".basename($the_name)."\"".($simple?"":" Size=\"".$this->Get_Size(filesize($the_name))."\" Attrib=\"".$this->Get_Attrib(substr(DecOct(fileperms($the_name)),-3))."\" Time=\"".date("m/d/y H:i:s", filemtime($the_name))."\"")." ></File>\n";
-		}
-		unset($file_list);
-		return;
-	}
-
-	public function Get_DirMap($declaration = false, $simple = false, $loop = true){
-		$this->dir_map  = $declaration?"<?xml version=\"1.0\" encoding=\"gbk\" standalone=\"yes\"?>\n":"";
-		$this->dir_map .= "<DirectoryMap Root=\"{$this->main_dir}\" Data=\"".date("m/d/y H:i:s", $_SERVER['REQUEST_TIME'])."\">\n";
-		$this->Make_DirMap($this->main_dir, $simple, $loop);
-		$this->dir_map .= "</DirectoryMap>";
-		return $this->dir_map;
+		$mydir->close();
+		return $tree;
 	}
 }
 ?>

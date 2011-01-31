@@ -6,8 +6,8 @@
 			<tr>
 				<td class="cat" width="80">展示标题：</td>
 				<td class="row">
-					<input name="subject" type="text" id="title" value="<!--subject-->" maxlength="100" need="">
-					<input type="hidden" name="id" value="<!--id-->">
+					<input name="subject" type="text" id="title" value="<!--subject-->" maxlength="100" need="" />
+					<input type="hidden" name="id" value="<!--id-->" />
 				</td>
 			</tr>
 			<tr>
@@ -24,7 +24,7 @@
 				<td colspan="2" align="center" class="row">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
-					<input class="btn" type="button" value=" 返 回	" onClick="location.href='<!--back_url-->'">
+					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
 			</tr>
 		</table>

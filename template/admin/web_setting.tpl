@@ -1,7 +1,7 @@
 <div class="title"><!--title--></div>
 <div class="nav">|&nbsp;
 <!--loop:start key="anchor"-->
-<a href="#<!--anchor_pos-->"><!--anchor_name--></a> |&nbsp;
+<a href="#<!--anchor_pos-->" /><!--anchor_name--></a> |&nbsp;
 <!--loop:end-->
 </div>
 <div align="center">
@@ -33,7 +33,7 @@ content;
 			case "password":
 				$cur_component = '
 					<input type="password" id="'.$key1.'_'.$key2.'" name="setting['.$key1.']['.$key2.']" value="" maxlength="'.$setting_type[$key1][$key2][2].'" />
-					<span>'.$cur_description.'</span>
+					<span class="comment">'.$cur_description.'</span>
 				</td>
 			<tr>
 				<td class="cat" align="right">重复密码</td>
@@ -47,21 +47,23 @@ content;
 				$i = 0;
 				foreach($setting_type[$key1][$key2][1] as $key3 => $value3) {
 					$checked = $setting[$key1][$key2][$i++]?"checked":"";
-					$cur_component .= '<input type="checkbox" class="cbox" id="setting['.$key1.']['.$key2.']['.$key3.']" name="setting['.$key1.']['.$key2.'][]" value="'.$value3.'" '.$checked.' /><label for="setting['.$key1.']['.$key2.']['.$key3.']">'.$key3.'</label>';
+					$cur_component .= '<input type="checkbox" class="cbox" id="setting['.$key1.']['.$key2.']['.$key3.']" name="setting['.$key1.']['.$key2.'][]" value="'.$value3.'" '.$checked.' / /><label for="setting['.$key1.']['.$key2.']['.$key3.']">'.$key3.'</label>';
 				}
 				break;
 			case "radio":
 				$cur_component = '';
 				foreach($setting_type[$key1][$key2][1] as $key3 => $value3) {
-					$checked = str2any($value3, false)==$setting[$key1][$key2]?"checked":"";
-					$cur_component .= '<input type="radio" class="cbox" id="setting['.$key1.']['.$key2.']['.$key3.']" name="setting['.$key1.']['.$key2.']" value="'.$value3.'" '.$checked.' /><label for="setting['.$key1.']['.$key2.']['.$key3.']">'.$key3.'</label>';
+					$value3 = any2str($value3);
+					$checked = $value3==any2str($setting[$key1][$key2])?"checked":"";
+					$cur_component .= '<input type="radio" class="cbox" id="setting['.$key1.']['.$key2.']['.$key3.']" name="setting['.$key1.']['.$key2.']" value="'.$value3.'" '.$checked.' /><label for="setting['.$key1.']['.$key2.']['.$key3.']">'.$key3.'</label>'."\n";
 				}
 				break;
 			case "select":
 				$cur_component = "<select name=\"setting[{$key1}][{$key2}]\">\n";
 				foreach($setting_type[$key1][$key2][1] as $key3 => $value3) {
-					$checked = str2any($value3, false)==$setting[$key1][$key2]?"selected":"";
-					$cur_component .= '<option value="'.$value3.'" '.$checked.'>'.$key3.'</option>';
+					$value3 = any2str($value3);
+					$checked = $value3==any2str($setting[$key1][$key2])?"selected":"";
+					$cur_component .= '<option value="'.$value3.'" '.$checked.'>'.$key3.'</option>'."\n";
 				}
 				$cur_component .= "</select>";
 				break;
@@ -82,7 +84,7 @@ content;
 }
 ?>
 			<tr align="center">
-				<td class="row" colspan="2"><input id="set_default" name="set_default" class="cbox" type="checkbox" value="1"> <label for="set_default">定为默认</label></td>
+				<td class="row" colspan="2"><input id="set_default" name="set_default" class="cbox" type="checkbox" value="1" /><label for="set_default">定为默认</label></td>
 			</tr>
 			<tr>
 				<td class="cat" colspan="2" align="center" style="padding:20px">

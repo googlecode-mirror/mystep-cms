@@ -58,7 +58,7 @@ $tpl_tmp->Set_Variable('title', 'ÍøÕ¾³ö´íĞÅÏ¢');
 $tpl_tmp->Set_Variable('err_output', $err_output);
 $tpl_tmp->Set_Variable('err_msg', $err_msg);
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-unset($tpl_temp);
+unset($tpl_tmp);
 
 $mystep->show($tpl);
 $mystep->pageEnd(false);

@@ -1,8 +1,0 @@
-RewriteEngine on
-RewriteRule ^console/(.+)$   ../console.php?$1   [QSA,L]
-RewriteRule ^print/(\d+)_(\d+)\.html$   ../print.php?id=$1&page=$2   [QSA,L]
-RewriteRule ^tag/(.+?)(_(\d+))?\.html$   ../tag.php?tag=$1&page=$3   [QSA,L]
-RewriteRule ^survey/survey_(\d+)\.html$   ../survey.php?id=$1   [QSA,L]
-RewriteRule ^(.+?)/rss.xml$   ../rss.php?idx=$1   [QSA,L]
-RewriteRule ^(\w+?)/?(index(_(\d+))?\.html)?$   ../list.php?cat=$1&page=$4   [QSA,L]
-RewriteRule ^[\w\d/]+/(\d+)(_(\d+))?\.html$   ../read.php?id=$1&page=$3   [QSA,L]

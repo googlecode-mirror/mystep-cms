@@ -244,6 +244,7 @@ mystep;
 			</tr>
 			";
 		}
+		$db->Free();
 		if($att_more) {
 			echo "<script>alert('当前文档不存在附件！');self.close();</script>";
 		}
@@ -283,6 +284,7 @@ mystep;
 					header("Content-Disposition: attachment; filename=".$record['file_name']);
 					readfile($the_file);
 				}
+				$db->Free();
 			} else {
 				header("HTTP/1.0 404 Not Found");
 			}

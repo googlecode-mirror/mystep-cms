@@ -95,9 +95,8 @@ class MyStep extends class_common {
 	}
 	
 	public function pageStart($subsetting = true) {
-		global $setting, $req;
-		
-		if($setting['gen']['cache']) {
+		global $setting, $db, $req, $cache;
+		if(!$setting['gen']['cache']) {
 			header("Expires: -1");
 			header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0", false);
 			header("Pragma: no-cache");
@@ -114,9 +113,13 @@ class MyStep extends class_common {
 		ob_start();
 		ob_implicit_flush(false);
 
+		if($setting['session']['mode']=="sess_file") $setting['session']['path'] = ROOT_PATH."/".$setting['path']['cache']."/session/".date("Ymd")."/";
+		$req = $this->getInstance("MyReq", $setting['cookie'], $setting['session']);
+		$db = $this->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
+		$cache = $this->getInstance("MyCache", $setting['web']['cache_mode']);
+		
 		$GLOBALS['time_start'] = GetMicrotime();
 		$GLOBALS['self'] = strtolower(basename($req->getServer("PHP_SELF")));
-
 		$this->getLanguage(ROOT_PATH."/source/language/");
 		$GLOBALS['language']=$this->language;
 
@@ -134,7 +137,6 @@ class MyStep extends class_common {
 		}
 
 		includeCache("user_group");
-		//$setting['session']['path'] = ROOT_PATH."/".$setting['path']['cache']."/session/".date("Ymd")."/";
 		$req->SessionStart($GLOBALS['sess_handle']);
 		$username = $req->getSession("username");
 		if((empty($username) || $username=="guest") && $req->getCookie('ms_user')!=null) checkUser();
@@ -148,11 +150,14 @@ class MyStep extends class_common {
 		for($i=0; $i<$max_count; $i++) {
 			call_user_func($this->func_end[$i]);
 		}
+		$GLOBALS['query_count'] = $GLOBALS['db']->Close();
+		unset($GLOBALS['db'],
+					$GLOBALS['req'],
+					$GLOBALS['tpl']);
 		if(!empty($GLOBALS['goto_url'])) {
 			header("location: ".$GLOBALS['goto_url']);
 			exit();
 		}
-		unset($this);
 		GzDocOut($setting['gen']['gzip_level'], $show_info);
 	}
 	

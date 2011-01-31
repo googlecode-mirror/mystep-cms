@@ -84,11 +84,8 @@ $theList = array(
 	"template/",
 	"plugin/",
 	"include/",
-	"include/config.php",
 	"files/",
-	"html/",
-	"html/para/",
-	"html/session/",
+	"cache/",
 );
 
 foreach($theList as $cur) {

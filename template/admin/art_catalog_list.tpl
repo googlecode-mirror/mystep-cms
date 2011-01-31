@@ -17,7 +17,7 @@
 			<td class="row" align="center"><!--record_web_name--></td>
 			<td class="row" align="left"><a href="../list.php?cat=<!--record_cat_idx-->" title="<!--record_cat_comment-->" target="_blank"><!--record_cat_name--></a></td>
 			<td class="row" align="center"><a href="?method=up&cat_id=<!--record_cat_id-->">↑</a></td>
-			<td class="row" align="center"><a href="?method=down&cat_id=<!--record_cat_id-->"">↓</a></td>
+			<td class="row" align="center"><a href="?method=down&cat_id=<!--record_cat_id-->">↓</a></td>
 			<td class="row" align="center"><a href="?method=edit&cat_id=<!--record_cat_id-->">修改</a> <a href="?method=delete&cat_id=<!--record_cat_id-->" onclick="return confirm('该操作将删除当前类别及其子栏目的所有信息！\n\n请按确定继续。')">删除</a></td>
 			<td class="row" align="center"><a href="art_content.php?method=add&cat_id=<!--record_cat_id-->&web_id=<!--record_web_id-->">添加</a></td>
 		</tr>

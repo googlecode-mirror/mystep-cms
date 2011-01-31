@@ -22,6 +22,7 @@ switch($method) {
 			@unlink($the_path."preview/".$the_file);
 			$db->Query("delete from ".$setting['db']['pre']."attachment where id={$id}");
 		}
+		$db->Free();
 		break;
 	case "clear":
 		$log_info = "清除未关联附件";
@@ -30,6 +31,7 @@ switch($method) {
 		while($record = $db->GetRS()) {
 			$file_list[] = $record;
 		}
+		$db->Free();
 		$max_count = count($file_list);
 		for($i=0; $i<$max_count; $i++) {
 			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/", substr($record['file_time'],0, 10));
@@ -94,7 +96,7 @@ function build_page() {
 	$db->Free();
 	
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-	unset($tpl_temp);
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 	return;
 }

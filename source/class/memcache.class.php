@@ -17,9 +17,9 @@
 	$mc = new MemoryCache($options)											// Set the Memory Cache Class
 	$mc->addServ($servs)																// Add a new memcache server to the pool
 	$mc->setServPara($server, $options, $makedefault)		// Set of Reset one or all servers' status
-	$mc->set($key, $val, $exp)													// Put some content to the server
+	$mc->set($key, $value, $ttl)													// Put some content to the server
 	$mc->get($key)																			// Get some content to the server
-	$mc->delete($key)																		// Delete some content to the server
+	$mc->remove($key)																		// remove some content to the server
 	$mc->add($key, $value)															// Increment of decrement some number store in server
 	$mc->check($key)																		// Check if some content exists on the server
 	$mc->flush()																				// Flush all existing items at the server
@@ -27,6 +27,27 @@
 	$mc->getServStat($server)														// Get memcache servers' infomation
 	$mc->close()																				// Close memcached server connection
 	$mc->callback_failure($host, $port)									// Callback function
+
+example:
+$mc_opt = array (
+			'server' => '127.0.0.1:18888',
+			'weight' => '2',
+			'persistant' => false,
+			'timeout' => '1',
+			'retry_interval' => 30,
+			'status' => 1,
+			'expire' => 60*60*24,
+			'threshold' => 10240,
+			'min_savings' => 0.5,
+);
+$mc = new MemoryCache;
+$mc->($mc_opt);
+$mc_srvs = array(
+			array('host'=>'10.10.10.1', 'port'=>18888, 'persistent'=>true, 'weight'=>5),
+			array('host'=>'10.10.10.2', 'port'=>18888, 'persistent'=>true, 'weight'=>5),
+);
+$mc->addServ($mc_srvs);
+
 --------------------------------------------------------------------------------------------------------------------*/
 
 class MemoryCache extends class_common {
@@ -37,6 +58,7 @@ class MemoryCache extends class_common {
 		$mc_servers = array();
 
 	public function inti($options) {
+		if(function_exists('memcache_get')) return false;
 		$this->mc = new Memcache;
 		$this->mc_expire = isset($options['expire']) ? $options['expire'] : 259200;
 		$this->mc_cnnopt['persistant'] = isset($options['persistant']) ? $options['persistant'] :  true;
@@ -63,7 +85,7 @@ class MemoryCache extends class_common {
 		} else {
 			$this->callback_failure($server[0], $server[1]);
 		}
-		return;
+		return true;
 	}
 	
 	public function addServ($servs) {
@@ -115,17 +137,21 @@ class MemoryCache extends class_common {
 		return;
 	}
 	
-	public function set($key, $val, $exp = 0) {
-		if($exp===0) $exp = $this->mc_expire;
-		$flag = $this->mc_cnnopt['compress'] && (is_array($val) || is_object($val));
-		return $this->mc->set($key, $val, $flag, $exp);
+	public function set($key, $value = "", $ttl = 0) {
+		if(empty($value)) {
+			$this->mc->delete($key, 0);
+		} else {
+			if($ttl===0) $ttl = $this->mc_expire;
+			$flag = $this->mc_cnnopt['compress'] && (is_array($value) || is_object($value));
+			return $this->mc->set($key, $value, $flag, $ttl);
+		}
 	}
 	
 	public function get($key) {
 		return $this->mc->get($key);
 	}
 	
-	public function delete($key, $timeout = 0) {
+	public function remove($key, $timeout = 0) {
 		return $this->mc->delete($key, $timeout);
 	}
 	
@@ -143,7 +169,7 @@ class MemoryCache extends class_common {
 		return !$flag;
 	}
 	
-	public function flush() {
+	public function clean() {
 		return $this->mc->flush();
 	}
 

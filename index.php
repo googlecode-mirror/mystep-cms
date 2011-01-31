@@ -8,7 +8,7 @@ $tpl_info = array(
 if($setting['gen']['cache']) {
 	$cache_info = array(
 			'idx' => 'index',
-			'path' => ROOT_PATH."/".$setting['path']['cache']."/",
+			'path' => $cache_path,
 			'expire' => getCacheExpire(),
 			);
 } else {
