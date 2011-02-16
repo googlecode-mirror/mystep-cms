@@ -39,10 +39,10 @@ $setting['list']['rss'] = 50;
 
 // Session
 $setting['session']['expire'] = 20;
-$setting['session']['gc'] = true;
-$setting['session']['trans_sid'] = false;
 $setting['session']['name'] = "MyStepSession";
 $setting['session']['mode'] = "sess_mystep";
+$setting['session']['gc'] = true;
+$setting['session']['trans_sid'] = false;
 
 // Cookie
 $setting['cookie']['domain'] = ".mystepcms.com";
@@ -65,7 +65,6 @@ $setting['watermark']['txt'] = "MyStep CMS";
 $setting['watermark']['credit'] = "Original From MyStep 2010";
 
 // MemCache Setting
-$setting['memcache'] = array();
 $setting['memcache']['server'] = '';
 $setting['memcache']['weight'] = 2;
 $setting['memcache']['persistant'] = true;

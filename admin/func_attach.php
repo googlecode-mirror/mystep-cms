@@ -18,8 +18,8 @@ switch($method) {
 			$the_ext = GetFileExt($record['file_name']);
 			if($the_ext=="php") $the_ext = "txt";
 			$the_file = $record['file_time'].".".$the_ext;
-			@unlink($the_path.$the_file);
-			@unlink($the_path."preview/".$the_file);
+			MultiDel($the_path.$the_file);
+			MultiDel($the_path."preview/".$the_file);
 			$db->Query("delete from ".$setting['db']['pre']."attachment where id={$id}");
 		}
 		$db->Free();
@@ -38,8 +38,8 @@ switch($method) {
 			$the_ext = GetFileExt($record['file_name']);
 			if($the_ext=="php") $the_ext = "txt";
 			$the_file = $file_list[$i]['file_time'].".".$the_ext;
-			@unlink($the_path.$the_file);
-			@unlink($the_path."preview/".$the_file);
+			MultiDel($the_path.$the_file);
+			MultiDel($the_path."preview/".$the_file);
 			$db->Query("delete from ".$setting['db']['pre']."attachment where id={$file_list[$i]['id']}");
 		}
 		break;

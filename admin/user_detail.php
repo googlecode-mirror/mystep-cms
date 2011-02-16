@@ -93,7 +93,8 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		
-		for($i=0; $i<count($user_group); $i++) {
+		$max_count = count($user_group);
+		for($i=0; $i<$max_count; $i++) {
 			$user_group[$i]["selected"] = ($user_group[$i]['group_id']==$group_id?"selected":"");
 			$tpl_tmp->Set_Loop('user_group', $user_group[$i]);
 		}
@@ -117,7 +118,8 @@ function build_page($method) {
 			$tpl->Set_Variable('main', showInfo("指定 ID 的用户不存在！", 0));
 			$mystep->pageEnd(false);
 		}
-		for($i=0; $i<count($user_group); $i++) {
+		$max_count = count($user_group);
+		for($i=0; $i<$max_count; $i++) {
 			$user_group[$i]["selected"] = ($user_group[$i]['group_id']==$record['group_id']?"selected":"");
 			$tpl_tmp->Set_Loop('user_group', $user_group[$i]);
 		}
@@ -125,7 +127,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	} else {
 		$tpl_tmp->Set_Variable('title', '用户添加');
-		for($i=0; $i<count($user_group); $i++) {
+		$max_count = count($user_group);
+		for($i=0; $i<$max_count; $i++) {
 			$user_group[$i]["selected"] = ($user_group[$i]['group_id']==2?"selected":"");
 			$tpl_tmp->Set_Loop('user_group', $user_group[$i]);
 		}

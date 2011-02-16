@@ -1,3 +1,3 @@
 ﻿tinyMCE.addI18n('zh.bbscode',{
-title:"论坛代码转换"
+title:"粘贴论坛代码"
 }); 

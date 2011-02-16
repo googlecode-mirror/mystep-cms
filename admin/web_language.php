@@ -25,6 +25,7 @@ if(is_null($cur_lng)) $cur_lng = $setting['gen']['language'];
 
 if($method=="update" && count($_POST)>0) {
 	$log_info = "∏¸–¬”Ô—‘…Ë÷√";
+	if(empty($cur_lng)) $cur_lng = "default";
 	if(empty($_POST['lng_new_idx'])) {
 		$setting['gen']['language'] = $cur_lng;
 		$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);

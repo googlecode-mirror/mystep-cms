@@ -19,7 +19,8 @@ class plugin_offical implements plugin {
 	}
 	
 	public static function page_end() {
-		global $db, $req, $setting;
+		global $db, $req;
+		include(ROOT_PATH."/include/config.php");
 		$ip = getIp();
 		$cnt_visitor	= $req->getCookie('cnt_visitor');
 		$add_ip = 0;
@@ -46,17 +47,7 @@ class plugin_offical implements plugin {
 		global $setting;
 		$result = "";
 		if(!isset($att_list['template'])) $att_list['template'] = "classic";
-		if(isset($att_list['catalog'])) {
-			$catalog = explode(",", $att_list['catalog']);
-			$att_list['cat_id'] = "";
-			$max_count = count($catalog);
-			for($n=0; $n<$max_count; $n++) {
-				if($cat_info = getParaInfo("news_cat", "cat_idx", $catalog[$n])) {
-					$att_list['cat_id'] .= $cat_info['cat_id'].",";
-				}
-			}
-			$att_list['cat_id'] .= "0";
-		}
+		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
 		if(!isset($att_list['order'])) $att_list['order'] = " news_id desc";
 		if(!isset($att_list['setop'])) $att_list['setop'] = "";
 		if(!isset($att_list['show_image'])) $att_list['show_image'] = "";
@@ -77,7 +68,7 @@ class plugin_offical implements plugin {
 		if(!empty($att_list['tag'])) $att_list['tag'] = "tag like '%".str_replace(",", "%' or tag like '%", $att_list['tag'])."%'";
 	
 		$str_sql = "select * from ".$setting['db']['pre']."news_show where 1=1";
-		if(isset($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
+		if(!empty($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
 		if(!empty($att_list['show_image'])) $str_sql .= " and image!=''";
 		if(!empty($att_list['setop'])) $str_sql .= " and (setop & {$setop})={$setop}";
 		if(!empty($att_list['tag'])) $str_sql .= " and (".$att_list['tag'].")";
@@ -97,22 +88,28 @@ class plugin_offical implements plugin {
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."news_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
 		$result = <<<mytpl
 <?php
+
 \$n = 0;
-\$result = getData("{$str_sql}", "all", 600);
+\$str_sql = "{$str_sql}";
+\$str_sql = str_replace(" and cat_id in (0)", "", \$str_sql);
+\$result = getData(\$str_sql, "all", 600);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
 	HtmlTrans(&\$record);
 	\$theStyle = explode(",", \$record['style']);
+	\$style = "";
 	for(\$i=0;\$i<count(\$theStyle);\$i++) {
+		\$record['subject_org'] = \$record['subject'];
 		if(\$theStyle[\$i]=="i") {
-			\$record['subject'] = "<i>".\$record['subject']."</i>";
+			\$style .= "font-style:italic;";
 		} elseif((\$theStyle[\$i]=="b")) {
-			\$record['subject'] = "<b>".\$record['subject']."</b>";
+			\$style .= "font-width:bold;";
 		} else {
-			\$record['subject'] = "<font color=\"".\$theStyle[\$i]."\">".\$record['subject']."</font>";
+			\$style .= "color:".\$theStyle[\$i].";";
 		}
 	}
+	if(!empty(\$style)) \$record['subject'] = "<span style=\"".\$style."\">".\$record['subject']."</span>";
 	\$record['style'] = \$n++%2 ? "{$att_list['css1']}" : "{$att_list['css2']}";
 	\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
 	if(empty(\$record['link'])) \$record['link'] = getFileURL(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:""));
@@ -128,7 +125,9 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 {$unit}
 content;
 	echo "\\n";
+	unset(\$record);
 }
+unset(\$result);
 for(; \$n<={$att_list['loop']}; \$n++) {
 	\$unit = str_replace("style=\"\"", "style=\"".(\$n%2?"{$att_list['css1']}":"{$att_list['css2']}")."\"", "{$unit_blank}");
 	echo \$unit;
@@ -234,7 +233,9 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record['size'] = \$base_size;
 	if(\$count_max<\$record['count']) \$count_max = \$record['count'];
 	\$tag_list[] = \$record;
+	unset(\$record);
 }
+unset(\$result);
 \$max_count = count(\$tag_list);
 for(\$i=0; \$i<\$max_count; \$i++) {
 	\$tag_list[\$i]['size'] = \$base_size + round(\$dyn_size * \$tag_list[\$i]['count'] / \$count_max);

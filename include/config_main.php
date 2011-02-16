@@ -1,20 +1,20 @@
 <?php
-$setting = array();
+$setting_sub = array();
 
-$setting['web'] = array();
-$setting['web']['title'] = 'MyStep';
-$setting['web']['keyword'] = 'mystep,cms,free';
-$setting['web']['description'] = '开源网站内容管理系统';
+$setting_sub['web'] = array();
+$setting_sub['web']['title'] = 'MyStep';
+$setting_sub['web']['keyword'] = 'mystep,cms,free';
+$setting_sub['web']['description'] = '开源网站内容管理系统';
 
-$setting['db'] = array();
-$setting['db']['name'] = 'mystep';
-$setting['db']['pre'] = 'ms_';
+$setting_sub['db'] = array();
+$setting_sub['db']['name'] = 'mystep';
+$setting_sub['db']['pre'] = 'ms_';
 
-$setting['gen'] = array();
-$setting['gen']['template'] = 'default';
+$setting_sub['gen'] = array();
+$setting_sub['gen']['template'] = 'default';
 
-$setting['cookie'] = array();
-$setting['cookie']['domain'] = '.mystep.com';
+$setting_sub['path'] = array();
+$setting_sub['path']['upload'] = 'files/';
 
 
 ?>

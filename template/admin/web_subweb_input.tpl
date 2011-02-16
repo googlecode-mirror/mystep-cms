@@ -22,6 +22,9 @@
 					<input type="text" name="host" value="<!--host-->" need="" />
 				</td>
 			</tr>
+			<tr> 
+				<td class="cat" colspan="2">子站参数设置：</td>
+			</tr>
 <?PHP
 include_once(ROOT_PATH."/include/config-detail.php");
 
@@ -55,7 +58,6 @@ $setting_skip['list']['mix'] = '';
 $setting_skip['list']['rss'] = '';
 $setting_skip['session'] = array();
 $setting_skip['session']['expire'] = '';
-$setting_skip['session']['path'] = '';
 $setting_skip['session']['gc'] = '';
 $setting_skip['session']['trans_sid'] = '';
 $setting_skip['session']['name'] = '';
@@ -86,7 +88,8 @@ $setting_skip['memcache']['min_savings'] = '';
 
 if($GLOBALS['web_info']) {
 	if(is_file(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php")) {
-		include_once(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php");
+		include(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php");
+		$setting = arrayMerge($setting, $setting_sub);
 	}
 }
 
@@ -97,7 +100,7 @@ foreach($setting as $key1 => $value1) {
 		$cur_comment = $setting_comm[$key1."_comm"];
 		$cur_section = $key1;
 		echo <<<content
-			<tr> 
+			<tr style="display:none;"> 
 				<td class="cat" colspan="2">{$cur_comment}</td>
 			</tr>
 content;

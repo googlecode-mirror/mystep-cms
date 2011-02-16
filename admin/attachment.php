@@ -93,7 +93,7 @@ mystep;
 					return;
 				}
 				var obj = $("#files div:first");
-				obj.clone().appendTo("#files");
+				obj.clone().appendTo("#files").show();
 				parent.setIframe();
 				return;
 			}
@@ -122,7 +122,7 @@ mystep;
 			echo <<<mystep
 							<input type="hidden" name="MAX_FILE_SIZE" value="{$Max_size}">
 							<div id="files">
-								<div style="padding-bottom:5px">
+								<div style="padding-bottom:5px; display:none;">
 									<b>Ñ¡ÔñÎÄ¼þ£º</b>
 									<input type="file" name="the_file[]" size="60" onchange="upload_add_file();">
 								</div>
@@ -153,7 +153,8 @@ mystep;
 					</tr>
 				</table>
 			</form>
-
+			<script>upload_add_file();</script>
+			
 mystep;
 		break;
 	case "edit_ok":

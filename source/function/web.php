@@ -27,7 +27,9 @@ function makeVarsCode($var, $var_name='') {
 				$result .= makeVarsCode($value, $var_name_new);
 				$result .= "\n";
 			} else {
-				if(is_numeric($value) || strtolower($value)=="true" || strtolower($value)=="false" ) {
+				if(is_bool($value)) {
+					$result .= $value?'true':'false';
+				} elseif(is_numeric($value) || strtolower($value)=="true" || strtolower($value)=="false" ) {
 					$result .= strtolower($value);
 				} else {	
 					$result .= "'".addslashes($value)."'";
@@ -37,6 +39,24 @@ function makeVarsCode($var, $var_name='') {
 		}
 	}
 	return $result;
+}
+
+function arrayMerge($arr_1, $arr_2) {
+	if(!is_array($arr_1)) return false;
+	if(!is_array($arr_2)) {
+		$arr_1[] = $arr_2;
+	} else {
+		foreach($arr_1 as $key => $value) {
+			if(isset($arr_2[$key])) {
+				if(is_array($arr_2[$key])) {
+					$arr_1[$key] = arrayMerge($arr_1[$key], $arr_2[$key]);
+				} else {
+					$arr_1[$key] = $arr_2[$key];
+				}
+			}
+		}
+	}
+	return $arr_1;
 }
 
 function getArrayDetail($array, &$detail, $layer = 0) {
@@ -78,7 +98,7 @@ function includeCache($idx) {
 	global $setting;
 	if(!checkCache($idx)) buildParaList($idx);
 	if(checkCache($idx)) {
-		require_once(ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php");
+		include(ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php");
 	} else {
 		printf($GLOBALS['language']['page_error'], $setting['web']['email']);
 		exit;
@@ -250,6 +270,19 @@ function getData($query, $mode="all", $ttl = 600) {
 		}
 		$db->Free();
 		$cache->set($key, $result, $ttl);
+	}
+	return $result;
+}
+
+function getFuncData($func) {
+	global $cache;
+	$argList = func_get_args();
+	$key = md5(implode(",", $argList));
+	$result = $cache->get($key);
+	if(!$result) {
+		array_shift($argList);
+		$result = call_user_func_array($func, $argList);
+		$cache->set($key, $result, 600);
 	}
 	return $result;
 }
@@ -489,7 +522,7 @@ function __autoload($class_name) {
 	if($class_name=="parent") return;
 	global $class_list;
 	if(isset($class_list[$class_name]) && defined('ROOT_PATH')) {
-		include_once ROOT_PATH."/source/class/".$class_list[$class_name];
+		include_once(ROOT_PATH."/source/class/".$class_list[$class_name]);
 	}
 	if (!class_exists($class_name, false)) {
 		trigger_error("Unable to load class: {$class_name}", E_USER_WARNING);

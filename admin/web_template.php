@@ -16,7 +16,7 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = "É¾³ýÄ£°å";
-		@unlink($tpl_path.$idx."/".$req->getGet("file"));
+		unlink($tpl_path.$idx."/".$req->getGet("file"));
 		break;
 	case "add_ok":
 	case "edit_ok":
@@ -50,7 +50,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('tpl_idx', $idx);
 		
 		$tpl_list = $fso->Get_List($tpl_path);
-		for($i=0; $i<count($tpl_list['dir']); $i++) {
+		$max_count = count($tpl_list['dir']);
+		for($i=0; $i<$max_count; $i++) {
 			$tpl_list['dir'][$i] = basename($tpl_list['dir'][$i]);
 			if($tpl_list['dir'][$i]=="cache") continue;
 			$tpl_tmp->Set_Loop("tpl_list", array("idx"=>$tpl_list['dir'][$i], "selected"=>$tpl_list['dir'][$i]==$idx?"selected":""));

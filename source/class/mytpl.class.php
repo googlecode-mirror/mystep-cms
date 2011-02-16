@@ -147,16 +147,12 @@ class MyTpl extends class_common {
 			if($tpl_time==filemtime($this->tpl_info['file'])) {
 				return $cache_file;
 			} else {
-				@unlink($cache_file);
+				unlink($cache_file);
 			}
 		}
 
 		global $tpl_para;
 		$tpl_cache = $this->tpl_info['content'];
-		foreach($tpl_para[$this->hash]['para'] as $key => $value) {
-			$tpl_cache = str_replace($this->delimiter_l.$key.$this->delimiter_r, "<?=\$tpl_para['{$this->hash}']['para']['{$key}']?>", $tpl_cache);
-		}
-		
 		preg_match_all("/".preg_quote($this->delimiter_l)."(\w+):start(\s+\w+\s*=\s*(\"|')[^\\3]+\\3)*".preg_quote($this->delimiter_r).".*".preg_quote($this->delimiter_l)."\\1:end".preg_quote($this->delimiter_r)."/isU", $tpl_cache, $block_all);
 		$max_count = count($block_all[0]);
 		for($i=0; $i<$max_count; $i++) {
@@ -268,7 +264,7 @@ mytpl;
 					$cur_result = "";
 					break;	
 			}
-			$cur_result = preg_replace("/<\?\=(.+?)\?>/", "{\\1}", $cur_result);
+			$cur_result = preg_replace("/".preg_quote($this->delimiter_l)."(\w+?)".preg_quote($this->delimiter_r)."/", "{\$tpl_para['{$this->hash}']['para']['\\1']}", $cur_result);
 			$tpl_cache = str_replace($block_all[0][$i], $cur_result, $tpl_cache);
 			unset($cur_attrib, $cur_content);
 		}
@@ -321,6 +317,7 @@ mytpl;
 				for($j=0; $j<$max_count1; $j++) {
 					if(empty($att_list[$j])) continue;
 					$tmp = split("=", trim($att_list[$j]));
+					$tmp[1] = str_replace('$', '$tpl_para_', $tmp[1]);
 					eval("\$cur_attrib['" . strtolower(trim($tmp[0])) . "'] = {$tmp[1]};");
 				}
 				$cur_result = call_user_func($this->tags[$tag_all[1][$i]], $this, $cur_attrib);
@@ -352,6 +349,7 @@ mytpl;
 		global $tpl_para;
 		if(!empty($global_para)) {
 			eval("global ".$global_para.";");
+			if(isset($paras)) extract($paras, EXTR_PREFIX_ALL, "tpl_para");
 		}
 		if(isset($GLOBALS['language'])) $this->Set_Variables($GLOBALS['language'], "lang");
 		$content = "";
@@ -360,19 +358,19 @@ mytpl;
 			if(headers_sent()) $this->Error("Headers have already been sent, content create failed....");
 			if(count(ob_list_handlers())==0) {
 				ob_start();
-				include_once($this->Get_TPL_Cache());
+				include($this->Get_TPL_Cache());
 				$content = ob_get_contents();
 				ob_end_clean();	
 			} else {
 				if(ob_get_length()) {
 					$temp = ob_get_contents();
 					ob_clean();
-					include_once($this->Get_TPL_Cache());
+					include($this->Get_TPL_Cache());
 					$content = ob_get_contents();
 					ob_clean();
 					echo $temp;
 				} else {
-					include_once($this->Get_TPL_Cache());
+					include($this->Get_TPL_Cache());
 					$content = ob_get_contents();
 					ob_clean();
 				}

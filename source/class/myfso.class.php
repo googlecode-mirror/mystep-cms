@@ -84,8 +84,8 @@ class MyFSO extends class_common {
 				if(is_dir($cur_dir)) {
 					continue;
 				} else {
-					@mkdir($cur_dir, 0777, true);
-					@chmod($cur_dir, 0777);
+					mkdir($cur_dir, 0777, true);
+					chmod($cur_dir, 0777);
 				}
 			}
 			umask($oldumask);

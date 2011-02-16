@@ -1,10 +1,5 @@
 <?php
 require("inc.php");
-$tpl_info = array(
-		"idx" => "main",
-		"style" => $setting['gen']['template'],
-		"path" => ROOT_PATH."/".$setting['path']['template'],
-		);
 if($setting['gen']['cache']) {
 	$cache_info = array(
 			'idx' => 'index',
@@ -19,15 +14,6 @@ $tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 if($tpl->Is_Cached()) {
 	echo $tpl->Get_Content();
 	$mystep->pageEnd();
-}
-
-includeCache("news_cat");
-$max_count = count($news_cat);
-for($i=0; $i<$max_count; $i++) {
-	if($news_cat[$i]['cat_layer']==1) {
-		if(empty($news_cat[$i]['cat_link'])) $news_cat[$i]['cat_link'] = getFileURL(0, $news_cat[$i]['cat_idx']);
-		$tpl->Set_Loop('news_cat', $news_cat[$i]);
-	}
 }
 includeCache("link");
 $tpl_info['idx'] = "index";

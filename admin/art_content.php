@@ -39,8 +39,8 @@ switch($method) {
 			$the_ext = GetFileExt($record['file_name']);
 			if($the_ext=="php") $the_ext = "txt";
 			$the_file = $record['file_time'].".".$the_ext;
-			@unlink($the_path.$the_file);
-			@unlink($the_path."preview/".$the_file);
+			MultiDel($the_path.$the_file);
+			MultiDel($the_path."preview/".$the_file);
 			$sql_list[] = "delete from ".$setting['db']['pre']."attachment where id=".$record['id'];
 		}
 		$db->Free();
@@ -58,17 +58,18 @@ switch($method) {
 		} else {
 			$_POST['style'] = implode(",", $_POST['style']);
 			if(get_magic_quotes_gpc()) strip_slash($_POST);
-			$content = explode("<!-- pagebreak -->", str_replace("=\"../", "=\"{$web_url}/", $_POST['content']));
+			$_POST['content'] = str_replace("<!-- pagebreak -->", "</p><!-- pagebreak --><p>", $_POST['content']);
+			$_POST['content'] = preg_replace("/<p>[\r\n\s]*<\/p>/i", "", $_POST['content']);
+			$content = explode("<!-- pagebreak -->", str_replace('="../', '="'.$setting['web']['url'].'/', $_POST['content']));
 			unset($_POST['content']);
-			
 			$sub_title = array();
 			$max_count = count($content);
 			for($i=0; $i<$max_count; $i++) {
-				if(preg_match("/<span.+?mceSubtitle.+?>(.+)<\/span>/i",$content[$i], $matches)) {
+				if(preg_match("/<span.+?mceSubtitle.+?>(.+)<\/span>/i", $content[$i], $matches)) {
 					$sub_title[$i] = $matches[1];
 					$sub_title[$i] = strip_tags($sub_title[$i]);
 					$sub_title[$i] = substrPro($sub_title[$i], 0, 98);
-					$content[$i] = preg_replace("/(<(\w+)>)?<span.+?mceSubtitle.+?>.+<\/span>(<\/\1>)?/i", "", $content[$i]);
+					$content[$i] = preg_replace("/[\r\n]*(<(\w+)>)?<span.+?mceSubtitle.+?>.+<\/span>(<\/\\2>)?[\r\n]*/i", "", $content[$i]);
 					$sub_title[$i] = str_replace("&nbsp;", " ", $sub_title[$i]);
 					if(strlen(preg_replace("/[\s\r\n\t]/", "", $sub_title[$i]))<4) {
 						$sub_title[$i] = $_POST['subject']." - ".($i+1);
@@ -240,7 +241,8 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('setop', array("key"=>$key, "value"=>$value, "checked"=>($key&$setop?"checked":"")));
 		}
 		$theStyle = explode(",", $record['style']);
-		for($i=0;$i<count($theStyle);$i++) {
+		$max_count = count($theStyle);
+		for($i=0;$i<$max_count;$i++) {
 			if($theStyle[$i]=="i") {
 				$check_i = "checked";
 			} elseif(($theStyle[$i]=="b")) {

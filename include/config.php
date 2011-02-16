@@ -11,20 +11,23 @@ $setting['web']['s_user'] = 'mystep';
 $setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
 $setting['web']['close'] = false;
 $setting['web']['close_page'] = '/index.html';
-$setting['web']['cache_mode'] = 'file';
+$setting['web']['cache_mode'] = 'xcache';
 
 $setting['db'] = array();
 $setting['db']['host'] = '127.0.0.1:3306';
 $setting['db']['user'] = 'root';
 $setting['db']['pass'] = 123456;
+$setting['db']['pconnect'] = true;
 $setting['db']['charset'] = 'gbk';
 $setting['db']['name'] = 'mystep';
 $setting['db']['pre'] = 'ms_';
 
 $setting['gen'] = array();
-$setting['gen']['language'] = 'chs';
+$setting['gen']['language'] = 'default';
 $setting['gen']['charset'] = 'gbk';
 $setting['gen']['gzip_level'] = 4;
+$setting['gen']['cache'] = false;
+$setting['gen']['rewrite'] = false;
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'default';
 
@@ -64,8 +67,10 @@ $setting['watermark']['credit'] = 'Original From MyStep';
 $setting['memcache'] = array();
 $setting['memcache']['server'] = '';
 $setting['memcache']['weight'] = 2;
+$setting['memcache']['persistant'] = true;
 $setting['memcache']['timeout'] = 1;
 $setting['memcache']['retry_interval'] = 30;
+$setting['memcache']['status'] = true;
 $setting['memcache']['expire'] = 86400;
 $setting['memcache']['threshold'] = 10240;
 $setting['memcache']['min_savings'] = 0.5;

@@ -1,10 +1,10 @@
 <?php
 define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
-require_once(ROOT_PATH."/include/config.php");
-require_once(ROOT_PATH."/include/parameter.php");
-require_once(ROOT_PATH."/source/function/global.php");
-require_once(ROOT_PATH."/source/function/web.php");
-require_once(ROOT_PATH."/source/function/admin.php");
+include(ROOT_PATH."/include/config.php");
+include(ROOT_PATH."/include/parameter.php");
+include(ROOT_PATH."/source/function/global.php");
+include(ROOT_PATH."/source/function/web.php");
+include(ROOT_PATH."/source/function/admin.php");
 
 $mystep = new MyStep();
 $mystep->pageStart(false);

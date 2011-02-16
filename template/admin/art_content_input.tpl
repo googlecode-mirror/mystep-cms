@@ -97,7 +97,7 @@
 		</table>
 	</form>
 </div>
-<script type="text/javascript" src="tinymce/tiny_mce.js"></script>
+<script type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
 <script type="text/javascript">
 tinyMCE.init({
 	mode : "exact",
@@ -107,18 +107,17 @@ tinyMCE.init({
 	plugins : "bbscode,advlink,advimage,subtitle,safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
 
 	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,cleanup,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup",
-	theme_advanced_buttons2 : "pagebreak,Subtitle,bbscode,|,cut,copy,paste,pastetext,pasteword,bbscode,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code",
+	theme_advanced_buttons2 : "pagebreak,Subtitle,|,cut,copy,paste,pastetext,pasteword,bbscode,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code",
 	theme_advanced_buttons3 : "",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
 	theme_advanced_statusbar_location : "bottom",
 	theme_advanced_resizing : false,
 	
+	content_css: "../images/editor.css",
 	entity_encoding : "raw",
 	add_unload_trigger : false,
 	remove_linebreaks : false,
-	
-	content_css : "css/content.css",
 	
 	template_external_list_url : "lists/template_list.js",
 	external_link_list_url : "lists/link_list.js",
@@ -127,7 +126,7 @@ tinyMCE.init({
 	
 	template_replace_values : {
 		username : "A9VG",
-		staffid : "20121212"
+		staffid : "20121222"
 	}
 });
 
@@ -202,7 +201,7 @@ function setIframe() {
 
 function add_color(obj_select, theColor){
 	if(obj_select.tagName.toLowerCase() != "select") return;
-	var color_list = new Array('black','dimgray','red','orange','pink','yellow','blue','green');
+	var color_list = new Array('', 'black','dimgray','red','orange','pink','yellow','blue','green');
 	var curIndex = 0;
 	var selIndex = 0;
 	obj_select.innerHTML = "";
@@ -213,7 +212,7 @@ function add_color(obj_select, theColor){
 		obj_select.options[curIndex].style.color = color_list[i];
 		if(color_list[i]==theColor) selIndex = curIndex;
 	}
-	obj_select.selectedIndex = selIndex
+	obj_select.selectedIndex = selIndex;
 }
 
 add_color($id("color_list_title"), "<!--check_c-->");

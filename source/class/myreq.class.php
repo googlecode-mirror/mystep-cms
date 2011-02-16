@@ -182,7 +182,7 @@ class MyReq extends class_common {
 		}
 		if($this->session_gc) {
 			ini_set('session.gc_maxlifetime', $this->session_expire * 3);
-			ini_set('session.gc_probability', 10);
+			ini_set('session.gc_probability', 5);
 			ini_set('session.gc_divisor', 100);
 		}
 		ini_set('session.use_trans_sid', ($this->session_trans_sid?'1':'0'));
@@ -196,6 +196,7 @@ class MyReq extends class_common {
 		session_cache_limiter('private, must-revalidate');
 		session_cache_expire($this->session_expire);
 		session_start();
+		if(!$this->session_trans_sid) setcookie(session_name(), session_id(), $_SERVER["REQUEST_TIME"]+$this->session_expire*60, $this->cookie_path, $this->cookie_domain);
 		$this->session_flag = true;
 		return;
 	}
@@ -381,7 +382,7 @@ class MyReq extends class_common {
 			$items++;
 			$p = $q;
 		}
-		return @unserialize( 'a:' . $items . ':{' . $serialized . '}' );
+		return unserialize( 'a:' . $items . ':{' . $serialized . '}' );
 	}
 }
 ?>

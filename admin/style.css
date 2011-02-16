@@ -40,7 +40,7 @@ BODY {text-align:center; font-family:ËÎÌו, Tahoma, Verdana, Arial; padding:0px; 
 #page_top .r .info {text-align:right; padding:10px 10px 0px 10px;}
 
 #menu_nav li {z-index:100; position:relative; text-align:center; display:block; float:left; letter-spacing:1px; font-size:14px; font-weight:bold;}
-#menu_nav li a.nav {text-decoration:none; font-weight:bold; display:block; float:left; padding:5px 8px 5px 8px; margin:23px 5px 0px 5px; border:1px solid #6d84b4;}
+#menu_nav li a.nav {text-decoration:none; font-weight:bold; display:block; float:left; padding:5px 8px 5px 8px; margin:24px 5px 0px 5px; border:1px solid #6d84b4;}
 #menu_nav li a.nav:link,
 #menu_nav li a.nav:visited {color:#fff; background-color:#739ace;}
 #menu_nav li a.nav:hover {background-color:#6d84b4;}

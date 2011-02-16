@@ -9,13 +9,15 @@ if($method=="update" && count($_POST)>0) {
 	$setting['gen']['cache'] = ($_POST['cache']=="true");
 	$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);
 	$expire_list = array();
-	for($i=0; $i<count($_POST['page']); $i++) {
+	$max_count = count($_POST['page']);
+	for($i=0; $i<$max_count; $i++) {
 		if($i==0) $_POST['page'][0] = "default";
 		if(empty($_POST['page'][$i])) continue;
 		eval('$value = '.$_POST['expire'][$i].';');
 		$expire_list[$_POST['page'][$i]] = $value;
 	}
 	$expire_list = var_export($expire_list, true);
+	
 	$content = <<<mystep
 <?php
 \$setting = array();
@@ -45,6 +47,16 @@ mystep;
 		while (false !== ($file = readdir($handle))) {
 			$file = strtolower($file);
 			if($file!="." && $file!="..") {
+				MultiDel($cache_path.$file);
+			}
+		}
+		closedir($handle);
+	}
+	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/session/";
+	if($handle = opendir($cache_path)) {
+		while (false !== ($file = readdir($handle))) {
+			$file = strtolower($file);
+			if($file!="." && $file!=".." && $file!=date("Ymd")) {
 				MultiDel($cache_path.$file);
 			}
 		}

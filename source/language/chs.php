@@ -8,9 +8,10 @@ $language_info = array (
 
 $language = array (
   'ajax_sending' => '正在发送数据',
-  'page_main' => '首页1',
+  'page_main' => '首页',
   'page_error' => '网站出现错误，请联系<a href="mailto:%s">管理员</a>！',
   'page_update' => '页面更新时间： ',
+	"page_no" => "第 %s 页",
   'info_compressmode' => '压缩模式：',
   'info_compresslevel' => '压缩级别：',
   'info_compressrate' => '压缩比率：',

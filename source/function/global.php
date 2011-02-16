@@ -230,7 +230,7 @@ function chg_charset($content, $from="gbk", $to="utf-8") {
 
 
 /*---------------------------------------Functions 4 File Start---------------------------------------*/
-function remove_header($content) {
+function RemoveHeader($content) {
 	//Coded By Windy_sk 20070420 v1.1
 	$content = preg_replace("/^.+?\r\n\r\n/s", "", $content);
 	return $content;
@@ -256,7 +256,7 @@ function GetRemoteContent($host, $page="", $header="", $port=80, $timeout=60) {
 	while (!feof($fp)) $content .= fgets($fp, 255);
 	fclose($fp);
 
-	return remove_header($content);
+	return RemoveHeader($content);
 }
 
 function GetRemoteFile($remote_file, $local_file) {
@@ -339,7 +339,6 @@ function MakeDir($dir) {
 
 function MultiDel($dir){
 	//Coded By Windy2000 20031001 v1.0
-	if(empty($dir)) return;
 	if(is_dir($dir)){
 		$mydir = opendir($dir);
 		while(($file = readdir($mydir)) !== false) {
@@ -351,19 +350,19 @@ function MultiDel($dir){
 		closedir($mydir);
 		rmdir($dir);
 	}else{
-		unlink($dir);
+		if(is_file($file)) unlink($file);
 	}
 	return;
 }
 
-function iswriteable($file){
+function isWriteable($file){
 	if(is_dir($file)){
 		$dir = $file;
 		$writeable = false;
 		$tmpFile = tempnam($dir, "tmp");
 		if($fp = @fopen($tmpFile, 'w')){
-		 @fclose($fp);
-		 @unlink($tmpFile);
+		 fclose($fp);
+		 unlink($tmpFile);
 		 $writeable = true;
 		}
 	} else {

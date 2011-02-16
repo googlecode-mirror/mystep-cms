@@ -203,7 +203,7 @@ class MSSQL extends class_common {
 				$result[] = preg_replace("/^\n*(.*)\n*$/m","\\1",$temp[$i]);
 			}
 		}
-		return($result);
+		return $result;
 	}
 
 	public function BatchExec($ArrSQL){

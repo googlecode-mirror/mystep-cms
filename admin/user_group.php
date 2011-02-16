@@ -79,7 +79,8 @@ function build_page($method) {
 			} else {
 				$thePowerFunc = split(",", $record['power_func']);
 				$record['power_func'] = "";
-				for($i=0; $i<count($thePowerFunc); $i++) {
+				$max_count = count($thePowerFunc);
+				for($i=0; $i<$max_count; $i++) {
 					$theFunc = getParaInfo("admin_cat_plat", "id", $thePowerFunc[$i]);
 					$record['power_func'] .= $theFunc['name'].", ";
 				}
@@ -92,7 +93,8 @@ function build_page($method) {
 			} else {
 				$thePowerCata = split(",", $record['power_cat']);
 				$record['power_cat'] = "";
-				for($i=0; $i<count($thePowerCata); $i++) {
+				$max_count = count($thePowerCata);
+				for($i=0; $i<$max_count; $i++) {
 					$theCata = getParaInfo("news_cat", "cat_id", $thePowerCata[$i]);
 					$record['power_cat'] .= $theCata['cat_name'].", ";
 				}
@@ -105,7 +107,8 @@ function build_page($method) {
 			} else {
 				$thePowerWeb = split(",", $record['power_web']);
 				$record['power_web'] = "";
-				for($i=0; $i<count($thePowerWeb); $i++) {
+				$max_count = count($thePowerWeb);
+				for($i=0; $i<$max_count; $i++) {
 					$theWeb = getParaInfo("website", "web_id", $thePowerWeb[$i]);
 					$record['power_web'] .= $theCata['name'].", ";
 				}
@@ -135,15 +138,18 @@ function build_page($method) {
 		$tpl_tmp->Set_Variables($record);
 		
 		$tpl_tmp->Set_Variable('power_web_all_checked', $record['power_web']=="all"?"checked":"");
-		for($i=0; $i<count($website); $i++) {
+		$max_count = count($website);
+		for($i=0; $i<$max_count; $i++) {
 			$tpl_tmp->Set_Loop('power_web', array("web_id"=>$website[$i]['web_id'], "name"=>$website[$i]['name'], "checked"=>strpos(",".$record['power_web'].",", ",".$website[$i]['web_id'].",")!==false?"checked":""));
 		}
 		
 		$tpl_tmp->Set_Variable('power_func_all_checked', $record['power_func']=="all"?"checked":"");
-		for($i=0; $i<count($admin_cat); $i++) {
+		$max_count = count($admin_cat);
+		for($i=0; $i<$max_count; $i++) {
 			$tpl_tmp->Set_Loop('power_func', array("key"=>$admin_cat[$i]['id'], "value"=>$admin_cat[$i]['name'], "pid"=>$admin_cat[$i]['pid'], "checked"=>strpos(",".$record['power_func'].",", ",".$admin_cat[$i]['id'].",")!==false?"checked":""));
 			if(isset($admin_cat[$i]['sub'])) {
-				for($j=0; $j<count($admin_cat[$i]['sub']); $j++) {
+				$max_count1 = count($admin_cat[$i]['sub']);
+				for($j=0; $j<$max_count1; $j++) {
 					$tpl_tmp->Set_Loop('power_func', array("key"=>$admin_cat[$i]['sub'][$j]['id'], "value"=>($j+1==count($admin_cat[$i]['sub'])?"©¸ ":"©À ").$admin_cat[$i]['sub'][$j]['name'], "pid"=>$admin_cat[$i]['sub'][$j]['pid'], "checked"=>strpos(",".$record['power_func'].",", ",".$admin_cat[$i]['sub'][$j]['id'].",")!==false?"checked":""));
 				}
 			}

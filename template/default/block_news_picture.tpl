@@ -1,7 +1,7 @@
 								<ul class="pic">
 <!--loop:start-->
 									<li>
-										<a href="<!--news_link-->" target="_blank"><img src="<!--news_image-->" width="120" height="90" alt="<!--news_subject-->"></a><br />
+										<a href="<!--news_link-->" target="_blank"><img src="<!--news_image-->" width="120" height="90" alt="<!--news_subject_org-->"></a><br />
 										<a href="<!--news_link-->" target="_blank"><!--news_subject--></a>
 									</li>
 <!--loop:end-->

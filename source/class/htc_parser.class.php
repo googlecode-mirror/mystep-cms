@@ -361,7 +361,7 @@ class HTC_Parser extends class_common {
 				$Rnd_Key .= mt_rand(1, 10)>8 ? $this->HTC_watermark_disturb[mt_rand(0,count($this->HTC_watermark_disturb) - 1)] : chr(mt_rand(0xb0,0xe0)).chr(mt_rand(0xa0,0xff));
 			}
 		}
-		return($Rnd_Key);
+		return $Rnd_Key;
 	}
 
 	public function watermark($code, $creditStr=" - Watermark Made by Windy2000", $url=""){

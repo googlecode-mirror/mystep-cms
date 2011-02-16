@@ -85,10 +85,10 @@ class MyCache_File extends class_common {
 		$new_key = substr(md5($key), 0, 8);
 		$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
 		if(empty($value)) {
-			@unlink($the_path.$new_key);
+			unlink($the_path.$new_key);
 		} else {
 			$result = array(
-					"expire" => time()+$ttl,
+					"expire" => $_SERVER["REQUEST_TIME"]+$ttl,
 					"value" => $value,
 			);
 			$this->MakeDir($the_path);
@@ -101,10 +101,10 @@ class MyCache_File extends class_common {
 		$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
 		if(is_file($the_path.$new_key)) {
 			$result = unserialize($this->GetFile($the_path.$new_key));
-			if($result['expire']>time()) {
+			if($result['expire']>$_SERVER["REQUEST_TIME"]) {
 				return $result['value'];
 			} else {
-				@unlink($the_path.$new_key);
+				unlink($the_path.$new_key);
 				return false;
 			}
 		} else {
@@ -115,7 +115,7 @@ class MyCache_File extends class_common {
 	public function remove($key) {
 		$new_key = substr(md5($key), 0, 8);
 		$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
-		@unlink($the_path.$new_key);
+		unlink($the_path.$new_key);
 	}
 	
 	public function clean() {
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `my_cache` (
 ";
 			$result = mysql_query($sql, $this->cnt);
 		}
-		return($result);
+		return $result;
 	}
 	
 	public function set($key, $value = "", $ttl = 300) {
@@ -157,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `my_cache` (
 		if(empty($value)) {
 			return mysql_query("delete from my_cache where key='{$new_key}'", $this->cnt);
 		} else {
-			$expiration = time() + $ttl;
+			$expiration = $_SERVER["REQUEST_TIME"] + $ttl;
 			$value = mysql_real_escape_string(serialize($value));
 			return mysql_query("REPLACE INTO my_cache (key, expiration, value) VALUES ('{$new_key}', {$expiration} , '{$value}')", $this->cnt);
 		}

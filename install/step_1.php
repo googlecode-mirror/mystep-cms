@@ -91,7 +91,7 @@ $theList = array(
 foreach($theList as $cur) {
 	echo "<tr>\n";
 	echo "<td>{$cur}</td><td class=\"w pdleft1\">可写</td>";
-	if(iswriteable(ROOT_PATH."/".$cur)) {
+	if(isWriteable(ROOT_PATH."/".$cur)) {
 		echo '<td class="w pdleft1">可写</td>';
 	} else {
 		echo '<td class="nw pdleft1">不可写</td>';

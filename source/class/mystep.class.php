@@ -73,12 +73,12 @@ class MyStep extends class_common {
 	public function getLanguage($dir) {
 		global $setting;
 		if(is_file($dir."/default.php")) {
-			include_once($dir."/default.php");
+			include($dir."/default.php");
 			if(isset($language)) $this->setLanguage($language);
 			unset($language);
 		}
 		if(is_file($dir."/".$setting['gen']['language'].".php")) {
-			include_once($dir."/".$setting['gen']['language'].".php");
+			include($dir."/".$setting['gen']['language'].".php");
 			if(isset($language)) $this->setLanguage($language);
 		}
 	}
@@ -89,7 +89,7 @@ class MyStep extends class_common {
 		$max_count = count($GLOBALS['plugin']);
 		for($i=0; $i<$max_count; $i++) {
 			$curPlugin = ROOT_PATH."/plugin/".$GLOBALS['plugin'][$i]['idx']."/index.php";
-			if(is_file($curPlugin) && $GLOBALS['plugin'][$i]['active']=='1') include_once($curPlugin);
+			if(is_file($curPlugin) && $GLOBALS['plugin'][$i]['active']=='1') include($curPlugin);
 		}
 	}
 	
@@ -124,9 +124,11 @@ class MyStep extends class_common {
 
 		$host = $req->getServer("HTTP_HOST");
 		includeCache("website");
-		if($GLOBALS['web_info'] = getParaInfo("website", "host", $host) && $subsetting) {
+		$GLOBALS['web_info'] = getParaInfo("website", "host", $host);
+		if($GLOBALS['web_info'] && $subsetting) {
 			if(is_file(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php")) {
-				include_once(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php");
+				include(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php");
+				$setting = arrayMerge($setting, $setting_sub);
 			}
 		}
 		
@@ -161,17 +163,25 @@ class MyStep extends class_common {
 	}
 	
 	public function show(MyTpl $tpl) {
-		global $setting;
+		global $setting, $news_cat, $cat_idx, $web_info;
 		$tpl->Set_Variable('template', $setting['gen']['template']);
 		$tpl->Set_Variable('web_title', $setting['web']['title']);
 		$tpl->Set_Variable('web_url', $setting['web']['url']);
 		$tpl->Set_Variable('web_email', $setting['web']['email']);
-		$tpl->Set_Variable('rss_link', "rss.php");
+		$tpl->Set_Variable('rss_link', $setting['gen']['rewrite']?"rss.xml":"rss.php?cat=".$cat_idx);
 		$tpl->Set_Variable('page_keywords', $setting['web']['keyword']);
 		$tpl->Set_Variable('page_description', $setting['web']['description']);
 		$tpl->Set_Variable('charset', $setting['gen']['charset']);
 		$tpl->Set_Variable('last_modify', date("Y-m-d H:i:s"));
 		$this->pushAddedContent($tpl, "start", "end");
+		$max_count = count($news_cat);
+		for($i=0; $i<$max_count; $i++) {
+			if($news_cat[$i]['cat_layer']==1 && $news_cat[$i]['web_id']==$web_info['web_id']) {
+				if(($news_cat[$i]['cat_show'] & 1) != 1) continue;
+				if(empty($news_cat[$i]['cat_link'])) $news_cat[$i]['cat_link'] = getFileURL(0, $news_cat[$i]['cat_idx']);
+				$tpl->Set_Loop('news_cat', $news_cat[$i]);
+			}
+		}
 		
 		if(count(ob_list_handlers())==0 && !headers_sent()) ob_start();
 		echo $tpl->Get_Content('$db, $setting');

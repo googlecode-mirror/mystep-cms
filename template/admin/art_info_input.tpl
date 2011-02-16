@@ -30,7 +30,7 @@
 		</table>
 	</form>
 </div>
-<script type="text/javascript" src="tinymce/tiny_mce.js"></script>
+<script type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
 <script type="text/javascript">
 tinyMCE.init({
 	mode : "textareas",

@@ -19,26 +19,24 @@ switch($method) {
 		$web_info = getParaInfo("website", "web_id", $web_id);
 		if($web_id>1) {
 			$cfg_file = ROOT_PATH."/include/config_".$web_info['idx'].".php";
-			$main_setting = $setting;
 			include($cfg_file);
-			if($main_setting['db']['name']!=$setting['db']['name']) {
-				$db->Query("drop database ".$main_setting['db']['name']);
-			} elseif($main_setting['db']['pre']!=$setting['db']['pre']) {
-				$db->Query("drop table ".$setting['db']['pre']."news_show");
-				$db->Query("drop table ".$setting['db']['pre']."news_detail");
-				$db->Query("drop table ".$setting['db']['pre']."info_show");
-				$db->Query("drop table ".$setting['db']['pre']."news_tag");
-				$db->Query("drop table ".$setting['db']['pre']."attachment");
-				$db->Query("drop table ".$setting['db']['pre']."links");
+			if($setting['db']['name']!=$setting_sub['db']['name']) {
+				$db->Query("drop database ".$setting_sub['db']['name']);
+			} elseif($setting['db']['pre']!=$setting_sub['db']['pre']) {
+				$db->Query("drop table ".$setting_sub['db']['pre']."news_show");
+				$db->Query("drop table ".$setting_sub['db']['pre']."news_detail");
+				$db->Query("drop table ".$setting_sub['db']['pre']."info_show");
+				$db->Query("drop table ".$setting_sub['db']['pre']."news_tag");
+				$db->Query("drop table ".$setting_sub['db']['pre']."attachment");
+				$db->Query("drop table ".$setting_sub['db']['pre']."links");
 				$db->Query("drop table ".$web_info['idx']."_counter");
 			} else {
 				$db->Query("update ".$setting['db']['pre']."news_cat set web_id=1 where web_id='{$web_id}'");
 				$db->Query("update ".$setting['db']['pre']."news_show set web_id=1 where web_id='{$web_id}'");
 			}
-			@unlink($cfg_file);
+			unlink($cfg_file);
 			$db->Query("delete from ".$setting['db']['pre']."website where web_id='{$web_id}'");
 			deleteCache("website");
-			$setting = $main_setting;
 		}
 		break;
 	case "add_ok":
@@ -51,12 +49,12 @@ switch($method) {
 			unset($_POST['setting']);
 			$result = <<<mystep
 <?php
-\$setting = array();
+\$setting_sub = array();
 
 /*--settings--*/
 ?>
 mystep;
-			$result = str_replace("/*--settings--*/", makeVarsCode($new_setting, '$setting'), $result);
+			$result = str_replace("/*--settings--*/", makeVarsCode($new_setting, '$setting_sub'), $result);
 			if($method=="add_ok" && ($setting['db']['name']!=$new_setting['db']['name'] || $setting['db']['pre']!=$new_setting['db']['pre'])) {
 				$strFind = array("{db_name}", "{pre}", "{charset}", "{host}", "{idx}");
 				$strReplace = array($new_setting['db']['name'], $new_setting['db']['pre'], $setting['db']['charset'], $_POST['host'], $_POST['idx']);

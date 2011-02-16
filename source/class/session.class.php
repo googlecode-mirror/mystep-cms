@@ -10,7 +10,7 @@ class sess_mystep {
 	
 	public static function sess_read($sid) {
 		global $setting;
-		if($result = mysql_query("SELECT * FROM ".$setting['db']['pre']."user_online WHERE sid = '{$sid}' AND reflash > ".(time()-($setting['session']['expire']*60)))) {
+		if($result = mysql_query("SELECT * FROM ".$setting['db']['pre']."user_online WHERE sid = '{$sid}' AND reflash > ".($_SERVER["REQUEST_TIME"]-($setting['session']['expire']*60)))) {
 			if (mysql_num_rows($result)) {
 				$record = mysql_fetch_assoc($result);
 				return MyReq::sessEncode($record);
@@ -23,7 +23,7 @@ class sess_mystep {
 	public static function sess_write($sid, $sess_data) {
 		global $setting;
 		extract(MyReq::sessDecode($sess_data));
-		$reflash = time();
+		$reflash = $_SERVER["REQUEST_TIME"];
 		if(empty($username)) $username = "guest";
 		if(empty($usertype)) $usertype = 2;
 		self::$cnt = mysql_connect($setting['db']['host'], $setting['db']['user'], $setting['db']['pass']);
@@ -40,7 +40,7 @@ class sess_mystep {
 	public static function sess_gc() {
 		global $setting;
 		if(is_resource(self::$cnt)) {
-			mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE reflash < " . (time() - $setting['session']['expire'] * 60), self::$cnt);
+			mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE reflash < " . ($_SERVER["REQUEST_TIME"] - $setting['session']['expire'] * 60), self::$cnt);
 			mysql_close(self::$cnt);
 		}
 		return;
@@ -70,16 +70,16 @@ CREATE TABLE IF NOT EXISTS `my_session` (
 ";
 			$result = mysql_query($sql);
 		}
-		return($result);
+		return $result;
 	}
 	
 	public static function sess_close() {
 		self::sess_gc(ini_get('session.gc_maxlifetime')); 
-		return(true);
+		return true;
 	}
 	
 	public static function sess_read($sid) {
-		if($result = mysql_query("SELECT value FROM my_session WHERE SID = '{$sid}' AND expiration > ".time(), self::$cnt)) {
+		if($result = mysql_query("SELECT value FROM my_session WHERE SID = '{$sid}' AND expiration > ".$_SERVER["REQUEST_TIME"], self::$cnt)) {
 			if (mysql_num_rows($result)) {
 				$record = mysql_fetch_assoc($result);
 				return $record['value'];
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `my_session` (
 	
 	public static function sess_write($sid, $sess_data) {
 		global $setting;
-		$expiration = time() + $setting['session']['expire'] * 60;
+		$expiration = $_SERVER["REQUEST_TIME"] + $setting['session']['expire'] * 60;
 		$sess_data = mysql_real_escape_string($sess_data);
 		$result = mysql_query("REPLACE INTO my_session (SID, expiration, value) VALUES ('{$sid}', {$expiration} , '{$sess_data}')", self::$cnt);
 		return $result;
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `my_session` (
 	}
 	
 	public static function sess_gc($maxlifetime) {
-		return mysql_query("DELETE FROM my_session WHERE expiration < " . (time() - $maxlifetime), self::$cnt);
+		return mysql_query("DELETE FROM my_session WHERE expiration < " . ($_SERVER["REQUEST_TIME"] - $maxlifetime), self::$cnt);
 	}
 }
 
@@ -111,12 +111,12 @@ CREATE TABLE IF NOT EXISTS `my_session` (
 class sess_file {
 	public static function sess_open($sess_path, $sess_name) {
 		MakeDir($sess_path);
-		return(true);
+		return true;
 	}
 	
 	public static function sess_close() {
 		self::sess_gc(ini_get('session.gc_maxlifetime')); 
-		return(true);
+		return true;
 	}
 	
 	public static function sess_read($sid) {
@@ -131,7 +131,7 @@ class sess_file {
 	
 	public static function sess_destroy($sid) {
 		global $setting;
-		return(@unlink($setting['session']['path']."/sess_".$sid));
+		return unlink($setting['session']['path']."/sess_".$sid);
 	}
 	
 	public static function sess_gc($maxlifetime) {
@@ -140,7 +140,7 @@ class sess_file {
 		while($file = readdir($mydir)) {
 			if($file!="." && $file!="..") {
 				$the_file = $setting['session']['path']."/".$file;
-				if(filemtime($the_file)+$maxlifetime<time()) {
+				if(filemtime($the_file)+$maxlifetime<$_SERVER["REQUEST_TIME"]) {
 					unlink($the_file);
 				}
 			}
