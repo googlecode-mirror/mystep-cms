@@ -1,11 +1,11 @@
 <?php
 class plugin_offical implements plugin {
 	public static function install() {
-		//not need...	
+		//no use but nessesary...	
 	}
 	
 	public static function uninstall() {
-		die("You cannot uninstall the offical plugin!");
+		showInfo("You cannot uninstall the offical plugin!");
 	}
 	
 	public static function info() {
@@ -14,8 +14,33 @@ class plugin_offical implements plugin {
 		return $info;
 	}
 	
+	public static function setting() {
+		$plugin_setting['offical'] = null;
+		if(is_file(dirname(__FILE__)."/config.php")) include(dirname(__FILE__)."/config.php");
+		return $plugin_setting['offical'];
+	}
+	
 	public static function page_start() {
-		set_error_handler("ErrorHandler");
+		$setting = self::setting();
+		if($setting['cache']) {
+			$expires = getCacheExpire();
+			header("Pragma: public");
+			header("Cache-Control: private, max-age=".$expires);
+			header("Last-Modified: ".gmdate('D, d M Y H:i:s')." GMT");
+			header("Expires: ".gmdate('D, d M Y H:i:s', time()+$expires)." GMT");
+	    $etag = md5($_SERVER['URL']);
+			if ($_SERVER['HTTP_IF_NONE_MATCH'] == $etag){
+				header('Etag:'.$etag, true, 304);
+				exit();
+			} else {
+				header('Etag:'.$etag);
+			}
+		} else {
+			header("Expires: -1");
+			header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0");
+      header("Cache-Control: private", false);
+			header("Pragma: no-cache");	
+		}
 	}
 	
 	public static function page_end() {
@@ -211,7 +236,7 @@ mytpl;
 		$block = $block_all[0][0];
 		$unit = $block_all[1][0];
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."tag_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$tag_list[\$i]['\\1']}", $unit);
-		$str_sql = "select tag, count from ".$setting['db']['pre']."news_tag where count>5 and length(tag)>3 and ".(empty($att_list['condition'])?"1=1":$att_list['condition'])." order by ".$att_list['order']." limit ".$att_list['limit'];
+		$str_sql = "select tag, count from ".$setting['db']['pre']."news_tag where ".(empty($att_list['condition'])?"1=1":$att_list['condition'])." order by ".$att_list['order']." limit ".$att_list['limit'];
 		//$str_sql = addslashes($str_sql);
 		$result = <<<mytpl
 <?php

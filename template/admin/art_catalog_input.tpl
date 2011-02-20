@@ -106,5 +106,6 @@ function changeCata(idx) {
 	} else {
 		$id("web_id").disabled = false;
 	}
+	if("<!--web_disabled-->"=="disabled") $id("web_id").disabled = true;
 }
 </script>

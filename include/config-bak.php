@@ -50,6 +50,7 @@ $setting['cookie']['path'] = "/";
 $setting['cookie']['prefix'] = "ms_";
 
 // Path
+$setting['path']['admin'] = 'admin/';
 $setting['path']['upload'] = "files/";
 $setting['path']['cache']	= "html/";
 $setting['path']['template'] = "template/";

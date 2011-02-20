@@ -85,29 +85,30 @@ class MyStep extends class_common {
 	
 	public function setPlugin() {
 		includeCache("plugin");
+		global $plugin_setting;
 		$mystep = $this;
+		$plugin_setting = array();
 		$max_count = count($GLOBALS['plugin']);
 		for($i=0; $i<$max_count; $i++) {
-			$curPlugin = ROOT_PATH."/plugin/".$GLOBALS['plugin'][$i]['idx']."/index.php";
-			if(is_file($curPlugin) && $GLOBALS['plugin'][$i]['active']=='1') include($curPlugin);
+			if($GLOBALS['plugin'][$i]['active']=='1') {
+				$curPlugin = ROOT_PATH."/plugin/".$GLOBALS['plugin'][$i]['idx']."/index.php";
+				if(is_file($curPlugin)) include($curPlugin);
+				$curPlugin = ROOT_PATH."/plugin/".$GLOBALS['plugin'][$i]['idx']."/setting.php";
+				if(is_file($curPlugin)) include($curPlugin);
+			}
 		}
 	}
 	
 	public function pageStart($subsetting = true) {
 		global $setting, $db, $req, $cache;
-		if(!$setting['gen']['cache']) {
-			header("Expires: -1");
-			header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0", false);
-			header("Pragma: no-cache");
-		}
 		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
-
 		date_default_timezone_set("PRC");
 		set_magic_quotes_runtime(0);
 		set_time_limit(30);
 		ini_set('memory_limit', '32M');
 		
 		error_reporting(E_ALL ^ E_NOTICE);
+		set_error_handler("ErrorHandler");
 		
 		ob_start();
 		ob_implicit_flush(false);
@@ -163,7 +164,7 @@ class MyStep extends class_common {
 	}
 	
 	public function show(MyTpl $tpl) {
-		global $setting, $news_cat, $cat_idx, $web_info;
+		global $setting, $news_cat, $cat_idx, $web_info, $self;
 		$tpl->Set_Variable('template', $setting['gen']['template']);
 		$tpl->Set_Variable('web_title', $setting['web']['title']);
 		$tpl->Set_Variable('web_url', $setting['web']['url']);
@@ -175,9 +176,14 @@ class MyStep extends class_common {
 		$tpl->Set_Variable('last_modify', date("Y-m-d H:i:s"));
 		$this->pushAddedContent($tpl, "start", "end");
 		$max_count = count($news_cat);
+		$show_list = array(
+			"index.php" => 1,
+			"list.php" => 2,
+			"read.php" => 4,
+		);
 		for($i=0; $i<$max_count; $i++) {
 			if($news_cat[$i]['cat_layer']==1 && $news_cat[$i]['web_id']==$web_info['web_id']) {
-				if(($news_cat[$i]['cat_show'] & 1) != 1) continue;
+				if(($news_cat[$i]['cat_show'] & $show_list[$self]) != $show_list[$self]) continue;
 				if(empty($news_cat[$i]['cat_link'])) $news_cat[$i]['cat_link'] = getFileURL(0, $news_cat[$i]['cat_idx']);
 				$tpl->Set_Loop('news_cat', $news_cat[$i]);
 			}

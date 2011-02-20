@@ -121,6 +121,10 @@ function getList($layer = 1, $cat_main = 0) {
 
 function buildParaList($idx) {
 	global $db, $setting;
+	if(is_null($db)) {
+		global $mystep;
+		$db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
+	}
 	$cache_para = array();
 	switch($idx) {
 		case "news_cat":
@@ -183,6 +187,7 @@ function buildParaList($idx) {
 			$db->Query("select * from ".$setting['db']['pre']."admin_cat where pid=0 order by id");
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
+				$record['url'] = $record['path'].$record['file'];
 				$theList[] = $record;
 			}
 			$max_count = count($theList);
@@ -191,6 +196,7 @@ function buildParaList($idx) {
 				$db->Query("select * from ".$setting['db']['pre']."admin_cat where pid=".$theList[$i]['id']." order by id");
 				while($record=$db->GetRS()) {
 					HtmlTrans(&$record);
+					$record['url'] = $record['path'].$record['file'];
 					$theList[$i]['sub'][] = $record;
 				}
 			}
@@ -209,6 +215,7 @@ function buildParaList($idx) {
 			$db->Query("select * from ".$setting['db']['pre'].$idx." order by id");
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
+				$record['url'] = $record['path'].$record['file'];
 				$theList[] = $record;
 			}
 			$cache_para[$idx] = $theList;
@@ -478,10 +485,10 @@ function GzDocOut($level = 3, $show = false) {
 	global $time_start, $query_count, $language;
 	$ENCODING = CheckCanGzip();
 	$Content  = ob_get_contents();
-	$cache_use = is_array($GLOBALS['cache_info']);
-	if ($ENCODING && $level) {
-		ob_end_clean();
-		$rate	  = ceil(strlen(gzcompress($Content,$level)) * 100 / (strlen($Content)==0?1:strlen($Content))). "%";
+	$cache_use = isset($GLOBALS['cache_info']) && is_array($GLOBALS['cache_info']);
+	if($ENCODING && $level) {
+		if(count(ob_list_handlers())>0) ob_end_clean();
+		$rate = ceil(strlen(gzcompress($Content,$level)) * 100 / (strlen($Content)==0?1:strlen($Content))). "%";
 		
 		if($show) {
 			$Content .= "
@@ -548,7 +555,7 @@ function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 		E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
 		E_ALL =>	"Impossible",
 	);
-	if($err_no==E_NOTICE || $err_no==E_STRICT || $err_no==E_WARNING || $err_no==E_CORE_WARNING || $err_no==E_COMPILE_WARNING) return;
+	if($err_no==E_NOTICE || $err_no==E_WARNING) return;
 	$cur_err = $err_type[$err_no];
 	$err_str .= "Time: ".date("Y-m-d H:i:s")."\n";
 	$err_str .= "Type: {$cur_err}\n";
@@ -560,6 +567,14 @@ function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 		$err_str .= "Script: ".htmlspecialchars($err_script)."\n";
 	}
 	$err_str .= "Message: {$err_msg}\n";
+	$err_str .= "Debug: \n";
+	$debug_info = debug_backtrace();
+	$max_count = count($debug_info);
+	$n=0;
+	for($i=count($debug_info)-1; $i>=0; $i--){
+		if(empty($debug_info[$i]['file'])) continue;
+		$err_str .= (++$n)." - ".$debug_info[$i]['file']." (line:".$debug_info[$i]['line'].", function:".$debug_info[$i]['function'].")\n";
+	}
 	$err_str .= "-------------------------------------\n";
 	$err_str = str_replace("\r", "", $err_str);
 	if(strpos($err_script,"@")===false) WriteError($err_str);

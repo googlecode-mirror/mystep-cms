@@ -8,10 +8,11 @@ if($setting['web']['close'] && !isset($_COOKIE['force'])) {
 include(ROOT_PATH."/include/parameter.php");
 include(ROOT_PATH."/source/function/global.php");
 include(ROOT_PATH."/source/function/web.php");
+include(ROOT_PATH."/source/class/mysql.class.php");
 
 $mystep = new MyStep();
-$mystep->pageStart();
 $mystep->setPlugin();
+$mystep->pageStart();
 $cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/".$web_info['idx']."/";
 $tpl_info = array(
 		"idx" => "main",

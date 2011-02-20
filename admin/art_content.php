@@ -58,6 +58,7 @@ switch($method) {
 		} else {
 			$_POST['style'] = implode(",", $_POST['style']);
 			if(get_magic_quotes_gpc()) strip_slash($_POST);
+			$_POST['content'] = preg_replace("/[\/]+files/", "/files", $_POST['content']);
 			$_POST['content'] = str_replace("<!-- pagebreak -->", "</p><!-- pagebreak --><p>", $_POST['content']);
 			$_POST['content'] = preg_replace("/<p>[\r\n\s]*<\/p>/i", "", $_POST['content']);
 			$content = explode("<!-- pagebreak -->", str_replace('="../', '="'.$setting['web']['url'].'/', $_POST['content']));
@@ -211,7 +212,7 @@ function build_page($method) {
 		$db->Query($str_sql);
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
-			if(empty($record['link'])) $record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['add_date']);
+			if(empty($record['link'])) $record['link'] = getFileURL($record['news_id'], $record['cat_idx']);
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$title = empty($cat_id)?"总列表":$db->GetSingleResult("select cat_name from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
@@ -226,6 +227,7 @@ function build_page($method) {
 		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_show where news_id='{$news_id}'");
 		if(!$record) {
 			$tpl->Set_Variable('main', showInfo("指定的记录不存在！", 0));
+			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
 		HtmlTrans(&$record);

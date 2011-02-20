@@ -27,8 +27,23 @@
 				<td class="row" colspan="4">页面缓存：
 					<input type="radio" class="cbox" id="cache_1" name="cache" value="true" <!--cache_1--> / /><label for="cache_1">开启</label>
 					<input type="radio" class="cbox" id="cache_2" name="cache" value="false" <!--cache_2--> / /><label for="cache_2">关闭</label>
+					<span class="comment">开启页面缓存，减少固定时间内的查询频率，增强网站效率</span> 
 				</td>
 			</tr>
+			<tr> 
+				<td class="row" colspan="4">数据缓存：
+<?PHP
+include(ROOT_PATH."/include/config-detail.php");
+echo "<select name=\"cache_mode\">\n";
+foreach($setting_type['web']['cache_mode'][1] as $key => $value) {
+	$checked = $value==$setting['web']['cache_mode']?"selected":"";
+	echo '<option value="'.$value.'" '.$checked.'>'.$key.'</option>'."\n";
+}
+echo "</select>";
+?>
+					<span class="comment">开启数据缓存，减少数据重复查询，以提高效率</span> 
+				</td> 
+			</tr> 
 			<tr>
 				<td class="row" colspan="4" align="center">
 					<input class="btn" type="Submit" value=" 确认修改 " />&nbsp;&nbsp;

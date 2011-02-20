@@ -7,6 +7,7 @@ $log_info = "";
 if($method=="update" && count($_POST)>0) {
 	$log_info = "∏¸–¬ª∫¥Ê…Ë÷√";
 	$setting['gen']['cache'] = ($_POST['cache']=="true");
+	$setting['web']['cache_mode'] = $_POST['cache_mode'];
 	$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);
 	$expire_list = array();
 	$max_count = count($_POST['page']);

@@ -26,7 +26,7 @@
 					<div class="main">
 						<div>
 							<h1><!--record_subject--></h1>
-							<h3>来源：<!--record_original--> &nbsp; | &nbsp; 时间：<!--record_add_date--></h3>
+							<h3>来源：<!--record_original--> &nbsp; | &nbsp; 时间：<!--record_add_date--> &nbsp; | &nbsp; 浏览：<!--record_views--></h3>
 						</div>
 						<div style="text-align:center;">
 							<select id="page_sel" onchange="location.href=this.value"></select>

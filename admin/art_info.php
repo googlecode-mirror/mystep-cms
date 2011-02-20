@@ -64,6 +64,7 @@ function build_page($method) {
 			$db->Free();
 			if(!$record) {
 				$tpl->Set_Variable('main', showInfo("指定展示内容不存在！", 0));
+				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
 			$web_id = $record['web_id'];

@@ -5,6 +5,11 @@ include(ROOT_PATH."/include/parameter.php");
 include(ROOT_PATH."/source/function/global.php");
 include(ROOT_PATH."/source/function/web.php");
 include(ROOT_PATH."/source/function/admin.php");
+include(ROOT_PATH."/source/class/mysql.class.php");
+
+header("Expires: -1");
+header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0", false);
+header("Pragma: no-cache");
 
 $mystep = new MyStep();
 $mystep->pageStart(false);
@@ -26,7 +31,7 @@ if($self=="login.php") {
 }
 
 includeCache("admin_cat");
-if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "url", $self)) {
+if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "file", $self)) {
 	if(strpos(",".$group['power_func'].",", ",".$cat_info['id'].",")===false) {
 		echo '<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">您无权进行该操作！</div>';
 		$mystep->pageEnd(false);

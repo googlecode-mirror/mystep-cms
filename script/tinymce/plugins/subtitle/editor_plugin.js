@@ -3,6 +3,8 @@
  */
 
 (function() {
+	tinymce.PluginManager.requireLangPack('subtitle');
+	
 	tinymce.create('tinymce.plugins.SubtitlePlugin', {
 		init : function(ed, url) {
 			ed.addCommand('mceSubtitle', function() {
@@ -16,7 +18,7 @@
 			});
 
 			ed.addButton('Subtitle', {
-				title : '设置子标题',
+				title : 'subtitle.title',
 				cmd : 'mceSubtitle',
 				image : url + '/img/Subtitle.gif'
 			});
@@ -42,8 +44,8 @@
 			return {
 				longname : 'Subtitle plugin',
 				author : 'Windy2000',
-				authorurl : 'http://tinymce.moxiecode.com',
-				infourl : 'http://wiki.moxiecode.com/',
+				authorurl : '',
+				infourl : '',
 				version : "1.0"
 			};
 		}

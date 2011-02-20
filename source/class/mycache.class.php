@@ -85,7 +85,7 @@ class MyCache_File extends class_common {
 		$new_key = substr(md5($key), 0, 8);
 		$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
 		if(empty($value)) {
-			unlink($the_path.$new_key);
+			@unlink($the_path.$new_key);
 		} else {
 			$result = array(
 					"expire" => $_SERVER["REQUEST_TIME"]+$ttl,
@@ -104,7 +104,7 @@ class MyCache_File extends class_common {
 			if($result['expire']>$_SERVER["REQUEST_TIME"]) {
 				return $result['value'];
 			} else {
-				unlink($the_path.$new_key);
+				@unlink($the_path.$new_key);
 				return false;
 			}
 		} else {
@@ -115,7 +115,7 @@ class MyCache_File extends class_common {
 	public function remove($key) {
 		$new_key = substr(md5($key), 0, 8);
 		$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
-		unlink($the_path.$new_key);
+		@unlink($the_path.$new_key);
 	}
 	
 	public function clean() {

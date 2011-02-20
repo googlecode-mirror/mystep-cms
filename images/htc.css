@@ -1,34 +1,7 @@
-.glow{
-	filter:glow(color=red, strength=2);
-}
-.dropshadow {
-	filter: dropshadow(color=#aaaaaa, offx=5, offy=5, positive=1);
-}
-.shadow {
-	filter: shadow(color=blue,direction=135, strength=1);
-}
-.quote {
-	padding: 5px;
-	background-color: #eeeeee;
-	border: 1px #999999 solid;
-	table-layout: fixed;
-}
-.watermark {
-	position: absolute;
-	width: 0px;
-	height: 1px;
-	overflow: hidden;
-}
-.tbl_show {
-	cursor:default;
-	BORDER: black 1px solid;
-	background-color:#eeeecc;
-	border-collapse:collapse;
-	border-Color:#999999;
-	text-align:center;
-}
-@media print {
-	.watermark {
-		display:none;
-	}
-}
+.glow{filter:glow(color=red, strength=2);}
+.dropshadow{filter:dropshadow(color=#aaaaaa, offx=5, offy=5, positive=1);}
+.shadow{filter:shadow(color=blue,direction=135, strength=1);}
+.quote{padding:5px; background-color:#eeeeee; border:1px #999999 solid; table-layout:fixed;}
+.tbl_show{cursor:default; BORDER:black 1px solid; background-color:#eeeecc; border-collapse:collapse; border-Color:#999999; text-align:center;}
+.watermark{position:absolute; width:0px; height:1px; overflow:hidden;}
+@media print{.watermark{display:none;}}

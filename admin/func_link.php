@@ -91,6 +91,7 @@ function build_page($method) {
 			$db->Free();
 			if(!$record) {
 				$tpl->Set_Variable('main', showInfo("指定 ID 的链接不存在！", 0));
+				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
 			HtmlTrans(&$record);

@@ -82,38 +82,6 @@ CREATE TABLE `{pre}comment` (
 
 # ---------------------------------------------------------------------------------------------------------------
 
-# 新闻访问统计
-CREATE TABLE `{pre}news_count` (
-	`news_id` MEDIUMINT UNSIGNED NOT NULL,					#关联索引
-	`subject` Char(120) NOT NULL,										#新闻标题
-	`views` MEDIUMINT UNSIGNED DEFAULT 0,						#总浏览次数
-	`day_start` Char(10) DEFAULT '0',								#日统计起点
-	`day_count` SMALLINT UNSIGNED DEFAULT 0,				#当日浏览
-	`day_max_time` Char(10) DEFAULT '0',						#最大日浏览时间
-	`day_max_count` SMALLINT UNSIGNED DEFAULT 0,		#最大日浏览数量
-	`week_start` Char(10) DEFAULT '0',							#周统计起点
-	`week_count` MEDIUMINT UNSIGNED DEFAULT 0,			#本周浏览
-	`week_max_time` Char(10) DEFAULT '0',						#最大周浏览时间
-	`week_max_count` MEDIUMINT UNSIGNED DEFAULT 0,	#最大周浏览数量
-	`month_start` Char(10) DEFAULT '0',							#月统计起点
-	`month_count` MEDIUMINT UNSIGNED DEFAULT 0,			#本月浏览
-	`month_max_time` Char(10) DEFAULT '0',					#最大月浏览时间
-	`month_max_count` MEDIUMINT UNSIGNED DEFAULT 0,	#最大月浏览数量
-	`year_start` Char(10) DEFAULT '0',							#年统计起点
-	`yearh_count` MEDIUMINT UNSIGNED DEFAULT 0,			#本年浏览
-	`year_max_time` Char(10) DEFAULT '0',						#最大年浏览时间
-	`year_max_count` MEDIUMINT UNSIGNED DEFAULT 0,	#最大年浏览数量
-	INDEX (`news_id`),
-	INDEX (`day_count`),
-	INDEX (`week_count`),
-	INDEX (`month_count`),
-	INDEX (`year_count`),
-	UNIQUE KEY (`news_id`),
-	PRIMARY KEY (`id`)
-) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='内容数据统计';
-
-# ---------------------------------------------------------------------------------------------------------------
-
 # 新闻访问统计（所有浏览统计都在此表记录）
 CREATE TABLE `{pre}news_mark` (
 	`news_id` MEDIUMINT UNSIGNED,										#关联索引
@@ -127,18 +95,6 @@ CREATE TABLE `{pre}news_mark` (
 	UNIQUE KEY (`news_id`),
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='用户评价数据';
-
-# ---------------------------------------------------------------------------------------------------------------
-
-# 简单访问统计
-CREATE TABLE `{pre}counter` (
-	`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`date` DATE NOT NULL,															#统计日期
-	`pv` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,				#页面访问量
-	`iv` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,				#IP 访问量
-	`online` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,		#最大在线人数
-	PRIMARY KEY (`id`)
-) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='简单访问统计';
 
 # ---------------------------------------------------------------------------------------------------------------
 
@@ -162,12 +118,6 @@ CREATE TABLE `{pre}regist` (
 	`fax` Char(20),												#传真
 	`email` Char(40),											#电子邮件
 	`website` Char(200),									#网址
-	`if_travel_1` tinyint default 0,			#半日游
-	`if_travel_2` tinyint default 0,			#会后游
-	`room_type` tinyint default 0,				#房间类型
-	`date_checkin` DATETIME,							#入住日期
-	`date_checkout` DATETIME,							#退房日期
-	`add_date` DATETIME,									#录入日期
 	PRIMARY KEY (`id`)
 )COMMENT='企业注册';
 

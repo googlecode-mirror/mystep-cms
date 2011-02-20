@@ -9,6 +9,7 @@
 	<form method="post" action="?update" onsubmit="if($id('web_s_pass').value==$id('web_s_pass_r').value && $id('db_pass').value==$id('db_pass_r').value){return checkForm(this)}else{alert('两次输入的密码不一致！');return false;}">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 <?PHP
+global $language;
 include(ROOT_PATH."/include/config-detail.php");
 
 $cur_section = "";
@@ -36,11 +37,11 @@ content;
 					<span class="comment">'.$cur_description.'</span>
 				</td>
 			<tr>
-				<td class="cat" align="right">重复密码</td>
+				<td class="cat" align="right">'.$language['admin_psw'].'</td>
 				<td class="row">
 					<input type="password" id="'.$key1.'_'.$key2.'_r" name="setting['.$key1.']['.$key2.'_r]" value="" maxlength="'.$setting_type[$key1][$key2][2].'" />
 				';
-				$cur_description = "请重复输入密码（如果密码不变，此项和前一项请留空！）";
+				$cur_description = $language['admin_psw_desc'].$language['admin_psw_desc_addon'];
 				break;
 			case "checkbox":
 				$cur_component = '';

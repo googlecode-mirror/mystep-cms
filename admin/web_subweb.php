@@ -46,6 +46,7 @@ switch($method) {
 		} else {
 			$log_info = ($method=="add_ok"?"添加网站":"编辑网站");
 			$new_setting = $_POST['setting'];
+			$new_setting['web']['title'] = $_POST['name'];
 			unset($_POST['setting']);
 			$result = <<<mystep
 <?php
@@ -91,6 +92,9 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$tpl_tmp->Set_Variable('title', '网站列表');
+		global $admin_cat;
+		$tpl_tmp->Set_Variable("admin_cat", json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8")));
+		$tpl_tmp->Set_Variable("website", json_encode(chg_charset($website, $setting['gen']['charset'], "utf-8")));
 	} else {
 		$tpl_tmp->Set_Variable('title', ($method == "add"?'网站添加':'网站编辑'));
 		if($method == "edit") {
@@ -99,6 +103,7 @@ function build_page($method) {
 				//nothing
 			} else {
 				$tpl->Set_Variable('main', showInfo("指定 ID 的网站不存在！", 0));
+				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
 		} else {

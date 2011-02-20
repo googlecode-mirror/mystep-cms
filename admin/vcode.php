@@ -9,5 +9,5 @@ $req = new MyReq;
 $req->init($setting['cookie'], $setting['session']);
 $str = RndKey(4, 3);
 $req->setCookie("vcode", $str, 300);
-vertify_img($str, ROOT_PATH."/images/simsun.ttc", 24);
+vertify_img($str, ROOT_PATH."/images/font.ttc", 24);
 ?>

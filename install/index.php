@@ -26,7 +26,7 @@ switch($step) {
 	case 2:
 		break;
 	case 3:
-		$setting = array_merge($setting, $_POST['setting']);
+		$setting = arrayMerge($setting, $_POST['setting']);
 		$setting['web']['s_pass'] = md5($setting['web']['s_pass']);
 		unset($_POST);
 		$result = <<<mystep
@@ -69,7 +69,7 @@ echo <<<mystep
 	<LINK rel=stylesheet type=text/css href="style.css" media=all>
 	<META name=Copyright content="Windy2006@gmail.com">
 	<script language="JavaScript" src="../script/global.js"></script>
-	<script language="JavaScript" src="../script/check_form.js"></script>
+	<script language="JavaScript" src="../script/checkForm.js"></script>
 </HEAD>
 <BODY>
 <DIV class=container>

@@ -21,5 +21,8 @@ $language = array (
   'link_back' => '返 回',
   'link_prev' => '上一页',
   'link_next' => '下一页',
+  'admin_psw' => '重复密码',
+  'admin_psw_desc' => '请重复输入密码',
+  'admin_psw_desc_addon' => '（如果密码不变，此项和前一项请留空！）',
 );
 ?>

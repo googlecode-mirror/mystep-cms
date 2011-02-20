@@ -11,13 +11,13 @@ $setting['web']['s_user'] = 'mystep';
 $setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
 $setting['web']['close'] = false;
 $setting['web']['close_page'] = '/index.html';
-$setting['web']['cache_mode'] = 'xcache';
+$setting['web']['cache_mode'] = 'file';
 
 $setting['db'] = array();
 $setting['db']['host'] = '127.0.0.1:3306';
 $setting['db']['user'] = 'root';
 $setting['db']['pass'] = 123456;
-$setting['db']['pconnect'] = true;
+$setting['db']['pconnect'] = false;
 $setting['db']['charset'] = 'gbk';
 $setting['db']['name'] = 'mystep';
 $setting['db']['pre'] = 'ms_';
@@ -50,6 +50,7 @@ $setting['cookie']['path'] = '/';
 $setting['cookie']['prefix'] = 'ms_';
 
 $setting['path'] = array();
+$setting['path']['admin'] = 'admin/';
 $setting['path']['upload'] = 'files/';
 $setting['path']['cache'] = 'cache/';
 $setting['path']['template'] = 'template/';

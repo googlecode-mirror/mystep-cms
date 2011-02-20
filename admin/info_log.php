@@ -44,7 +44,7 @@ if(empty($order_type)) $order_type = "desc";
 //navigation
 $str_sql = "select count(*) as counter from ".$setting['db']['pre']."modify_log".(empty($keyword)?"":" where user like '%$keyword%'");
 $counter = $db->GetSingleResult($str_sql);
-$tpl_tmp->judge_list['empty'] = ($counter==0);
+$tpl_tmp->Set_If('empty', ($counter==0));
 $page = $req->getGet("page");
 list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 $tpl_tmp->Set_Variables($page_arr);

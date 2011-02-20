@@ -116,6 +116,7 @@ function build_page($method) {
 		$record  = $db->GetRS();
 		if(!$record) {
 			$tpl->Set_Variable('main', showInfo("指定 ID 的用户不存在！", 0));
+			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
 		$max_count = count($user_group);

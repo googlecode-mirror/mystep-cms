@@ -24,3 +24,7 @@
 <!--loop:end-->
 	</table>
 </div>
+<script language="javascript">
+parent.news_cat = <!--news_cat-->;
+parent.showCat(parent.document.getElementById("cat_tree"), parent.getWebCat(), true);
+</script>

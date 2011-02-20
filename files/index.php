@@ -2,34 +2,32 @@
 $id = $_SERVER['QUERY_STRING'];
 $show_thumb = (strpos($id, "_")===false);
 $id = trim($id, "_");
-if(!is_numeric($id) || empty($id)) header("HTTP/1.0 404 Not Found");
+if(!is_numeric($id) || empty($id)) {
+	header("HTTP/1.0 404 Not Found");
+	exit();
+}
 
-$root_path = "../";
-require("{$root_path}/include/config.php");
-require("{$root_path}/module/functions.inc.php");
-require("{$root_path}/module/abstract.class.php");
-require("{$root_path}/module/mysql.class.php");
-require("{$root_path}/module/request.class.php");
+define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
+include(ROOT_PATH."/include/config.php");
+if($setting['web']['close'] && !isset($_COOKIE['force'])) {
+	header("HTTP/1.0 404 Not Found");
+	exit();
+}
 
-error_reporting(E_ALL ^ E_NOTICE);
-set_magic_quotes_runtime(0);
-set_time_limit(30);
-date_default_timezone_set("PRC");
-set_error_handler("ErrorHandler");
-set_magic_quotes_runtime(0);
-ini_set('memory_limit', '32M');
+include(ROOT_PATH."/include/parameter.php");
+include(ROOT_PATH."/source/function/global.php");
+include(ROOT_PATH."/source/function/web.php");
+include(ROOT_PATH."/source/class/mysql.class.php");
 
-$db = new MySQL($db_host, $db_user, $db_pass,"Latin1");
-$db->Connect($db_pconnect);
-$db->SelectDB($db_name);
+$mystep = new MyStep();
+$db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
+$cache = $mystep->getInstance("MyCache", $setting['web']['cache_mode']);
 
-$req = new reqObj("/", $cookie_domain, $charset);
-$id = preg_replace("/[^\d]/", "", $id);
-if($record=$db->GetSingleRecord("select * from attachment where id = '{$id}'")) {
-	$the_ext = strtolower(strrchr($record['file_name'],"."));
-	$the_path = date("Y/m/d", substr($record['file_time'],0, 10));
+if($record=getData("select * from ".$setting['db']['pre']."attachment where id = ".$id, "record", 1200)) {
+	$the_ext = ".".GetFileExt($record['file_name']);
+	$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d", substr($record['file_time'],0, 10));
 	$the_file = $record['file_time'];
-	if($show_thumb && strpos($record['file_type'], "gif")===false && file_exists($the_path."/preview/".$the_file.$the_ext)) {
+	if($show_thumb && file_exists($the_path."/preview/".$the_file.$the_ext)) {
 		$the_file = $the_path."/preview/".$the_file;
 	} else {
 		$the_file = $the_path."/".$the_file;
@@ -41,22 +39,23 @@ if($record=$db->GetSingleRecord("select * from attachment where id = '{$id}'")) 
 	} else {
 		header("HTTP/1.0 404 Not Found");
 		$db->close();
+		unset($db);
 		exit();
 	}
-	$db->Query("update attachment set file_count = file_count + 1 where id = '{$id}'");
+	$db->Query("update ".$setting['db']['pre']."attachment set file_count = file_count + 1 where id = ".$id);
 	$db->close();
 	header("Content-type: ".$record['file_type']);
 	header("Accept-Ranges: bytes");
 	header("Accept-Length: ".$record['file_size']);
-	if(strpos($record['file_type'],"image")===0 && ($watermark_use & 2) && $record['watermark']==1) {
-		require("{$root_path}/module/image.class.php");
-		img_watermark($the_file, "{$root_path}/{$watermark_pic}", "{$root_path}/{$path_cache}/{$the_file}");
+	header("Content-Disposition: attachment; filename=".$record['file_name']);
+	if(strpos($record['file_type'],"image")===0 && ($setting['watermark']['mode'] & 2)==2 && $record['watermark']==1) {
+		img_watermark($the_file, ROOT_PATH."/".$setting['watermark']['img'], dirname($the_file)."/cache/".basename($the_file));
 	} else {
-		header("Content-Disposition: attachment; filename=".$record['file_name']);
 		readfile($the_file);
 	}
 } else {
 	$db->close();
 	header("HTTP/1.0 404 Not Found");
 }
+unset($db);
 ?>

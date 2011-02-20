@@ -38,8 +38,8 @@
 			return {
 				longname : 'BBSCode plugin',
 				author : 'Windy2000',
-				authorurl : 'http://tinymce.moxiecode.com',
-				infourl : 'http://wiki.moxiecode.com',
+				authorurl : '',
+				infourl : '',
 				version : "1.0"
 			};
 		}

@@ -26,52 +26,52 @@ CREATE TABLE `{pre}admin_cat` (
 	`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,					#目录索引
 	`pid` SMALLINT UNSIGNED DEFAULT 0,											#父目录索引
 	`name` Char(40) DEFAULT '' NOT NULL,										#目录名称
-	`url` Char(100) DEFAULT '' NOT NULL,										#目录链接
+	`file` Char(30) DEFAULT '' NOT NULL,										#管理文件
+	`path` Char(100) DEFAULT '' NOT NULL,										#管理文件路径
 	`mark` BOOL NOT NULL DEFAULT 0,													#是否常用
 	`comment` Char(50) DEFAULT '' NOT NULL,									#目录说明
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='管理目录';
 
 INSERT INTO `{pre}admin_cat` VALUES 
-		(1, 0, '首页', '###', 0, '管理首页'),
-		(2, 0, '用户', '###', 0, '用户管理'),
-		(3, 0, '功能', '###', 0, '网站功能'),
-		(4, 0, '内容', '###', 0, '内容管理'),
-		(5, 0, '信息', '###', 0, '站点信息'),
-		(6, 0, '设置', '###', 0, '网站管理'),
-		(7, 0, '扩展', '###', 0, '扩展功能'),
+		(1, 0, '首页', '###', '', 0, '管理首页'),
+		(2, 0, '用户', '###', '', 0, '用户管理'),
+		(3, 0, '功能', '###', '', 0, '网站功能'),
+		(4, 0, '内容', '###', '', 0, '内容管理'),
+		(5, 0, '信息', '###', '', 0, '站点信息'),
+		(6, 0, '设置', '###', '', 0, '网站管理'),
+		(7, 0, '扩展', '###', '', 0, '扩展功能'),
 
-		(0, 1, '网站信息', 'info.php', 0, '网站信息'),
-		(0, 1, '服务器信息', 'info.php?server', 0, '服务器信息'),
-		(0, 1, 'MySQL 信息', 'info.php?mysql', 0, 'MySQL 信息'),
-		(0, 1, 'PHP 信息', 'info.php?php', 0, 'PHP 信息'),
-		(0, 1, 'phpinfo()', 'info.php?phpinfo', 0, 'phpinfo()'),
+		(0, 1, '网站信息', 'info.php', '', 0, '网站信息'),
+		(0, 1, '服务器信息', 'info.php?server', '', 0, '服务器信息'),
+		(0, 1, 'MySQL 信息', 'info.php?mysql', '', 0, 'MySQL 信息'),
+		(0, 1, 'PHP 信息', 'info.php?php', '', 0, 'PHP 信息'),
+		(0, 1, 'phpinfo()', 'info.php?phpinfo', '', 0, 'phpinfo()'),
 		
-		(0, 2, '用户群组', 'user_group.php', 0, '组群维护'),
-		(0, 2, '用户管理', 'user_detail.php', 0, '用户管理'),
-		(0, 2, '在线用户', 'user_online.php', 0, '在线用户'),
+		(0, 2, '用户群组', 'user_group.php', '', 0, '组群维护'),
+		(0, 2, '用户管理', 'user_detail.php', '', 0, '用户管理'),
+		(0, 2, '在线用户', 'user_online.php', '', 0, '在线用户'),
 		
-		(0, 3, '文章标签', 'func_tag.php', 0, '文章标签管理'),
-		(0, 3, '附件管理', 'func_attach.php', 0, '附件管理'),
-		(0, 3, '友情链接', 'func_link.php', 0, '友情链接管理'),
-		(0, 3, '数据备份', 'func_backup.php', 0, '数据备份'),
+		(0, 3, '文章标签', 'func_tag.php', '', 0, '文章标签管理'),
+		(0, 3, '附件管理', 'func_attach.php', '', 0, '附件管理'),
+		(0, 3, '友情链接', 'func_link.php', '', 0, '友情链接管理'),
+		(0, 3, '数据备份', 'func_backup.php', '', 0, '数据备份'),
 		
-		(0, 4, '文章分类', 'art_catalog.php', 0, '文章分类管理'),
-		(0, 4, '文章内容', 'art_content.php', 0, '文章内容管理'),
-		(0, 4, '内容展示', 'art_info.php', 0, '展示内容管理'),
+		(0, 4, '文章分类', 'art_catalog.php', '', 0, '文章分类管理'),
+		(0, 4, '文章内容', 'art_content.php', '', 0, '文章内容管理'),
+		(0, 4, '内容展示', 'art_info.php', '', 0, '展示内容管理'),
 		
-		(0, 5, '更新日志', 'info_log.php', 0, '更新日志'),
-		(0, 5, '错误察看', 'info_err.php', 0, '错误察看'),
-		(0, 5, '访问统计', 'info_count.php', 0, '访问统计'),
+		(0, 5, '更新日志', 'info_log.php', '', 0, '更新日志'),
+		(0, 5, '错误察看', 'info_err.php', '', 0, '错误察看'),
+		(0, 5, '流量统计', 'info_count.php', '', 0, '简单网站你访问统计'),
 		
-		(0, 6, '子站管理', 'web_subweb.php', 0, '子站管理'),
-		(0, 6, '参数设定', 'web_setting.php', 0, '参数设定'),
-		(0, 6, '缓存管理', 'web_cache.php', 0, '缓存管理'),
-		(0, 6, '语言管理', 'web_language.php', 0, '语言管理'),
-		(0, 6, '模板管理', 'web_template.php', 0, '模板管理'),
+		(0, 6, '子站管理', 'web_subweb.php', '', 0, '子站管理'),
+		(0, 6, '参数设定', 'web_setting.php', '', 0, '参数设定'),
+		(0, 6, '缓存管理', 'web_cache.php', '', 0, '缓存管理'),
+		(0, 6, '语言管理', 'web_language.php', '', 0, '语言管理'),
+		(0, 6, '模板管理', 'web_template.php', '', 0, '模板管理'),
 		
-		(0, 7, '插件管理', 'web_plugin.php', 0, '插件管理');
-		
+		(0, 7, '插件管理', 'web_plugin.php', '', 0, '插件管理');
 # ---------------------------------------------------------------------------------------------------------------
 
 # 网站插件
@@ -131,7 +131,7 @@ CREATE TABLE `{pre}news_show` (
 	`pages` TINYINT UNSIGNED NOT NULL DEFAULT 1,				#新闻页数
 	`add_user` Char(20) NOT NULL,												#录入人
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#录入日期
-	INDEX (`add_date`),
+	INDEX `catalog` (`web_id`, `cat_id`),
 	PRIMARY KEY (`news_id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻描述';
 
@@ -171,6 +171,7 @@ CREATE TABLE `{pre}news_tag` (
 	`add_date` Char(15) DEFAULT 0,							#关键字添加日期（unixtimestamp）
 	`update_date` Char(15) DEFAULT 0,						#关键字更新日期（unixtimestamp）
 	INDEX (`count`),
+	INDEX (`click`),
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻关键字';
 
@@ -228,12 +229,12 @@ INSERT INTO `{pre}user_group` VALUES
 CREATE TABLE `{pre}users` (
 	`user_id` mediumint(8) unsigned auto_increment,
 	`group_id` tinyint(3) Default "1" ,							#用户组
-	`username` varchar(15) ,												#用户名
+	`username` varchar(15) UNIQUE,									#用户名
 	`password` varchar(40) ,												#密码
 	`email` varchar(60) ,														#电子邮件
 	`regdate` int(10) unsigned Default "0" ,				#注册日期
-	PRIMARY KEY (`user_id`) ,
-	INDEX `username` (`username`)
+	INDEX (`username`),
+	PRIMARY KEY (`user_id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='网站用户';
 
 INSERT INTO `{pre}users` VALUES (0, 1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'windy2006@gmail.com', UNIX_TIMESTAMP());

@@ -132,6 +132,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('record', $news_cat[$i]);
 		}
 		$tpl_tmp->Set_Variable('title', '文章分类目录');
+		$tpl_tmp->Set_Variable("news_cat", json_encode(chg_charset($news_cat, $setting['gen']['charset'], "utf-8")));
 	} else {
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
@@ -139,6 +140,7 @@ function build_page($method) {
 			$db->Free();
 			if(!$record) {
 				$tpl->Set_Variable('main', showInfo("指定 ID 的分类不存在！", 0));
+				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
 			HtmlTrans(&$record);
@@ -148,7 +150,8 @@ function build_page($method) {
 			$record['cat_type_0'] = ($record['cat_type']==0) ? "selected" : "";
 			$record['cat_type_1'] = ($record['cat_type']==1) ? "selected" : "";
 			$record['cat_type_2'] = ($record['cat_type']==2) ? "selected" : "";
-			$web_disabled = ($record['cat_main']==0)?"":"disabled";
+			//$web_disabled = ($record['cat_main']==0)?"":"disabled";
+			$web_disabled = "disabled";
 		} else {
 			$record = array();
 			$record['cat_id'] = 0;
@@ -182,6 +185,7 @@ function build_page($method) {
 		$cur_layer = 99;
 		$max_count = count($news_cat);
 		for($i=0; $i<$max_count; $i++) {
+			if($record['web_id']!=$news_cat[$i]['web_id']) continue;
 			if($news_cat[$i]['cat_id']==$record['cat_id']) {
 				$cur_layer = $news_cat[$i]['cat_layer'];
 				continue;

@@ -101,7 +101,7 @@ function txt_watermark($code, $mode=true, $credit_str=" - Text Watermark By Wind
 	for($i=0; $i<$max_count; $i++) {
 		$this_str = "";
 		if($mode && strlen($code)<50000) {
-			preg_match_all("/(<(.+?)>)|(&([a-z]+);)/is", $file_line[$i], $arr_tag);
+			preg_match_all("/(<(.+?)>)|(&([#\w]+);)/is", $file_line[$i], $arr_tag);
 			$arr_tag = $arr_tag[0];
 			$file_line[$i] = str_replace($arr_tag, chr(0), $file_line[$i]);
 			preg_match_all("/[\x80-\xff]?./", $file_line[$i], $arr_char);
@@ -119,7 +119,7 @@ function txt_watermark($code, $mode=true, $credit_str=" - Text Watermark By Wind
 		} else {
 			$this_str = $file_line[$i]."<span class=watermark>".RndKey(mt_rand(1, 10),0)." </span>";
 		}
-		$file_line[$i] = $this_str.((mt_rand(1, 10)>8 && !empty($url))?"<a href='{$url}' target='_blank'>(HIT)</a>":"<span class=watermark>{$credit_str}</span>");
+		$file_line[$i] = $this_str.((mt_rand(1, 10)>8 && !empty($url))?"<a href='{$url}' target='_blank' style='color:transparent;'>(HIT)</a>":"<span class=watermark>{$credit_str}</span>");
 	}
 	return join("<br />\n", $file_line);
 }
@@ -381,8 +381,8 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 		return;
 	}
 	if(file_exists($img_dst)) {
-		header("location: {$img_dst}");
-		exit();
+		readfile($img_dst);
+		return;
 	} else {
 		MakeDir(dirname($img_dst));
 	}
@@ -412,7 +412,8 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 			$new_watermark = $watermark;
 		}
 		if(!file_exists($new_watermark)) $new_watermark = $watermark;
-		$img_wm = new imageCreator_file($new_watermark);
+		$img_wm = new imageCreator_file;
+		$img_wm->init($new_watermark);
 		list($wm_width, $wm_height) = $img_wm->getSize();
 		
 		list($alpha, $rate) = $para;
@@ -427,7 +428,6 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 				$img_wm->setTransparent(array(0,0));
 			}
 		}
-		
 		switch($position) {
 			case 1:
 				$pos = array($img->width - $wm_width, $img->height - $wm_height);
@@ -451,7 +451,7 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 		$img->destroyImage();
 	} else {
 		list($font, $fontsize, $fontcolor, $bgcolor) = $para;
-		if(is_null($font)) $font = realpath("./simsun.ttc");
+		if(is_null($font)) $font = realpath("font.ttc");
 		if(is_null($fontsize)) $fontsize = ($position<=2 ? $img->width/80 : $img->height/80);
 		if($fontsize<9) $fontsize = 9;
 		if(is_null($fontcolor)) $fontcolor = "white";
@@ -524,10 +524,7 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 			$img->destroyImage();
 		}
 	}
-	if(file_exists($img_dst)) {
-		header("location: {$img_dst}");
-		exit();
-	}
+	if(file_exists($img_dst)) readfile($img_dst);
 	return;
 }
 
@@ -565,7 +562,7 @@ function img_thumb($img_src, $dstW, $dstH, $img_dst="") {
 	return;
 }
 
-function vertify_img($str, $font = "simsun.ttc", $fontsize = 16) {
+function vertify_img($str, $font = "font.ttc", $fontsize = 16) {
 	if(!class_exists("imageCreator")) return;
 	$img = new imageCreator();
 	$img->setFont($font);

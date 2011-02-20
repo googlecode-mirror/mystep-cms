@@ -203,7 +203,14 @@ abstract class class_common {
 		$err_msg .= "File: ".$_SERVER["PHP_SELF"]."\n";
 		$err_msg .= "Error Message: {$str} \n";
 		$err_msg .= "More: \n{$msg_ext}\n";
-		$err_msg .= "\n\n--------------------------------------------\n\n";
+		$err_msg .= "Debug: \n";
+		$debug_info = debug_backtrace();
+		$n=0;
+		for($i=count($debug_info)-1; $i>=0; $i--){
+			if(empty($debug_info[$i]['file'])) continue;
+			$err_msg .= (++$n)." - ".$debug_info[$i]['file']." (line:".$debug_info[$i]['line'].", function:".$debug_info[$i]['function'].")\n";
+		}
+		$err_msg .= "\n--------------------------------------------\n\n";
 		$this->err_msg = $err_msg;
 		$func = $this->error_handle;
 		//trigger_error($err_msg, E_USER_ERROR);

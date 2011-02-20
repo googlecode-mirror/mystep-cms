@@ -4,7 +4,7 @@
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
-				<td class="cat" width="120">网站名称：</td>
+				<td class="cat" width="120">子站名称：</td>
 				<td class="row">
 					<input name="web_id" type="hidden" value="<!--web_id-->" />
 					<input type="text" name="name" value="<!--name-->" need="" />
@@ -26,12 +26,14 @@
 				<td class="cat" colspan="2">子站参数设置：</td>
 			</tr>
 <?PHP
+global $language;
 include_once(ROOT_PATH."/include/config-detail.php");
 
 $setting_skip = array();
 $setting_skip['web'] = array();
 $setting_skip['web']['url'] = '';
 $setting_skip['web']['email'] = '';
+$setting_skip['web']['title'] = '';
 $setting_skip['web']['s_user'] = '';
 $setting_skip['web']['s_pass'] = '';
 $setting_skip['web']['close'] = '';
@@ -67,6 +69,7 @@ $setting_skip['cookie']['path'] = '';
 $setting_skip['cookie']['prefix'] = '';
 $setting_skip['cookie']['domain'] = '';
 $setting_skip['path'] = array();
+$setting_skip['path']['admin'] = '';
 $setting_skip['path']['template'] = '';
 $setting_skip['path']['cache'] = '';
 $setting_skip['content'] = array();
@@ -80,8 +83,10 @@ $setting_skip['watermark']['credit'] = '';
 $setting_skip['memcache'] = array();
 $setting_skip['memcache']['server'] = '';
 $setting_skip['memcache']['weight'] = '';
+$setting_skip['memcache']['persistant'] = '';
 $setting_skip['memcache']['timeout'] = '';
 $setting_skip['memcache']['retry_interval'] = '';
+$setting_skip['memcache']['status'] = '';
 $setting_skip['memcache']['expire'] = '';
 $setting_skip['memcache']['threshold'] = '';
 $setting_skip['memcache']['min_savings'] = '';
@@ -120,11 +125,11 @@ content;
 					<span class="comment">'.$cur_description.'</span>
 				</td>
 			<tr>
-				<td class="cat" align="right">重复密码</td>
+				<td class="cat" align="right">'.$language['admin_psw'].'</td>
 				<td class="row">
 					<input type="password" id="'.$key1.'_'.$key2.'_r" name="setting['.$key1.']['.$key2.'_r]" value="" maxlength="'.$setting_type[$key1][$key2][2].'" />
 				';
-				$cur_description = "请重复输入密码（如果密码不变，此项和前一项请留空！）";
+				$cur_description = $language['admin_psw_desc'].$language['admin_psw_desc_addon'];
 				break;
 			case "checkbox":
 				$cur_component = '';

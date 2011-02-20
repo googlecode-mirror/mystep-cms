@@ -5,7 +5,6 @@
 <meta http-equiv="Pragma" contect="no-cache">
 <meta http-equiv="Expires" contect="-1">
 <meta http-equiv="windows-Target" contect="_top">
-<meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Content-Type" content="text/html; charset=<!--charset-->" />
 <link rel="stylesheet" type="text/css" media="all" href="style.css" />
 <script language="JavaScript" src="../script/global.js"></script>
@@ -31,10 +30,7 @@
 		<table><tr>
 			<td class="list" valign="top">
 				<div>
-					<select id="website" onchange="showCat($id('cat_tree'), getWebCat(this.value), true)" style="width:180px;">
-						<option value="">全部默认网站</option>
-						<option value="0">非网站栏目</option>
-					</select>
+					<select id="website" onchange="showCat($id('cat_tree'), getWebCat(this.value), true)" style="width:180px;"></select>
 				</div>
 				<div id="cat_tree"></div>
 			</td>
@@ -64,7 +60,7 @@ function getWebCat(web_id) {
 	return catList;
 }
 function showCat(theOle, theObjs, renew) {
-	if(renew==true) $(theOle).children().remove();
+	if(renew==true) $(theOle).empty();
 	if($(theOle).children().length==0) {
 		var newItem = $("<ul/>");
 		var newSubItem = null;
@@ -104,15 +100,12 @@ function setPos() {
 	$("#main").width(theWidth);
 	$("#main").height(theHeight);
 }
-$(function(){
-	setPos();
-	$(window).bind("resize", setPos);
+function setNav() {
 	var listOLE = $("#menu_nav ul:first");
 	var newItem = null;
 	var newSubItem = null;
-	group.power_cat = "," + group.power_cat + ",";
-	group.power_web = "," + group.power_web + ",";
-	group.power_func = "," + group.power_func + ",";
+	listOLE.empty();
+	$("#website").empty();
 	for(var i=0; i<admin_cat.length; i++) {
 		if(group.power_func!=",all," && group.power_func.indexOf(","+admin_cat[i].id+",")==-1) continue;
 		newItem = $("<li/>");
@@ -130,9 +123,11 @@ $(function(){
 	newItem = $("<li/>");
 	newItem.append("<a href=\"###\" class=\"nav\">网站</a>");
 	newSubItem = $("<ul/>");
+	$("#website").append('<option value="">全部默认网站</option>');
+	$("#website").append('<option value="0">非网站栏目</option>');
 	for(i=0; i<website.length; i++) {
 		newSubItem.append("<li><a href=\"http://"+website[i].host+"\" target=\"_blank\">"+website[i].name+"</a></li>");
-		if(group.power_web==",all," || group.power_web.indexOf(","+website[i].web_id+",")!=-1)	$($id("website")).append("<option value=\""+website[i].web_id+"\">"+website[i].name+"</option>");
+		if(group.power_web==",all," || group.power_web.indexOf(","+website[i].web_id+",")!=-1)	$("#website").append("<option value=\""+website[i].web_id+"\">"+website[i].name+"</option>");
 	}
 	newItem.append(newSubItem);
 	listOLE.append(newItem);
@@ -146,7 +141,11 @@ $(function(){
 	$("a[href='###']").bind('click', function() {
 	 return false;
 	});
-	
+}
+$(function(){
+	setPos();
+	$(window).bind("resize", setPos);
+	setNav();
 	showCat($id("cat_tree"), getWebCat());
 });
 if(top != window) history.go(-1);
@@ -155,5 +154,8 @@ var group=<!--group-->;
 var admin_cat = <!--admin_cat-->;
 var website = <!--website-->;
 var news_cat = <!--news_cat-->;
+group.power_cat = "," + group.power_cat + ",";
+group.power_web = "," + group.power_web + ",";
+group.power_func = "," + group.power_func + ",";
 </script>
 </html>

@@ -31,6 +31,10 @@ body a:hover {text-decoration:underline; color:#FF0084;}
 
 body {text-align:center; font-family:Arial;}
 
+.quote{padding:5px; background-color:#eeeeee; border:1px #999999 solid;}
+.watermark{position:absolute; width:0px; height:1px; overflow:hidden;}
+@media print{.watermark{display:none;}}
+
 TABLE .cat {border:0px solid; font-size:12px; font-weight:bold; color:#15324A; padding:5px; background-color:#8AB4D6; border-right:1px solid #0C5280; border-bottom:1px solid #0C5280; border-top:1px solid #629DC5; border-left:1px solid #629DC5; vertical-align:middle;}
 TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0C5280; border-right:1px solid #0C5280; border-top:1px solid #629DC5; border-left:1px solid #629DC5; padding:5px; color:#EDF4FA; vertical-align:middle;text-align:left;}
 #bar_loading {top:0px; left:0px; color:#333333; font-size:24px; font-weight:bold; font-family:ºÚÌå; position:absolute; border:1px #999999 solid; padding:20px 50px 20px 50px; z-index:999; background-color:#CCCCCC; filter:alpha(opacity=90);}
@@ -128,7 +132,7 @@ TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0
 .page_lst .main H3 {margin:20px 0px 20px 0px; padding:10px 0px 10px 0px; text-align:center; border-top:1px #ddcf7f solid; border-bottom:1px #ddcf7f solid; color:#999933;}
 .page_lst .main .bottom {border-top:1px #ddcf7f solid; clear:both; text-align:left; line-height:24px;padding:10px 0px 0px 0px; font-weight:bold;}
 .page_lst #content {color:#666600; line-height:24px; font-size:14px;}
-.page_lst #content .title_img {float:right; padding:10px 10px 10px 10px; width:120px; height:90px;}
+.page_lst #content .title_img {float:right; padding:10px 10px 10px 10px;}
 
 .regist {padding:20px 0px 20px 0px; font-size:14px;}
 .regist H3 {font-weight:bold; font-size:20px; margin:0px 0px 10px 0px; text-align:center;}

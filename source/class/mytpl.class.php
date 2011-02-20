@@ -360,19 +360,19 @@ mytpl;
 				ob_start();
 				include($this->Get_TPL_Cache());
 				$content = ob_get_contents();
-				ob_end_clean();	
+				if(count(ob_list_handlers())>0) ob_end_clean();	
 			} else {
 				if(ob_get_length()) {
 					$temp = ob_get_contents();
-					ob_clean();
+					if(count(ob_list_handlers())>0) ob_clean();
 					include($this->Get_TPL_Cache());
 					$content = ob_get_contents();
-					ob_clean();
+					if(count(ob_list_handlers())>0) ob_clean();
 					echo $temp;
 				} else {
 					include($this->Get_TPL_Cache());
 					$content = ob_get_contents();
-					ob_clean();
+					if(count(ob_list_handlers())>0) ob_clean();
 				}
 			}
 			//$content = preg_replace("/[\s\t ]*[\r\n]+[\s\t ]*/", "", $content);

@@ -44,7 +44,7 @@ mystep;
 						} else {
 							copy($path_upload."/".$upload->upload_result[$i]['new_name'], $path_upload."/preview/".$upload->upload_result[$i]['new_name']);
 						}
-						$add_str[] = "<br /><A href=\"{$setting['web']['url']}/files/show.htm?{$new_id}\" target=\"_blank\"><img src=\"{$setting['web']['url']}/".str_replace(ROOT_PATH, "", $path_upload)."/preview/{$upload->upload_result[$i]['new_name']}\" alt=\"".($req->getPost("comment")==""?$upload->upload_result[$i]['name']:$req->getPost("comment"))."\" /></A><br />";
+						$add_str[] = "<br /><A href=\"{$setting['web']['url']}/files/show.htm?{$new_id}\" target=\"_blank\"><img src=\"{$setting['web']['url']}/files/?{$new_id}\" alt=\"".($req->getPost("comment")==""?$upload->upload_result[$i]['name']:$req->getPost("comment"))."\" /></A><br />";
 					} else {
 						$add_str[] = "<br /><A href=\"{$setting['web']['url']}/files?{$new_id}\" target=\"_blank\">".($req->getPost("comment")==""?$upload->upload_result[$i]['name']:$req->getPost("comment"))."</A><br />";
 					}

@@ -28,3 +28,9 @@
 		</tr>
 	</table>
 </div>
+<script language="JavaScript">
+parent.website = <!--website-->;
+parent.admin_cat = <!--admin_cat-->;
+parent.setNav();
+</script>
+

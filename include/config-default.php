@@ -11,7 +11,7 @@ $setting['web']['s_user'] = 'mystep';
 $setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
 $setting['web']['close'] = false;
 $setting['web']['close_page'] = '/index.html';
-$setting['web']['cache_mode'] = 'xcache';
+$setting['web']['cache_mode'] = '';
 
 $setting['db'] = array();
 $setting['db']['host'] = '127.0.0.1:3306';
@@ -23,7 +23,7 @@ $setting['db']['name'] = 'mystep';
 $setting['db']['pre'] = 'ms_';
 
 $setting['gen'] = array();
-$setting['gen']['language'] = 'chs';
+$setting['gen']['language'] = 'default';
 $setting['gen']['charset'] = 'gbk';
 $setting['gen']['gzip_level'] = 4;
 $setting['gen']['cache'] = false;
@@ -47,9 +47,10 @@ $setting['session']['trans_sid'] = false;
 $setting['cookie'] = array();
 $setting['cookie']['domain'] = '.mystep.com';
 $setting['cookie']['path'] = '/';
-$setting['cookie']['prefix'] = 'ms_';
+$setting['cookie']['prefix'] = 'ms_252c_';
 
 $setting['path'] = array();
+$setting['path']['admin'] = 'admin/';
 $setting['path']['upload'] = 'files/';
 $setting['path']['cache'] = 'cache/';
 $setting['path']['template'] = 'template/';
@@ -76,11 +77,12 @@ $setting['memcache']['threshold'] = 10240;
 $setting['memcache']['min_savings'] = 0.5;
 
 
-$expire_list = array (
-  'default' => 600,
-  'index' => 1800,
-  'list' => 3600,
-  'tag' => 86400,
-  'read' => 604800,
+
+$expire_list = array(
+	"default" => 60*10,
+	"index" => 60*30,
+	"list" => 60*60,
+	"tag" => 60*60*24,
+	"read" => 60*60*24*7,
 );
 ?>

@@ -126,6 +126,7 @@ function build_page($method) {
 				//nothing
 			} else {
 				$tpl->Set_Variable('main', showInfo("指定 ID 的用户组不存在！", 0));
+				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
 		} else {

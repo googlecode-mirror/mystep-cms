@@ -40,6 +40,7 @@ if($tpl->Is_Cached()) {
 	$mystep->pageEnd();
 }
 
+$db->Query("update ".$setting['db']['pre']."news_show set views = views + 1 where news_id=".$news_id);
 $detail = getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre']."news_show a left join ".$setting['db']['pre']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "record", 1200);
 if($detail===false) {
 	$goto_url = "/";
@@ -56,7 +57,7 @@ $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 
-if($watermark_use & 1) $detail['content'] = txt_watermark($detail['content'], true, $setting['watermark']['credit'], $setting['web']['url']);
+if($setting['watermark']['mode'] & 1) $detail['content'] = txt_watermark($detail['content'], true, $setting['watermark']['credit'], $setting['web']['url']);
 if(empty($detail['image'])) $detail['image'] = "images/dummy.png";
 $tpl_tmp->Set_Variables($detail, "record");
 
