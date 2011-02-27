@@ -5,7 +5,7 @@ $method = $req->getServer("QUERY_STRING");
 $log_info = "";
 
 if($method=="update" && count($_POST)>0) {
-	$log_info = "¸üÐÂ»º´æÉèÖÃ";
+	$log_info = $language['admin_web_cache_update'];
 	$setting['gen']['cache'] = ($_POST['cache']=="true");
 	$setting['web']['cache_mode'] = $_POST['cache_mode'];
 	$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);
@@ -29,10 +29,8 @@ if($method=="update" && count($_POST)>0) {
 mystep;
 	$content = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $content);
 	WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
-
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"], $log_info);
-	$goto_url = $self;
-} elseif($method=="clear") {
+} elseif($method=="clean") {
+	$log_info = $language['admin_web_cache_clean'];
 	$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
 	if($handle = opendir($cache_path)) {
 		while (false !== ($file = readdir($handle))) {
@@ -68,7 +66,7 @@ mystep;
 } else {
 	$tpl_info['idx'] = "web_cache";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-	$tpl_tmp->Set_Variable('title', "ÍøÕ¾»º´æÉèÖÃ");
+	$tpl_tmp->Set_Variable('title', $language['admin_web_cache_title']);
 	$i=1;
 	foreach($expire_list as $key => $value) {
 		$tpl_tmp->Set_Loop("expire", array("idx"=>$i++, "page"=>$key, "expire"=>$value));
@@ -79,6 +77,10 @@ mystep;
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 	unset($tpl_tmp);
 	$mystep->show($tpl);
+}
+if(!empty($log_info)) {
+	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"], $log_info);
+	$goto_url = $self;	
 }
 $mystep->pageEnd(false);
 ?>

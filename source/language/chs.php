@@ -21,7 +21,16 @@ $language = array (
   'link_back' => '返 回',
   'link_prev' => '上一页',
   'link_next' => '下一页',
-  'admin_psw' => '重复密码',
-  'admin_psw_desc' => '请重复输入密码',
+  'db_table' => '表',
+  'db_database' => '数据库',
+  'db_create_table' => '数据表 %s 已生成！',
+  'db_create_done' => '数据%s %s 已生成！',
+  'db_drop_done' => '数据%s %s 已删除！',
+  'db_alter_done' => '数据表 %s 已变更！',
+  'db_delete_done' => '数据表 %s 已删除 %d 条数据！',
+  'db_truncate_done' => '数据表 %s 已被清空！',
+  'db_insert_done' => '数据表 %s 已添加 %d 条数据！',
+  'db_update_done' => '数据表 %s 已更新 %d 条数据！',
+  'db_operate_done' => '数据表 %s 执行了操作（%s）！',
 );
 ?>

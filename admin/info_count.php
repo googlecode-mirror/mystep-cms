@@ -34,7 +34,7 @@ while($record = $db->GetRS()) {
 	$tpl_tmp->Set_Loop('record', $record);
 }
 
-$tpl_tmp->Set_Variable('title', '网站流量统计');
+$tpl_tmp->Set_Variable('title', $language['admin_info_count_title']);
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_tmp);
 $db->Free();

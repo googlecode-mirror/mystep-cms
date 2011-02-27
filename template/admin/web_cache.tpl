@@ -48,7 +48,7 @@ echo "</select>";
 				<td class="row" colspan="4" align="center">
 					<input class="btn" type="Submit" value=" 确认修改 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重置数据 " />&nbsp;&nbsp;
-					<input class="btn" type="button" onclick="location.href='?clear'" value="清空缓存" />
+					<input class="btn" type="button" onclick="location.href='?clean'" value="清空缓存" />
 				</td>
 			</tr>
 		</table>

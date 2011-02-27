@@ -11,7 +11,7 @@ switch($method) {
 		build_page();
 		break;
 	case "delete":
-		$log_info = "删除附件";
+		$log_info = $language['admin_func_attach_delete'];
 		$db->Query("select * from ".$setting['db']['pre']."attachment where id={$id}");
 		if($record = $db->GetRS()) {
 			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/", substr($record['file_time'],0, 10));
@@ -25,7 +25,7 @@ switch($method) {
 		$db->Free();
 		break;
 	case "clear":
-		$log_info = "清除未关联附件";
+		$log_info = $language['admin_func_attach_clean'];
 		$file_list = array();
 		$db->Query("select * from ".$setting['db']['pre']."attachment where news_id=0 and file_count<5 and file_time<((UNIX_TIMESTAMP()-60*60*24*3)*1000)");
 		while($record = $db->GetRS()) {
@@ -54,7 +54,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page() {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $language;
 
 	$tpl_info['idx'] = "func_attach";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -92,7 +92,7 @@ function build_page() {
 		$record['file_time'] = date("Y-m-d H:m:s", substr($record['file_time'],0, 10));
 		$tpl_tmp->Set_Loop('record', $record);
 	}
-	$tpl_tmp->Set_Variable('title', '附件管理');
+	$tpl_tmp->Set_Variable('title', $language['admin_func_attach_title']);
 	$db->Free();
 	
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));

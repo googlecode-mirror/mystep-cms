@@ -13,18 +13,18 @@ $language_info = array(
 );
 $lng_dir = ROOT_PATH."/source/language/";
 $org_lng = $language;
+include($lng_dir."/default.php");
+$new_lng = $language;
 if(!empty($cur_lng) && is_file($lng_dir."/{$cur_lng}.php")) {
-	$language = array();
 	include($lng_dir."/{$cur_lng}.php");
-} else {
-	$language = array();
-	include($lng_dir."/default.php");
 }
-$new_lng = array_merge($org_lng, $language);
+$new_lng = array_merge($new_lng, $language);
 if(is_null($cur_lng)) $cur_lng = $setting['gen']['language'];
+$language = $org_lng;
+unset($org_lng);
 
 if($method=="update" && count($_POST)>0) {
-	$log_info = "¸üĞÂÓïÑÔÉèÖÃ";
+	$log_info = $language['admin_web_language_update'];
 	if(empty($cur_lng)) $cur_lng = "default";
 	if(empty($_POST['lng_new_idx'])) {
 		$setting['gen']['language'] = $cur_lng;
@@ -66,7 +66,7 @@ mystep;
 } else {
 	$tpl_info['idx'] = "web_language";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-	$tpl_tmp->Set_Variable('title', "ÓïÑÔÉèÖÃ");
+	$tpl_tmp->Set_Variable('title', $language['admin_web_language_title']);
 	$i=1;
 	foreach($new_lng as $key => $value) {
 		$value = htmlspecialchars($value);
@@ -81,7 +81,6 @@ mystep;
 		}
 		closedir($handle);
 	}
-	$language = $org_lng;
 	$tpl_tmp->Set_Variables($language_info, "lng_info");
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 	unset($tpl_tmp);

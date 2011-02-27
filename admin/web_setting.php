@@ -5,7 +5,7 @@ $method = $req->getServer("QUERY_STRING");
 $log_info = "";
 
 if($method=="update") {
-	$log_info = "更新设置";
+	$log_info = $language['admin_web_setting_update'];
 	$_POST['setting']['watermark']['mode'] = array_sum($_POST['setting']['watermark']['mode']);
 	if(empty($_POST['setting']['web']['s_pass'])) {
 		$_POST['setting']['web']['s_pass'] = $setting['web']['s_pass'];
@@ -32,7 +32,7 @@ mystep;
 		WriteFile(ROOT_PATH."/include/config-default.php", $content, "wb");
 	}
 } elseif($method=="restore") {
-	$log_info = "恢复设置";
+	$log_info = $language['admin_web_setting_restore'];
 	if(is_file(ROOT_PATH."include/config-default.php")) {
 		unlink(ROOT_PATH."include/config.php");
 		copy(ROOT_PATH."include/config-default.php", ROOT_PATH."include/config.php");
@@ -46,7 +46,7 @@ if(!empty($log_info)) {
 	$tpl_info['idx'] = "web_setting";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
-	$tpl_tmp->Set_Variable('title', "网站参数设置");
+	$tpl_tmp->Set_Variable('title', $language['admin_web_setting_title']);
 	$setting['watermark']['mode'] = array(($setting['watermark']['mode']&1)==1, ($setting['watermark']['mode']&2)==2);
 	
 	include(ROOT_PATH."/include/config-detail.php");

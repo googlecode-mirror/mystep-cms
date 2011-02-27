@@ -16,15 +16,15 @@ switch($method) {
 					$req->setCookie("ms_user", $uid."\t".md5($user_psw), 60*60*24*(float)$keep);
 					$goto_url = "index.php";
 				} else {
-					$err_msg = "登录错误，错误的用户名或密码！";
+					$err_msg = $language['admin_login_error_psw'];
 				}
 			} else {
-				$err_msg = "校验码不正确，请重新输入！";
+				$err_msg = $language['admin_login_error_vcode'];
 			}
 		}
 		break;
 	case "logout":
-		$err_msg = "您已经成功退出管理系统!";
+		$err_msg = $language['admin_login_logout'];
 		$req->setCookie("ms_user");
 		$req->destroySession();
 		break;
@@ -34,10 +34,10 @@ if(empty($goto_url)) build_page();
 $mystep->pageEnd(false);
 
 function build_page() {
-	global $mystep, $req, $tpl, $tpl_info, $setting, $err_msg;
+	global $mystep, $req, $tpl, $tpl_info, $setting, $err_msg, $language;
 	$tpl_info['idx'] = "login";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-	if(empty($err_msg)) $err_msg = "请您登录";
+	if(empty($err_msg)) $err_msg = $language['admin_login_login'];
 	$tpl->Set_Variable('title', $setting['web']['title']);
 	$tpl_tmp->Set_Variable('err_msg', $err_msg);
 	$req->setCookie("err_msg");

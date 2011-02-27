@@ -11,7 +11,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = "删除标签";
+		$log_info = $language['admin_func_tag_delete'];
 		$tag = $db->getSingleResult("select tag from ".$setting['db']['pre']."news_tag where id = '{$id}'");
 		$db->Query("update ".$setting['db']['pre']."news_show set tag='' where tag='{$tag}'");
 		$db->Query("update ".$setting['db']['pre']."news_show set tag=REPLACE(tag, '{$tag},', '') where tag like '%{$tag}%'");
@@ -19,7 +19,7 @@ switch($method) {
 		$db->Query("delete from ".$setting['db']['pre']."news_tag where id = '{$id}'");
 		break;
 	case "rebuild":
-		$log_info = "重建标签";
+		$log_info = $language['admin_func_tag_rebuild'];
 		$db_tmp = new MySQL($setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 		$db_tmp->Connect(false);
 		$db_tmp->SelectDB($setting['db']['name']);
@@ -73,7 +73,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $language;
 
 	$tpl_info['idx'] = "func_tag";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -116,7 +116,7 @@ function build_page($method) {
 	}
 	$tpl_tmp->Set_Variable('order', $order);
 	$tpl_tmp->Set_Variable('order_type', $order_type);
-	$tpl_tmp->Set_Variable('title', '标签管理');
+	$tpl_tmp->Set_Variable('title', $language['admin_func_tag_title']);
 	$db->Free();
 	
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));

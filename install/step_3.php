@@ -18,8 +18,9 @@
 			<div class=license>
 <?php
 $db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
-$strFind = array("{db_name}", "{pre}", "{charset}", "{host}");
-$strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset'], $req->getServer("HTTP_HOST"));
+$charset_collate = $db->GetSingleRecord("SHOW CHARACTER SET LIKE '".strtolower($setting['db']['charset'])."'");
+$strFind = array("{db_name}", "{pre}", "{charset}", "{host}", "{charset_collate}");
+$strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset'], $req->getServer("HTTP_HOST"), $charset_collate["Default collation"]);
 $result = $db->ExeSqlFile("install.sql", $strFind, $strReplace);
 $result += $db->ExeSqlFile("common_district.sql", $strFind, $strReplace);
 $max_count = count($result);

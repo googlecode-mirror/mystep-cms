@@ -14,7 +14,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = "删除自定义内容";
+		$log_info = $language['admin_art_info_delete'];
 		$db->Query("delete from ".$setting['db']['pre']."info_show where id = '{$id}'");
 		break;
 	case "add_ok":
@@ -23,10 +23,10 @@ switch($method) {
 			$goto_url = $self;
 		} else {
 			if($method=="add_ok") {
-				$log_info = "添加自定义内容";
+				$log_info = $language['admin_art_info_add'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."info_show", $_POST, "insert", "a");
 			} else {
-				$log_info = "编辑自定义内容";
+				$log_info = $language['admin_art_info_edit'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."info_show", $_POST, "update", "id={$id}");
 			}
 			$db->Query($str_sql);
@@ -43,7 +43,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $web_id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $web_id, $language;
 
 	$tpl_info['idx'] = "art_info_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -56,14 +56,14 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$tpl_tmp->Set_If('empty', ($n==0));
-		$tpl_tmp->Set_Variable('title', '内容展示');
+		$tpl_tmp->Set_Variable('title', $language['admin_art_info_title']);
 	} else {
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."info_show where id='{$id}'");
 			$record  = $db->GetRS();
 			$db->Free();
 			if(!$record) {
-				$tpl->Set_Variable('main', showInfo("指定展示内容不存在！", 0));
+				$tpl->Set_Variable('main', showInfo($language['admin_art_info_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
@@ -78,7 +78,7 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_Variables($record);
 		
-		$tpl_tmp->Set_Variable('title', ($method=='add'?'展示添加':'展示更新'));
+		$tpl_tmp->Set_Variable('title', ($method=='add'?$language['admin_art_info_add']:$language['admin_art_info_edit']));
 		$tpl_tmp->Set_Variable('method', $method);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}

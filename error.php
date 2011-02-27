@@ -1,4 +1,4 @@
-ï»¿<?php
+<?php
 $errType = $_SERVER['QUERY_STRING'];
 if(preg_match("/\d+/", $errType)) $errType = "404";
 $errUrl = "http://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
@@ -39,16 +39,16 @@ WriteFile("err_".$errType.".csv", $errString, "a");
 
 switch($errType) {
 	case "403":
-		$errMsg = "æ‚¨æ‰€è¿æ¥ç›®å½•ç¦æ­¢æµè§ˆ";
+		$errMsg = "ÄúËùÁ¬½ÓÄ¿Â¼½ûÖ¹ä¯ÀÀ";
 		break;
 	case "404":
-		$errMsg = "æ‚¨æ‰€è¯·æ±‚é¡µé¢å¹¶ä¸å­˜åœ¨";
+		$errMsg = "ÄúËùÇëÇóÒ³Ãæ²¢²»´æÔÚ";
 		break;
 	case "500":
-		$errMsg = "ç¨‹åºæ‰§è¡Œå‡ºé”™";
+		$errMsg = "³ÌĞòÖ´ĞĞ³ö´í";
 		break;
 	default:
-		$errMsg = "æµè§ˆæ—¶å‘ç”ŸæœªçŸ¥é”™è¯¯";
+		$errMsg = "ä¯ÀÀÊ±·¢ÉúÎ´Öª´íÎó";
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -65,16 +65,16 @@ echo $errMsg
 <div style="text-align:center;font-size:14px;padding:14px;color:blue;font-weight:blod;font-family:Arial">
 <?php
 echo $errMsg
-?>ï¼Œè¯·æ ¸å®é“¾æ¥çš„åˆæ³•æ€§ï¼
+?>£¬ÇëºËÊµÁ´½ÓµÄºÏ·¨ĞÔ£¡
 <br /><br />
 </div>
 <div style="text-align:center;font-size:14px;">
 <script language="javascript" type="text/javascript">
 var url_req = document.location.toString();
-document.writeln("æ‚¨è¯·æ±‚åœ°å€æ˜¯: <a href=\"" + url_req + "\">" + url_req + "</a><br />");
+document.writeln("ÄúÇëÇóµØÖ·ÊÇ: <a href=\"" + url_req + "\">" + url_req + "</a><br />");
 var url_new = "/";
 url_new = url_req.replace(/^(http(s)?:\/\/[^\/]+)/(.+)$/i, $1);
-document.writeln("ç³»ç»Ÿè‡ªåŠ¨è½¬å‘: <a href=\"" + url_new + "\">" + url_new + "</a><br />");
+document.writeln("ÏµÍ³×Ô¶¯×ªÏò: <a href=\"" + url_new + "\">" + url_new + "</a><br />");
 setTimeout("location.href='" + url_new +"'", 2000);
 </script>
 </div>

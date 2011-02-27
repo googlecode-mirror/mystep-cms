@@ -12,7 +12,7 @@ $log_info = "";
 if($method=="delete" || $method=="unlock") $cat_id = $db->GetSingleResult("select cat_id from ".$setting['db']['pre']."news_show where `news_id` = '{$news_id}'");
 
 if($group['power_cat']!="all" && !empty($cat_id) && strpos(",".$group['power_cat'].",", ",".$cat_id.",")===false) {
-	echo '<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">您无权管理该栏目的文章！</div>';
+	echo '<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">'.$language['admin_art_content_nopower'].'</div>';
 	$mystep->pageEnd(false);
 }
 
@@ -23,7 +23,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = "删除文章";
+		$log_info = $language['admin_art_content_delete'];
 		$db->Query("select * from ".$setting['db']['pre']."attachment where news_id = '{$news_id}'");
 		while($record = $db->GetRS()){
 			unlink($root_path.$path_upload.date("Y/m/d", substr($record['file_time'],0, 10))."/".$record['file_time'].strrchr($record['file_name'],"."));
@@ -48,7 +48,7 @@ switch($method) {
 		delCacheFile($news_id);
 		break;
 	case "unlock":
-		$log_info = "文章解锁";
+		$log_info = $language['admin_art_content_unlock'];
 		$db->Query("update ".$setting['db']['pre']."news_show set add_date=now() where news_id = '{$news_id}'");
 		break;
 	case "add_ok":
@@ -100,7 +100,7 @@ switch($method) {
 			$db->ReConnect(true);
 			
 			if($method=="add_ok") {
-				$log_info = "添加文章";
+				$log_info = $language['admin_art_content_add'];
 				$_POST['add_user'] = $req->getSession("username");
 				$_POST['add_date'] = "now()";
 				
@@ -120,7 +120,7 @@ switch($method) {
 				
 				$str_sql = $db->buildSQL($setting['db']['pre']."news_show", $_POST, "insert");
 			} else {
-				$log_info = "编辑文章";
+				$log_info = $language['admin_art_content_edit'];
 				unset($_POST['news_id']);
 				$db->Query("delete from ".$setting['db']['pre']."news_detail where news_id = '{$news_id}'");
 				$str_sql = $db->buildSQL($setting['db']['pre']."news_show", $_POST, "update", "news_id={$news_id}");
@@ -167,16 +167,16 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $news_id, $cat_id, $group;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $news_id, $cat_id, $group, $language;
 	$top_mode_list = array(
-			"0"	=>	"不置顶",
-			"128"	=>	"文字置顶",
-			"64"	=>	"幻灯图片",
+			"0"	=>	$language['admin_art_content_top_mode_1'],
+			"1"	=>	$language['admin_art_content_top_mode_2'],
+			"2"	=>	$language['admin_art_content_top_mode_3'],
 			);
 	$top_list = array(
-			"1"	=>	"首页",
-			"2"	=>	"列表页",
-			"4"	=>	"内容页",
+			"1"	=>	$language['admin_art_content_top_1'],
+			"2"	=>	$language['admin_art_content_top_2'],
+			"4"	=>	$language['admin_art_content_top_3'],
 			);
 	
 	$tpl_info['idx'] = "art_content_".($method=="list"?"list":"input");
@@ -215,8 +215,8 @@ function build_page($method) {
 			if(empty($record['link'])) $record['link'] = getFileURL($record['news_id'], $record['cat_idx']);
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$title = empty($cat_id)?"总列表":$db->GetSingleResult("select cat_name from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
-		$tpl_tmp->Set_Variable('title', "文章列表 - ".$title);
+		$title = empty($cat_id)?$language['admin_art_content_list_all']:$db->GetSingleResult("select cat_name from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
+		$tpl_tmp->Set_Variable('title', $language['admin_art_content_list_article']." - ".$title);
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 		$tpl_tmp->Set_Variable('cat_id', $cat_id);
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);	
@@ -226,7 +226,7 @@ function build_page($method) {
 	} elseif($method == "edit") {
 		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_show where news_id='{$news_id}'");
 		if(!$record) {
-			$tpl->Set_Variable('main', showInfo("指定的记录不存在！", 0));
+			$tpl->Set_Variable('main', showInfo($language['admin_art_content_error'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
@@ -235,8 +235,8 @@ function build_page($method) {
 		$cat_id = $record['cat_id'];
 		$setop = $record['setop'];
 		foreach($top_mode_list as $key=>$value) {
-			$key = (INT)$key;
-			$tpl_tmp->Set_Loop('setop_mode', array("key"=>$key, "value"=>$value, "checked"=>(($key+$setop==0 || $key&$setop)?"checked":"")));
+			$key = (INT)$key + 1024;
+			$tpl_tmp->Set_Loop('setop_mode', array("key"=>$key, "value"=>$value, "checked"=>(($key+$setop==1024 || $key&$setop)?"checked":"")));
 		}
 		foreach($top_list as $key=>$value) {
 			$key = (INT)$key;
@@ -262,7 +262,7 @@ function build_page($method) {
 		}
 		
 		$tpl_tmp->Set_Variable('record_content', implode("\n<!-- pagebreak -->\n", $content));
-		$tpl_tmp->Set_Variable('title', '文章更新');
+		$tpl_tmp->Set_Variable('title', $language['admin_art_content_edit']);
 	} else {
 		$checked = "checked";
 		foreach($top_mode_list as $key=>$value) {
@@ -288,7 +288,7 @@ function build_page($method) {
 		$record['content'] = "";
 		$record['pages'] = 1;
 		$tpl_tmp->Set_Variables($record, "record");
-		$tpl_tmp->Set_Variable('title', '文章添加');
+		$tpl_tmp->Set_Variable('title', $language['admin_art_content_add']);
 	}
 
 	//catalog select

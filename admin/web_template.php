@@ -15,7 +15,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = "É¾³ýÄ£°å";
+		$log_info = $language['admin_web_template_delete'];
 		unlink($tpl_path.$idx."/".$req->getGet("file"));
 		break;
 	case "add_ok":
@@ -23,7 +23,7 @@ switch($method) {
 		if(count($_POST) > 0) {
 			$ext = GetFileExt($_POST['file_name']);
 			if($ext!="tpl") $_POST['file_name'] .= ".tpl";
-			$log_info = "±à¼­Ä£°å";
+			$log_info = $language['admin_web_template_edit'];
 			$_POST['file_content'] = str_replace("  ", "\t", $_POST['file_content']);
 			if(get_magic_quotes_gpc()) $_POST['file_content'] = stripslashes($_POST['file_content']);
 			WriteFile($tpl_path.$idx."/".$_POST['file_name'], $_POST['file_content'], "wb");
@@ -40,13 +40,13 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $tpl, $tpl_info, $setting, $idx, $tpl_path, $method;
+	global $mystep, $req, $tpl, $tpl_info, $setting, $idx, $tpl_path, $method, $language;
 	
 	$fso = $mystep->getInstance("MyFSO");
 	$tpl_info['idx'] = "web_template_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	if($method == "list") {
-		$tpl_tmp->Set_Variable('title', "ÍøÕ¾Ä£°å¹ÜÀí");
+		$tpl_tmp->Set_Variable('title', $language['admin_web_template_title']);
 		$tpl_tmp->Set_Variable('tpl_idx', $idx);
 		
 		$tpl_list = $fso->Get_List($tpl_path);
@@ -74,10 +74,10 @@ function build_page($method) {
 				$file['content'] = htmlspecialchars($file['content']);
 				$file['content'] = str_replace("\t", "  ", $file['content']);
 			}
-			$tpl_tmp->Set_Variable('title', "Ä£°å±à¼­");
+			$tpl_tmp->Set_Variable('title', $language['admin_web_template_edit']);
 		} else {
 			$file['name'] = "";
-			$tpl_tmp->Set_Variable('title', "Ä£°åÌí¼Ó");
+			$tpl_tmp->Set_Variable('title', $language['admin_web_template_add']);
 		}
 		$tpl_tmp->Set_Variable('readonly', $method=="edit"?"readonly":"");
 		$tpl_tmp->Set_Variables($file, "file");

@@ -84,16 +84,10 @@ class MySQL extends class_common {
 		$this->DB_qstr = "none (Connect to MySQL Server)";
 		if($this->CheckError())	$this->Error("Could not connect to MySQL Server");
 		if(substr(mysql_get_server_info(),0,1)>=5) {
-			mysql_query("SET NAMES '".$this->DB_charset."'", $this->DB_conn);
 			mysql_query("SET CHARACTER SET '".$this->DB_charset."'", $this->DB_conn);
-			$charset = array(
-				"latin1" => "latin1_swedish_ci",
-				"gbk" => "gbk_chinese_ci",
-				"gb2312" => "gb2312_chinese_ci",
-				"utf8" => "utf8_general_ci"
-			);
-			if(isset($charset[$this->DB_charset])) {
-				mysql_query("SET COLLATION_CONNECTION='".$charset[$this->DB_charset]."'", $this->DB_conn);
+			mysql_query("SET NAMES '".$this->DB_charset."'", $this->DB_conn);
+			if($charset_collate = $this->GetSingleRecord("SHOW CHARACTER SET LIKE '".$this->DB_charset."'")) {
+				mysql_query("SET COLLATION_CONNECTION='".$charset_collate["Default collation"]."'", $this->DB_conn);
 			}
 			if($this->CheckError())	$this->Error("Unknow CharSet Name");
 		}

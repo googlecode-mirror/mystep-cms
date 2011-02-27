@@ -5,12 +5,12 @@ $keyword = $req->getGet("keyword");
 $method = $req->getGet("method");
 $log_info = "";
 
-if($method=="clear") {
-	$log_info = "清空日志";
+if($method=="clean") {
+	$log_info = $language['admin_info_log_clean'];
 	$db->Query("truncate table ".$setting['db']['pre']."modify_log");
 	$goto_url = $self;
 } elseif($method=="download") {
-	$log_info = "导入日志";
+	$log_info = $language['admin_info_log_download'];
 	$db->Query("select * from ".$setting['db']['pre']."modify_log order by id desc");
 	$content = "";
 	while($record = $db->GetRS()) {
@@ -68,7 +68,7 @@ while($record = $db->GetRS()) {
 }
 
 $tpl_tmp->Set_Variable('keyword', $keyword);
-$tpl_tmp->Set_Variable('title', '网站维护日志');
+$tpl_tmp->Set_Variable('title', $language['admin_info_log_title']);
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_tmp);
 $db->Free();

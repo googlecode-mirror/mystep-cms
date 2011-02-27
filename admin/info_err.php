@@ -5,12 +5,12 @@ $method = $req->getGet("method");
 $err_file = ROOT_PATH."/error.log";
 $log_info = "";
 
-if($method=="clear") {
+if($method=="clean") {
 	unlink($err_file);
-	$log_info = "清除错误信息";
+	$log_info = $language['admin_info_err_clean'];
 	$goto_url = $self;
 } elseif($method=="download") {
-	$log_info = "下载错误信息";
+	$log_info = $language['admin_info_err_download'];
 	$content = GetFile($err_file);
 	if(!empty($content)) {
 		if(ob_get_length()!==false) ob_end_clean();
@@ -34,16 +34,16 @@ $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 
 $err_output = "";
 if(!is_file($err_file)) {
-	$err_msg = "目前尚无出错记录！";
+	$err_msg = $language['admin_info_err_noerr'];
 	$err_output = "disabled";
 } else {
 	$err_content= GetFile($err_file);
 	if($err_content=="") {
-		$err_msg = "目前尚无出错记录！";
+		$err_msg = $language['admin_info_err_noerr'];
 	} else {
 		$err_lst = preg_split("/\n+[\-]{20,}\n+/",$err_content);
 		array_pop($err_lst);
-		$err_msg = "目前共有 ".count($err_lst)." 条出错记录！";
+		$err_msg = sprintf($language['admin_info_err_info'], count($err_lst));
 		for($i=count($err_lst)-1; $i>=0; $i--) {
 			$err_lst[$i] = preg_replace("/\n+/", "\n", $err_lst[$i]);
 			$err_lst[$i] = str_replace("\n", "\n<br />\n", $err_lst[$i]);
@@ -54,7 +54,7 @@ if(!is_file($err_file)) {
 	}
 }
 
-$tpl_tmp->Set_Variable('title', '网站出错信息');
+$tpl_tmp->Set_Variable('title', $language['admin_info_err_title']);
 $tpl_tmp->Set_Variable('err_output', $err_output);
 $tpl_tmp->Set_Variable('err_msg', $err_msg);
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));

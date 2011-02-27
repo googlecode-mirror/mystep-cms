@@ -15,7 +15,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = "删除分类";
+		$log_info = $language['admin_art_catalog_delete'];
 		function multiDelData($catid) {
 			global $db, $setting;
 			$db->Query("delete from ".$setting['db']['pre']."news_cat where cat_id = '{$catid}'");
@@ -60,7 +60,7 @@ switch($method) {
 			}
 			return;
 		}
-		$log_info = "变更分类顺序";
+		$log_info = $language['admin_art_catalog_change'];
 		setPosition($cat_id, $method);
 		deleteCache("news_cat");
 		break;
@@ -77,11 +77,11 @@ switch($method) {
 			$_POST['cat_show'] = array_sum($_POST['cat_show']);
 			if(is_null($_POST['cat_show'])) $_POST['cat_show'] = 0;
 			if($method=="add_ok") {
-				$log_info = "添加分类";
+				$log_info = $language['admin_art_catalog_add'];
 				$_POST['cat_order'] = 1 + $db->GetSingleResult("select max(cat_order) from ".$setting['db']['pre']."news_cat");
 				$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "insert", "a");
 			} else {
-				$log_info = "编辑分类";
+				$log_info = $language['admin_art_catalog_edit'];
 				function multiChange($catid, $layer) {
 					global $db, $setting;
 					$db->Query("update ".$setting['db']['pre']."news_cat set cat_layer='{$layer}' where cat_id = '{$catid}'");
@@ -113,7 +113,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $cat_id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $cat_id, $language;
 
 	$tpl_info['idx'] = "art_catalog_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -128,10 +128,10 @@ function build_page($method) {
 			$news_cat[$i]['cat_name'] = preg_replace("/^├ /", "", preg_replace("/^└ /", "", $news_cat[$i]['cat_name']));
 			$web = getParaInfo("website", "web_id", $news_cat[$i]['web_id']);
 			$news_cat[$i]['web_name'] = $web['name'];
-			if(empty($news_cat[$i]['web_name'])) $news_cat[$i]['web_name'] = "非网站栏目";
+			if(empty($news_cat[$i]['web_name'])) $news_cat[$i]['web_name'] = $language['admin_art_catalog_public'];
 			$tpl_tmp->Set_Loop('record', $news_cat[$i]);
 		}
-		$tpl_tmp->Set_Variable('title', '文章分类目录');
+		$tpl_tmp->Set_Variable('title', $language['admin_art_catalog_catalog']);
 		$tpl_tmp->Set_Variable("news_cat", json_encode(chg_charset($news_cat, $setting['gen']['charset'], "utf-8")));
 	} else {
 		if($method == "edit") {
@@ -139,7 +139,7 @@ function build_page($method) {
 			$record  = $db->GetRS();
 			$db->Free();
 			if(!$record) {
-				$tpl->Set_Variable('main', showInfo("指定 ID 的分类不存在！", 0));
+				$tpl->Set_Variable('main', showInfo($language['admin_art_catalog_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
@@ -185,7 +185,6 @@ function build_page($method) {
 		$cur_layer = 99;
 		$max_count = count($news_cat);
 		for($i=0; $i<$max_count; $i++) {
-			if($record['web_id']!=$news_cat[$i]['web_id']) continue;
 			if($news_cat[$i]['cat_id']==$record['cat_id']) {
 				$cur_layer = $news_cat[$i]['cat_layer'];
 				continue;
@@ -204,7 +203,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('catalog', array('cat_id'=>$news_cat[$i]['cat_id'], 'cat_name'=>$news_cat[$i]['cat_name'], 'web_id'=>$news_cat[$i]['web_id'],'selected'=>($record['cat_main']==$news_cat[$i]['cat_id']?"selected":"")));
 		}
 		
-		$tpl_tmp->Set_Variable('title', ($method=='add'?'分类添加':'分类更新'));
+		$tpl_tmp->Set_Variable('title', ($method=='add'?$language['admin_art_catalog_add']:$language['admin_art_catalog_edit']));
 		$tpl_tmp->Set_Variable('method', $method);
 		$tpl_tmp->Set_Variable('web_disabled', $web_disabled);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));

@@ -17,7 +17,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = "删除用户组";
+		$log_info = $language['admin_user_group_delete'];
 		$group_id = $req->getGet("group_id");
 		if($group_id>2) {
 			$db->Query("delete from ".$setting['db']['pre']."user_group where group_id = '{$group_id}'");
@@ -44,7 +44,7 @@ switch($method) {
 			} else {
 				$_POST['power_web'] = join($_POST['power_web'], ",");
 			}
-			$log_info = ($method=="add_ok"?"添加用户组":"编辑用户组");
+			$log_info = ($method=="add_ok"?$language['admin_user_group_add']:$language['admin_user_group_edit']);
 			$qry_str = $db->buildSQL($setting['db']['pre']."user_group", $_POST);
 			$db->Query($qry_str);
 			deleteCache("user_group");
@@ -62,7 +62,7 @@ $mystep->pageEnd(false);
 
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $group_id, $tpl_info, $admin_cat, $admin_cat_plat, $news_cat, $website, $setting;
+	global $mystep, $req, $db, $tpl, $group_id, $tpl_info, $admin_cat, $admin_cat_plat, $news_cat, $website, $setting, $language;
 
 	$tpl_info['idx'] = "user_group_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -73,9 +73,9 @@ function build_page($method) {
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if($record['power_func']=="all") {
-				$record['power_func'] = "全部管理权限";
+				$record['power_func'] = $language['admin_user_group_power_all'];
 			} elseif($record['power_func']=="") {
-				$record['power_func'] = "无管理权限";
+				$record['power_func'] = $language['admin_user_group_power_none'];
 			} else {
 				$thePowerFunc = split(",", $record['power_func']);
 				$record['power_func'] = "";
@@ -87,9 +87,9 @@ function build_page($method) {
 				$record['power_func'] = substr($record['power_func'], 0, -2);
 			}
 			if($record['power_cat']=="all") {
-				$record['power_cat'] = "全部栏目权限";
+				$record['power_cat'] = $language['admin_user_group_cat_all'];
 			} elseif($record['power_cat']=="") {
-				$record['power_cat'] = "无栏目权限";
+				$record['power_cat'] = $language['admin_user_group_cat_none'];
 			} else {
 				$thePowerCata = split(",", $record['power_cat']);
 				$record['power_cat'] = "";
@@ -101,9 +101,9 @@ function build_page($method) {
 				$record['power_cat'] = substr($record['power_cat'], 0, -2);
 			}
 			if($record['power_web']=="all") {
-				$record['power_web'] = "全部网站权限";
+				$record['power_web'] = $language['admin_user_group_web_all'];
 			} elseif($record['power_web']=="") {
-				$record['power_web'] = "无网站权限";
+				$record['power_web'] = $language['admin_user_group_web_none'];
 			} else {
 				$thePowerWeb = split(",", $record['power_web']);
 				$record['power_web'] = "";
@@ -116,16 +116,16 @@ function build_page($method) {
 			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('title', '网站用户组群列表');
+		$tpl_tmp->Set_Variable('title', $language['admin_user_group_title']);
 	} else {
-		$tpl_tmp->Set_Variable('title', ($method == "add"?'用户组群添加':'用户组群编辑'));
+		$tpl_tmp->Set_Variable('title', ($method == "add"?$language['admin_user_group_add']:$language['admin_user_group_edit']));
 		
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."user_group where group_id='{$group_id}'");
 			if($record = $db->GetRS()) {
 				//nothing
 			} else {
-				$tpl->Set_Variable('main', showInfo("指定 ID 的用户组不存在！", 0));
+				$tpl->Set_Variable('main', showInfo($language['admin_user_group_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}

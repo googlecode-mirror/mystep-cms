@@ -14,7 +14,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = "É¾³ıÍøÕ¾";
+		$log_info = $language['admin_web_subweb_delete'];
 		$web_id = $req->getGet("web_id");
 		$web_info = getParaInfo("website", "web_id", $web_id);
 		if($web_id>1) {
@@ -44,7 +44,7 @@ switch($method) {
 		if(count($_POST) == 0) {
 			$goto_url = $self;
 		} else {
-			$log_info = ($method=="add_ok"?"Ìí¼ÓÍøÕ¾":"±à¼­ÍøÕ¾");
+			$log_info = ($method=="add_ok"?$language['admin_web_subweb_add']:$language['admin_web_subweb_edit']);
 			$new_setting = $_POST['setting'];
 			$new_setting['web']['title'] = $_POST['name'];
 			unset($_POST['setting']);
@@ -79,7 +79,7 @@ $mystep->pageEnd(false);
 
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $web_id, $tpl_info, $website, $setting;
+	global $mystep, $req, $db, $tpl, $web_id, $tpl_info, $website, $setting, $language;
 
 	$tpl_info['idx'] = "web_subweb_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -91,18 +91,18 @@ function build_page($method) {
 			HtmlTrans(&$record);
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('title', 'ÍøÕ¾ÁĞ±í');
+		$tpl_tmp->Set_Variable('title', $language['admin_web_subweb_title']);
 		global $admin_cat;
 		$tpl_tmp->Set_Variable("admin_cat", json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8")));
 		$tpl_tmp->Set_Variable("website", json_encode(chg_charset($website, $setting['gen']['charset'], "utf-8")));
 	} else {
-		$tpl_tmp->Set_Variable('title', ($method == "add"?'ÍøÕ¾Ìí¼Ó':'ÍøÕ¾±à¼­'));
+		$tpl_tmp->Set_Variable('title', ($method == "add"?$language['admin_web_subweb_add']:$language['admin_web_subweb_edit']));
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."website where web_id='{$web_id}'");
 			if($record = $db->GetRS()) {
 				//nothing
 			} else {
-				$tpl->Set_Variable('main', showInfo("Ö¸¶¨ ID µÄÍøÕ¾²»´æÔÚ£¡", 0));
+				$tpl->Set_Variable('main', showInfo($language['admin_web_subweb_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}

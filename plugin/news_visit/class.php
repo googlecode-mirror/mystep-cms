@@ -23,7 +23,6 @@ class plugin_news_visit implements plugin {
 			</pre>
 			");
 		} else {
-			if(count(ob_list_handlers())>0) ob_end_clean();
 			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8"));
@@ -55,7 +54,6 @@ mystep;
 			</pre>
 			");
 		} else {
-			if(count(ob_list_handlers())>0) ob_end_clean();
 			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8"));

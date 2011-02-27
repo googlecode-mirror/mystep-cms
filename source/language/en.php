@@ -21,8 +21,5 @@ $language = array (
   'link_back' => 'Go Back',
   'link_prev' => 'Next Page',
   'link_next' => 'Previous Page',
-  'admin_psw' => 'Password repeat',
-  'admin_psw_desc' => 'Reinput the previous password please',
-  'admin_psw_desc_addon' => ' (If no change, just make the blank empty)',
 );
 ?>

@@ -14,7 +14,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = "删除链接";
+		$log_info = $language['admin_func_link_delete'];
 		$db->Query("delete from ".$setting['db']['pre']."links where id = '$id'");
 		deleteCache("link");
 		break;
@@ -22,10 +22,10 @@ switch($method) {
 	case "edit_ok":
 		if(count($_POST) > 0) {
 			if($method=="add_ok") {
-				$log_info = "添加链接";
+				$log_info = $language['admin_func_link_add'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."links", $_POST, "insert", "a");
 			} else {
-				$log_info = "编辑链接";
+				$log_info = $language['admin_func_link_edit'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."links", $_POST, "update", "id={$id}");
 			}
 			$db->Query($str_sql);
@@ -45,7 +45,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $language;
 	
 	$tpl_info['idx'] = "func_link_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -83,14 +83,14 @@ function build_page($method) {
 			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('title', '链接管理');
+		$tpl_tmp->Set_Variable('title', $language['admin_func_link_title']);
 	} else {
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."links where id='{$id}'");
 			$record  = $db->GetRS();
 			$db->Free();
 			if(!$record) {
-				$tpl->Set_Variable('main', showInfo("指定 ID 的链接不存在！", 0));
+				$tpl->Set_Variable('main', showInfo($language['admin_func_link_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
@@ -104,7 +104,7 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_Variables($record);
 		$tpl_tmp->judge_list['edit'] = ($method == "edit");
-		$tpl_tmp->Set_Variable('title', ($method == "add"?"链接添加":"链接修改"));
+		$tpl_tmp->Set_Variable('title', ($method == "add"?$language['admin_func_link_add']:$language['admin_func_link_edit']));
 		$tpl_tmp->Set_Variable('method', $method);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}

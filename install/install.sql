@@ -6,7 +6,7 @@ MyStep 网站系统数据库结构
 # ---------------------------------------------------------------------------------------------------------------
 
 drop DataBase if exists {db_name};
-Create DataBase if not exists {db_name};
+Create DataBase if not exists {db_name} default charset {charset} COLLATE {charset_collate};
 use {db_name};
 
 # 网站列表
@@ -127,7 +127,7 @@ CREATE TABLE `{pre}news_show` (
 	`link` Char(255) DEFAULT '',												#跳转网址
 	`tag` Char(120) NOT NULL DEFAULT '',								#相关索引
 	`image` Char(100) NOT NULL DEFAULT '',							#相关图片
-	`setop` TINYINT(3) UNSIGNED,												#置顶模式
+	`setop` SMALLINT UNSIGNED,													#置顶模式
 	`pages` TINYINT UNSIGNED NOT NULL DEFAULT 1,				#新闻页数
 	`add_user` Char(20) NOT NULL,												#录入人
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#录入日期

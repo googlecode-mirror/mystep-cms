@@ -1,6 +1,11 @@
 <?php
+if(is_file("../include/install.lock")) {
+	header("location: ../");
+	exit();
+}
 define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 require_once(ROOT_PATH."/include/config.php");
+require_once(ROOT_PATH."/include/version.php");
 require_once(ROOT_PATH."/include/parameter.php");
 require_once(ROOT_PATH."/source/function/global.php");
 require_once(ROOT_PATH."/source/function/web.php");
@@ -55,6 +60,7 @@ mystep;
 		}
 		break;
 	case 4:
+		WriteFile("../include/install.lock", date("Y-m-d H:i:s"));
 		break;
 	default:
 		break;
@@ -74,7 +80,7 @@ echo <<<mystep
 <BODY>
 <DIV class=container>
 	<DIV class=header>
-		<H1>MyStep 安装向导</H1><SPAN>V1.0 (GBK) 20110101</SPAN>
+		<H1>MyStep 安装向导</H1><SPAN>V{$ms_version['ver']} ({$ms_version['charset']}/{$ms_version['language']}) {$ms_version['date']}</SPAN>
 	</DIV>
 mystep;
 

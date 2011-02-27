@@ -12,6 +12,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-ch
 header("Pragma: no-cache");
 
 $mystep = new MyStep();
+$mystep->getLanguage(dirname(__FILE__)."/language/");
 $mystep->pageStart(false);
 $db->Reconnect(true, $setting['db']['name']);
 
@@ -33,7 +34,7 @@ if($self=="login.php") {
 includeCache("admin_cat");
 if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "file", $self)) {
 	if(strpos(",".$group['power_func'].",", ",".$cat_info['id'].",")===false) {
-		echo '<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">您无权进行该操作！</div>';
+		echo '<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">'.$language['admin_nopower'].'</div>';
 		$mystep->pageEnd(false);
 	}
 }

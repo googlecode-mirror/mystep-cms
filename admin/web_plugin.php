@@ -18,7 +18,7 @@ switch($method) {
 		include($plugin_path.$idx."/info.php");
 		include($plugin_path.$idx."/class.php");
 		if(isset($info['class'])) {
-			$log_info = $method=="install"?"安装插件":"卸载插件";
+			$log_info = $method=="install"?$language['admin_web_plugin_install']:$language['admin_web_plugin_uninstall'];
 			call_user_func(array($info['class'], $method));
 		} else {
 			$goto_url = $self;
@@ -29,7 +29,7 @@ switch($method) {
 		if(count($_POST) == 0) {
 			$goto_url = $self;
 		} else {
-			$log_info = "编辑插件设置";
+			$log_info = $language['admin_web_plugin_setup'];
 			foreach($_POST['plugin_setting'][$idx] as $key => $value) {
 				if(is_array($value)) {
 					$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
@@ -56,7 +56,7 @@ $mystep->pageEnd(false);
 
 
 function build_page($method) {
-	global $mystep, $req, $tpl, $tpl_info, $plugin, $setting, $idx, $plugin_path;
+	global $mystep, $req, $tpl, $tpl_info, $plugin, $setting, $idx, $plugin_path, $language;
 
 	$tpl_info['idx'] = "web_plugin_".$method;
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -79,12 +79,12 @@ function build_page($method) {
 				$tpl_tmp->Set_Loop("plugin_list", $info);
 			}
 		}
-		$tpl_tmp->Set_Variable('title', '插件管理');
+		$tpl_tmp->Set_Variable('title', $language['admin_web_plugin_title']);
 	} else {
-		$tpl_tmp->Set_Variable('title', "插件参数设定");
+		$tpl_tmp->Set_Variable('title', $language['admin_web_plugin_setup']);
 		$plugin_info = getParaInfo("plugin", "idx", $idx);
 		if(!is_file($plugin_path.$idx."/config.php") || !is_file($plugin_path.$idx."/config-detail.php") || $plugin_info===false) {
-			$tpl->Set_Variable('main', showInfo("当前插件无可用设置信息！", 0));
+			$tpl->Set_Variable('main', showInfo($language['admin_web_plugin_err'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}

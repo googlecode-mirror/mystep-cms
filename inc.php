@@ -1,4 +1,8 @@
 <?php
+if(!is_file("include/install.lock")) {
+	header("location: install/");
+	exit();
+}
 define(ROOT_PATH, str_replace("\\", "/", dirname(__file__)));
 include(ROOT_PATH."/include/config.php");
 if($setting['web']['close'] && !isset($_COOKIE['force'])) {

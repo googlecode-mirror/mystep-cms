@@ -6,7 +6,7 @@
 	<a href="<!--page_next-->">下页</a>&nbsp;
 	<a href="<!--page_last-->">末页</a>&nbsp;
 	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.previousSibling.value">&nbsp;
- （<a href="###" onclick="location.href='?method=clear'">清空日志</a> | <a href="###" onclick="location.href='?method=download'">保存日志</a>）
+ （<a href="###" onclick="location.href='?method=clean'">清空日志</a> | <a href="###" onclick="location.href='?method=download'">保存日志</a>）
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
@@ -42,5 +42,5 @@
 	<a href="<!--page_next-->">下页</a>&nbsp;
 	<a href="<!--page_last-->">末页</a>&nbsp;
 	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.previousSibling.value">&nbsp;
- （<a href="###" onclick="location.href='?method=clear'">清空日志</a> | <a href="###" onclick="location.href='?method=download'">保存日志</a>）
+ （<a href="###" onclick="location.href='?method=clean'">清空日志</a> | <a href="###" onclick="location.href='?method=download'">保存日志</a>）
 </div>

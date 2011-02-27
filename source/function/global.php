@@ -218,6 +218,11 @@ function chg_charset($content, $from="gbk", $to="utf-8") {
 	$result = null;
 	if(is_string($content)){
 		$result = iconv($from, $to.'//TRANSLIT//IGNORE',$content);
+		if($result===false && function_exists("mb_detect_encoding")) {
+			$encode = mb_detect_encoding($content, array("UTF-8","EUC-CN","ISO-8859-1"));
+			$content = str_replace(chr(0x0A),chr(0x20),$content); 
+			$result = mb_convert_encoding($content, "utf-8", $encode);
+		}
 	} elseif(is_array($content)) {
 		foreach($content as $key => $value) {
 			$result[$key] = chg_charset($value, $from, $to);
@@ -226,6 +231,12 @@ function chg_charset($content, $from="gbk", $to="utf-8") {
 	return $result;
 }
 
+function chg_charset_file($file_src, $file_dst, $from="gbk", $to="utf-8") {
+	if(!is_file($file_src) || $from==$to) return;
+	$content = file_get_contents($file_src);
+	$content = iconv($from, $to.'//TRANSLIT//IGNORE',$content);
+	return WriteFile($file_dst, $content, "wb");
+}
 /*---------------------------------------String Functions End-------------------------------------*/
 
 

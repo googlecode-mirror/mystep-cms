@@ -346,18 +346,18 @@ function getCacheExpire() {
 function showInfo($msg = "", $mode = true) {
 	global $language;
 	$result = <<<windy2000
-<link rel="stylesheet" type="text/css" media="all" href="/css/style.css" />
-<br /><br /><br />
-<center>
-  <table border="0" width="80%" cellspacing="0" cellpadding="0">
+<div style="margin-top:40px;">
+  <table align="center" border="0" width="80%" cellspacing="0" cellpadding="0">
     <tr><td>
-      <table width="100%" style="padding: 5px; background-color: #eeeeee; border: 1px #666666 solid; table-layout: fixed;">
+      <table width="100%" style="padding:5px; background-color:#eeeeee; border:1px #666666 solid; table-layout:fixed;">
         <tr><td align="center" style="padding:40px;font-weight:bold;font-size:14px;color:black">{$msg}</td></tr>
       </table>
-      <center><br /><a href="javascript:history.go(-1)" style="font-size:12px;color:black;text-decoration:none;">[ {$language['link_back']} ]</a></center>
+      <div style="text-align:center; margin-top:20px;">
+      	<a href="javascript:history.go(-1)" style="font-size:12px;color:black;text-decoration:none;">[ {$language['link_back']} ]</a>
+      </div>
     </td></tr>
   </table>
-</center>
+</div>
 windy2000;
 	if($mode) {
 		global $db;
@@ -365,8 +365,9 @@ windy2000;
 			$db->close();
 			unset($db);
 		}
-		if(ob_get_length()!==false) ob_end_clean();
-		die($result);
+		if(ob_get_length()!==false) ob_end_flush();
+		echo $result;
+		exit();
 	}
 	return $result;
 }

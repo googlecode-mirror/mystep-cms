@@ -13,7 +13,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = "删除用户";
+		$log_info = $language['admin_user_detail_delete'];
 		$db->Query("delete from ".$setting['db']['pre']."users where user_id = '{$user_id}'");
 		break;
 	case "add_ok":
@@ -22,11 +22,11 @@ switch($method) {
 			$goto_url = $self;
 		} else {
 			if($_POST['username'] != $_POST['username_org'] && $db->GetSingleResult("select user_id from ".$setting['db']['pre']."users where username='".$_POST['username']."'")!= "") {
-				$tpl->Set_Variable('main', showInfo("您所注册的 ".$_POST['username']." 已经存在！", 0));
+				$tpl->Set_Variable('main', showInfo(sprintf($language['admin_user_detail_error2'], $_POST['username']), 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			} else {
-				$log_info = ($method=="add_ok"?"添加用户":"编辑用户");
+				$log_info = ($method=="add_ok"?$language['admin_user_detail_add']:$language['admin_user_detail_edit']);
 				if(empty($_POST['password'])) {
 					unset($_POST['password']);
 				} else {
@@ -55,7 +55,7 @@ $mystep->pageEnd(false);
 
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $user_id, $user_group, $tpl_info, $setting;
+	global $mystep, $req, $db, $tpl, $user_id, $user_group, $tpl_info, $setting, $language;
 
 	$tpl_info['idx'] = "user_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -99,7 +99,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('user_group', $user_group[$i]);
 		}
 		
-		$tpl_tmp->Set_Variable('title', '用户列表');
+		$tpl_tmp->Set_Variable('title', $language['admin_user_detail_title']);
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);
 		if($order_type=="asc") {
 			$order_type = "desc";
@@ -110,12 +110,12 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('group_id', $group_id);
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 	} elseif($method=="edit") {
-		$tpl_tmp->Set_Variable('title', '用户编辑');
+		$tpl_tmp->Set_Variable('title', $language['admin_user_detail_edit']);
 		
 		$db->Query("select * from ".$setting['db']['pre']."users where user_id='{$user_id}'");
 		$record  = $db->GetRS();
 		if(!$record) {
-			$tpl->Set_Variable('main', showInfo("指定 ID 的用户不存在！", 0));
+			$tpl->Set_Variable('main', showInfo($language['admin_user_detail_error'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
@@ -127,7 +127,7 @@ function build_page($method) {
 		$tpl_tmp->Set_Variables($record);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	} else {
-		$tpl_tmp->Set_Variable('title', '用户添加');
+		$tpl_tmp->Set_Variable('title', $language['admin_user_detail_add']);
 		$max_count = count($user_group);
 		for($i=0; $i<$max_count; $i++) {
 			$user_group[$i]["selected"] = ($user_group[$i]['group_id']==2?"selected":"");
