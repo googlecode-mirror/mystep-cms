@@ -109,5 +109,10 @@ $language = array (
   'admin_web_template_add' => '模板添加',
   'admin_web_template_edit' => '编辑模板',
   'admin_web_template_title' => '网站模板管理',
+  'admin_upload_img_ok' => '图像已成功上传！',
+  'admin_attachment_upload_done' => '上传成功！',
+  'admin_attachment_upload_failed' => '上传时出错',
+  'admin_attachment_upload_dberr' => '记录至数据库时出错！',
+  'admin_attachment_edit_err' => '当前文档不存在附件！',
 );
 ?>

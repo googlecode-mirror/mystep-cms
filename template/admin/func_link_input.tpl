@@ -11,6 +11,18 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="cat">链接索引：</td>
+				<td class="row">
+					<input name="idx" id="idx" type="text" size="20" maxlength="20" value="<!--idx-->" need="" /> &nbsp;
+					<select class="btn" onchange="$id('idx').value=this.value">
+						<option value="">请选择</option>
+<!--loop:start key="idx"-->
+						<option value="<!--idx_idx-->" <!--idx_selected-->><!--idx_idx--></option>
+<!--loop:end-->
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td class="cat">链接地址：</td>
 				<td class="row">
 					<input name="link_url" type="text" size="20" maxlength="100" value="<!--link_url-->" need="url" />
@@ -19,7 +31,7 @@
 			<tr>
 				<td class="cat">链接图形：</td>
 				<td class="row">
-					<input style="width:205px" name="image" type="text" maxlength="100" value="<!--image-->" /> &nbsp;
+					<input name="image" type="text" maxlength="100" value="<!--image-->" /> &nbsp;
 					<input class="btn" type="button" onClick="openDialog('upload_img.php?image', 400, 120, 1)" value="上传" />
 				</td>
 			</tr>

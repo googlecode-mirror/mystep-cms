@@ -7,12 +7,12 @@
 				<td class="cat" width="120">所属栏目：</td>
 				<td class="row" width="680">
 					<input type="hidden" name="news_id" value="<!--record_news_id-->" />
-					<input type="hidden" name="web_id" value="<!--record_web_id-->" />
+					<input id="web_id" type="hidden" name="web_id" value="<!--record_web_id-->" />
 					<input type="hidden" name="pages" value="<!--record_pages-->" />
-					<select id="cat_id" name="cat_id" onchange="profix_changed(this.value)" need="" />
+					<select id="cat_id" name="cat_id" onchange="profix_changed(this.value);$id('web_id').value=this.options[this.selectedIndex].getAttribute('web_id');" need="" />
 						<option value="">请选择</option>
 <!--loop:start key="catalog"-->
-						<option value="<!--catalog_cat_id-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
+						<option value="<!--catalog_cat_id-->" web_id="<!--catalog_web_id-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
 					</select> <span class="comment">（请选择当前文章所属的类别）</span>
 				</td>
@@ -81,7 +81,7 @@
 						<textarea id="content" name="content" style="width:100%; height:400px;"><!--record_content--></textarea>
 					</div>
 					<div>
-						<iframe src="attachment.php?method=add" name="attach" width="720" height="25" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no" ALLOWTRANSPARENCY="true" onload="setIframe()"></iframe>
+						<iframe src="attachment.php?method=add" name="attach" width="720" height="100" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no" ALLOWTRANSPARENCY="true" onload="setIframe()"></iframe>
 					</div>
 				<td>
 			</tr>
@@ -142,7 +142,7 @@ function attach_add(str) {
 function attach_remove(aid) {
 	var content;
 	content = tinyMCE.get('content').getContent();
-	var re = new RegExp("<A href\\=\".+?\\?"+aid+"\.+?<\\/A>", "ig");
+	var re = new RegExp("<a id\\=\"att_"+aid+".+?<\\/a>", "ig");
 	content = content.replace(re, "");
 	tinyMCE.get('content').setContent(content);
 	return;

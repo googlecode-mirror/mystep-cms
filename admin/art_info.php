@@ -83,6 +83,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}
 	
+	
+	$tpl_tmp->Set_Variable('web_id', $web_id);
 	$max_count = count($GLOBALS['website']);
 	for($i=0; $i<$max_count; $i++) {
 		$GLOBALS['website'][$i]['selected'] = $GLOBALS['website'][$i]['web_id']==$web_id?"selected":"";

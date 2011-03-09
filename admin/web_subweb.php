@@ -61,6 +61,7 @@ mystep;
 				$strReplace = array($new_setting['db']['name'], $new_setting['db']['pre'], $setting['db']['charset'], $_POST['host'], $_POST['idx']);
 				$info = $db->ExeSqlFile("subweb.sql", $strFind, $strReplace);
 			}
+			$db->Query("use ".$setting['db']['name']);
 			WriteFile(ROOT_PATH."/include/config_".$_POST['idx'].".php", $result, "w");
 			$qry_str = $db->buildSQL($setting['db']['pre']."website", $_POST);
 			$db->Query($qry_str);
@@ -112,6 +113,8 @@ function build_page($method) {
 			$record['idx'] = "";
 			$record['host'] = "";
 		}
+		$GLOBALS['subweb_idx'] = $record['idx'];
+		
 		$tpl_tmp->Set_Variables($record);
 		$setting['watermark']['mode'] = array($setting['watermark']['mode']&1==1, $setting['watermark']['mode']&2==2);
 		

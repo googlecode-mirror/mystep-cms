@@ -13,7 +13,7 @@
 			<tr> 
 				<td class="cat">ÍøÕ¾Ë÷Òý£º</td>
 				<td class="row">
-					<input type="text" name="idx" value="<!--idx-->" need="" onkeyup="if('<!--method-->'=='add'){var obj=document.getElementsByName('setting[db][pre]')[0];obj.value=obj.defaultValue+this.value+'_';}" />
+					<input type="text" name="idx" value="<!--idx-->" need="" />
 				</td>
 			</tr>
 			<tr> 
@@ -72,6 +72,7 @@ $setting_skip['path'] = array();
 $setting_skip['path']['admin'] = '';
 $setting_skip['path']['template'] = '';
 $setting_skip['path']['cache'] = '';
+$setting_skip['path']['upload'] = '';
 $setting_skip['content'] = array();
 $setting_skip['content']['max_length'] = '';
 $setting_skip['content']['get_remote_img'] = '';
@@ -91,9 +92,9 @@ $setting_skip['memcache']['expire'] = '';
 $setting_skip['memcache']['threshold'] = '';
 $setting_skip['memcache']['min_savings'] = '';
 
-if($GLOBALS['web_info']) {
-	if(is_file(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php")) {
-		include(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php");
+if($GLOBALS['subweb_idx']) {
+	if(is_file(ROOT_PATH."/include/config_".$GLOBALS['subweb_idx'].".php")) {
+		include(ROOT_PATH."/include/config_".$GLOBALS['subweb_idx'].".php");
 		$setting = arrayMerge($setting, $setting_sub);
 	}
 }

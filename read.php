@@ -61,7 +61,7 @@ if($setting['watermark']['mode'] & 1) $detail['content'] = txt_watermark($detail
 if(empty($detail['image'])) $detail['image'] = "images/dummy.png";
 $tpl_tmp->Set_Variables($detail, "record");
 
-//新闻分页列表
+//News Page
 if($page_count==1) {
 	$tpl_tmp->Set_Variable('sub_page', 'new Array()');
 } else {
@@ -77,7 +77,7 @@ if($page_count==1) {
 	unset($result);
 }
 
-//上一篇文章
+//Prev. Article
 if($article = getData("select news_id, cat_id, subject, add_date from ".$setting['db']['pre']."news_show where news_id<'{$news_id}' order by news_id desc limit 1", "record")) {
 	if($cat_info = getParaInfo("news_cat", "cat_id", $article['cat_id'])) {
 		$cat_idx = $cat_info['cat_idx'];
@@ -91,7 +91,7 @@ if($article = getData("select news_id, cat_id, subject, add_date from ".$setting
 	$tpl_tmp->Set_Variable('article_prev_text', "");
 }
 
-//下一篇文章
+//Next Article
 if($article = getData("select news_id, cat_id, subject, add_date from ".$setting['db']['pre']."news_show where news_id>'{$news_id}' order by news_id asc limit 1", "record")) {
 	if($cat_info = getParaInfo("news_cat", "cat_id", $article['cat_id'])) {
 		$cat_idx = $cat_info['cat_idx'];
@@ -105,7 +105,7 @@ if($article = getData("select news_id, cat_id, subject, add_date from ".$setting
 	$tpl_tmp->Set_Variable('article_next_text', "");
 }
 
-//文章 Tag
+//News Tag
 $tag = explode(",", $detail['tag']);
 $max_count = count($tag);
 for($i=0; $i<$max_count; $i++) {

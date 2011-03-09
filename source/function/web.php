@@ -106,6 +106,19 @@ function includeCache($idx) {
 	return;
 }
 
+function getSubSetting($web_id) {
+	$setting_sub = null;
+	if($theWeb = getParaInfo("website", "web_id", $web_id)) {
+		$setting_file = ROOT_PATH."/include/config_".$theWeb['idx'].".php";
+		if(is_file($setting_file)) {
+			include($setting_file);
+			$setting_sub['info'] = $theWeb;
+		}
+	}
+	if(is_null($setting_sub)) include(ROOT_PATH."/include/config_main.php");
+	return $setting_sub;
+}
+
 function getList($layer = 1, $cat_main = 0) {
 	global $catalog, $max_layer;
 	if($layer>$max_layer || !is_array($GLOBALS["catalog_{$layer}"])) return;
@@ -556,7 +569,7 @@ function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 		E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
 		E_ALL =>	"Impossible",
 	);
-	if($err_no==E_NOTICE || $err_no==E_WARNING) return;
+	if($err_no==E_NOTICE || $err_no==E_WARNING || $err_no==E_STRICT) return;
 	$cur_err = $err_type[$err_no];
 	$err_str .= "Time: ".date("Y-m-d H:i:s")."\n";
 	$err_str .= "Type: {$cur_err}\n";

@@ -402,6 +402,7 @@ class MySQL extends class_common {
 		$fields = "";
 		$values = "";
 		$tmp = "||||||";
+		$table = str_replace(".", "`.`", $table);
 		
 		switch($mode) {
 			case "insert":

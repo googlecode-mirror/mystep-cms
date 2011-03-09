@@ -110,7 +110,7 @@ CREATE TABLE `{pre}news_cat` (
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻分类';
 
 INSERT INTO `{pre}news_cat` VALUES
-		(0, 0, 0, '网站通告', '网站通告', 'notice', '', '', 0, 0, '', 1, 0),
+		(0, 1, 0, '网站通告', '网站通告', 'notice', '', '', 0, 0, '', 1, 0),
 		(0, 1, 0, '新闻资讯', '新闻资讯 时事报道 体育新闻 健康生活', 'news', '', '时事,娱乐,体育,健康', 1, 0, '', 1, 255);
 # ---------------------------------------------------------------------------------------------------------------
 
@@ -155,6 +155,7 @@ CREATE TABLE `{pre}news_detail` (
 # 内容展示
 CREATE TABLE `{pre}info_show` (
 	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`web_id` TINYINT DEFAULT 0,												#所属子站
 	`subject` Char(100) NOT NULL,											#展示标题
 	`content` TEXT NOT NULL,													#展示内容
 	PRIMARY KEY (`id`)
@@ -180,6 +181,7 @@ CREATE TABLE `{pre}news_tag` (
 # 新闻附件（所有上传的附件都在此表记录）
 CREATE TABLE `{pre}attachment` (
 	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`web_id` TINYINT DEFAULT 0,									#所属子站
 	`news_id` MEDIUMINT UNSIGNED,								#关联索引
 	`file_name` Char(150) NOT NULL,							#附件文件名
 	`file_type` Char(40) NOT NULL,							#附件类型
@@ -190,7 +192,7 @@ CREATE TABLE `{pre}attachment` (
 	`tag` Char(120),														#相关索引
 	`add_user` Char(20) NOT NULL,								#附件添加人
 	`watermark` BOOL NOT NULL DEFAULT 0,				#是否添加水印
-	INDEX (`news_id`),
+	INDEX (`web_id`, `news_id`),
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻附件';
 
@@ -199,10 +201,12 @@ CREATE TABLE `{pre}attachment` (
 # 友情链接表
 CREATE TABLE `{pre}links` (
 	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`idx` Char(20) DEFAULT '' NOT NULL,					#字符索引
 	`link_name` Char(100) NOT NULL,							#链接名称
 	`link_url` Char(100) NOT NULL,							#链接地址
 	`image` Char(100),													#链接图形（空视为文字链接，大小固定 88 * 31）
 	`level` TINYINT UNSIGNED DEFAULT 0,					#显示级别（0 为不显示）
+	INDEX (`idx`),
 	INDEX (`level`),
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='友情链接表';

@@ -5,7 +5,7 @@
 	<a href="<!--page_prev-->">ÉÏÒ³</a>&nbsp;
 	<a href="<!--page_next-->">ÏÂÒ³</a>&nbsp;
 	<a href="<!--page_last-->">Ä©Ò³</a>&nbsp;
-	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.previousSibling.value">
+	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center" onkeypress="if(window.event.keyCode==13)location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.value" /><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.previousSibling.value">
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
@@ -36,5 +36,5 @@
 	<a href="<!--page_prev-->">ÉÏÒ³</a>&nbsp;
 	<a href="<!--page_next-->">ÏÂÒ³</a>&nbsp;
 	<a href="<!--page_last-->">Ä©Ò³</a>&nbsp;
-	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.previousSibling.value">
+	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center" onkeypress="if(window.event.keyCode==13)location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.value" /><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.previousSibling.value">
 </div>

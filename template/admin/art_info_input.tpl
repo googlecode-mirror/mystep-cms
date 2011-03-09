@@ -4,6 +4,17 @@
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
+				<td class="cat" width="80">所属子站：</td>
+				<td class="row">
+					<select name="web_id">
+						<option value="">未限定</option>
+<!--loop:start key="website"-->
+						<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
+<!--loop:end-->
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td class="cat" width="80">展示标题：</td>
 				<td class="row">
 					<input name="subject" type="text" id="title" value="<!--subject-->" maxlength="100" need="" />

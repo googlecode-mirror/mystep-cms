@@ -163,13 +163,11 @@ function build_page($method) {
 			$record['cat_comment'] = "";
 			$record['cat_image'] = "";
 			$record['cat_link'] = "";
-			$record['cat_show_1'] = "checked";
-			$record['cat_type_0'] = "selected";
 			$web_disabled = "";
-			$record['cat_show_1'] = "";
-			$record['cat_show_2'] = "";
-			$record['cat_show_4'] = "";
-			$record['cat_type_0'] = "";
+			$record['cat_show_1'] = "checked";
+			$record['cat_show_2'] = "checked";
+			$record['cat_show_4'] = "checked";
+			$record['cat_type_0'] = "selected";
 			$record['cat_type_1'] = "";
 			$record['cat_type_2'] = "";
 		}
@@ -185,6 +183,7 @@ function build_page($method) {
 		$cur_layer = 99;
 		$max_count = count($news_cat);
 		for($i=0; $i<$max_count; $i++) {
+			if($method == "edit" && $news_cat[$i]['web_id']!=$record['web_id']) continue;
 			if($news_cat[$i]['cat_id']==$record['cat_id']) {
 				$cur_layer = $news_cat[$i]['cat_layer'];
 				continue;

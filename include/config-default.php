@@ -47,7 +47,7 @@ $setting['session']['trans_sid'] = false;
 $setting['cookie'] = array();
 $setting['cookie']['domain'] = '.mystep.com';
 $setting['cookie']['path'] = '/';
-$setting['cookie']['prefix'] = 'ms_252c_252c_252c_252c_252c_252c_252c_252c_';
+$setting['cookie']['prefix'] = 'ms_252c_';
 
 $setting['path'] = array();
 $setting['path']['admin'] = 'admin/';

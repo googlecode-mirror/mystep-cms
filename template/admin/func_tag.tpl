@@ -1,5 +1,12 @@
 <div class="title"><!--title--></div>
 <div class="nav">
+	<select name="web_id" style="width:120px;text-align:center;" onchange="location.href='?web_id='+this.value">
+<!--loop:start key="website"-->
+		<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
+<!--loop:end-->
+	</select>
+</div>
+<div class="nav">
 	<a href="?method=rebuild">重新整理</a>
 	&nbsp;|&nbsp; 
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页， &nbsp;
@@ -7,9 +14,9 @@
 	<a href="<!--page_prev-->">上页</a> &nbsp;
 	<a href="<!--page_next-->">下页</a> &nbsp;
 	<a href="<!--page_last-->">末页</a> &nbsp;
-	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
+	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center" onkeypress="if(window.event.keyCode==13)location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.value" /><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
 	&nbsp;|&nbsp; 
-	关键字：<input type="text" size="10" value="<!--keyword-->" /><input type="button" value="检索" onclick="location.href='?keyword='+this.previousSibling.value" />
+	关键字：<input type="text" size="10" value="<!--keyword-->" onkeypress="if(window.event.keyCode==13)location.href='?keyword='+this.value" /><input type="button" value="检索" onclick="location.href='?keyword='+this.previousSibling.value" />
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
@@ -30,7 +37,7 @@
 			<td class="row"><!--record_click--></td>
 			<td class="row"><!--record_add_date--></td>
 			<td class="row"><!--record_update_date--></td>
-			<td class="row" align="center"><a href="?method=delete&id=<!--record_id-->">删除</a></td>
+			<td class="row" align="center"><a href="?method=delete&id=<!--record_id-->&web_id=<!--web_id-->">删除</a></td>
 		</tr>
 <!--loop:end-->
 	</table>
@@ -43,7 +50,7 @@
 	<a href="<!--page_prev-->">上页</a> &nbsp;
 	<a href="<!--page_next-->">下页</a> &nbsp;
 	<a href="<!--page_last-->">末页</a> &nbsp;
-	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
+	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center" onkeypress="if(window.event.keyCode==13)location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.value" /><input type="button" value="GO" onclick="location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
 	&nbsp;|&nbsp; 
-	关键字：<input type="text" size="10" value="<!--keyword-->" /><input type="button" value="检索" onclick="location.href='?keyword='+this.previousSibling.value" />
+	关键字：<input type="text" size="10" value="<!--keyword-->" onkeypress="if(window.event.keyCode==13)location.href='?keyword='+this.value" /><input type="button" value="检索" onclick="location.href='?keyword='+this.previousSibling.value" />
 </div>
