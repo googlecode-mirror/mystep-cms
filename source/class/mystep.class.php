@@ -127,10 +127,15 @@ class MyStep extends class_common {
 		includeCache("website");
 		$GLOBALS['web_info'] = getParaInfo("website", "host", $host);
 		if($GLOBALS['web_info'] && $subsetting) {
-			if(is_file(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php")) {
-				include(ROOT_PATH."/include/config_".$GLOBALS['web_info']['idx'].".php");
-				$setting = arrayMerge($setting, $setting_sub);
+			$setting_sub = getSubSetting($GLOBALS['web_info']['web_id']);
+			$setting['db_sub'] = $setting_sub['db'];
+			if($setting['db']['name']==$setting_sub['db']['name']) {
+				$setting['db']['pre_sub'] = $setting['db']['pre'];	
+			} else {
+				$setting['db']['pre_sub'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];	
 			}
+			unset($setting_sub['db']);
+			$setting = arrayMerge($setting, $setting_sub);
 		}
 		
 		$max_count = count($this->func_start);

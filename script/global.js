@@ -25,6 +25,29 @@ function $id(id) {
 	return document.getElementById(id);
 }
 
+function $name(name, idx) {
+	var objs = document.getElementsByName(name);
+	if(idx=="first") {
+		return objs[0];
+	} else if(idx=="last") {
+		return objs[objs.length-1];
+	} else if(!isNaN(idx)) {
+		return objs[idx];
+	} else {
+		return objs;
+	}
+}
+
+function $tag(name, theOLE) {
+	if(typeof(theOLE)!="object") theOLE = document;
+	return theOLE.getElementsByTagName(name);
+}
+
+function $class(name, theOLE) {
+	if(typeof(theOLE)!="object") theOLE = document;
+	return theOLE.getElementsByClassName(name);
+}
+
 String.prototype.Tlength = function() {
 	var arr=this.match(/[^\x00-\xff]/ig);
 	return this.length+(arr==null?0:arr.length);
@@ -129,4 +152,91 @@ function copyStr(txt) {
 		return false;
 	}
 	return true;
+}
+
+function GetRndNum(Min,Max){
+	if(typeof(Min)=="undefined") return Math.random();
+	if(typeof(Max)=="undefined") Max = Min, Min = 0;
+	var Range = Max - Min;
+	var Rand = Math.random();
+	return(Min + Math.round(Rand * Range));
+}
+
+function rnd_str(len, t_lst, c_lst) {
+	var str = "";
+	var upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	var lower = "abcdefghijklmnopqrstuvwxyz";
+	var number = "1234567890";
+	var cn = false;
+	var char_lst = new Array();
+	var i = 0, rnd_num = 0;
+	if(typeof(t_lst)=="undefined") t_lst = "";
+	t_lst += "0000";
+	if(t_lst.charAt(0)=="1") char_lst = char_lst.concat(upper.split(/\B/));
+	if(t_lst.charAt(1)=="1") char_lst = char_lst.concat(lower.split(/\B/));
+	if(t_lst.charAt(2)=="1") char_lst = char_lst.concat(number.split(/\B/));
+	cn = (t_lst.charAt(3)=="1");
+	if(typeof(c_lst)=="undefined") {
+		c_lst = new Array();
+	} else if(typeof(c_lst)!="object") {
+		c_lst = [c_lst];
+	}
+	for(i=0; i<len; i++) {
+		rnd_num = GetRndNum(10);
+		if(c_lst.length>0 && rnd_num>7) {
+			str += c_lst[GetRndNum(c_lst.length-1)];
+		}	else if(cn && rnd_num>3) {
+			str += String.fromCharCode(GetRndNum(19968, 40869));
+		} else if(char_lst.length>0){
+			str += char_lst[GetRndNum(char_lst.length-1)];
+		}
+	}
+	return str;
+}
+
+function watermark(obj, rate, copyright, char_c, jam_tag) {
+	var i = 0;
+	var c_cur = "", result = "", str="";
+	var c_lst = new Array(), u_lst = new Array();
+	var m_start = "", m_end = "";
+	var jam_flag = true;
+	
+	if(typeof(obj)=="object") {
+		str = obj.innerHTML;
+	} else {
+		str = obj.toString();
+	}
+	if(rate==null) rate = 5;
+	if(copyright==null) copyright = "WaterMark Maker, Coded by Windy2000";
+	if(char_c!=null) c_lst = char_c.split(",");
+	if(jam_tag==null) jam_tag = false;
+
+	str = str.replace(/<(script|style)[^>]*?>([\w\W]*?)<\/\1>/ig,"");
+	u_lst = str.match(/(<(.+?)>)|(&[\w#]+;)/g);
+	str = str.replace(/(<(.+?)>)|(&[\w#]+;)/g,String.fromCharCode(0));
+	m_start = "<span class='watermark'>";
+	m_end = "</span>";
+	
+	for(i=0;i<str.length;i++) {
+		c_cur = str.charCodeAt(i);
+		if(c_cur==0) {
+			result += u_lst.shift();
+		} else if(c_cur==10) {
+			result += m_start + rnd_str(8, "1111", c_lst) + m_end;
+			result += m_start + "[" + copyright + "]" + m_end + "\n";
+		} else {
+			result += String.fromCharCode(c_cur);
+			if(jam_tag && GetRndNum(10)>rate) {
+				result += jam_flag?"<span>":"</span>";
+				jam_flag = !jam_flag;
+			}
+			if(GetRndNum(10)>rate) result += m_start + rnd_str(4, "1111", c_lst) + m_end;
+		}
+	}
+	if(!jam_flag) result += "</span>";
+	
+	if(typeof(obj)=="object") {
+		obj.innerHTML = result;
+	}
+	return result;
 }

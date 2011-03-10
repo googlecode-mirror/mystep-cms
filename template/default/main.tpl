@@ -10,6 +10,7 @@
 <link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 <link rel="Shortcut Icon" href="favicon.ico" />
 <!--page_start-->
+
 </head>
 
 <body>
@@ -46,5 +47,6 @@
 </div>
 
 <!--page_end-->
+
 </body>
 </html>

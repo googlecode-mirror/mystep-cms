@@ -1,7 +1,7 @@
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
 table{border-collapse:collapse;border-spacing:0;}
 fieldset,img{border:0;}
-address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}
+address,caption,cite,code,dfn,th,var{font-style:normal;font-weight:normal;}
 
 li{list-style:none;overflow:hidden;}
 caption,th{text-align:left;}
@@ -32,7 +32,7 @@ body a:hover {text-decoration:underline; color:#FF0084;}
 body {text-align:center; font-family:Arial;}
 
 .quote{padding:5px; background-color:#eeeeee; border:1px #999999 solid;}
-.watermark{position:absolute; width:0px; height:1px; overflow:hidden;}
+.watermark{position:absolute; display:block; width:1px; height:1px; overflow:hidden;}
 @media print{.watermark{display:none;}}
 
 TABLE .cat {border:0px solid; font-size:12px; font-weight:bold; color:#15324A; padding:5px; background-color:#8AB4D6; border-right:1px solid #0C5280; border-bottom:1px solid #0C5280; border-top:1px solid #629DC5; border-left:1px solid #629DC5; vertical-align:middle;}

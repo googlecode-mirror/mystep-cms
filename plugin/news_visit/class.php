@@ -139,7 +139,7 @@ mystep;
 		if(!isset($att_list['loop'])) $att_list['loop'] = 0;
 		if(!isset($att_list['during'])) $att_list['during'] = "year";
 	
-		$str_sql = "select * from ".$setting['db']['pre']."news_visit where 1=1";
+		$str_sql = "select * from {db_pre}news_visit where 1=1";
 		if(!empty($att_list['web_id'])) $str_sql .= " and web_id in ({$att_list['web_id']})";
 		if(!empty($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
 		$str_sql .= " order by ";
@@ -175,7 +175,7 @@ mystep;
 <?php
 
 \$n = 0;
-\$str_sql = "{$str_sql}";
+\$str_sql = str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}");
 \$str_sql = str_replace(" and cat_id in (0)", "", \$str_sql);
 \$result = getData(\$str_sql, "all", 600);
 \$max_count = count(\$result);

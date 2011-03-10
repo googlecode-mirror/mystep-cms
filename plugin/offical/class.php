@@ -72,6 +72,7 @@ class plugin_offical implements plugin {
 		global $setting;
 		$result = "";
 		if(!isset($att_list['template'])) $att_list['template'] = "classic";
+		if(!isset($att_list['web_id'])) $att_list['web_id'] = "";
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
 		if(!isset($att_list['order'])) $att_list['order'] = " news_id desc";
 		if(!isset($att_list['setop'])) $att_list['setop'] = "";
@@ -91,8 +92,9 @@ class plugin_offical implements plugin {
 		$att_list['tag'] = preg_replace("/,+/", ",", $att_list['tag']);
 		$att_list['tag'] = trim($att_list['tag'],",");
 		if(!empty($att_list['tag'])) $att_list['tag'] = "tag like '%".str_replace(",", "%' or tag like '%", $att_list['tag'])."%'";
-	
-		$str_sql = "select * from ".$setting['db']['pre']."news_show where 1=1";
+		
+		$str_sql = "select * from {db_pre}news_show where 1=1";
+		if(!empty($att_list['web_id'])) $str_sql .= " and web_id in ({$att_list['web_id']})";
 		if(!empty($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
 		if(!empty($att_list['show_image'])) $str_sql .= " and image!=''";
 		if(!empty($att_list['setop'])) $str_sql .= " and (setop & {$setop})={$setop}";
@@ -101,7 +103,6 @@ class plugin_offical implements plugin {
 		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
 		$str_sql .= " order by ".$att_list['order'];
 		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
-		//$str_sql = addslashes($str_sql);
 		
 		$cur_content = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_{$att_list['template']}.tpl", $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_classic.tpl");
 		preg_match_all("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
@@ -115,7 +116,7 @@ class plugin_offical implements plugin {
 <?php
 
 \$n = 0;
-\$str_sql = "{$str_sql}";
+\$str_sql = str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}");
 \$str_sql = str_replace(" and cat_id in (0)", "", \$str_sql);
 \$result = getData(\$str_sql, "all", 600);
 \$max_count = count(\$result);
@@ -236,7 +237,7 @@ mytpl;
 		$block = $block_all[0][0];
 		$unit = $block_all[1][0];
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."tag_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$tag_list[\$i]['\\1']}", $unit);
-		$str_sql = "select tag, count from ".$setting['db']['pre']."news_tag where ".(empty($att_list['condition'])?"1=1":$att_list['condition'])." order by ".$att_list['order']." limit ".$att_list['limit'];
+		$str_sql = "select tag, count from {db_pre}news_tag where ".(empty($att_list['condition'])?"1=1":$att_list['condition'])." order by ".$att_list['order']." limit ".$att_list['limit'];
 		//$str_sql = addslashes($str_sql);
 		$result = <<<mytpl
 <?php
@@ -244,7 +245,7 @@ mytpl;
 \$dyn_size = 32;
 \$count_max = 0;
 \$tag_list = array();
-\$result = getData("{$str_sql}", "all", 600);
+\$result = getData(str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}"), "all", 600);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];

@@ -47,7 +47,7 @@ $setting['session']['trans_sid'] = false;
 $setting['cookie'] = array();
 $setting['cookie']['domain'] = '.mystep.com';
 $setting['cookie']['path'] = '/';
-$setting['cookie']['prefix'] = 'ms_252c_';
+$setting['cookie']['prefix'] = 'ms_';
 
 $setting['path'] = array();
 $setting['path']['admin'] = 'admin/';
@@ -77,12 +77,11 @@ $setting['memcache']['threshold'] = 10240;
 $setting['memcache']['min_savings'] = 0.5;
 
 
-
-$expire_list = array(
-	"default" => 60*10,
-	"index" => 60*30,
-	"list" => 60*60,
-	"tag" => 60*60*24,
-	"read" => 60*60*24*7,
+$expire_list = array (
+  'default' => 600,
+  'index' => 1800,
+  'list' => 3600,
+  'tag' => 86400,
+  'read' => 604800,
 );
 ?>
