@@ -15,8 +15,7 @@ function checkForm(the_form, myChecker){
 	var the_obj = null;
 	var the_value, the_need, the_len;
 	var tag_name = "";
-
-	obj_list = Get_Obj(the_form, "input", "select", "textarea");
+	obj_list = Get_Obj(the_form,"input","select","textarea");
 	for(var i=0;i<obj_list.length;i++){
 		the_obj = obj_list[i];
 		if(typeof(the_obj.getAttribute)=="undefined") continue;
@@ -29,7 +28,7 @@ function checkForm(the_form, myChecker){
 		if(the_len!=null) {
 			if(the_len.match(/^\d+$/)) {
 				if(the_length > the_len) {
-					alert("Keep the input charactors within " + the_len + " !");
+					alert(printf(language.checkform_lenth_limit1, the_len));
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}
@@ -38,9 +37,9 @@ function checkForm(the_form, myChecker){
 				if(the_len.length==2 && the_len[0].match(/^\d+$/) && the_len[1].match(/^\d+$/)) {
 					if(the_length < the_len[0] || the_length > the_len[1]) {
 						if(the_len[0]==the_len[1]) {
-							alert(the_len[0] + " charactors are needed!");
+							alert(printf(language.checkform_lenth_limit2, the_len[0]));
 						} else {
-							alert("Keep the input charactors within " + the_len.join(" to ") + " !");
+							alert(printf(language.checkform_lenth_limit2, the_len.join(" - ")));
 						}
 						(tag_name=="input") ? the_obj.select() : the_obj.focus();
 						return false;
@@ -56,14 +55,14 @@ function checkForm(the_form, myChecker){
 		switch(the_need){
 			case "":
 				if(the_value.replace(/\s/g,"").length==0) {
-					alert("Some item must be filled!");
+					alert(language.checkform_noempty);
 					the_obj.focus();
 					return false;
 				}
 				break;
 			case "email":
-				if(!/^[\w\-\.]+@([\w\-]+\.)+[a-z]{2,4}$/i.test(the_value)) {
-					alert("Error email format!");
+				if(!/^[\w\-]+@([\w\-]+\.)+[a-z]{2,4}$/i.test(the_value)) {
+					alert(language.checkform_err_email);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}
@@ -71,56 +70,56 @@ function checkForm(the_form, myChecker){
 			case "url":
 				//if(!/^(http|ftp):\/\/(\w+:\w+@)?([\w\-]+\.)+\w+(\/[\w\.\-]*)*(\?[\w&=%\-,]+)?#*$/ig.test(the_value)) {
 				if(!/^(http|ftp):\/\/(\w+:\w+@)?([\w\-]+\.)+\w+(\:\d+)?.*/i.test(the_value)) {
-					alert("Error website address !");
+					alert(language.checkform_err_url);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}
 				break;
 			case "digital":
 				if(!/^\d+$/.test(the_value)) {
-					alert("Digital only!");
+					alert(language.checkform_err_digital);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}
 				break;
 			case "number":
 				if(!/^[\-+]?\d+(\.\d+)?$/.test(the_value)) {
-					alert("Normal numbers are needed!");
+					alert(language.checkform_err_number);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}
 				break;
 			case "alpha":
-				if(!/^\w+$/i.test(the_value)) {
-					alert("English letters only!");
+				if(!/^[a-z]+$/i.test(the_value)) {
+					alert(language.checkform_err_alpha);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}
 				break;
 			case "word":
 				if(!/^[\w ]+$/i.test(the_value)) {
-					alert("Words only!");
+					alert(language.checkform_err_word);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}
 				break;
 			case "name":
 				if(!/^[\w\u4e00-\u9FA5\uf900-\uFA2D ]+$/i.test(the_value)) {
-					alert("Words in English!");
+					alert(language.checkform_err_name);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}
 				break;
 			case "date":
 				if(!/^\d{4}([\/\-])\d{1,2}\1\d{1,2}$/.test(the_value)) {
-					alert("Keep the format like 2000-1-1 or 2000/01/01 !");
+					alert(language.checkform_err_date);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				} else {
 					var the_list = the_value.split(/[\-\/]/g);
 					var cur_date = new Date((the_list[0]-0), (the_list[1]-1), (the_list[2]-0));
 					if(cur_date.getDate()!=(the_list[2]-0) || cur_date.getMonth()!=(the_list[1]-1) ) {
-						alert("Error Date!");
+						alert(language.checkform_err_date2);
 						(tag_name=="input") ? the_obj.select() : the_obj.focus();
 						return false;
 					}
@@ -128,19 +127,19 @@ function checkForm(the_form, myChecker){
 				break;
 			case "time":
 				if(!/^\d{1,2}:\d{1,2}(:\d{1,2})?$/.test(the_value)) {
-					alert("Keep the format like 9:00 or 22:00:00 !");
+					alert(language.checkform_err_time);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				} else {
 					var the_list = the_value.split(/:/g);
 					if(parseInt(the_list[0])>23 || parseInt(the_list[1])>59) {
-						alert("Error time!");
+						alert(language.checkform_err_time2);
 						(tag_name=="input") ? the_obj.select() : the_obj.focus();
 						return false;
 					} else {
 						if(the_list.length==3) {
 							if(parseInt(the_list[2])>59) {
-								alert("Error time!");
+								alert(language.checkform_err_time2);
 								(tag_name=="input") ? the_obj.select() : the_obj.focus();
 								return false;
 							}
@@ -151,7 +150,7 @@ function checkForm(the_form, myChecker){
 			case "tel":
 			case "fax":
 				if(!/^([\d]{3,5}\-)?[\d]{6,11}(\-[\d]{1,5})?$/.test(the_value)) {
-					alert("Phone number please!");
+					alert(language.checkform_err_tel);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}

@@ -6,7 +6,7 @@ if(!is_numeric($news_id)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
 }
-list($cat_id, $add_date, $page_count, $subject)=array_values(getData("select cat_id, add_date, pages, subject from ".$setting['db']['pre']."news_show where news_id='{$news_id}'", "record"));
+list($cat_id, $add_date, $page_count, $subject)=array_values(getData("select cat_id, add_date, pages, subject from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record"));
 if(is_null($cat_id) || is_null($add_date)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
@@ -40,8 +40,8 @@ if($tpl->Is_Cached()) {
 	$mystep->pageEnd();
 }
 
-$db->Query("update ".$setting['db']['pre']."news_show set views = views + 1 where news_id=".$news_id);
-$detail = getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre']."news_show a left join ".$setting['db']['pre']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "record", 1200);
+$db->Query("update ".$setting['db']['pre_sub']."news_show set views = views + 1 where news_id=".$news_id);
+$detail = getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "record", 1200);
 if($detail===false) {
 	$goto_url = "/";
 	$mystep->pageEnd();
@@ -73,12 +73,12 @@ $tpl_tmp->Set_Variables($detail, "record");
 if($page_count==1) {
 	$tpl_tmp->Set_Variable('sub_page', 'new Array()');
 } else {
-	$result = getData("select sub_title, page from ".$setting['db']['pre']."news_detail where news_id='{$news_id}' order by page", "all", 600);
+	$result = getData("select sub_title, page from ".$setting['db']['pre_sub']."news_detail where news_id='{$news_id}' order by page", "all", 600);
 	$max_count = count($result);
 	for($i=0; $i<$max_count; $i++) {
 		$result[$i]['url'] = getFileURL($news_id, $cat_idx, $result[$i]['page']);
 		if($result[$i]['page']==$page) $result[$i]['selected'] = "selected";
-		$result[$i]['txt'] = sprintf($language['page_no'], $result[$i]['page']);
+		$result[$i]['txt'] = sprintf($setting['language']['page_no'], $result[$i]['page']);
 		if(!empty($result[$i]['sub_title'])) $result[$i]['txt'] .= " - ".$result[$i]['sub_title'];
 	}
 	$tpl_tmp->Set_Variable('sub_page', json_encode(chg_charset($result, $setting['gen']['charset'], "utf-8")));
@@ -86,7 +86,7 @@ if($page_count==1) {
 }
 
 //Prev. Article
-if($article = getData("select news_id, cat_id, subject, add_date from ".$setting['db']['pre']."news_show where news_id<'{$news_id}' order by news_id desc limit 1", "record")) {
+if($article = getData("select news_id, cat_id, subject, add_date from ".$setting['db']['pre_sub']."news_show where news_id<'{$news_id}' order by news_id desc limit 1", "record")) {
 	if($cat_info = getParaInfo("news_cat", "cat_id", $article['cat_id'])) {
 		$cat_idx = $cat_info['cat_idx'];
 	} else {
@@ -100,7 +100,7 @@ if($article = getData("select news_id, cat_id, subject, add_date from ".$setting
 }
 
 //Next Article
-if($article = getData("select news_id, cat_id, subject, add_date from ".$setting['db']['pre']."news_show where news_id>'{$news_id}' order by news_id asc limit 1", "record")) {
+if($article = getData("select news_id, cat_id, subject, add_date from ".$setting['db']['pre_sub']."news_show where news_id>'{$news_id}' order by news_id asc limit 1", "record")) {
 	if($cat_info = getParaInfo("news_cat", "cat_id", $article['cat_id'])) {
 		$cat_idx = $cat_info['cat_idx'];
 	} else {

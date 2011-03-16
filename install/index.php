@@ -5,7 +5,6 @@ if(is_file("../include/install.lock")) {
 }
 define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 require_once(ROOT_PATH."/include/config.php");
-require_once(ROOT_PATH."/include/version.php");
 require_once(ROOT_PATH."/include/parameter.php");
 require_once(ROOT_PATH."/source/function/global.php");
 require_once(ROOT_PATH."/source/function/web.php");

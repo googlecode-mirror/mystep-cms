@@ -21,7 +21,7 @@ class MyStep extends class_common {
 		$content = array();
 	
 	public function getInstance($calledClass = "") {
-		global $setting, $language;
+		global $setting;
 		$argList = func_get_args();
 		$obj = call_user_func_array(array($this, 'parent::getInstance'), $argList);
 		switch($calledClass) {
@@ -30,7 +30,7 @@ class MyStep extends class_common {
 				break;
 			case 'MyTpl':
 				$obj->Reg_Tags($this->func_tag);
-				$obj->Set_Variables($language, 'lang');
+				$obj->Set_Variables($setting['language'], 'lang');
 				break;
 			case 'MyAjax':
 				$obj->regMethods($this->func_ajax);
@@ -38,6 +38,7 @@ class MyStep extends class_common {
 			default:
 				break;
 		}
+		$obj->SetErrorHandle("WriteError");
 		return $obj;
 	}
 	
@@ -99,7 +100,7 @@ class MyStep extends class_common {
 		}
 	}
 	
-	public function pageStart($subsetting = true) {
+	public function pageStart() {
 		global $setting, $db, $req, $cache;
 		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
 		date_default_timezone_set("PRC");
@@ -118,16 +119,16 @@ class MyStep extends class_common {
 		$db = $this->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 		$cache = $this->getInstance("MyCache", $setting['web']['cache_mode']);
 		
-		$GLOBALS['time_start'] = GetMicrotime();
-		$GLOBALS['self'] = strtolower(basename($req->getServer("PHP_SELF")));
+		$setting['info']['time_start'] = GetMicrotime();
+		$setting['info']['self'] = strtolower(basename($req->getServer("PHP_SELF")));
 		$this->getLanguage(ROOT_PATH."/source/language/");
-		$GLOBALS['language']=$this->language;
+		$setting['language']=$this->language;
 
 		$host = $req->getServer("HTTP_HOST");
 		includeCache("website");
-		$GLOBALS['web_info'] = getParaInfo("website", "host", $host);
-		if($GLOBALS['web_info'] && $subsetting) {
-			$setting_sub = getSubSetting($GLOBALS['web_info']['web_id']);
+		$setting['info']['web'] = getParaInfo("website", "host", $host);
+		if($setting['info']['web']) {
+			$setting_sub = getSubSetting($setting['info']['web']['web_id']);
 			$setting['db_sub'] = $setting_sub['db'];
 			if($setting['db']['name']==$setting_sub['db']['name']) {
 				$setting['db']['pre_sub'] = $setting['db']['pre'];	
@@ -157,7 +158,7 @@ class MyStep extends class_common {
 		for($i=0; $i<$max_count; $i++) {
 			call_user_func($this->func_end[$i]);
 		}
-		$GLOBALS['query_count'] = $GLOBALS['db']->Close();
+		$setting['info']['query_count'] = $GLOBALS['db']->Close();
 		unset($GLOBALS['db'],
 					$GLOBALS['req'],
 					$GLOBALS['tpl']);
@@ -169,7 +170,11 @@ class MyStep extends class_common {
 	}
 	
 	public function show(MyTpl $tpl) {
-		global $setting, $news_cat, $cat_idx, $web_info, $self;
+		if(isset($GLOBALS['errMsg'])) {
+			echo str_replace("\n","<br />\n", $GLOBALS['errMsg']);
+			return;
+		}
+		global $setting, $news_cat, $cat_idx;
 		$tpl->Set_Variable('template', $setting['gen']['template']);
 		$tpl->Set_Variable('web_title', $setting['web']['title']);
 		$tpl->Set_Variable('web_url', $setting['web']['url']);
@@ -187,8 +192,8 @@ class MyStep extends class_common {
 			"read.php" => 4,
 		);
 		for($i=0; $i<$max_count; $i++) {
-			if($news_cat[$i]['cat_layer']==1 && $news_cat[$i]['web_id']==$web_info['web_id']) {
-				if(($news_cat[$i]['cat_show'] & $show_list[$self]) != $show_list[$self]) continue;
+			if($news_cat[$i]['cat_layer']==1 && $news_cat[$i]['web_id']==$setting['info']['web']['web_id']) {
+				if(($news_cat[$i]['cat_show'] & $show_list[$setting['info']['self']]) != $show_list[$setting['info']['self']]) continue;
 				if(empty($news_cat[$i]['cat_link'])) $news_cat[$i]['cat_link'] = getFileURL(0, $news_cat[$i]['cat_idx']);
 				$tpl->Set_Loop('news_cat', $news_cat[$i]);
 			}

@@ -197,7 +197,7 @@ function buildParaList($idx) {
 			break;
 		case "admin_cat":
 			$theList = array();
-			$db->Query("select * from ".$setting['db']['pre']."admin_cat where pid=0 order by id");
+			$db->Query("select * from ".$setting['db']['pre']."admin_cat where pid=0 order by `order` desc, id asc");
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				$record['url'] = $record['path'].$record['file'];
@@ -206,7 +206,7 @@ function buildParaList($idx) {
 			$max_count = count($theList);
 			for($i=0; $i<$max_count; $i++) {
 				$theList[$i]['sub'] = array();
-				$db->Query("select * from ".$setting['db']['pre']."admin_cat where pid=".$theList[$i]['id']." order by id");
+				$db->Query("select * from ".$setting['db']['pre']."admin_cat where pid=".$theList[$i]['id']." order by `order` desc, id asc");
 				while($record=$db->GetRS()) {
 					HtmlTrans(&$record);
 					$record['url'] = $record['path'].$record['file'];
@@ -219,6 +219,7 @@ function buildParaList($idx) {
 			$db->Query("select * from ".$setting['db']['pre']."admin_cat order by id");
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
+				$record['url'] = $record['path'].$record['file'];
 				$theList[] = $record;
 			}
 			$cache_para[$idx."_plat"] = $theList;
@@ -351,13 +352,13 @@ function delCacheFile($news_id) {
 }
 
 function getCacheExpire() {
-	global $expire_list, $self;
-	$the_file = str_replace(".php", "", $self);
+	global $expire_list, $setting;
+	$the_file = str_replace(".php", "", $setting['info']['self']);
 	return isset($expire_list[$the_file]) ? $expire_list[$the_file] : $expire_list["default"];
 }
 
 function showInfo($msg = "", $mode = true) {
-	global $language;
+	global $setting;
 	$result = <<<windy2000
 <div style="margin-top:40px;">
   <table align="center" border="0" width="80%" cellspacing="0" cellpadding="0">
@@ -366,7 +367,7 @@ function showInfo($msg = "", $mode = true) {
         <tr><td align="center" style="padding:40px;font-weight:bold;font-size:14px;color:black">{$msg}</td></tr>
       </table>
       <div style="text-align:center; margin-top:20px;">
-      	<a href="javascript:history.go(-1)" style="font-size:12px;color:black;text-decoration:none;">[ {$language['link_back']} ]</a>
+      	<a href="javascript:history.go(-1)" style="font-size:12px;color:black;text-decoration:none;">[ {$setting['language']['link_back']} ]</a>
       </div>
     </td></tr>
   </table>
@@ -386,7 +387,7 @@ windy2000;
 }
 
 function PageList($page, $page_count, $show=6) {
-	global $language;
+	global $setting;
 	$list = "";
 	if($page_count>1) {
 		$page_start = 0;
@@ -415,9 +416,9 @@ function PageList($page, $page_count, $show=6) {
 		}
 
 		if($page==1) {
-			$list .= '<em>{$language[link_prev]}</em> ';
+			$list .= '<em>{$setting[\'language\'][\'link_prev\']}</em> ';
 		} else {
-			$list .= '<a href="'.gotoPage($page-1).'">{$language[link_prev]}</a> ';
+			$list .= '<a href="'.gotoPage($page-1).'">{$setting[\'language\'][\'link_prev\']}</a> ';
 		}
 		$list .= ($page==1 ? '<strong>1</strong> ' : '<a href="'.gotoPage(1).'">1</a> ');
 		$list .= $page_more_start;
@@ -433,9 +434,9 @@ function PageList($page, $page_count, $show=6) {
 		$list .= $page_more_end;
 		$list .= ($page==$page_count ? '<strong>'.$page_count.'</strong> ' : '<a href="'.gotoPage($page_count).'">'.$page_count.'</a> ');
 		if($page==$page_count) {
-			$list .= '<em>{$language[link_next]}</em> ';
+			$list .= '<em>{$setting[\'language\'][\'link_next\']}</em> ';
 		} else {
-			$list .= '<a href="'.gotoPage($page+1).'">{$language[link_next]}</a> ';
+			$list .= '<a href="'.gotoPage($page+1).'">{$setting[\'language\'][\'link_next\']}</a> ';
 		}
 	}
 	return $list;
@@ -496,7 +497,7 @@ function CheckCanGzip(){
 }
 
 function GzDocOut($level = 3, $show = false) {
-	global $time_start, $query_count, $language;
+	global $setting;
 	$ENCODING = CheckCanGzip();
 	$Content  = ob_get_contents();
 	$cache_use = isset($GLOBALS['cache_info']) && is_array($GLOBALS['cache_info']);
@@ -507,12 +508,12 @@ function GzDocOut($level = 3, $show = false) {
 		if($show) {
 			$Content .= "
 <div align='center' style='color:#ccc; margin-top:5px;'>
-{$language['info_compressmode']} $ENCODING &nbsp; | &nbsp;
-{$language['info_compresslevel']} $level &nbsp; | &nbsp;
-{$language['info_compressrate']} $rate &nbsp; | &nbsp;
-{$language['info_querycount']}".(empty($query_count)?0:$query_count)." &nbsp; | &nbsp;
-{$language['info_exectime']}".(gettimediff($time_start)/1000)." ms &nbsp; | &nbsp;
-{$language['info_cacheuse']}".($cache_use?"Yes":"No")."
+{$setting['language']['info_compressmode']} $ENCODING &nbsp; | &nbsp;
+{$setting['language']['info_compresslevel']} $level &nbsp; | &nbsp;
+{$setting['language']['info_compressrate']} $rate &nbsp; | &nbsp;
+{$setting['language']['info_querycount']}".(empty($setting['info']['query_count'])?0:$setting['info']['query_count'])." &nbsp; | &nbsp;
+{$setting['language']['info_exectime']}".(gettimediff($setting['info']['time_start'])/1000)." ms &nbsp; | &nbsp;
+{$setting['language']['info_cacheuse']}".($cache_use?"Yes":"No")."
 </div>";
 		}
 		header("Content-Encoding: $ENCODING");
@@ -529,9 +530,9 @@ function GzDocOut($level = 3, $show = false) {
 		if($show) {
 			echo "
 <div align='center' style='color:#ccc; margin-top:5px;'>
-{$language['info_querycount']}".(empty($query_count)?0:$query_count)." &nbsp; | &nbsp;
-{$language['info_exectime']}".(gettimediff($time_start)/1000)." ms &nbsp; | &nbsp;
-{$language['info_cacheuse']}".($cache_use?"Yes":"No")."
+{$setting['language']['info_querycount']}".(empty($setting['info']['query_count'])?0:$setting['info']['query_count'])." &nbsp; | &nbsp;
+{$setting['language']['info_exectime']}".(gettimediff($setting['info']['time_start'])/1000)." ms &nbsp; | &nbsp;
+{$setting['language']['info_cacheuse']}".($cache_use?"Yes":"No")."
 </div>
 ";
 		}
@@ -567,20 +568,23 @@ function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 		E_USER_NOTICE => 'Triggered Notice',
 		E_STRICT => 'Deprecation Notice',
 		E_RECOVERABLE_ERROR => 'Catchable Fatal Error',
-		E_ALL =>	"Impossible",
+		E_ALL =>	"Impossible Error",
 	);
 	if($err_no==E_NOTICE || $err_no==E_WARNING || $err_no==E_STRICT) return;
 	$cur_err = $err_type[$err_no];
+	$err_str  = "MyStep Error\n";
 	$err_str .= "Time: ".date("Y-m-d H:i:s")."\n";
 	$err_str .= "Type: {$cur_err}\n";
 	$err_str .= "File: {$err_file}\n";
+	/*
 	$err_str .= "Line: {$err_line}\n";
 	if(is_file($err_file)) {
 		$content = file($err_file);
 		$err_script = $content[$err_line-1];
 		$err_str .= "Script: ".htmlspecialchars($err_script)."\n";
 	}
-	$err_str .= "Message: {$err_msg}\n";
+	*/
+	$err_str .= "Info.: {$err_msg}\n";
 	$err_str .= "Debug: \n";
 	$debug_info = debug_backtrace();
 	$max_count = count($debug_info);
@@ -593,6 +597,7 @@ function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 	$err_str = str_replace("\r", "", $err_str);
 	if(strpos($err_script,"@")===false) WriteError($err_str);
 	if(ob_get_length()!==false) ob_end_clean();
+	$GLOBALS['errMsg'] = $err_str;
 	return;
 }
 

@@ -18,18 +18,18 @@ switch($method) {
 		include($plugin_path.$idx."/info.php");
 		include($plugin_path.$idx."/class.php");
 		if(isset($info['class'])) {
-			$log_info = $method=="install"?$language['admin_web_plugin_install']:$language['admin_web_plugin_uninstall'];
+			$log_info = $method=="install"?$setting['language']['admin_web_plugin_install']:$setting['language']['admin_web_plugin_uninstall'];
 			call_user_func(array($info['class'], $method));
 		} else {
-			$goto_url = $self;
+			$goto_url = $setting['info']['self'];
 		}
 		deleteCache("plugin");
 		break;
 	case "setting_ok":
 		if(count($_POST) == 0) {
-			$goto_url = $self;
+			$goto_url = $setting['info']['self'];
 		} else {
-			$log_info = $language['admin_web_plugin_setup'];
+			$log_info = $setting['language']['admin_web_plugin_setup'];
 			foreach($_POST['plugin_setting'][$idx] as $key => $value) {
 				if(is_array($value)) {
 					$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
@@ -49,14 +49,14 @@ mystep;
 }
 
 if(!empty($log_info)) {
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&idx={$idx}", $log_info);
-	$goto_url = $self;
+	write_log($log_info, "idx={$idx}");
+	$goto_url = $setting['info']['self'];
 }
 $mystep->pageEnd(false);
 
 
 function build_page($method) {
-	global $mystep, $req, $tpl, $tpl_info, $plugin, $setting, $idx, $plugin_path, $language;
+	global $mystep, $req, $tpl, $tpl_info, $plugin, $setting, $idx, $plugin_path;
 
 	$tpl_info['idx'] = "web_plugin_".$method;
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -79,12 +79,12 @@ function build_page($method) {
 				$tpl_tmp->Set_Loop("plugin_list", $info);
 			}
 		}
-		$tpl_tmp->Set_Variable('title', $language['admin_web_plugin_title']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_title']);
 	} else {
-		$tpl_tmp->Set_Variable('title', $language['admin_web_plugin_setup']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_setup']);
 		$plugin_info = getParaInfo("plugin", "idx", $idx);
 		if(!is_file($plugin_path.$idx."/config.php") || !is_file($plugin_path.$idx."/config-detail.php") || $plugin_info===false) {
-			$tpl->Set_Variable('main', showInfo($language['admin_web_plugin_err'], 0));
+			$tpl->Set_Variable('main', showInfo($setting['language']['admin_web_plugin_err'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}

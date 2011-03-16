@@ -7,7 +7,7 @@
 				<td align="center" colspan=2" class="cat">¡°<!--name-->¡±²ÎÊýÉèÖÃ</td>
 			</tr>
 <?PHP
-global $language;
+$language = $setting['language'];
 include(ROOT_PATH."/plugin/".$idx."/config.php");
 include(ROOT_PATH."/plugin/".$idx."/config-detail.php");
 foreach($setting_type as $key => $value) {

@@ -121,6 +121,17 @@ function gotoAnchor(theAnchor) {
 	return false;
 }
 
+function printf() {
+  var num = arguments.length;
+  var oStr = arguments[0];
+  for (var i = 1; i < num; i++) {
+    var pattern = "%" + i;
+    var re = new RegExp(pattern, "g");
+    oStr = oStr.replace(re, arguments[i]);
+  }
+  return oStr;
+}
+
 function copyStr(txt) {
 	if(window.clipboardData) {
 		window.clipboardData.clearData();
@@ -131,7 +142,7 @@ function copyStr(txt) {
 		try {
 			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 		} catch (e) {
-			alert("被浏览器拒绝！\n请在浏览器地址栏输入'about:config'并回车\n然后将'signed.applets.codebase_principal_support'设置为'true'");
+			alert("In 'about:config' set the parameter 'signed.applets.codebase_principal_support' to 'true' !");
 		}
 		var clip = Components.classes['@mozilla.org/widget/clipboard;1'].createInstance(Components.interfaces.nsIClipboard);
 		if(!clip) return false;

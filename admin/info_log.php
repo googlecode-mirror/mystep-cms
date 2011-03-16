@@ -6,11 +6,11 @@ $method = $req->getGet("method");
 $log_info = "";
 
 if($method=="clean") {
-	$log_info = $language['admin_info_log_clean'];
+	$log_info = $setting['language']['admin_info_log_clean'];
 	$db->Query("truncate table ".$setting['db']['pre']."modify_log");
-	$goto_url = $self;
+	$goto_url = $setting['info']['self'];
 } elseif($method=="download") {
-	$log_info = $language['admin_info_log_download'];
+	$log_info = $setting['language']['admin_info_log_download'];
 	$db->Query("select * from ".$setting['db']['pre']."modify_log order by id desc");
 	$content = "";
 	while($record = $db->GetRS()) {
@@ -29,7 +29,7 @@ if($method=="clean") {
 }
 
 if(!empty($log_info)) {
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"], $log_info);
+	write_log($log_info);
 	$mystep->pageEnd(false);
 }
 
@@ -68,7 +68,7 @@ while($record = $db->GetRS()) {
 }
 
 $tpl_tmp->Set_Variable('keyword', $keyword);
-$tpl_tmp->Set_Variable('title', $language['admin_info_log_title']);
+$tpl_tmp->Set_Variable('title', $setting['language']['admin_info_log_title']);
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_tmp);
 $db->Free();

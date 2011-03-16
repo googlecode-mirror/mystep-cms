@@ -12,7 +12,7 @@ use {db_name};
 CREATE TABLE `{pre}news_show` (
 	`news_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`cat_id` SMALLINT UNSIGNED NOT NULL,								#新闻类型索引
-	`web_id` TINYINT DEFAULT 0,													#所属子站
+	`web_id` TINYINT UNSIGNED DEFAULT 0,								#所属子站
 	`subject` Char(120) NOT NULL,												#新闻标题
 	`style` Char(40) NOT NULL,													#标题样式
 	`views` MEDIUMINT UNSIGNED DEFAULT 0,								#浏览次数

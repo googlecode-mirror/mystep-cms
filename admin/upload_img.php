@@ -16,7 +16,7 @@ if(count($_POST) > 0){
 			} else if(parent.opener) {
 				parent.opener.document.forms[0].{$parent_element}.value = '{$web_url}/{$path_upload}/".$upload->upload_result[0]['new_name']."';
 			}
-			alert('".$language['admin_upload_img_ok']."');
+			alert('".$setting['language']['admin_upload_img_ok']."');
 			parent.close();
 		";
 	} else {
@@ -31,7 +31,7 @@ $tpl_info['idx'] = "upload_img";
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 $tpl_tmp->Set_Variable('script', $script);
 $tpl_tmp->Set_Variable('parent_element', $parent_element);
-$tpl_tmp->Set_Variable('self', $self);
+$tpl_tmp->Set_Variable('self', $setting['info']['self']);
 $Max_size = ini_get('upload_max_filesize');
 $tpl_tmp->Set_Variable('Max_size', $Max_size);
 switch(strtoupper(substr($Max_size,-1))){

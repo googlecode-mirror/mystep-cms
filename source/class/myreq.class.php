@@ -98,6 +98,23 @@ class MyReq extends class_common {
 		return;
 	}
 
+	public function setCookie_nopre($name, $value = "", $expire = 0, $path = "", $domain = "", $secure = false) {
+		$cmd = "";
+		if($expire<=0) {
+			$expire = $_SERVER['REQUEST_TIME'] - 3600;
+		} else {
+			$expire = $_SERVER['REQUEST_TIME'] + $expire;
+		}
+		if(empty($path) && !empty($this->cookie_path)) {
+			$path = $this->cookie_path;
+		} else {
+			$path = "/";
+		}
+		if(empty($domain) && !empty($this->cookie_domain)) $domain = $this->cookie_domain;
+		setcookie($name, $value, $expire, $path, $domain, $secure);
+		return;
+	}
+
 	public function getPara($type = "get", $para = "") {
 		$type = "_".strtoupper($type);
 		eval("\$flag = isset(\${$type});");
@@ -163,12 +180,13 @@ class MyReq extends class_common {
 		}
 	}
 
-	public function getCookie($para = "") {
+	public function getCookie($para = "", $pre = true) {
 		if(empty($para)) {
 			$this->getPara("cookie");
 			return count($_COOKIE);
 		} else {
-			return $this->getPara("cookie", $this->cookie_prefix.$para);
+			if($pre) $para = $this->cookie_prefix.$para;
+			return $this->getPara("cookie", $para);
 		}
 	}
 	

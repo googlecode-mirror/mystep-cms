@@ -20,7 +20,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $language['admin_func_tag_delete'];
+		$log_info = $setting['language']['admin_art_tag_delete'];
 		$tag = $db->getSingleResult("select tag from ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_tag where id = '{$id}'");
 		$db->Query("update ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_show set tag='' where tag='{$tag}'");
 		$db->Query("update ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_show set tag=REPLACE(tag, '{$tag},', '') where tag like '%{$tag}%'");
@@ -28,7 +28,7 @@ switch($method) {
 		$db->Query("delete from ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_tag where id = '{$id}'");
 		break;
 	case "rebuild":
-		$log_info = $language['admin_func_tag_rebuild'];
+		$log_info = $setting['language']['admin_art_tag_rebuild'];
 		$db_tmp = new MySQL($setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 		$db_tmp->Connect(false);
 		$db_tmp->SelectDB($setting['db']['name']);
@@ -76,15 +76,15 @@ switch($method) {
 }
 
 if(!empty($log_info)) {
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&id={$id}", $log_info);
-	$goto_url = $self."?web_id=".$web_id;
+	write_log($log_info, "id={$id}");
+	$goto_url = $setting['info']['self']."?web_id=".$web_id;
 }
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $language, $web_id, $setting_sub;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $web_id, $setting_sub;
 
-	$tpl_info['idx'] = "func_tag";
+	$tpl_info['idx'] = "art_tag";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	$order = $req->getGet("order");
@@ -125,7 +125,7 @@ function build_page($method) {
 	}
 	$tpl_tmp->Set_Variable('order', $order);
 	$tpl_tmp->Set_Variable('order_type', $order_type);
-	$tpl_tmp->Set_Variable('title', $language['admin_func_tag_title']);
+	$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_tag_title']);
 	$tpl_tmp->Set_Variable('web_id', $web_id);
 	$max_count = count($GLOBALS['website']);
 	for($i=0; $i<$max_count; $i++) {

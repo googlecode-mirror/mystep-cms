@@ -21,7 +21,7 @@
 			<td class="row" align="center"><!--record_id--></td>
 			<td class="row" align="left"><!--record_subject--></td>
 			<td class="row" align="left"><!--record_content--></td>
-			<td class="row" align="center"><a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('该操作将删除当前类别及其子栏目的所有信息！\n\n请按确定继续。')">删除</a></td>
+			<td class="row" align="center"><a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('请按确定继续。')">删除</a></td>
 		</tr>
 <!--loop:end-->
 	</table>

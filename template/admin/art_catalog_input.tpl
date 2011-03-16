@@ -7,7 +7,6 @@
 				<td class="cat" width="80">ËùÊôÍøÕ¾£º</td>
 				<td class="row">
 					<select name="web_id" id="web_id" onchange="$id('cat_main').selectedIndex=0" <!--web_disabled-->>
-						<option value="0">·ÇÍøÕ¾À¸Ä¿</option>
 <!--loop:start key="website"-->
 						<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
 <!--loop:end-->

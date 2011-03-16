@@ -1,11 +1,5 @@
 <?php
 require("inc.php");
-$tpl_info = array(
-		"idx" => "main",
-		"style" => "admin",
-		"path" => ROOT_PATH."/".$setting['path']['template'],
-		);
-$tpl = $mystep->getInstance("MyTpl", $tpl_info);
 $pass	= "<font color=green><b>¡Ì</b></font>";
 $error = "<font color=red><b>¡Á</b></font>";
 switch($req->getServer("QUERY_STRING")) {
@@ -19,6 +13,7 @@ switch($req->getServer("QUERY_STRING")) {
 		$tpl_info['idx'] = "info_main";
 		break;
 }
+
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $req, $setting, $pass, $error'));
 $mystep->show($tpl);

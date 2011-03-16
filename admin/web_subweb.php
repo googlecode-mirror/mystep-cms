@@ -14,7 +14,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $language['admin_web_subweb_delete'];
+		$log_info = $setting['language']['admin_web_subweb_delete'];
 		$web_id = $req->getGet("web_id");
 		$web_info = getParaInfo("website", "web_id", $web_id);
 		if($web_id>1) {
@@ -29,7 +29,6 @@ switch($method) {
 				$db->Query("drop table ".$setting_sub['db']['pre']."news_tag");
 				$db->Query("drop table ".$setting_sub['db']['pre']."attachment");
 				$db->Query("drop table ".$setting_sub['db']['pre']."links");
-				$db->Query("drop table ".$web_info['idx']."_counter");
 			} else {
 				$db->Query("update ".$setting['db']['pre']."news_cat set web_id=1 where web_id='{$web_id}'");
 				$db->Query("update ".$setting['db']['pre']."news_show set web_id=1 where web_id='{$web_id}'");
@@ -42,10 +41,11 @@ switch($method) {
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
-			$goto_url = $self;
+			$goto_url = $setting['info']['self'];
 		} else {
-			$log_info = ($method=="add_ok"?$language['admin_web_subweb_add']:$language['admin_web_subweb_edit']);
+			$log_info = ($method=="add_ok"?$setting['language']['admin_web_subweb_add']:$setting['language']['admin_web_subweb_edit']);
 			$new_setting = $_POST['setting'];
+			$new_setting['web']['url'] = "http://".$_POST['host'];
 			$new_setting['web']['title'] = $_POST['name'];
 			unset($_POST['setting']);
 			$result = <<<mystep
@@ -73,14 +73,14 @@ mystep;
 }
 
 if(!empty($log_info)) {
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&web_id={$web_id}", $log_info);
-	$goto_url = $self;
+	write_log($log_info, "web_id={$web_id}");
+	$goto_url = $setting['info']['self'];
 }
 $mystep->pageEnd(false);
 
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $web_id, $tpl_info, $website, $setting, $language;
+	global $mystep, $req, $db, $tpl, $web_id, $tpl_info, $website, $setting;
 
 	$tpl_info['idx'] = "web_subweb_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -92,18 +92,18 @@ function build_page($method) {
 			HtmlTrans(&$record);
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('title', $language['admin_web_subweb_title']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_subweb_title']);
 		global $admin_cat;
 		$tpl_tmp->Set_Variable("admin_cat", json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8")));
 		$tpl_tmp->Set_Variable("website", json_encode(chg_charset($website, $setting['gen']['charset'], "utf-8")));
 	} else {
-		$tpl_tmp->Set_Variable('title', ($method == "add"?$language['admin_web_subweb_add']:$language['admin_web_subweb_edit']));
+		$tpl_tmp->Set_Variable('title', ($method == "add"?$setting['language']['admin_web_subweb_add']:$setting['language']['admin_web_subweb_edit']));
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."website where web_id='{$web_id}'");
 			if($record = $db->GetRS()) {
 				//nothing
 			} else {
-				$tpl->Set_Variable('main', showInfo($language['admin_web_subweb_error'], 0));
+				$tpl->Set_Variable('main', showInfo($setting['language']['admin_web_subweb_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}

@@ -13,20 +13,20 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $language['admin_user_detail_delete'];
+		$log_info = $setting['language']['admin_user_detail_delete'];
 		$db->Query("delete from ".$setting['db']['pre']."users where user_id = '{$user_id}'");
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
-			$goto_url = $self;
+			$goto_url = $setting['info']['self'];
 		} else {
 			if($_POST['username'] != $_POST['username_org'] && $db->GetSingleResult("select user_id from ".$setting['db']['pre']."users where username='".$_POST['username']."'")!= "") {
-				$tpl->Set_Variable('main', showInfo(sprintf($language['admin_user_detail_error2'], $_POST['username']), 0));
+				$tpl->Set_Variable('main', showInfo(sprintf($setting['language']['admin_user_detail_error2'], $_POST['username']), 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			} else {
-				$log_info = ($method=="add_ok"?$language['admin_user_detail_add']:$language['admin_user_detail_edit']);
+				$log_info = ($method=="add_ok"?$setting['language']['admin_user_detail_add']:$setting['language']['admin_user_detail_edit']);
 				if(empty($_POST['password'])) {
 					unset($_POST['password']);
 				} else {
@@ -48,14 +48,14 @@ switch($method) {
 }
 
 if(!empty($log_info)) {
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&uid={$user_id}", $log_info);
-	$goto_url = $self;
+	write_log($log_info, "uid={$user_id}");
+	$goto_url = $setting['info']['self'];
 }
 $mystep->pageEnd(false);
 
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $user_id, $user_group, $tpl_info, $setting, $language;
+	global $mystep, $req, $db, $tpl, $user_id, $user_group, $tpl_info, $setting;
 
 	$tpl_info['idx'] = "user_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -99,7 +99,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('user_group', $user_group[$i]);
 		}
 		
-		$tpl_tmp->Set_Variable('title', $language['admin_user_detail_title']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_user_detail_title']);
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);
 		if($order_type=="asc") {
 			$order_type = "desc";
@@ -110,12 +110,12 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('group_id', $group_id);
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 	} elseif($method=="edit") {
-		$tpl_tmp->Set_Variable('title', $language['admin_user_detail_edit']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_user_detail_edit']);
 		
 		$db->Query("select * from ".$setting['db']['pre']."users where user_id='{$user_id}'");
 		$record  = $db->GetRS();
 		if(!$record) {
-			$tpl->Set_Variable('main', showInfo($language['admin_user_detail_error'], 0));
+			$tpl->Set_Variable('main', showInfo($setting['language']['admin_user_detail_error'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
@@ -127,7 +127,7 @@ function build_page($method) {
 		$tpl_tmp->Set_Variables($record);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	} else {
-		$tpl_tmp->Set_Variable('title', $language['admin_user_detail_add']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_user_detail_add']);
 		$max_count = count($user_group);
 		for($i=0; $i<$max_count; $i++) {
 			$user_group[$i]["selected"] = ($user_group[$i]['group_id']==2?"selected":"");

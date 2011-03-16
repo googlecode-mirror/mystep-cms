@@ -26,8 +26,9 @@
 				<td class="cat" colspan="2">子站参数设置：</td>
 			</tr>
 <?PHP
-global $language;
-include_once(ROOT_PATH."/include/config-detail.php");
+$language = $setting['language'];
+include(ROOT_PATH."/include/config.php");
+include(ROOT_PATH."/include/config-detail.php");
 
 $setting_skip = array();
 $setting_skip['web'] = array();

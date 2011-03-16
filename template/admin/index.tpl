@@ -19,7 +19,7 @@
 		</div>
 		<div class="r">
 			<div class="info">
-				登录用户：<!--username-->（<!--usergroup-->） [<a href="login.php?logout" target="_top">退出</a>]
+				登录用户：<!--username-->（<!--usergroup-->） [<a href="login.php?logout" target="_top">退出登陆</a>]
 			</div>
 			<div id="menu_nav">
 				<ul></ul>
@@ -68,7 +68,7 @@ function showCat(theOle, theObjs, renew) {
 		for(var i=0; i<theObjs.length; i++) {
 			if(group.power_cat!=",all," && group.power_cat.indexOf(","+theObjs[i].cat_id+",")==-1) continue;
 			newSubItem = $("<li/>");
-			newSubItem.append('<a href="art_content.php?cat_id='+theObjs[i].cat_id+'" title="'+theObjs[i].cat_comment+'">'+theObjs[i].cat_name+'</a>');
+			newSubItem.append('<a href="art_content.php?web_id='+theObjs[i].web_id+'&cat_id='+theObjs[i].cat_id+'" title="'+theObjs[i].cat_comment+'">'+theObjs[i].cat_name+'</a>');
 			newItem.append(newSubItem);
 			newSubItem.bind('click', function(e){
 				if(e.target.tagName.toLowerCase()!="li") return true;
@@ -124,7 +124,6 @@ function setNav() {
 	newItem.append("<a href=\"###\" class=\"nav\">网站</a>");
 	newSubItem = $("<ul/>");
 	$("#website").append('<option value="">全部默认网站</option>');
-	$("#website").append('<option value="0">非网站栏目</option>');
 	for(i=0; i<website.length; i++) {
 		newSubItem.append("<li><a href=\"http://"+website[i].host+"\" target=\"_blank\">"+website[i].name+"</a></li>");
 		if(group.power_web==",all," || group.power_web.indexOf(","+website[i].web_id+",")!=-1)	$("#website").append("<option value=\""+website[i].web_id+"\">"+website[i].name+"</option>");

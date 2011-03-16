@@ -16,7 +16,7 @@ include(ROOT_PATH."/source/function/web.php");
 $mystep = new MyStep();
 $mystep->setPlugin();
 $mystep->pageStart();
-$cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/".$web_info['idx']."/";
+$cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/".$setting['info']['web']['idx']."/";
 $tpl_info = array(
 		"idx" => "main",
 		"style" => $setting['gen']['template'],

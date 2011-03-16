@@ -57,7 +57,7 @@ class MemoryCache extends class_common {
 		$mc_cnnopt = array(),
 		$mc_servers = array();
 
-	public function inti($options) {
+	public function init($options) {
 		if(function_exists('memcache_get')) return false;
 		$this->mc = new Memcache;
 		$this->mc_expire = isset($options['expire']) ? $options['expire'] : 259200;

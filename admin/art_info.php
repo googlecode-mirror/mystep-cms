@@ -14,19 +14,19 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $language['admin_art_info_delete'];
+		$log_info = $setting['language']['plug_admin_cat_delete'];
 		$db->Query("delete from ".$setting['db']['pre']."info_show where id = '{$id}'");
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
-			$goto_url = $self;
+			$goto_url = $setting['info']['self'];
 		} else {
 			if($method=="add_ok") {
-				$log_info = $language['admin_art_info_add'];
+				$log_info = $setting['language']['plug_admin_cat_add'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."info_show", $_POST, "insert", "a");
 			} else {
-				$log_info = $language['admin_art_info_edit'];
+				$log_info = $setting['language']['plug_admin_cat_edit'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."info_show", $_POST, "update", "id={$id}");
 			}
 			$db->Query($str_sql);
@@ -37,13 +37,13 @@ switch($method) {
 }
 
 if(!empty($log_info)) {
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&id={$id}", $log_info);
-	$goto_url = $self;
+	write_log($log_info, "id={$id}");
+	$goto_url = $setting['info']['self'];
 }
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $web_id, $language;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $web_id;
 
 	$tpl_info['idx'] = "art_info_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -56,14 +56,14 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$tpl_tmp->Set_If('empty', ($n==0));
-		$tpl_tmp->Set_Variable('title', $language['admin_art_info_title']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_info_title']);
 	} else {
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."info_show where id='{$id}'");
 			$record  = $db->GetRS();
 			$db->Free();
 			if(!$record) {
-				$tpl->Set_Variable('main', showInfo($language['admin_art_info_error'], 0));
+				$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_info_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
@@ -78,13 +78,11 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_Variables($record);
 		
-		$tpl_tmp->Set_Variable('title', ($method=='add'?$language['admin_art_info_add']:$language['admin_art_info_edit']));
+		$tpl_tmp->Set_Variable('title', ($method=='add'?$setting['language']['admin_art_info_add']:$setting['language']['admin_art_info_edit']));
 		$tpl_tmp->Set_Variable('method', $method);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}
 	
-	
-	$tpl_tmp->Set_Variable('web_id', $web_id);
 	$max_count = count($GLOBALS['website']);
 	for($i=0; $i<$max_count; $i++) {
 		$GLOBALS['website'][$i]['selected'] = $GLOBALS['website'][$i]['web_id']==$web_id?"selected":"";

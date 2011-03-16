@@ -38,7 +38,7 @@ while($record = $db->GetRS()) {
 	$record['usertype'] = $group_info['group_name'];
 	$tpl_tmp->Set_Loop('record', $record);
 }
-$tpl_tmp->Set_Variable('title', $language['admin_user_online_title']);
+$tpl_tmp->Set_Variable('title', $setting['language']['admin_user_online_title']);
 $db->Free();
 
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));

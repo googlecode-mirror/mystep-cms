@@ -10,6 +10,7 @@ $news_id = $req->getReq("news_id");
 $cat_id = $req->getReq("cat_id");
 $web_id = $req->getReq("web_id");
 $log_info = "";
+if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
 
 $setting_sub = getSubSetting($web_id);
 if($setting['db']['name']==$setting_sub['db']['name']) {
@@ -21,7 +22,7 @@ if($setting['db']['name']==$setting_sub['db']['name']) {
 if($method=="delete" || $method=="unlock") $cat_id = $db->GetSingleResult("select cat_id from ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_show where `news_id` = '{$news_id}'");
 
 if($group['power_cat']!="all" && !empty($cat_id) && strpos(",".$group['power_cat'].",", ",".$cat_id.",")===false) {
-	$tpl->Set_Variable('main', showInfo($language['admin_art_content_nopower'], 0));
+	$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_nopower'], 0));
 	$mystep->show($tpl);
 	$mystep->pageEnd(false);
 }
@@ -33,7 +34,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $language['admin_art_content_delete'];
+		$log_info = $setting['language']['admin_art_content_delete'];
 		$sql_list = array();
 		$db->Query("delete from ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_show where news_id = '{$news_id}'");
 		$db->Query("delete from ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_detail where news_id = '{$news_id}'");
@@ -54,13 +55,13 @@ switch($method) {
 		delCacheFile($news_id);
 		break;
 	case "unlock":
-		$log_info = $language['admin_art_content_unlock'];
+		$log_info = $setting['language']['admin_art_content_unlock'];
 		$db->Query("update ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_show set add_date=now() where news_id = '{$news_id}'");
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
-			$goto_url = $self;
+			$goto_url = $setting['info']['self'];
 		} else {
 			$_POST['style'] = implode(",", $_POST['style']);
 			if(get_magic_quotes_gpc()) strip_slash($_POST);
@@ -106,7 +107,7 @@ switch($method) {
 			$db->ReConnect(true);
 			
 			if($method=="add_ok") {
-				$log_info = $language['admin_art_content_add'];
+				$log_info = $setting['language']['admin_art_content_add'];
 				$_POST['add_user'] = $req->getSession("username");
 				$_POST['add_date'] = "now()";
 				
@@ -126,7 +127,7 @@ switch($method) {
 				
 				$str_sql = $db->buildSQL($setting_sub['db']['name'].$setting_sub['db']['pre']."news_show", $_POST, "insert");
 			} else {
-				$log_info = $language['admin_art_content_edit'];
+				$log_info = $setting['language']['admin_art_content_edit'];
 				unset($_POST['news_id']);
 				$db->Query("delete from ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_detail where news_id = '{$news_id}'");
 				$str_sql = $db->buildSQL($setting_sub['db']['name'].$setting_sub['db']['pre']."news_show", $_POST, "update", "news_id={$news_id}");
@@ -163,26 +164,26 @@ switch($method) {
 		}
 		break;
 	default:
-		$goto_url = $self;
+		$goto_url = $setting['info']['self'];
 }
 
 if(!empty($log_info)) {
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&news_id={$news_id}", $log_info);
-	$goto_url = $self."?web_id=".$web_id;
+	write_log($log_info, "news_id={$news_id}");
+	$goto_url = $setting['info']['self']."?web_id=".$web_id;
 }
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $news_id, $cat_id, $group, $language, $web_id, $setting_sub;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $news_id, $cat_id, $group, $web_id, $setting_sub;
 	$top_mode_list = array(
-			"0"	=>	$language['admin_art_content_top_mode_1'],
-			"1"	=>	$language['admin_art_content_top_mode_2'],
-			"2"	=>	$language['admin_art_content_top_mode_3'],
+			"0"	=>	$setting['language']['admin_art_content_top_mode_1'],
+			"1"	=>	$setting['language']['admin_art_content_top_mode_2'],
+			"2"	=>	$setting['language']['admin_art_content_top_mode_3'],
 			);
 	$top_list = array(
-			"1"	=>	$language['admin_art_content_top_1'],
-			"2"	=>	$language['admin_art_content_top_2'],
-			"4"	=>	$language['admin_art_content_top_3'],
+			"1"	=>	$setting['language']['admin_art_content_top_1'],
+			"2"	=>	$setting['language']['admin_art_content_top_2'],
+			"4"	=>	$setting['language']['admin_art_content_top_3'],
 			);
 	
 	$tpl_info['idx'] = "art_content_".($method=="list"?"list":"input");
@@ -227,8 +228,8 @@ function build_page($method) {
 			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$title = empty($cat_id)?$language['admin_art_content_list_all']:$db->GetSingleResult("select cat_name from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
-		$tpl_tmp->Set_Variable('title', $language['admin_art_content_list_article']." - ".$setting_sub['web']['title']." - ".$title);
+		$title = empty($cat_id)?$setting['language']['admin_art_content_list_all']:$db->GetSingleResult("select cat_name from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_list_article']." - ".$setting_sub['web']['title']." - ".$title);
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 		$tpl_tmp->Set_Variable('cat_id', $cat_id);
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);	
@@ -238,7 +239,7 @@ function build_page($method) {
 	} elseif($method == "edit") {
 		$record = $db->GetSingleRecord("select * from ".$setting_sub['db']['name'].$setting_sub['db']['pre']."news_show where news_id='{$news_id}'");
 		if(!$record) {
-			$tpl->Set_Variable('main', showInfo($language['admin_art_content_error'], 0));
+			$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_error'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
@@ -274,7 +275,7 @@ function build_page($method) {
 		}
 		
 		$tpl_tmp->Set_Variable('record_content', implode("\n<!-- pagebreak -->\n", $content));
-		$tpl_tmp->Set_Variable('title', $language['admin_art_content_edit']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_edit']);
 	} else {
 		$checked = "checked";
 		foreach($top_mode_list as $key=>$value) {
@@ -300,7 +301,7 @@ function build_page($method) {
 		$record['content'] = "";
 		$record['pages'] = 1;
 		$tpl_tmp->Set_Variables($record, "record");
-		$tpl_tmp->Set_Variable('title', $language['admin_art_content_add']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_add']);
 	}
 
 	//catalog select

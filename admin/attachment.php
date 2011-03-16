@@ -43,13 +43,13 @@ switch($method) {
 						$add_str[] = "<br /><a id=\"att_{$new_id}\" href=\"{$setting['web']['url']}/files?{$new_id}\" target=\"_blank\">".($req->getPost("comment")==""?$upload->upload_result[$i]['name']:$req->getPost("comment"))."</a><br />";
 					}
 					$script .= "parent.document.forms[0].attach_list.value += '{$new_id}|';\n";
-					$err_msg[] = $upload->upload_result[$i]['name']." - ".$language['admin_attachment_upload_done'];
+					$err_msg[] = $upload->upload_result[$i]['name']." - ".$setting['language']['admin_attachment_upload_done'];
 				} else {
 					unlink("{$path_upload}/".$upload->upload_result[$i]['new_name']);
-					$err_msg[] = $upload->upload_result[$i]['name']." - ".$language['admin_attachment_upload_dberr'];
+					$err_msg[] = $upload->upload_result[$i]['name']." - ".$setting['language']['admin_attachment_upload_dberr'];
 				} 
 			} else {
-				$err_msg[] = $upload->upload_result[$i]['name']." - ".$language['admin_attachment_upload_failed']." - ".$upload->upload_result[$i]['message'];
+				$err_msg[] = $upload->upload_result[$i]['name']." - ".$setting['language']['admin_attachment_upload_failed']." - ".$upload->upload_result[$i]['message'];
 			}
 		}
 		$err_msg = implode("\\n",$err_msg);
@@ -142,7 +142,7 @@ mystep;
 		$db->Free();
 		$script = "";
 		if($att_more) {
-			$script = "alert('".$language['admin_attachment_edit_err']."');self.close();";
+			$script = "alert('".$setting['language']['admin_attachment_edit_err']."');self.close();";
 		}
 		break;
 	case "download":

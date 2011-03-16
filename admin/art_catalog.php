@@ -15,7 +15,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $language['admin_art_catalog_delete'];
+		$log_info = $setting['language']['admin_art_catalog_delete'];
 		function multiDelData($catid) {
 			global $db, $setting;
 			$db->Query("delete from ".$setting['db']['pre']."news_cat where cat_id = '{$catid}'");
@@ -60,14 +60,14 @@ switch($method) {
 			}
 			return;
 		}
-		$log_info = $language['admin_art_catalog_change'];
+		$log_info = $setting['language']['admin_art_catalog_change'];
 		setPosition($cat_id, $method);
 		deleteCache("news_cat");
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
-			$goto_url = $self;
+			$goto_url = $setting['info']['self'];
 		} else {
 			if($_POST['cat_main']==0) {
 				$_POST['cat_layer'] = 1;
@@ -77,11 +77,11 @@ switch($method) {
 			$_POST['cat_show'] = array_sum($_POST['cat_show']);
 			if(is_null($_POST['cat_show'])) $_POST['cat_show'] = 0;
 			if($method=="add_ok") {
-				$log_info = $language['admin_art_catalog_add'];
+				$log_info = $setting['language']['admin_art_catalog_add'];
 				$_POST['cat_order'] = 1 + $db->GetSingleResult("select max(cat_order) from ".$setting['db']['pre']."news_cat");
 				$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "insert", "a");
 			} else {
-				$log_info = $language['admin_art_catalog_edit'];
+				$log_info = $setting['language']['admin_art_catalog_edit'];
 				function multiChange($catid, $layer) {
 					global $db, $setting;
 					$db->Query("update ".$setting['db']['pre']."news_cat set cat_layer='{$layer}' where cat_id = '{$catid}'");
@@ -103,24 +103,26 @@ switch($method) {
 		}
 		break;
 	default:
-		$goto_url = $self;
+		$goto_url = $setting['info']['self'];
 }
 
 if(!empty($log_info)) {
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&cat_id={$cat_id}", $log_info);
+	write_log($log_info, "cat_id={$cat_id}");
 	$goto_url = basename(($method=="up" || $method=="down" || $method=="delete") ? $req->getServer("HTTP_REFERER") : $req->getServer("PHP_SELF"));
 }
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $cat_id, $language;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $cat_id;
 
 	$tpl_info['idx'] = "art_catalog_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	if($method == "list") {
+		$tpl_tmp->Set_Variable("news_cat", json_encode(chg_charset($news_cat, $setting['gen']['charset'], "utf-8")));
 		$max_count = count($news_cat);
 		for($i=0; $i<$max_count; $i++) {
+			if(!$GLOBALS['op_mode'] && $news_cat[$i]['web_id']!=$setting['info']['web']['web_id']) continue;
 			$news_cat[$i]['cat_name'] = ((isset($news_cat[$i+1]) && $news_cat[$i+1]['cat_layer']==$news_cat[$i]['cat_layer'])?"©À ":"©¸ ").$news_cat[$i]['cat_name'];
 			for($j=1; $j<$news_cat[$i]['cat_layer']; $j++) {
 				$news_cat[$i]['cat_name'] = "&nbsp;".$news_cat[$i]['cat_name'];
@@ -128,18 +130,17 @@ function build_page($method) {
 			$news_cat[$i]['cat_name'] = preg_replace("/^©À /", "", preg_replace("/^©¸ /", "", $news_cat[$i]['cat_name']));
 			$web = getParaInfo("website", "web_id", $news_cat[$i]['web_id']);
 			$news_cat[$i]['web_name'] = $web['name'];
-			if(empty($news_cat[$i]['web_name'])) $news_cat[$i]['web_name'] = $language['admin_art_catalog_public'];
+			if(empty($news_cat[$i]['web_name'])) $news_cat[$i]['web_name'] = $setting['language']['admin_art_catalog_public'];
 			$tpl_tmp->Set_Loop('record', $news_cat[$i]);
 		}
-		$tpl_tmp->Set_Variable('title', $language['admin_art_catalog_catalog']);
-		$tpl_tmp->Set_Variable("news_cat", json_encode(chg_charset($news_cat, $setting['gen']['charset'], "utf-8")));
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_catalog_catalog']);
 	} else {
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
 			$record  = $db->GetRS();
 			$db->Free();
 			if(!$record) {
-				$tpl->Set_Variable('main', showInfo($language['admin_art_catalog_error'], 0));
+				$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_catalog_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
@@ -170,6 +171,7 @@ function build_page($method) {
 			$record['cat_type_0'] = "selected";
 			$record['cat_type_1'] = "";
 			$record['cat_type_2'] = "";
+			if(!$GLOBALS['op_mode']) $record['web_id'] = $setting['info']['web']['web_id'];
 		}
 		
 		$max_count = count($GLOBALS['website']);
@@ -183,7 +185,7 @@ function build_page($method) {
 		$cur_layer = 99;
 		$max_count = count($news_cat);
 		for($i=0; $i<$max_count; $i++) {
-			if($method == "edit" && $news_cat[$i]['web_id']!=$record['web_id']) continue;
+			if(($method == "edit" || !$GLOBALS['op_mode']) && $news_cat[$i]['web_id']!=$record['web_id']) continue;
 			if($news_cat[$i]['cat_id']==$record['cat_id']) {
 				$cur_layer = $news_cat[$i]['cat_layer'];
 				continue;
@@ -202,11 +204,12 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('catalog', array('cat_id'=>$news_cat[$i]['cat_id'], 'cat_name'=>$news_cat[$i]['cat_name'], 'web_id'=>$news_cat[$i]['web_id'],'selected'=>($record['cat_main']==$news_cat[$i]['cat_id']?"selected":"")));
 		}
 		
-		$tpl_tmp->Set_Variable('title', ($method=='add'?$language['admin_art_catalog_add']:$language['admin_art_catalog_edit']));
+		$tpl_tmp->Set_Variable('title', ($method=='add'?$setting['language']['admin_art_catalog_add']:$setting['language']['admin_art_catalog_edit']));
 		$tpl_tmp->Set_Variable('method', $method);
 		$tpl_tmp->Set_Variable('web_disabled', $web_disabled);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}
+	$tpl_tmp->Set_Variable('web_id', $setting['info']['web']['web_id']);
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 	unset($tpl_tmp);
 	$mystep->show($tpl);

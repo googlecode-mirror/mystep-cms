@@ -10,7 +10,7 @@ $log_info = "";
 if(count($_POST)>0) {
 	$content = "";
 	if($method=="import") {
-		$log_info = $language['admin_func_backup_import'];
+		$log_info = $setting['language']['admin_func_backup_import'];
 		$path_upload = ROOT_PATH."/".$setting['path']['upload']."/tmp/";
 		$upload = $mystep->getInstance("MyUploader", $path_upload, true);
 		$upload->DoIt(false);
@@ -29,22 +29,22 @@ if(count($_POST)>0) {
 						}
 						closedir($handle);
 					}
-					$result = count($result_exe)>0?$language['admin_func_backup_import_done']:$language['admin_func_backup_import_failed'];
+					$result = count($result_exe)>0?$setting['language']['admin_func_backup_import_done']:$setting['language']['admin_func_backup_import_failed'];
 					MultiDel($dir);
 				} else {
 					$result_exe = $db->ExeSqlFile($path_upload.$upload->upload_result[0]['new_name']);
-					$result = count($result_exe)>0?$language['admin_func_backup_import_done']:$language['admin_func_backup_import_failed'];
+					$result = count($result_exe)>0?$setting['language']['admin_func_backup_import_done']:$setting['language']['admin_func_backup_import_failed'];
 				}
 				unlink($path_upload.$upload->upload_result[0]['new_name']);
 			} else {
-				$result = $language['admin_func_backup_upload_failed'].$upload->upload_result[0]['message'];
+				$result = $setting['language']['admin_func_backup_upload_failed'].$upload->upload_result[0]['message'];
 			}
 		} else {
-			$result = $language['admin_func_backup_upload_failed'].$language['admin_func_backup_upload_failed_msg1'];
+			$result = $setting['language']['admin_func_backup_upload_failed'].$setting['language']['admin_func_backup_upload_failed_msg1'];
 		}
 		unset($upload);
 	} elseif($method=="export") {
-		$log_info = $language['admin_func_backup_export'];
+		$log_info = $setting['language']['admin_func_backup_export'];
 		$dir = ROOT_PATH."/".$setting['path']['upload']."/tmp/";
 		if($table_name == "all") {
 			require(ROOT_PATH."/source/class/myzip.class.php");
@@ -77,7 +77,7 @@ if(count($_POST)>0) {
 		}
 		echo $content;
 	}
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"], $log_info);
+	write_log($log_info);
 	if($method=="export") $mystep->pageEnd(false);
 }
 
@@ -103,31 +103,31 @@ if(isset($result_exe)) {
 	for($i=0;$i<$max_count;$i++) {
 		switch($result_exe[$i][1]){
 				case "select":
-					$import_info .=  ($i+1) . " - ".sprintf($language['db_create_table'], $result_exe[$i][2])."<br />\n";
+					$import_info .=  ($i+1) . " - ".sprintf($setting['language']['db_create_table'], $result_exe[$i][2])."<br />\n";
 					break;
 				case "create":
-					$import_info .= ($i+1) . " - ".sprintf($language['db_create_done'], ($result_exe[$i][0]=="table"?$language['db_table']:$language['db_database']), $result_exe[$i][2])."<br />\n";
+					$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_create_done'], ($result_exe[$i][0]=="table"?$setting['language']['db_table']:$setting['language']['db_database']), $result_exe[$i][2])."<br />\n";
 					break;
 				case "drop":
-					$import_info .= ($i+1) . " - ".sprintf($language['db_drop_done'], ($result_exe[$i][0]=="table"?$language['db_table']:$language['db_database']), $result_exe[$i][2])."<br />\n";
+					$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_drop_done'], ($result_exe[$i][0]=="table"?$setting['language']['db_table']:$setting['language']['db_database']), $result_exe[$i][2])."<br />\n";
 					break;
 				case "alter":
-					$import_info .= ($i+1) . " - ".sprintf($language['db_alter_done'], $result_exe[$i][2])."<br />\n";
+					$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_alter_done'], $result_exe[$i][2])."<br />\n";
 					break;
 				case "delete":
-					$import_info .= ($i+1) . " - ".sprintf($language['db_delete_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
+					$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_delete_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
 					break;
 				case "truncate":
-					$import_info .= ($i+1) . " - ".sprintf($language['db_truncate_done'], $result_exe[$i][2])."<br />\n";
+					$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_truncate_done'], $result_exe[$i][2])."<br />\n";
 					break;
 				case "insert":
-					$import_info .= ($i+1) . " - ".sprintf($language['db_insert_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
+					$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_insert_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
 					break;
 				case "update":
-					$import_info .= ($i+1) . " - ".sprintf($language['db_update_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
+					$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_update_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
 					break;
 				default:
-					$import_info .= ($i+1) . " - ".sprintf($language['db_operate_done'], $result_exe[$i][2], $result_exe[$i][1])."<br />\n";
+					$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_operate_done'], $result_exe[$i][2], $result_exe[$i][1])."<br />\n";
 					break;
 		}
 	}
@@ -138,8 +138,8 @@ $max_count = count($tbl_list);
 for($i=0; $i<$max_count; $i++) {
 	$tpl_tmp->Set_Loop('tbls', array("name"=>$tbl_list[$i]));
 }
-if(empty($result)) $result = $language['admin_func_backup_question'];
-$tpl_tmp->Set_Variable('title',$language['admin_func_backup_title']);
+if(empty($result)) $result = $setting['language']['admin_func_backup_question'];
+$tpl_tmp->Set_Variable('title',$setting['language']['admin_func_backup_title']);
 $tpl_tmp->Set_Variable('upload_max_filesize', $Max_size);
 $tpl_tmp->Set_Variable('result', $result);
 $tpl_tmp->Set_Variable('import_info', $import_info);

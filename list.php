@@ -25,7 +25,7 @@ if($cat_info = getParaInfo("news_cat", "cat_idx", $cat_idx)) {
 	$cat_comment = $cat_info['cat_comment'];
 	$page_size = $list_limit[$cat_info['cat_type']];
 } else {
-	$cat_name = $language['page_update'];
+	$cat_name = $setting['language']['page_update'];
 	$cat_idx = "";
 	$page_size = $list_limit[0];
 }

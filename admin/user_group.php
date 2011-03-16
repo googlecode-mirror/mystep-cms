@@ -17,7 +17,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $language['admin_user_group_delete'];
+		$log_info = $setting['language']['admin_user_group_delete'];
 		$group_id = $req->getGet("group_id");
 		if($group_id>2) {
 			$db->Query("delete from ".$setting['db']['pre']."user_group where group_id = '{$group_id}'");
@@ -27,7 +27,7 @@ switch($method) {
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
-			$goto_url = $self;
+			$goto_url = $setting['info']['self'];
 		} else {
 			if($_POST['power_func'][0]=="all") {
 				$_POST['power_func'] = "all";
@@ -44,7 +44,7 @@ switch($method) {
 			} else {
 				$_POST['power_web'] = join($_POST['power_web'], ",");
 			}
-			$log_info = ($method=="add_ok"?$language['admin_user_group_add']:$language['admin_user_group_edit']);
+			$log_info = ($method=="add_ok"?$setting['language']['admin_user_group_add']:$setting['language']['admin_user_group_edit']);
 			$qry_str = $db->buildSQL($setting['db']['pre']."user_group", $_POST);
 			$db->Query($qry_str);
 			deleteCache("user_group");
@@ -55,14 +55,14 @@ switch($method) {
 }
 
 if(!empty($log_info)) {
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&group_name={$group_name}", $log_info);
-	$goto_url = $self;
+	write_log($log_info, "group_name={$group_name}");
+	$goto_url = $setting['info']['self'];
 }
 $mystep->pageEnd(false);
 
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $group_id, $tpl_info, $admin_cat, $admin_cat_plat, $news_cat, $website, $setting, $language;
+	global $mystep, $req, $db, $tpl, $group_id, $tpl_info, $admin_cat, $admin_cat_plat, $news_cat, $website, $setting;
 
 	$tpl_info['idx'] = "user_group_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -73,9 +73,9 @@ function build_page($method) {
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if($record['power_func']=="all") {
-				$record['power_func'] = $language['admin_user_group_power_all'];
+				$record['power_func'] = $setting['language']['admin_user_group_power_all'];
 			} elseif($record['power_func']=="") {
-				$record['power_func'] = $language['admin_user_group_power_none'];
+				$record['power_func'] = $setting['language']['admin_user_group_power_none'];
 			} else {
 				$thePowerFunc = split(",", $record['power_func']);
 				$record['power_func'] = "";
@@ -87,9 +87,9 @@ function build_page($method) {
 				$record['power_func'] = substr($record['power_func'], 0, -2);
 			}
 			if($record['power_cat']=="all") {
-				$record['power_cat'] = $language['admin_user_group_cat_all'];
+				$record['power_cat'] = $setting['language']['admin_user_group_cat_all'];
 			} elseif($record['power_cat']=="") {
-				$record['power_cat'] = $language['admin_user_group_cat_none'];
+				$record['power_cat'] = $setting['language']['admin_user_group_cat_none'];
 			} else {
 				$thePowerCata = split(",", $record['power_cat']);
 				$record['power_cat'] = "";
@@ -101,9 +101,9 @@ function build_page($method) {
 				$record['power_cat'] = substr($record['power_cat'], 0, -2);
 			}
 			if($record['power_web']=="all") {
-				$record['power_web'] = $language['admin_user_group_web_all'];
+				$record['power_web'] = $setting['language']['admin_user_group_web_all'];
 			} elseif($record['power_web']=="") {
-				$record['power_web'] = $language['admin_user_group_web_none'];
+				$record['power_web'] = $setting['language']['admin_user_group_web_none'];
 			} else {
 				$thePowerWeb = split(",", $record['power_web']);
 				$record['power_web'] = "";
@@ -116,16 +116,16 @@ function build_page($method) {
 			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('title', $language['admin_user_group_title']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_user_group_title']);
 	} else {
-		$tpl_tmp->Set_Variable('title', ($method == "add"?$language['admin_user_group_add']:$language['admin_user_group_edit']));
+		$tpl_tmp->Set_Variable('title', ($method == "add"?$setting['language']['admin_user_group_add']:$setting['language']['admin_user_group_edit']));
 		
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."user_group where group_id='{$group_id}'");
 			if($record = $db->GetRS()) {
 				//nothing
 			} else {
-				$tpl->Set_Variable('main', showInfo($language['admin_user_group_error'], 0));
+				$tpl->Set_Variable('main', showInfo($setting['language']['admin_user_group_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}

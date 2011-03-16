@@ -28,8 +28,8 @@ class MyCache extends class_common {
 		$flag = true;
 		switch($mode) {
 			case "memcache":
-				$this->obj = new MemoryCache($setting['memcache']);
-				$flag = $this->obj->init();
+				$this->obj = new MemoryCache();
+				$flag = $this->obj->init($setting['memcache']);
 				break;
 			case "eaccelerator":
 				$this->obj = new eAccelerator();

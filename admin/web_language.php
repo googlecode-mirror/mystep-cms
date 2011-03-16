@@ -12,7 +12,6 @@ $language_info = array(
 	"for" => "Current Version"
 );
 $lng_dir = ROOT_PATH."/source/language/";
-$org_lng = $language;
 include($lng_dir."/default.php");
 $new_lng = $language;
 if(!empty($cur_lng) && is_file($lng_dir."/{$cur_lng}.php")) {
@@ -20,11 +19,9 @@ if(!empty($cur_lng) && is_file($lng_dir."/{$cur_lng}.php")) {
 }
 $new_lng = array_merge($new_lng, $language);
 if(is_null($cur_lng)) $cur_lng = $setting['gen']['language'];
-$language = $org_lng;
-unset($org_lng);
 
 if($method=="update" && count($_POST)>0) {
-	$log_info = $language['admin_web_language_update'];
+	$log_info = $setting['language']['admin_web_language_update'];
 	if(empty($cur_lng)) $cur_lng = "default";
 	if(empty($_POST['lng_new_idx'])) {
 		$setting['gen']['language'] = $cur_lng;
@@ -61,12 +58,12 @@ mystep;
 mystep;
 	WriteFile($lng_dir.$cur_lng.".php", $content, "wb");
 
-	write_log("http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&cur_lng=".$cur_lng, $log_info);
-	$goto_url = $self;
+	write_log($log_info, "cur_lng=".$cur_lng);
+	$goto_url = $setting['info']['self'];
 } else {
 	$tpl_info['idx'] = "web_language";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-	$tpl_tmp->Set_Variable('title', $language['admin_web_language_title']);
+	$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_language_title']);
 	$i=1;
 	foreach($new_lng as $key => $value) {
 		$value = htmlspecialchars($value);

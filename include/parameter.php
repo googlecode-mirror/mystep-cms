@@ -1,5 +1,10 @@
 <?php
-$mystep_ver = "0.65";
+$ms_version = array(
+	'ver' => '0.85',
+	'date' => '2011-03-15',
+	'charset' => 'GBK',
+	'language' => 'CHS',
+);
 
 $class_list = array(
 	"MyStep" => "mystep.class.php",

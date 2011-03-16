@@ -1,23 +1,24 @@
 <?php
 class plugin_news_visit implements plugin {
 	public static function install() {
+		global $setting;
 		$info = self::info();
 		if($plugin_info = getParaInfo("plugin", "idx", $info['idx'])) {
-			showInfo("插件 ".$info['name']." 已经安装，不可重复安装！");
+			showInfo(sprintf($setting['language']['plugin_err_dup'], $info['name']));
 		}
 		if($plugin_info = getParaInfo("plugin", "class", $info['class'])) {
-			showInfo("插件类名 ".$info['name']." 冲突，请核实！");
+			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
 		global $db, $setting, $admin_cat;
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['var'].'", "'.$info['plugin_news_visit'].'", 1, "'.$info['intro'].'", "'.$info['copyright'].'")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '文章访问', 'news_visit.php', '../plugin/news_visit/', 0, '文章访问统计')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'news_visit.php', '../plugin/news_visit/', 0, 0, '".$info['cat_desc']."')");
 		$err = array();
 		if($db->GetError($err)) {
-			showInfo("
-			安装时出现问题：<br />
+			showInfo($setting['language']['plugin_err_install']."
+			<br />
 			<pre>
 			".join("\n------------------------\n", $err)."
 			</pre>
@@ -34,7 +35,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo("插件已成功安装！");
+			showInfo($setting['language']['plugin_install_done']);
 		}
 	}
 	
@@ -47,8 +48,8 @@ mystep;
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
 		$err = array();
 		if($db->GetError($err)) {
-			showInfo("
-			卸载时出现问题：<br />
+			showInfo($setting['language']['plugin_err_uninstall']."
+			<br />
 			<pre>
 			".join("\n------------------------\n", $err)."
 			</pre>
@@ -65,7 +66,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo("插件已成功卸载！");
+			showInfo($setting['language']['plugin_uninstall_done']);
 		}
 	}
 	

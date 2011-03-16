@@ -18,7 +18,7 @@ CREATE TABLE `{pre}website` (
 	PRIMARY KEY (`web_id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='网站列表';
 
-INSERT INTO `{pre}website` VALUES (1, '主站', 'main', '{host}');
+INSERT INTO `{pre}website` VALUES (1, 'MyStep', 'main', '{host}');
 # ---------------------------------------------------------------------------------------------------------------
 
 # 管理目录
@@ -28,50 +28,51 @@ CREATE TABLE `{pre}admin_cat` (
 	`name` Char(40) DEFAULT '' NOT NULL,										#目录名称
 	`file` Char(30) DEFAULT '' NOT NULL,										#管理文件
 	`path` Char(100) DEFAULT '' NOT NULL,										#管理文件路径
-	`mark` BOOL NOT NULL DEFAULT 0,													#是否常用
-	`comment` Char(50) DEFAULT '' NOT NULL,									#目录说明
+	`web_id` TINYINT UNSIGNED DEFAULT 0,										#所属子站
+	`order` TINYINT UNSIGNED DEFAULT 0,											#显示顺序
+	`comment` Char(255) DEFAULT '' NOT NULL,									#目录说明
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='管理目录';
 
 INSERT INTO `{pre}admin_cat` VALUES 
-		(1, 0, '首页', '###', '', 0, '管理首页'),
-		(2, 0, '用户', '###', '', 0, '用户管理'),
-		(3, 0, '功能', '###', '', 0, '网站功能'),
-		(4, 0, '内容', '###', '', 0, '内容管理'),
-		(5, 0, '信息', '###', '', 0, '站点信息'),
-		(6, 0, '设置', '###', '', 0, '网站管理'),
-		(7, 0, '扩展', '###', '', 0, '扩展功能'),
+		(1, 0, '首页', '###', '', 0, 0, '管理首页'),
+		(2, 0, '用户', '###', '', 0, 0, '用户管理'),
+		(3, 0, '功能', '###', '', 0, 0, '网站功能'),
+		(4, 0, '内容', '###', '', 0, 0, '内容管理'),
+		(5, 0, '信息', '###', '', 0, 0, '站点信息'),
+		(6, 0, '设置', '###', '', 0, 0, '网站管理'),
+		(7, 0, '扩展', '###', '', 0, 0, '扩展功能'),
 
-		(0, 1, '网站信息', 'info.php', '', 0, '网站信息'),
-		(0, 1, '服务器信息', 'info.php?server', '', 0, '服务器信息'),
-		(0, 1, 'MySQL 信息', 'info.php?mysql', '', 0, 'MySQL 信息'),
-		(0, 1, 'PHP 信息', 'info.php?php', '', 0, 'PHP 信息'),
-		(0, 1, 'phpinfo()', 'info.php?phpinfo', '', 0, 'phpinfo()'),
+		(0, 1, '网站信息', 'info.php', '', 0, 0, '网站信息'),
+		(0, 1, '服务器信息', 'info.php?server', '', 0, 0, '服务器信息'),
+		(0, 1, 'MySQL 信息', 'info.php?mysql', '', 0, 0, 'MySQL 信息'),
+		(0, 1, 'PHP 信息', 'info.php?php', '', 0, 0, 'PHP 信息'),
+		(0, 1, 'phpinfo()', 'info.php?phpinfo', '', 0, 0, 'phpinfo()'),
 		
-		(0, 2, '用户群组', 'user_group.php', '', 0, '组群维护'),
-		(0, 2, '用户管理', 'user_detail.php', '', 0, '用户管理'),
-		(0, 2, '在线用户', 'user_online.php', '', 0, '在线用户'),
+		(0, 2, '在线用户', 'user_online.php', '', 0, 0, '在线用户'),
+		(0, 2, '用户群组', 'user_group.php', '', 0, 0, '组群维护'),
+		(0, 2, '用户管理', 'user_detail.php', '', 0, 0, '用户管理'),
 		
-		(0, 3, '文章标签', 'func_tag.php', '', 0, '文章标签管理'),
-		(0, 3, '附件管理', 'func_attach.php', '', 0, '附件管理'),
-		(0, 3, '友情链接', 'func_link.php', '', 0, '友情链接管理'),
-		(0, 3, '数据备份', 'func_backup.php', '', 0, '数据备份'),
+		(0, 3, '附件管理', 'func_attach.php', '', 0, 0, '附件管理'),
+		(0, 3, '友情链接', 'func_link.php', '', 0, 0, '友情链接管理'),
+		(0, 3, '子站管理', 'web_subweb.php', '', 0, 0, '子站管理'),
+		(0, 3, '数据备份', 'func_backup.php', '', 0, 0, '数据备份'),
 		
-		(0, 4, '文章分类', 'art_catalog.php', '', 0, '文章分类管理'),
-		(0, 4, '文章内容', 'art_content.php', '', 0, '文章内容管理'),
-		(0, 4, '内容展示', 'art_info.php', '', 0, '展示内容管理'),
+		(0, 4, '文章分类', 'art_catalog.php', '', 255, 0, '文章分类管理'),
+		(0, 4, '文章内容', 'art_content.php', '', 255, 0, '文章内容管理'),
+		(0, 4, '文章标签', 'art_tag.php', '', 255, 0, '文章标签管理'),
+		(0, 4, '内容展示', 'art_info.php', '', 0, 0, '展示内容管理'),
 		
-		(0, 5, '更新日志', 'info_log.php', '', 0, '更新日志'),
-		(0, 5, '错误察看', 'info_err.php', '', 0, '错误察看'),
-		(0, 5, '流量统计', 'info_count.php', '', 0, '简单网站你访问统计'),
+		(0, 5, '更新日志', 'info_log.php', '', 0, 0, '更新日志'),
+		(0, 5, '错误察看', 'info_err.php', '', 0, 0, '错误察看'),
+		(0, 5, '流量统计', 'info_count.php', '', 0, 0, '简单网站访问统计'),
 		
-		(0, 6, '子站管理', 'web_subweb.php', '', 0, '子站管理'),
-		(0, 6, '参数设定', 'web_setting.php', '', 0, '参数设定'),
-		(0, 6, '缓存管理', 'web_cache.php', '', 0, '缓存管理'),
-		(0, 6, '语言管理', 'web_language.php', '', 0, '语言管理'),
-		(0, 6, '模板管理', 'web_template.php', '', 0, '模板管理'),
+		(0, 6, '参数设定', 'web_setting.php', '', 0, 0, '参数设定'),
+		(0, 6, '缓存管理', 'web_cache.php', '', 0, 0, '网站缓存'),
+		(0, 6, '语言管理', 'web_language.php', '', 0, 0, '语言管理'),
+		(0, 6, '模板管理', 'web_template.php', '', 0, 0, '模板管理'),
 		
-		(0, 7, '插件管理', 'web_plugin.php', '', 0, '插件管理');
+		(0, 7, '插件管理', 'web_plugin.php', '', 0, 0, '插件管理');
 # ---------------------------------------------------------------------------------------------------------------
 
 # 网站插件
@@ -94,7 +95,7 @@ INSERT INTO `{pre}plugin` VALUES (0, "官方插件", "offical", "1.0", "plugin_offic
 # 新闻分类
 CREATE TABLE `{pre}news_cat` (
 	`cat_id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,			#分类索引
-	`web_id` TINYINT DEFAULT 0,															#所属子站
+	`web_id` TINYINT UNSIGNED DEFAULT 0,										#所属子站
 	`cat_main` SMALLINT UNSIGNED NOT NULL DEFAULT 0,				#主分类索引
 	`cat_name` Char(20) NOT NULL,														#分类名称
 	`cat_comment` Char(80) NOT NULL,												#分类描述
@@ -118,7 +119,7 @@ INSERT INTO `{pre}news_cat` VALUES
 CREATE TABLE `{pre}news_show` (
 	`news_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`cat_id` SMALLINT UNSIGNED NOT NULL,								#新闻类型索引
-	`web_id` TINYINT DEFAULT 0,													#所属子站
+	`web_id` TINYINT UNSIGNED DEFAULT 0,								#所属子站
 	`subject` Char(120) NOT NULL,												#新闻标题
 	`style` Char(40) NOT NULL,													#标题样式
 	`views` MEDIUMINT UNSIGNED DEFAULT 0,								#浏览次数
@@ -155,7 +156,7 @@ CREATE TABLE `{pre}news_detail` (
 # 内容展示
 CREATE TABLE `{pre}info_show` (
 	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`web_id` TINYINT DEFAULT 0,												#所属子站
+	`web_id` TINYINT UNSIGNED DEFAULT 0,							#所属子站
 	`subject` Char(100) NOT NULL,											#展示标题
 	`content` TEXT NOT NULL,													#展示内容
 	PRIMARY KEY (`id`)
@@ -181,7 +182,7 @@ CREATE TABLE `{pre}news_tag` (
 # 新闻附件（所有上传的附件都在此表记录）
 CREATE TABLE `{pre}attachment` (
 	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`web_id` TINYINT DEFAULT 0,									#所属子站
+	`web_id` TINYINT UNSIGNED DEFAULT 0,				#所属子站
 	`news_id` MEDIUMINT UNSIGNED,								#关联索引
 	`file_name` Char(150) NOT NULL,							#附件文件名
 	`file_type` Char(40) NOT NULL,							#附件类型

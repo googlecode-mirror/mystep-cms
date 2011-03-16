@@ -84,7 +84,7 @@ class MyDB extends class_common {
 	public function setMode($mode) {
 		$this->closeTBL();
 		$this->DB_fp = fopen($this->DB_file, $mode);
-		if($this->DB_fp===false) $this->Error("Cannot open file, check your power please!", false);
+		if($this->DB_fp===false) $this->Error("Cannot open file, check your power please!");
 		return true;
 	}
 
@@ -97,7 +97,7 @@ class MyDB extends class_common {
 
 	public function createTBL($setting) {
 		if($this->checkTBL()) {
-			$this->Error("The specified table already exist in the selected path!", false);
+			$this->Error("The specified table already exist in the selected path!");
 			return false;
 		}
 		$content = "";

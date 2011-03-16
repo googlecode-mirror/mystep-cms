@@ -60,7 +60,7 @@
 		</tr>
 		<tr>
 			<td class="cat" width="250">COOKIE支持</td>
-			<td class="row"><?=isset($HTTP_COOKIE_VARS) ? $pass : $error;?></td>
+			<td class="row"><?=(isset($HTTP_COOKIE_VARS) || isset($_COOKIE)) ? $pass : $error;?></td>
 		</tr>
 		<tr>
 			<td class="cat" width="250">浮点运算有效数字显示位数</td>

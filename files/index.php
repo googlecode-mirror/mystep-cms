@@ -17,13 +17,12 @@ if($setting['web']['close'] && !isset($_COOKIE['force'])) {
 include(ROOT_PATH."/include/parameter.php");
 include(ROOT_PATH."/source/function/global.php");
 include(ROOT_PATH."/source/function/web.php");
-include(ROOT_PATH."/source/class/mysql.class.php");
 
 $mystep = new MyStep();
 $db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 $cache = $mystep->getInstance("MyCache", $setting['web']['cache_mode']);
 
-if($record=getData("select * from ".$setting['db']['pre']."attachment where id = ".$id, "record", 1200)) {
+if($record=getData("select * from ".$setting['db']['pre']."attachment where id = ".$id, "record", 1800)) {
 	$the_ext = ".".GetFileExt($record['file_name']);
 	$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d", substr($record['file_time'],0, 10));
 	$the_file = $record['file_time'];

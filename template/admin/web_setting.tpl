@@ -9,7 +9,8 @@
 	<form method="post" action="?update" onsubmit="if($id('web_s_pass').value==$id('web_s_pass_r').value && $id('db_pass').value==$id('db_pass_r').value){return checkForm(this)}else{alert('两次输入的密码不一致！');return false;}">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 <?PHP
-global $language;
+$language = $setting['language'];
+include(ROOT_PATH."/include/config.php");
 include(ROOT_PATH."/include/config-detail.php");
 
 $cur_section = "";

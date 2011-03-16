@@ -20,7 +20,7 @@ abstract class class_common {
 		$error_handle = "",
 		$paras = array();
 
-	public function __construct($error_handle = "WriteError", $singleton = false) {
+	public function __construct($error_handle = "die", $singleton = false) {
 		$this->SetErrorHandle($error_handle);
 		$this->singleton = $singleton;
 		$this->err_msg = "";
@@ -197,12 +197,11 @@ abstract class class_common {
 		$this->error_handle = (!empty($error_function) && is_callable($error_function)) ? $error_function : "";
 	}
 
-	protected function Error($str, $msg_ext="", $exit=false) {
-		$err_msg  = "Error Message\n";
+	protected function Error($msg="", $exit=false) {
+		$err_msg  = "MyStep Error\n";
 		$err_msg .= "Time: ".gmdate("Y-n-j G:i:s", $_SERVER['REQUEST_TIME'] + 8 * 3600)."\n";
 		$err_msg .= "File: ".$_SERVER["PHP_SELF"]."\n";
-		$err_msg .= "Error Message: {$str} \n";
-		$err_msg .= "More: \n{$msg_ext}\n";
+		if(!empty($msg)) $err_msg .= "Info.: {$msg}\n";
 		$err_msg .= "Debug: \n";
 		$debug_info = debug_backtrace();
 		$n=0;
@@ -215,6 +214,7 @@ abstract class class_common {
 		$func = $this->error_handle;
 		//trigger_error($err_msg, E_USER_ERROR);
 		if(!empty($func) && is_callable($func)) call_user_func($func, $err_msg);
+		$GLOBALS['errMsg'] = $err_msg;
 		if($exit) die(str_replace("\n","<br />\n",$err_msg));
 		return true;
 	}

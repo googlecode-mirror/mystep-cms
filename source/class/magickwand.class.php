@@ -485,7 +485,8 @@ class MagickWand extends class_common {
 			default:
 				$err_msg .= $errObj;
 		}
-		parent::Error($str, $err_msg, $exit);
+		if(!empty($err_msg)) $str .= "(".$err_msg.")";
+		parent::Error($str, $exit);
 		return;
 	}
 }

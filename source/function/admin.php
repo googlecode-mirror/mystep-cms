@@ -19,8 +19,9 @@ function CheckPower($power) {
 	return ($_SESSION['userpower']=="all" || strpos(",".$_SESSION['userpower'].",", ",".$power.",")!==false);
 }
 
-function write_log($link, $comment="") {
+function write_log($comment="", $q_str="") {
 	global $db, $setting;
+	$link = "http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&".$q_str;
 	$link = preg_replace("/&return_url=.+&/iU", "&", $link);
 	$str_sql = "
 		insert into ".$setting['db']['pre']."modify_log (`id`,	`user`,			`group`,		`time`,		`link`, `comment`)
