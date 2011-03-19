@@ -24,11 +24,12 @@ class sess_mystep {
 		global $setting;
 		extract(MyReq::sessDecode($sess_data));
 		$reflash = $_SERVER["REQUEST_TIME"];
-		if(empty($username)) $username = "guest";
-		if(empty($usertype)) $usertype = 2;
+		if(empty($username)) $username = "Guest";
+		if(empty($usertype)) $usertype = 1;
+		if(empty($usergroup)) $usergroup = 0;
 		self::$cnt = mysql_connect($setting['db']['host'], $setting['db']['user'], $setting['db']['pass']);
 		mysql_select_db($setting['db']['name']);
-		$result = mysql_query("REPLACE INTO ".$setting['db']['pre']."user_online (sid, ip, username, usertype, reflash, url) VALUES ('{$sid}', '{$ip}', '{$username}', '{$usertype}', '{$reflash}', '{$url}')", self::$cnt);
+		$result = mysql_query("REPLACE INTO ".$setting['db']['pre']."user_online (sid, ip, username, usertype, usergroup, reflash, url) VALUES ('{$sid}', '{$ip}', '{$username}', '{$usertype}', '{$usergroup}', '{$reflash}', '{$url}')", self::$cnt);
 		return $result;
 	}
 	
@@ -44,10 +45,6 @@ class sess_mystep {
 			mysql_close(self::$cnt);
 		}
 		return;
-	}
-	
-	private function getConn() {
-		
 	}
 }
 

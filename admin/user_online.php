@@ -34,8 +34,11 @@ $tpl_tmp->Set_Variable('order_type', $order_type);
 while($record = $db->GetRS()) {
 	HtmlTrans(&$record);
 	$record['reflash'] = date("Y-m-d H:i:s", $record['reflash']);
-	$group_info = getParaInfo("user_group", "group_id", $record['usertype']);
-	$record['usertype'] = $group_info['group_name'];
+	$type_info = getParaInfo("user_type", "type_id", $record['usertype']);
+	$record['usertype'] = $type_info['type_name'];
+	if($group_info = getParaInfo("user_group", "group_id", $record['usergroup'])) {
+		$record['usertype'] .= " £¨".$group_info['group_name']."£©"; 
+	}
 	$tpl_tmp->Set_Loop('record', $record);
 }
 $tpl_tmp->Set_Variable('title', $setting['language']['admin_user_online_title']);

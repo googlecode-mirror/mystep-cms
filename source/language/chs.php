@@ -55,5 +55,16 @@ $language = array (
   'checkform_err_time' => '请输入合法的时间格式，如：9:00 或 22:00:00 ！',
   'checkform_err_time2' => '您所输入的时间不合法！',
   'checkform_err_tel' => '请输入合法的电话号码格式，如：010-12345678 或 010-87654321-999 ！',
+	'checkform_item_email' => '电子邮件（name@host.com）',
+	'checkform_item_url' => '网址（http://www.host.com/...）',
+	'checkform_item_digital' => '数字（0-9）',
+	'checkform_item_number' => '实数（-123.456）',
+	'checkform_item_alpha' => '字母（a-z）',
+	'checkform_item_word' => '单词（Any Words）',
+	'checkform_item_name' => '汉字（中文）',
+	'checkform_item_date' => '日期（2000-01-01）',
+	'checkform_item_time' => '时间（00:00:00）',
+	'checkform_item_tel' => '电话（010-12345678）',
+	'checkform_item_fax' => '传真（010-12345678）',
 );
 ?>

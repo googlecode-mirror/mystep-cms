@@ -585,7 +585,7 @@ class MySQL extends class_common {
 		if(mysql_errno()===false || mysql_errno()===0) return;
 		$this->DB_error	= true;
 		$this->DB_error_description[]	= mysql_errno()." - ".mysql_error()." ({$str})";
-		$str .= "Query String: ".$this->DB_qstr."\n";
+		$str .= "\nQuery String: ".$this->DB_qstr."\n";
 		$str .= "MySQL Message: ".mysql_errno()." - ".mysql_error();
 		parent::Error($str, $exit);
 		return;

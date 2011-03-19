@@ -9,12 +9,19 @@ switch($method) {
 			if(strtolower($check_code) == strtolower($req->getCookie("vcode"))) {
 				$req->setCookie("err_msg");
 				$req->setCookie("vcode");
-				$user_info = $db->GetSingleRecord("select user_id, group_id from ".$setting['db']['pre']."users where username='{$user_name}' and password='".md5($user_psw)."'");
+				$user_info = $db->GetSingleRecord("select user_id, group_id, type_id from ".$setting['db']['pre']."users where username='{$user_name}' and password='".md5($user_psw)."'");
 				if($user_info)  list($uid, $groupid) = array_values($user_info);
-				if($user_name==$setting['web']['s_user'] && md5($user_psw)==$setting['web']['s_pass']) $uid = 0;
+				if($user_name==$setting['web']['s_user'] && md5($user_psw)==$setting['web']['s_pass']) {
+					$uid=0;
+					$groupid=1;
+				}
 				if(isset($uid)) {
 					$req->setCookie("ms_user", $uid."\t".md5($user_psw), 60*60*24*(float)$keep);
-					$goto_url = "index.php";
+					if($groupid===0) {
+						$goto_url = "../";
+					} else {
+						$goto_url = "index.php";
+					}
 				} else {
 					$err_msg = $setting['language']['admin_login_error_psw'];
 				}

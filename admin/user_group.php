@@ -55,7 +55,7 @@ switch($method) {
 }
 
 if(!empty($log_info)) {
-	write_log($log_info, "group_name={$group_name}");
+	write_log($log_info, "group_id=".$group_id);
 	$goto_url = $setting['info']['self'];
 }
 $mystep->pageEnd(false);

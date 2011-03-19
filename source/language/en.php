@@ -56,5 +56,16 @@ $language = array (
   'checkform_err_time' => 'Keep the format like 9:00 or 22:00:00 !',
   'checkform_err_time2' => 'Wrong time !',
   'checkform_err_tel' => 'Normal phone number like 010-12345678 ro 010-87654321-999 !',
+	'checkform_item_email' => 'Email Only(name@host.com)',
+	'checkform_item_url' => 'URL Only(http://www.host.com/...)',
+	'checkform_item_digital' => 'Digital Only(0-9)',
+	'checkform_item_number' => 'Number Only(-123.456)',
+	'checkform_item_alpha' => 'Alphabet Only(a-z)',
+	'checkform_item_word' => 'Words Only(Any Words)',
+	'checkform_item_name' => 'Chinese characters Only',
+	'checkform_item_date' => 'Regular Date(2000-01-01)',
+	'checkform_item_time' => 'Regular Time(00:00:00)',
+	'checkform_item_tel' => 'Telephone Number(010-12345678)',
+	'checkform_item_fax' => 'Fax Number(010-12345678)',
 );
 ?>

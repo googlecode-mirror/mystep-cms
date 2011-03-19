@@ -21,7 +21,15 @@ class MyStep extends class_common {
 		$content = array();
 	
 	public function getInstance($calledClass = "") {
-		global $setting;
+		global $setting, $class_list;
+		if(!class_exists($calledClass)) {
+			if(isset($class_list[$calledClass]) && defined('ROOT_PATH')) {
+				include_once(ROOT_PATH."/source/class/".$class_list[$calledClass]);
+			}
+			if (!class_exists($calledClass)) {
+				trigger_error("Unable to load class: ".$calledClass, E_USER_WARNING);
+			}
+		}
 		$argList = func_get_args();
 		$obj = call_user_func_array(array($this, 'parent::getInstance'), $argList);
 		switch($calledClass) {
@@ -131,7 +139,7 @@ class MyStep extends class_common {
 			$setting_sub = getSubSetting($setting['info']['web']['web_id']);
 			$setting['db_sub'] = $setting_sub['db'];
 			if($setting['db']['name']==$setting_sub['db']['name']) {
-				$setting['db']['pre_sub'] = $setting['db']['pre'];	
+				$setting['db']['pre_sub'] = $setting_sub['db']['pre'];	
 			} else {
 				$setting['db']['pre_sub'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];	
 			}
@@ -145,9 +153,10 @@ class MyStep extends class_common {
 		}
 
 		includeCache("user_group");
+		includeCache("user_type");
 		$req->SessionStart($GLOBALS['sess_handle']);
 		$username = $req->getSession("username");
-		if((empty($username) || $username=="guest") && $req->getCookie('ms_user')!=null) checkUser();
+		if((empty($username) || $username=="Guest") && $req->getCookie('ms_user')!="") checkUser();
 		$req->setSession("url", $req->getServer("URL"));
 		$req->setSession("ip", GetIp());
 	}
@@ -170,10 +179,7 @@ class MyStep extends class_common {
 	}
 	
 	public function show(MyTpl $tpl) {
-		if(isset($GLOBALS['errMsg'])) {
-			echo str_replace("\n","<br />\n", $GLOBALS['errMsg']);
-			return;
-		}
+		if(outputErrMsg()) return;
 		global $setting, $news_cat, $cat_idx;
 		$tpl->Set_Variable('template', $setting['gen']['template']);
 		$tpl->Set_Variable('web_title', $setting['web']['title']);

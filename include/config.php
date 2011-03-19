@@ -8,7 +8,7 @@ $setting['web']['title'] = 'MyStep';
 $setting['web']['keyword'] = 'mystep,cms,free';
 $setting['web']['description'] = '开源网站内容管理系统';
 $setting['web']['s_user'] = 'mystep';
-$setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
+$setting['web']['s_pass'] = 'c4ca4238a0b923820dcc509a6f75849b';
 $setting['web']['close'] = false;
 $setting['web']['close_page'] = '/index.html';
 $setting['web']['cache_mode'] = 'memcache';
@@ -47,7 +47,7 @@ $setting['session']['trans_sid'] = false;
 $setting['cookie'] = array();
 $setting['cookie']['domain'] = '.mystep.com';
 $setting['cookie']['path'] = '/';
-$setting['cookie']['prefix'] = 'ms_252c_252c_252c_252c_252c_';
+$setting['cookie']['prefix'] = 'ms_';
 
 $setting['path'] = array();
 $setting['path']['admin'] = 'admin/';

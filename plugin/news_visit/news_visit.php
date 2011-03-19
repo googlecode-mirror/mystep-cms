@@ -1,5 +1,6 @@
 <?php
 require("../inc.php");
+include("info.php");
 $tpl_info = array(
 		"idx" => "news_visit",
 		"style" => "",
@@ -26,10 +27,14 @@ $str_sql.= " order by ".(empty($order)?"news_id":"{$order}")." {$order_type}";
 $str_sql.= " limit $page_start, $page_size";
 $db->Query($str_sql);
 while($record = $db->GetRS()) {
-		HtmlTrans(&$record);
-		$record['day_start'] = date("Y-m-d", $record['day_start']);
-		$record['link'] = $setting['web']['url']."/read.php?id=".$record['news_id'];
-		$tpl->Set_Loop('record', $record);
+	HtmlTrans(&$record);
+	$record['day_start'] = date("Y-m-d", $record['day_start']);
+	$webInfo = getParaInfo("website", "web_id", $record['web_id']);
+	$record['link'] = "http://".$webInfo['host']."/read.php?id=".$record['news_id'];
+	$record['web_id'] = $webInfo['name'];
+	$catInfo = getParaInfo("news_cat", "cat_id", $record['cat_id']);
+	$record['cat_id'] = $catInfo['cat_name'];
+	$tpl->Set_Loop('record', $record);
 }
 $db->Free();
 $tpl->Set_Variable('order_type_org', $order_type);
@@ -41,7 +46,7 @@ if($order_type=="desc") {
 $tpl->Set_Variable('order', $order);
 $tpl->Set_Variable('order_type', $order_type);
 $tpl->Set_Variable('path_admin', $setting['path']['admin']);
-$tpl->Set_Variable('title', '新闻访问统计');
+$tpl->Set_Variable('title', $info['name']);
 
 $mystep->show($tpl);
 unset($tpl);

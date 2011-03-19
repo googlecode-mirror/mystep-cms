@@ -82,22 +82,6 @@ CREATE TABLE `{pre}comment` (
 
 # ---------------------------------------------------------------------------------------------------------------
 
-# 新闻访问统计（所有浏览统计都在此表记录）
-CREATE TABLE `{pre}news_mark` (
-	`news_id` MEDIUMINT UNSIGNED,										#关联索引
-	`subject` Char(120) NOT NULL,										#新闻标题
-	`jump` SMALLINT UNSIGNED DEFAULT 0,						#提升次数
-	`jumps_time` Char(10) DEFAULT '0',							#最近提升时间
-	`rank_times` SMALLINT UNSIGNED DEFAULT 0,				#内容评分次数
-	`rank_total` SMALLINT UNSIGNED DEFAULT 0,				#内容评分总分
-	INDEX (`news_id`),
-	INDEX (`jumps`),
-	UNIQUE KEY (`news_id`),
-	PRIMARY KEY (`id`)
-) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='用户评价数据';
-
-# ---------------------------------------------------------------------------------------------------------------
-
 # 企业注册
 CREATE TABLE `{pre}regist` (
 	`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,

@@ -128,7 +128,11 @@ function add_slash(&$para) {
 	//Coded By Windy2000 20030805 v1.0
 	if(is_array($para)) {
 		foreach($para as $key => $value) {
-			if(is_string($value)) $para[$key] = addslashes($value);
+			if(is_array($value)) {
+				add_slash($value);
+			} else {
+				if(is_string($value)) $para[$key] = addslashes($value);
+			}
 		}
 	} elseif(is_string($para)) {
 		$para = addslashes($para);
@@ -140,12 +144,34 @@ function strip_slash(&$para) {
 	//Coded By Windy2000 20030805 v1.0
 	if(is_array($para)) {
 		foreach($para as $key => $value) {
-			$para[$key] = stripslashes($value);
+			if(is_array($value)) {
+				strip_slash($value);
+			} else {
+				if(is_string($value)) $para[$key] = stripslashes($value);
+			}
 		}
 	} else {
-		$para = stripslashes($para);
+		if(is_string($value)) $para = stripslashes($para);
 	}
 	return;
+}
+
+function arrayMerge($arr_1, $arr_2) {
+	if(!is_array($arr_1)) return false;
+	if(!is_array($arr_2)) {
+		$arr_1[] = $arr_2;
+	} else {
+		foreach($arr_1 as $key => $value) {
+			if(isset($arr_2[$key])) {
+				if(is_array($arr_2[$key])) {
+					$arr_1[$key] = arrayMerge($arr_1[$key], $arr_2[$key]);
+				} else {
+					$arr_1[$key] = $arr_2[$key];
+				}
+			}
+		}
+	}
+	return $arr_1;
 }
 
 function HtmlTrans(&$para) {
@@ -388,7 +414,7 @@ function isWriteable($file){
 function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=array()) {
 	if(!class_exists("imageCreator_file")) {
 		if(!empty($img_dst)) copy($img_src, $img_dst);
-		header("location: {$img_src}");
+		readfile($img_src);
 		return;
 	}
 	if(file_exists($img_dst)) {
@@ -400,11 +426,11 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 	$img = new imageCreator_file;
 	$img->init($img_src);
 	if(!$img->img) {
-		header("location: {$img_src}");
+		readfile($img_src);
 		return false;
 	}
 	if($img->width<100 || $img->height<100) {
-		header("location: {$img_src}");
+		readfile($img_src);
 		return false;
 	}
 	$dst_type = "jpg";

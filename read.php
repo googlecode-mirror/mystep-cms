@@ -50,7 +50,7 @@ if($detail===false) {
 $tpl_info['idx'] = "read";
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 
-if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', ' - <a href="'.getFileURL(0, $cat_idx).'">'.$cat_name.'</a>');
+if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', ' - <a href="'.getFileURL(0, $cat_idx, $setting['info']['web']['web_id']).'">'.$cat_name.'</a>');
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 $tpl_tmp->Set_Variable('page_list', PageList($page, $page_count));
 $tpl_tmp->Set_Variable('title', $setting['web']['title']);
@@ -76,7 +76,7 @@ if($page_count==1) {
 	$result = getData("select sub_title, page from ".$setting['db']['pre_sub']."news_detail where news_id='{$news_id}' order by page", "all", 600);
 	$max_count = count($result);
 	for($i=0; $i<$max_count; $i++) {
-		$result[$i]['url'] = getFileURL($news_id, $cat_idx, $result[$i]['page']);
+		$result[$i]['url'] = getFileURL($news_id, $cat_idx, $setting['info']['web']['web_id'], $result[$i]['page']);
 		if($result[$i]['page']==$page) $result[$i]['selected'] = "selected";
 		$result[$i]['txt'] = sprintf($setting['language']['page_no'], $result[$i]['page']);
 		if(!empty($result[$i]['sub_title'])) $result[$i]['txt'] .= " - ".$result[$i]['sub_title'];
@@ -92,7 +92,7 @@ if($article = getData("select news_id, cat_id, subject, add_date from ".$setting
 	} else {
 		$cat_idx = "";
 	}
-	$tpl_tmp->Set_Variable('article_prev_link', getFileURL($article['news_id'], $cat_idx));
+	$tpl_tmp->Set_Variable('article_prev_link', getFileURL($article['news_id'], $cat_idx, $setting['info']['web']['web_id']));
 	$tpl_tmp->Set_Variable('article_prev_text', $article['subject']);
 } else {
 	$tpl_tmp->Set_Variable('article_prev_link', "###");
@@ -106,7 +106,7 @@ if($article = getData("select news_id, cat_id, subject, add_date from ".$setting
 	} else {
 		$cat_idx = "";
 	}
-	$tpl_tmp->Set_Variable('article_next_link', getFileURL($article['news_id'], $cat_idx));
+	$tpl_tmp->Set_Variable('article_next_link', getFileURL($article['news_id'], $cat_idx, $setting['info']['web']['web_id']));
 	$tpl_tmp->Set_Variable('article_next_text', $article['subject']);
 } else {
 	$tpl_tmp->Set_Variable('article_next_link', "###");

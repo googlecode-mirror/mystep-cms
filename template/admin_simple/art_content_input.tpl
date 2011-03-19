@@ -48,19 +48,27 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">置顶模式：</td>
+				<td class="cat">阅读权限：</td>
+				<td class="row"><input name="view_lvl" type="text" maxlength="2" value="<!--record_view_lvl-->" need="digital" /> <span class="comment">（浏览当前文章需要达到的级别）</span></td>
+			</tr>
+			<tr>
+				<td class="cat">列表排序：</td>
+				<td class="row"><input name="order" type="text" maxlength="3" value="<!--record_order-->" need="digital" /> <span class="comment">（文章排序，序号越大越靠前）</span></td>
+			</tr>
+			<tr>
+				<td class="cat" width="80">推送模式：</td>
 				<td class="row">
 <!--loop:start key="setop_mode"-->
 					<input type="radio" id="setop_mode_<!--setop_mode_key-->" class="cbox" name="setop_mode" value="<!--setop_mode_key-->" <!--setop_mode_checked--> /><label for="setop_mode_<!--setop_mode_key-->" /> <!--setop_mode_value--></label> &nbsp;
-<!--loop:end--> <span class="comment">（文章置顶模式）</span>
+<!--loop:end--> <span class="comment">（文章推送模式）</span>
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">置顶位置：</td>
+				<td class="cat" width="80">推送位置：</td>
 				<td class="row">
 <!--loop:start key="setop"-->
 				<input type="checkbox" id="setop_<!--setop_key-->" class="cbox" name="setop[]" value="<!--setop_key-->" <!--setop_checked--> /><label for="setop_<!--setop_key-->" /> <!--setop_value--></label> &nbsp;
-<!--loop:end--> <span class="comment">（文章置顶位置，可复选）</span>
+<!--loop:end--> <span class="comment">（文章推送位置，可复选）</span>
 				</td>
 			</tr>
 			<tr>

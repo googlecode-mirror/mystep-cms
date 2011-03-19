@@ -30,6 +30,7 @@ switch($step) {
 	case 2:
 		break;
 	case 3:
+		$setting['cookie']['prefix'] = "ms_";
 		$setting = arrayMerge($setting, $_POST['setting']);
 		$setting['web']['s_pass'] = md5($setting['web']['s_pass']);
 		unset($_POST);

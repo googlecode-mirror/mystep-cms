@@ -33,8 +33,19 @@
 				<td class="cat" width="80">组群选择：</td>
 				<td class="row">
 					<select name="group_id">
+						<option value="0">无群组权限</option>
 <!--loop:start key="user_group"-->
 						<option value="<!--user_group_group_id-->" <!--user_group_selected-->><!--user_group_group_name--></option>
+<!--loop:end-->
+					</select>
+				</td>
+			</tr>
+			<tr> 
+				<td class="cat" width="80">类型选择：</td>
+				<td class="row">
+					<select name="type_id">
+<!--loop:start key="user_type"-->
+						<option value="<!--user_type_type_id-->" <!--user_type_selected-->><!--user_type_type_name--></option>
 <!--loop:end-->
 					</select>
 				</td>

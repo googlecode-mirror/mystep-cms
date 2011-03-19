@@ -51,7 +51,7 @@ function GetPageList($counter, $qry_str="", $page=1, $page_size=20) {
 	return array($page_arr, $page_start, $page_size);
 }
 
-function GetPictures_news($news_id, $content, $zoom = 600) {
+function GetPictures_news($news_id, $web_id, $content, $zoom = 600) {
 	global $db, $setting;
 	if(is_array($content)) {
 		$tmp = $content;
@@ -64,26 +64,27 @@ function GetPictures_news($news_id, $content, $zoom = 600) {
 	$max_count = count($tmp);
 	for($n=0; $n<$max_count; $n++) {
 		$attach_list = "";
-		preg_match_all("/\<img.+src\=\"(.+?)\"[^>]+?>/ixs", $str, $arr);
+		preg_match_all("/\<img.+src\=\"(.+?)\"[^>]+?>/ixs", $tmp[$n], $arr);
 		$img_list = $arr[1];
 		$max_count2 = count($img_list);
 		for($i=0; $i<$max_count2; $i++) {
+			if(array_search($img_list[$i], $pic_list)===false) {
+				array_push($pic_list, $img_list[$i]);
+			} else {
+				continue;
+			}
+			if(strpos($img_list[$i], $setting['web']['url'])!==false) continue;
 			$the_time = GetMicrotime();
 			$old_name = strtolower(basename($img_list[$i]));
-			$old_name = preg_replace("/[^\w]/", "", $old_name);
-			$ext = strrchr(preg_replace("/\?.*$/", "", $old_name),".");
+			$ext = ".".GetFileExt($img_list[$i]);
 			//if(strpos("*.jpg.bmp.gif.png",$ext)===false) continue;
 			if(empty($ext)) {
 				$ext = ".jpg";
 				$old_name .= $ext;
 			}
-			$if_exist = array_search($img_list[$i], $pic_list);
-			if($if_exist===false) {
-				array_push($pic_list, $img_list[$i]);
-			}
 			$new_name = $the_time.$ext;
-			$the_path = ROOT_PATH.$setting['path']['upload'].date("Y/m/d")."/";
-			Make_Dir($the_path);
+			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/");
+			MakeDir($the_path);
 			if(GetRemoteFile($img_list[$i], $the_path.$new_name)) {
 				$img_info = GetImageSize($the_path.$new_name);
 				$the_width = $img_info[0];
@@ -93,9 +94,9 @@ function GetPictures_news($news_id, $content, $zoom = 600) {
 					$the_height *= $zoom/$the_width;
 					$the_width = $zoom;
 				}
-				Make_Dir("{$the_path}/preview/");
+				MakeDir("{$the_path}/preview/");
 				img_thumb($the_path.$new_name, $the_width, $the_height, $the_path."/preview/".$new_name);
-				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$_SESSION['username']."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
+				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$_SESSION['username']."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
 				$db->Query($qrl_str);
 				$new_id = $db->GetInsertId();
 				if($new_id != 0) {
@@ -106,8 +107,8 @@ function GetPictures_news($news_id, $content, $zoom = 600) {
 			}
 		}
 		$attach_list .= "0";
-		$db->Query("update ".$setting['db']['pre']."news_detail set content='".mysql_real_escape_string($tmp[$n])."' where news_id={$news_id} and page=".($n+1));
-		$db->Query("update ".$setting['db']['pre']."attachment set news_id={$news_id} where id in ({$attach_list})");
+		$db->Query("update ".$setting['db']['pre_sub']."news_detail set content='".mysql_real_escape_string($tmp[$n])."' where news_id={$news_id} and page=".($n+1));
+		$db->Query("update ".$setting['db']['pre']."attachment set news_id={$news_id}, web_id={$web_id} where id in ({$attach_list})");
 	}
 	return;
 }

@@ -41,24 +41,6 @@ function makeVarsCode($var, $var_name='') {
 	return $result;
 }
 
-function arrayMerge($arr_1, $arr_2) {
-	if(!is_array($arr_1)) return false;
-	if(!is_array($arr_2)) {
-		$arr_1[] = $arr_2;
-	} else {
-		foreach($arr_1 as $key => $value) {
-			if(isset($arr_2[$key])) {
-				if(is_array($arr_2[$key])) {
-					$arr_1[$key] = arrayMerge($arr_1[$key], $arr_2[$key]);
-				} else {
-					$arr_1[$key] = $arr_2[$key];
-				}
-			}
-		}
-	}
-	return $arr_1;
-}
-
 function getArrayDetail($array, &$detail, $layer = 0) {
 	if(is_array($array)) {
 		foreach($array as $key => $value) {
@@ -187,13 +169,16 @@ function buildParaList($idx) {
 			$cache_para['website'] = $theList;
 			break;
 		case "user_group":
+		case "user_type":
+		case "user_power":
+			$theIdx = str_replace("user_", "", $idx);
 			$theList = array();
-			$db->Query("select * from ".$setting['db']['pre']."user_group order by group_id");
+			$db->Query("select * from ".$setting['db']['pre'].$idx." order by ".$theIdx."_id");
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				$theList[] = $record;
 			}
-			$cache_para['user_group'] = $theList;
+			$cache_para[$idx] = $theList;
 			break;
 		case "admin_cat":
 			$theList = array();
@@ -261,12 +246,14 @@ function checkUser() {
 	$ms_user = $req->getCookie('ms_user');
 	if(!is_null($ms_user)) {
 		list($user_id, $user_pwd)=explode("\t",$ms_user);
-		if($userinfo = $db->GetSingleRecord("SELECT username, group_id from ".$setting['db']['pre']."users where user_id='{$user_id}'")) {
+		if($userinfo = $db->GetSingleRecord("SELECT username, group_id, type_id from ".$setting['db']['pre']."users where user_id='{$user_id}'")) {
 			$req->setSession("username", $userinfo['username']);
-			$req->setSession("usertype", $userinfo['group_id']);
+			$req->setSession("usergroup", $userinfo['group_id']);
+			$req->setSession("usertype", $userinfo['type_id']);
 		} elseif($user_id==0 && $user_pwd==$setting['web']['s_pass']) {
 			$req->setSession("username", $setting['web']['s_user']);
-			$req->setSession("usertype", 1);
+			$req->setSession("usergroup", 1);
+			$req->setSession("usertype", 3);
 		}
 	}
 }
@@ -308,13 +295,13 @@ function getFuncData($func) {
 	return $result;
 }
 
-function getFileURL($news_id=0, $cat_idx="", $page=1) {
+function getFileURL($news_id=0, $cat_idx="", $web_id=1, $page=1) {
 	global $setting;
-	$url = "";
+	$webInfo = getParaInfo("website", "web_id", $web_id);
+	$url = $webInfo['host'];
 	if($setting['gen']['rewrite']) {
-		$url = $setting['web']['url'];
 		$url = str_replace("//", "/", $url."/".$setting['path']['cache']."/");
-		$url = str_replace("http:/", "http://", $url);
+		$url = "http://".$url;
 		if(!empty($cat_idx)) {
 			$url .= $cat_idx."/";
 		} else {
@@ -328,9 +315,9 @@ function getFileURL($news_id=0, $cat_idx="", $page=1) {
 		$url = preg_replace("/([^:])\/+/", "\\1/", $url);
 	} else {
 		if($news_id==0) {
-			$url = $setting['web']['url']."/list.php?cat={$cat_idx}";
+			$url = "http://".$url."/list.php?cat={$cat_idx}";
 		} else {
-			$url = $setting['web']['url']."/read.php?id={$news_id}";
+			$url = "http://".$url."/read.php?id={$news_id}";
 		}
 		if($page>1) $url .= "&page={$page}";
 	}
@@ -605,6 +592,29 @@ function WriteError($err) {
 	$err_file = ROOT_PATH."/error.log";
 	WriteFile($err_file, $err, "ab");
 	return;
+}
+
+function outputErrMsg() {
+	if(!isset($GLOBALS['errMsg'])) return false;
+	$lines = explode("\n", $GLOBALS['errMsg']);
+	echo <<<mystep
+<div style="line-height:24px;border:#999 1px solid;">
+<div style="background-color:#999;color:#FFF">&nbsp;<strong>{$lines[0]}</strong></div>
+
+mystep;
+	$max_count = count($lines);
+	for($i=1; $i<$max_count; $i++) {
+		if(empty($lines[$i])) {
+			break;
+		} elseif(preg_match("/^([\w\s\.]+\:)(.*)$/", $lines[$i], $matches)) {
+			echo "<div style=\"background-color:".($i%2?"#eee":"#fff")."\">&nbsp;<strong>".$matches[1]."</strong>".$matches[2]."</div>\n";
+			
+		} else {
+			echo "<div>&nbsp; &nbsp; ".$lines[$i]."</div>\n";
+		}
+	}
+	echo "</div>";
+	return true;
 }
 /*--------------------------------Functions For Error End--------------------------------------------*/
 ?>

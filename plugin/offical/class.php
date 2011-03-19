@@ -74,7 +74,7 @@ class plugin_offical implements plugin {
 		if(!isset($att_list['template'])) $att_list['template'] = "classic";
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = "";
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
-		if(!isset($att_list['order'])) $att_list['order'] = " news_id desc";
+		if(!isset($att_list['order'])) $att_list['order'] = " `order` desc, news_id desc";
 		if(!isset($att_list['setop'])) $att_list['setop'] = "";
 		if(!isset($att_list['show_image'])) $att_list['show_image'] = "";
 		if(!isset($att_list['xid'])) $att_list['xid'] = "";
@@ -138,13 +138,13 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	if(!empty(\$style)) \$record['subject'] = "<span style=\"".\$style."\">".\$record['subject']."</span>";
 	\$record['style'] = \$n++%2 ? "{$att_list['css1']}" : "{$att_list['css2']}";
 	\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
-	if(empty(\$record['link'])) \$record['link'] = getFileURL(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:""));
+	if(empty(\$record['link'])) \$record['link'] = getFileURL(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:""), \$record['web_id']);
 	\$record['add_date'] = ("{$att_list['show_date']}"!="") ? date("{$att_list['show_date']}", strtotime(\$record['add_date'])) : "";
 	\$record['catalog'] = "";
 	if("{$att_list['show_catalog']}"!="") {
 		\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
 		if(\$cat_info) {
-			\$record['catalog'] = "<a href=\"".getFileURL(0, \$cat_info['cat_idx'])."\" target=\"_blank\">[".\$cat_info['cat_name']."]</a>";
+			\$record['catalog'] = "<a href=\"".getFileURL(0, \$cat_info['cat_idx'], \$record['web_id'])."\" target=\"_blank\">[".\$cat_info['cat_name']."]</a>";
 		}
 	}
 	echo <<<content

@@ -1,4 +1,13 @@
-TRUNCATE TABLE `{pre}district`;
+# 行政区划
+CREATE TABLE {pre}district (
+  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `level` tinyint(4) unsigned NOT NULL DEFAULT '0',
+  `upid` mediumint(8) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (id),
+  KEY upid (upid)
+) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='行政区划';
+
 INSERT INTO `{pre}district` (`id`, `name`, `level`, `upid`) VALUES
 (1, '北京市', 1, 0),
 (2, '天津市', 1, 0),

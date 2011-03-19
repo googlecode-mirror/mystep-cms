@@ -5,6 +5,7 @@ include(ROOT_PATH."/include/parameter.php");
 include(ROOT_PATH."/source/function/global.php");
 include(ROOT_PATH."/source/function/web.php");
 include(ROOT_PATH."/source/function/admin.php");
+include(ROOT_PATH."/source/class/abstract.class.php");
 
 header("Expires: -1");
 header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0", false);
@@ -15,8 +16,12 @@ $mystep->getLanguage(dirname(__FILE__)."/language/");
 $mystep->pageStart();
 $db->Reconnect(true, $setting['db']['name']);
 
-$usertype = $req->getSession("usertype");
-$group = getParaInfo("user_group", "group_id", $usertype);
+$usergroup = $req->getSession("usergroup");
+if($usergroup===0) {
+	$goto_url = "../";
+	$mystep->pageEnd(false);
+}
+$group = getParaInfo("user_group", "group_id", $usergroup);
 if($setting['info']['self']=="login.php") {
 	$method = $req->getServer("QUERY_STRING");
 	if(!empty($group['power_func']) && $method!="logout") {

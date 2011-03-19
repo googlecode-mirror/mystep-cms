@@ -28,7 +28,9 @@
 			<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 				<tr align="center">
 					<td class="cat" width="40"><a href="?keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
-					<td class="cat" width="200"><a href="?keyword=<!--keyword-->&order=subject&order_type=<!--order_type-->"><font color="#000000">所属新闻</font></a></td>
+					<td class="cat" width="120"><a href="?keyword=<!--keyword-->&order=web_id&order_type=<!--order_type-->"><font color="#000000">所属网站</font></a></td>
+					<td class="cat" width="80"><a href="?keyword=<!--keyword-->&order=cat_id&order_type=<!--order_type-->"><font color="#000000">所属栏目</font></a></td>
+					<td class="cat"><a href="?keyword=<!--keyword-->&order=subject&order_type=<!--order_type-->"><font color="#000000">新闻标题</font></a></td>
 					<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=views&order_type=<!--order_type-->"><font color="#000000">总浏览量</font></a></td>
 					<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=day_start&order_type=<!--order_type-->"><font color="#000000">最后访问</font></a></td>
 					<td class="cat" width="70"><a href="?keyword=<!--keyword-->&order=day_max_count&order_type=<!--order_type-->"><font color="#000000">最大日访问</font></a></td>
@@ -39,6 +41,8 @@
 		<!--loop:start key="record" time="20"-->
 				<tr align="center">
 					<td class="row"><!--record_news_id--></td>
+					<td class="row"><!--record_web_id--></td>
+					<td class="row"><!--record_cat_id--></td>
 					<td class="row" align="left"><a href="<!--record_link-->" target="_blank"><!--record_subject--></a></td>
 					<td class="row"><!--record_views--></td>
 					<td class="row"><!--record_day_start--></td>

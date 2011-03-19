@@ -47,7 +47,7 @@ if(!is_file($err_file)) {
 		for($i=count($err_lst)-1; $i>=0; $i--) {
 			$err_lst[$i] = preg_replace("/\n+/", "\n", $err_lst[$i]);
 			$err_lst[$i] = str_replace("\n", "\n<br />\n", $err_lst[$i]);
-			$err_lst[$i] = preg_replace("/^([\w ]+:)/m", '<b>\1</b>', $err_lst[$i]);
+			$err_lst[$i] = preg_replace("/^([\w \.]+:)/m", '<b>\1</b>', $err_lst[$i]);
 			$class = $i%2 ? "cat" : "row";
 			$tpl_tmp->Set_Loop('err', array("content"=>$err_lst[$i], "class"=>$class));
 		}

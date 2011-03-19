@@ -53,13 +53,6 @@ function checkForm(the_form, myChecker){
 		}
 		tag_name = the_obj.tagName.toLowerCase();
 		switch(the_need){
-			case "":
-				if(the_value.replace(/\s/g,"").length==0) {
-					alert(language.checkform_noempty);
-					the_obj.focus();
-					return false;
-				}
-				break;
 			case "email":
 				if(!/^[\w\-]+@([\w\-]+\.)+[a-z]{2,4}$/i.test(the_value)) {
 					alert(language.checkform_err_email);
@@ -90,7 +83,7 @@ function checkForm(the_form, myChecker){
 				}
 				break;
 			case "alpha":
-				if(!/^[a-z]+$/i.test(the_value)) {
+				if(!/^[a-z_]+$/i.test(the_value)) {
 					alert(language.checkform_err_alpha);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
@@ -104,7 +97,7 @@ function checkForm(the_form, myChecker){
 				}
 				break;
 			case "name":
-				if(!/^[\w\u4e00-\u9FA5\uf900-\uFA2D ]+$/i.test(the_value)) {
+				if(!/^[\w\u4e00-\u9FA5 \uf900-\uFA2D]+$/.test(the_value)) {
 					alert(language.checkform_err_name);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
@@ -152,6 +145,14 @@ function checkForm(the_form, myChecker){
 				if(!/^([\d]{3,5}\-)?[\d]{6,11}(\-[\d]{1,5})?$/.test(the_value)) {
 					alert(language.checkform_err_tel);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					return false;
+				}
+				break;
+			case "":
+				if(the_value.replace(/\s/g,"").length==0) {
+					alert(language.checkform_noempty);
+					alert(the_obj.outerHTML);
+					the_obj.focus();
 					return false;
 				}
 				break;

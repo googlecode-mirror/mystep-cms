@@ -22,7 +22,7 @@ $charset_collate = $db->GetSingleRecord("SHOW CHARACTER SET LIKE '".strtolower($
 $strFind = array("{db_name}", "{pre}", "{charset}", "{host}", "{charset_collate}");
 $strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset'], $req->getServer("HTTP_HOST"), $charset_collate["Default collation"]);
 $result = $db->ExeSqlFile("install.sql", $strFind, $strReplace);
-$result += $db->ExeSqlFile("common_district.sql", $strFind, $strReplace);
+//$result += $db->ExeSqlFile("common_district.sql", $strFind, $strReplace);
 $max_count = count($result);
 for($i=0;$i<$max_count;$i++) {
 	switch($result[$i][1]){

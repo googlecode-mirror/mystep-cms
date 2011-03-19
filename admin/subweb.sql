@@ -22,6 +22,8 @@ CREATE TABLE `{pre}news_show` (
 	`tag` Char(120) NOT NULL DEFAULT '',								#相关索引
 	`image` Char(100) NOT NULL DEFAULT '',							#相关图片
 	`setop` SMALLINT UNSIGNED,													#置顶模式
+	`order` TINYINT UNSIGNED,														#列表排序
+	`view_lvl` Char(10) NOT NULL DEFAULT '0',						#阅读权限
 	`pages` TINYINT UNSIGNED NOT NULL DEFAULT 1,				#新闻页数
 	`add_user` Char(20) NOT NULL,												#录入人
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#录入日期
@@ -33,9 +35,9 @@ CREATE TABLE `{pre}news_show` (
 
 # 新闻内容
 CREATE TABLE `{pre}news_detail` (
-	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`cat_id` SMALLINT UNSIGNED NOT NULL,							#新闻类型索引
+	`id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`news_id` MEDIUMINT UNSIGNED NOT NULL,						#新闻索引
+	`cat_id` SMALLINT UNSIGNED NOT NULL,							#新闻类型索引
 	`page` TINYINT UNSIGNED DEFAULT 1,								#分页索引
 	`sub_title` Char(100) DEFAULT '',									#子标题
 	`ctype` TINYINT UNSIGNED DEFAULT 1,								#内容类型(ubb, html)
