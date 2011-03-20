@@ -6,6 +6,7 @@ include(ROOT_PATH."/source/function/global.php");
 include(ROOT_PATH."/source/function/web.php");
 include(ROOT_PATH."/source/function/admin.php");
 include(ROOT_PATH."/source/class/abstract.class.php");
+include(ROOT_PATH."/source/class/mystep.class.php");
 
 header("Expires: -1");
 header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0", false);

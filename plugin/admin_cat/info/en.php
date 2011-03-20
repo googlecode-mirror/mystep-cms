@@ -6,13 +6,4 @@ $info = array(
 	"cat_name" => "CatManager",
 	"cat_desc" => "Admin Catalog Manager",
 );
-
-$language = array(
-	"plug_admin_cat_delete" => "Delete Administration Catalog",
-	"plug_admin_cat_pos" => "Administration Catalog Reorder",
-	"plug_admin_cat_add" => "Add Administration Catalog",
-	"plug_admin_cat_edit" => "Edit Administration Catalog",	
-	"plug_admin_cat_title" => "Administration Catalog Manager",
-	"plug_admin_cat_error" => "Record Missing",
-);
 ?>

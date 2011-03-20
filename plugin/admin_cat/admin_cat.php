@@ -4,13 +4,6 @@ require("../inc.php");
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 
-$language = array();
-if(is_file(realpath(dirname(__FILE__))."/info/".$setting['gen']['language'].".php")) {
-	include(realpath(dirname(__FILE__))."/info/".$setting['gen']['language'].".php");
-}
-
-$setting['language'] = array_merge($setting['language'], $language);
-
 $id = $req->getReq("id");
 $log_info = "";
 switch($method) {

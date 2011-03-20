@@ -13,6 +13,7 @@ include(ROOT_PATH."/include/parameter.php");
 include(ROOT_PATH."/source/function/global.php");
 include(ROOT_PATH."/source/function/web.php");
 include(ROOT_PATH."/source/class/abstract.class.php");
+include(ROOT_PATH."/source/class/mystep.class.php");
 
 $mystep = new MyStep();
 $mystep->setPlugin();
