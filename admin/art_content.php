@@ -1,8 +1,6 @@
 <?php
 require("inc.php");
 
-includeCache("news_cat");
-
 set_time_limit(600);
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
@@ -12,6 +10,7 @@ $web_id = $req->getReq("web_id");
 $log_info = "";
 if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
 
+includeCache("news_cat");
 $setting_sub = getSubSetting($web_id);
 if($setting['db']['name']==$setting_sub['db']['name']) {
 	$setting['db']['pre_sub'] = $setting_sub['db']['pre'];
@@ -298,6 +297,7 @@ function build_page($method) {
 		$record['content'] = "";
 		$record['pages'] = 1;
 		$record['view_lvl'] = 0;
+		$record['order'] = 0;
 		$tpl_tmp->Set_Variables($record, "record");
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_add']);
 	}

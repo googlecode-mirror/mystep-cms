@@ -29,12 +29,22 @@
 							<h3>来源：<!--record_original--> &nbsp; | &nbsp; 时间：<!--record_add_date--> &nbsp; | &nbsp; 浏览：<!--record_views--></h3>
 						</div>
 						<div style="text-align:center;">
-							<select id="page_sel" onchange="location.href=this.value"></select>
+							<select id="page_sel" style="display:none;" onchange="location.href=this.value"></select>
 						</div>
 						<div id="content">
 <img src="<!--record_image-->" class="title_img" />
 <!--record_content-->
 						</div>
+						<div class="page after"><!--page_list--></div>
+						<div>
+							<div style="float:left;">
+								<!--news_jump news_id='$news_id' cat_id='$cat_id'-->
+							</div>
+							<div style="float:right;">
+								<!--news_rank news_id='$news_id' cat_id='$cat_id'-->
+							</div>
+						</div>
+						
 						<div class="bottom">
 							上一篇文章：<a href="<!--article_prev_link-->" target="_top"><!--article_prev_text--></a><br />
 							下一篇文章：<a href="<!--article_next_link-->" target="_top"><!--article_next_text--></a>
@@ -57,6 +67,7 @@ $(function() {
 			if(subPage[i]['selected']=='selected') selIndex = curIndex;
 		}
 		obj_select.selectedIndex = selIndex;
+		obj_select.style.display = "";
 	} else {
 		$("#page_sel").parent().remove();
 	}

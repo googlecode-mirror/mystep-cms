@@ -10,9 +10,7 @@
 <link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 <link rel="Shortcut Icon" href="favicon.ico" />
 <!--page_start-->
-
 </head>
-
 <body>
 <div id="ajax" style="display:none;"><img src="images/loading.gif" alt="<!--lang_ajax_sending-->"></div>
 <div id="page_ole">
@@ -37,16 +35,12 @@
 		</div>
 		<div class="r fr"></div>
 	</div>
-	
 <!--main-->
-	
 	<div id="page_bottom" class="after">
 		<!--info title="copyright"-->
 	</div>
-	<div align="center"><!--lang_page_update--><!--last_modify--></div>
+	<div align="center"><!--lang_page_update--> : <!--last_modify--></div>
 </div>
-
 <!--page_end-->
-
 </body>
 </html>

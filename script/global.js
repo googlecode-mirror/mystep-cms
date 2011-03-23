@@ -48,6 +48,18 @@ function $class(name, theOLE) {
 	return theOLE.getElementsByClassName(name);
 }
 
+function arr2json(theArr) {
+	var result = {};
+	for (var item in theArr) {
+		if (typeof (result[theArr[item].name]) == 'undefined') {
+			result[theArr[item].name] = theArr[item].value;
+		}	else {
+			result[theArr[item].name] += "," + theArr[item].value;
+		}
+	}
+	return result;
+}
+
 String.prototype.Tlength = function() {
 	var arr=this.match(/[^\x00-\xff]/ig);
 	return this.length+(arr==null?0:arr.length);

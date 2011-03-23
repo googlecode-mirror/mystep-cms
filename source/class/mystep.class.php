@@ -102,7 +102,7 @@ class MyStep extends class_common {
 			if($GLOBALS['plugin'][$i]['active']=='1') {
 				$curPlugin = ROOT_PATH."/plugin/".$GLOBALS['plugin'][$i]['idx']."/index.php";
 				if(is_file($curPlugin)) include($curPlugin);
-				$curPlugin = ROOT_PATH."/plugin/".$GLOBALS['plugin'][$i]['idx']."/setting.php";
+				$curPlugin = ROOT_PATH."/plugin/".$GLOBALS['plugin'][$i]['idx']."/config.php";
 				if(is_file($curPlugin)) include($curPlugin);
 			}
 		}
@@ -231,8 +231,16 @@ class MyStep extends class_common {
 		}
 	}
 	
-	public function regTag($func_arr) {
-		$this->func_tag[$func_arr[0]] = $func_arr[1];
+	public function regTag($tag, $func) {
+		$this->func_tag[$tag] = $func;
+	}
+	
+	public function regAjax($name, $method="") {
+		if(empty($method)) {
+			$this->func_ajax[$name] = $name;
+		} else {
+			$this->func_ajax[$name] = $method;
+		}
 	}
 }
 

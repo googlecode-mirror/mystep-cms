@@ -1,0 +1,13 @@
+.jump_bar {float:left; text-align:center; color:#FFFFFF; font-weight:bold; padding:5px 5px 5px 5px; margin:5px 5px 5px 5px; background-color:#0063dc; border:1px #999999 solid; background-image:url("jump_bar.png");}
+.jump_bar A {color:#FFFFFF; text-decoration:none;}
+.jump_bar A:HOVER {color:#FF0084;}
+.jump_bar .l {float:left; font-size:32px; margin-right:10px; padding-left:5px;}
+.jump_bar .r {float:right; font-size:14px;}
+.jump_bar .r .t {padding-bottom:2px;}
+.jump_bar .r .b {padding-top:2px; border-top:2px #CCCCCC solid;}
+
+.rank_bar {float:left; text-align:center; height:50px;}
+.rank_bar DL {float:left; width:30px; margin:0px 0px 5px 0px;}
+.rank_bar DL DT {width:30px; height:30px; background:url('rating.gif') no-repeat; background-position:0 0;}
+.rank_bar DL DD {font-weight:bold; font-size:16px;}
+.rank_bar .cur_rank {position:relative; top:0px; left:0px; background:url('rating.gif') repeat-x; background-position:0 -60px;}

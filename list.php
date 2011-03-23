@@ -42,12 +42,8 @@ $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 $tpl_tmp->Set_Variable('page_list', PageList($page, ceil($news_count/$page_size)));
 
-$paras = array(
-	'cat_id' => $cat_id,
-	'limit' => (($page-1)*$page_size).", ".$page_size,
-);
-
-$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting, $paras'));
+$limit = (($page-1)*$page_size).", ".$page_size;
+$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_temp);
 if(!empty($cat_idx)) {
 	$setting['web']['title'] = $cat_comment."_".$setting['web']['title'];

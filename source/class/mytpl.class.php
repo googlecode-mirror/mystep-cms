@@ -32,7 +32,6 @@
 
 class MyTpl extends class_common {
 	protected
-		$hash = "",
 		$tags = array(),
 		$cache = array(
 					'use' => false,
@@ -41,6 +40,7 @@ class MyTpl extends class_common {
 			);
 			
 	public
+		$hash = "",
 		$delimiter_l = "<!--",
 		$delimiter_r = "-->",
 		$tpl_info = array();
@@ -317,7 +317,7 @@ mytpl;
 				for($j=0; $j<$max_count1; $j++) {
 					if(empty($att_list[$j])) continue;
 					$tmp = split("=", trim($att_list[$j]));
-					$tmp[1] = str_replace('$', '$tpl_para_', $tmp[1]);
+					$tmp[1] = preg_replace('/\$(\w+)/', '{$GLOBALS[\1]}', $tmp[1]);
 					eval("\$cur_attrib['" . strtolower(trim($tmp[0])) . "'] = {$tmp[1]};");
 				}
 				$cur_result = call_user_func($this->tags[$tag_all[1][$i]], $this, $cur_attrib);
@@ -349,7 +349,6 @@ mytpl;
 		global $tpl_para;
 		if(!empty($global_para)) {
 			eval("global ".$global_para.";");
-			if(isset($paras)) extract($paras, EXTR_PREFIX_ALL, "tpl_para");
 		}
 		if(isset($GLOBALS['language'])) $this->Set_Variables($GLOBALS['language'], "lang");
 		$content = "";

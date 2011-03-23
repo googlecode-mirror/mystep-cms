@@ -77,11 +77,11 @@ mystep;
 	}
 	
 	public static function page_end() {
-		global $db, $setting, $web_info, $news_id, $cat_id, $subject;
-		if($GLOBALS['self']!="read.php") return;
-		$info_count = $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_visit where web_id='".$web_info['web_id']."' and news_id='".$news_id."'");
+		global $db, $setting, $news_id, $cat_id, $subject;
+		if($setting['info']['self']!="read.php") return;
+		$info_count = $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_visit where web_id='".$setting['info']['web']['web_id']."' and news_id='".$news_id."'");
 		if($info_count===false) {
-			$db->Query("insert into ".$setting['db']['pre']."news_visit values('".$web_info['web_id']."', '{$news_id}', '{$cat_id}', '{$subject}', 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1)");
+			$db->Query("insert into ".$setting['db']['pre']."news_visit values('".$setting['info']['web']['web_id']."', '{$news_id}', '{$cat_id}', '{$subject}', 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1)");
 		} else {
 			$info_count['views'] += 1;
 			if(date("d") != date("d", $info_count['day_start'])) {
@@ -136,11 +136,11 @@ mystep;
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
 		if(!isset($att_list['css1'])) $att_list['css1'] = "";
 		if(!isset($att_list['css2'])) $att_list['css2'] = $att_list['css1'];
-		if(!isset($att_list['limit'])) $att_list['limit'] = 0;
+		if(!isset($att_list['limit'])) $att_list['limit'] = 10;
 		if(!isset($att_list['loop'])) $att_list['loop'] = 0;
 		if(!isset($att_list['during'])) $att_list['during'] = "year";
 	
-		$str_sql = "select * from {db_pre}news_visit where 1=1";
+		$str_sql = "select * from ".$setting['db']['pre']."news_visit where 1=1";
 		if(!empty($att_list['web_id'])) $str_sql .= " and web_id in ({$att_list['web_id']})";
 		if(!empty($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
 		$str_sql .= " order by ";
@@ -165,9 +165,9 @@ mystep;
 		//$str_sql = addslashes($str_sql);
 		
 		$cur_content = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_{$att_list['template']}.tpl", $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_classic.tpl");
-		preg_match_all("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
-		$block = $block_all[0][0];
-		$unit = $block_all[1][0];
+		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
+		$block = $block_all[0];
+		$unit = $block_all[1];
 		$unit_blank = preg_replace("/".preg_quote($tpl->delimiter_l).".*?".preg_quote($tpl->delimiter_r)."/is", "", $unit);
 		$unit_blank = preg_replace("/<(td|li|p|dd|dt)([^>]*?)>.*?<\/\\1>/is", "<\\1\\2>&nbsp;</\\1>", $unit_blank);
 		$unit_blank = addslashes($unit_blank);
@@ -176,26 +176,12 @@ mystep;
 <?php
 
 \$n = 0;
-\$str_sql = str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}");
-\$str_sql = str_replace(" and cat_id in (0)", "", \$str_sql);
+\$str_sql = str_replace(" and cat_id in (0)", "", "{$str_sql}");
 \$result = getData(\$str_sql, "all", 600);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
 	HtmlTrans(&\$record);
-	\$theStyle = explode(",", \$record['style']);
-	\$style = "";
-	for(\$i=0;\$i<count(\$theStyle);\$i++) {
-		\$record['subject_org'] = \$record['subject'];
-		if(\$theStyle[\$i]=="i") {
-			\$style .= "font-style:italic;";
-		} elseif((\$theStyle[\$i]=="b")) {
-			\$style .= "font-width:bold;";
-		} else {
-			\$style .= "color:".\$theStyle[\$i].";";
-		}
-	}
-	if(!empty(\$style)) \$record['subject'] = "<span style=\"".\$style."\">".\$record['subject']."</span>";
 	\$record['style'] = \$n++%2 ? "{$att_list['css1']}" : "{$att_list['css2']}";
 	\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
 	if(empty(\$record['link'])) \$record['link'] = getFileURL(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:""), \$record['web_id']);

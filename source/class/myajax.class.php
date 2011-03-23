@@ -34,21 +34,20 @@ class MyAjax extends class_common {
 		}
 	}
 	
-	public function run($method) {
+	public function run($method, $para=array()) {
 		$result = "";
 		if(isset($this->methods[$method])) {
-			$argList = func_get_args();
-			$argList[0] = $this;
-			$result = call_user_func_array($this->methods[$method], $argList);
+			$result = call_user_func_array($this->methods[$method], $para);
 		}
 		return $result;
 	}
 	
-	public function toJson($var) {
+	public static function toJson($var, $charset="") {
+		if(!empty($charset)) $var = chg_charset($var, $charset, "utf-8");
 		return json_encode($var);
 	}
 	
-	public function toXML($var, $layer=0) {
+	public static function toXML($var, $layer=0) {
 		$result = "";
 		if(is_array($var)) {
 			foreach($var as $key => $value) {
@@ -62,7 +61,7 @@ class MyAjax extends class_common {
 		return $result="";
 	}
 	
-	public function toString($var) {
+	public static function toString($var) {
 		$result = "";
 		switch(true) {
 			case is_string($var):

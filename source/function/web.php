@@ -261,6 +261,10 @@ function checkUser() {
 function getData($query, $mode="all", $ttl = 600) {
 	global $db, $cache;
 	$key = md5($query);
+	if($mode=="remove") {
+		$cache->set($key);
+		return "";
+	}
 	$result = $cache->get($key);
 	if(!$result) {
 		switch($mode) {
@@ -403,9 +407,9 @@ function PageList($page, $page_count, $show=6) {
 		}
 
 		if($page==1) {
-			$list .= '<em>{$setting[\'language\'][\'link_prev\']}</em> ';
+			$list .= '<em>'.$setting['language']['link_prev'].'</em> ';
 		} else {
-			$list .= '<a href="'.gotoPage($page-1).'">{$setting[\'language\'][\'link_prev\']}</a> ';
+			$list .= '<a href="'.gotoPage($page-1).'">'.$setting['language']['link_prev'].'</a> ';
 		}
 		$list .= ($page==1 ? '<strong>1</strong> ' : '<a href="'.gotoPage(1).'">1</a> ');
 		$list .= $page_more_start;
@@ -421,9 +425,9 @@ function PageList($page, $page_count, $show=6) {
 		$list .= $page_more_end;
 		$list .= ($page==$page_count ? '<strong>'.$page_count.'</strong> ' : '<a href="'.gotoPage($page_count).'">'.$page_count.'</a> ');
 		if($page==$page_count) {
-			$list .= '<em>{$setting[\'language\'][\'link_next\']}</em> ';
+			$list .= '<em>'.$setting['language']['link_next'].'</em> ';
 		} else {
-			$list .= '<a href="'.gotoPage($page+1).'">{$setting[\'language\'][\'link_next\']}</a> ';
+			$list .= '<a href="'.gotoPage($page+1).'">'.$setting['language']['link_next'].'</a> ';
 		}
 	}
 	return $list;

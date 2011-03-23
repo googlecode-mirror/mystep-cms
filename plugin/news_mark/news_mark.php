@@ -1,14 +1,14 @@
 <?php
 require("../inc.php");
 include("info.php");
+
 $tpl_info = array(
-		"idx" => "news_visit",
+		"idx" => "news_mark",
 		"style" => "",
 		"path" => "./",
 		);
 $tpl = $mystep->getInstance("MyTpl", $tpl_info);
 
-includeCache("news_cat");
 $order = $req->getGet("order");
 $order_type = $req->getGet("order_type");
 if(empty($order_type)) $order_type = "desc";
@@ -16,20 +16,22 @@ $keyword = $req->getGet("keyword");
 $tpl->Set_Variable('keyword', $keyword);
 
 $page = $req->getGet("page");
-$str_sql = "select count(*) as counter from ".$setting['db']['pre']."news_visit where 1=1";
+$str_sql = "select count(*) as counter from ".$setting['db']['pre']."news_mark where 1=1";
 if(!empty($keyword)) $str_sql.= " and subject like '%{$keyword}%'";
 $counter = $db->GetSingleResult($str_sql);
 list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 $tpl->Set_Variables($page_arr);
-	
-$str_sql = "select * from ".$setting['db']['pre']."news_visit where 1=1";
+
+includeCache("news_cat");
+$str_sql = "select * from ".$setting['db']['pre']."news_mark where 1=1";
 if(!empty($keyword)) $str_sql.= " and subject like '%{$keyword}%'";
 $str_sql.= " order by ".(empty($order)?"news_id":"{$order}")." {$order_type}";
 $str_sql.= " limit $page_start, $page_size";
 $db->Query($str_sql);
 while($record = $db->GetRS()) {
 	HtmlTrans(&$record);
-	$record['day_start'] = date("Y-m-d", $record['day_start']);
+	$record['jump_time'] = date("Y-m-d", $record['jump_time']);
+	$record['rank_time'] = date("Y-m-d", $record['rank_time']);
 	$webInfo = getParaInfo("website", "web_id", $record['web_id']);
 	$record['link'] = "http://".$webInfo['host']."/read.php?id=".$record['news_id'];
 	$record['web_id'] = $webInfo['name'];

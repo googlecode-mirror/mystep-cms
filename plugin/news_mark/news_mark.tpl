@@ -31,12 +31,11 @@
 					<td class="cat"><a href="?keyword=<!--keyword-->&order=web_id&order_type=<!--order_type-->"><font color="#000000">所属网站</font></a></td>
 					<td class="cat"><a href="?keyword=<!--keyword-->&order=cat_id&order_type=<!--order_type-->"><font color="#000000">所属栏目</font></a></td>
 					<td class="cat"><a href="?keyword=<!--keyword-->&order=subject&order_type=<!--order_type-->"><font color="#000000">新闻标题</font></a></td>
-					<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=views&order_type=<!--order_type-->"><font color="#000000">总浏览量</font></a></td>
-					<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=day_start&order_type=<!--order_type-->"><font color="#000000">最后访问</font></a></td>
-					<td class="cat" width="40"><a href="?keyword=<!--keyword-->&order=day_max_count&order_type=<!--order_type-->"><font color="#000000">最大日访问</font></a></td>
-					<td class="cat" width="40"><a href="?keyword=<!--keyword-->&order=week_max_count&order_type=<!--order_type-->"><font color="#000000">最大周访问</font></a></td>
-					<td class="cat" width="40"><a href="?keyword=<!--keyword-->&order=month_max_count&order_type=<!--order_type-->"><font color="#000000">最大月访问</font></a></td>
-					<td class="cat" width="40"><a href="?keyword=<!--keyword-->&order=year_max_count&order_type=<!--order_type-->"><font color="#000000">最大年访问</font></a></td>
+					<td class="cat"><a href="?keyword=<!--keyword-->&order=jump&order_type=<!--order_type-->"><font color="#000000">提升值</font></a></td>
+					<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=jump_time&order_type=<!--order_type-->"><font color="#000000">提升时间</font></a></td>
+					<td class="cat"><a href="?keyword=<!--keyword-->&order=rank_times&order_type=<!--order_type-->"><font color="#000000">评分次数</font></a></td>
+					<td class="cat"><a href="?keyword=<!--keyword-->&order=rank_total&order_type=<!--order_type-->"><font color="#000000">评分总分</font></a></td>
+					<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=rank_time&order_type=<!--order_type-->"><font color="#000000">评分时间</font></a></td>
 				</tr>
 		<!--loop:start key="record" time="20"-->
 				<tr align="center">
@@ -44,12 +43,11 @@
 					<td class="row"><!--record_web_id--></td>
 					<td class="row"><!--record_cat_id--></td>
 					<td class="row" align="left"><a href="<!--record_link-->" target="_blank"><!--record_subject--></a></td>
-					<td class="row"><!--record_views--></td>
-					<td class="row"><!--record_day_start--></td>
-					<td class="row"><!--record_day_max_count--></td>
-					<td class="row"><!--record_week_max_count--></td>
-					<td class="row"><!--record_month_max_count--></td>
-					<td class="row"><!--record_year_max_count--></td>
+					<td class="row"><!--record_jump--></td>
+					<td class="row"><!--record_jump_time--></td>
+					<td class="row"><!--record_rank_times--></td>
+					<td class="row"><!--record_rank_total--></td>
+					<td class="row"><!--record_rank_time--></td>
 				</tr>
 		<!--loop:end-->
 			</table>
