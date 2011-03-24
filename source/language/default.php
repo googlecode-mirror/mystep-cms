@@ -7,6 +7,8 @@ $language_info = array (
 );
 
 $language = array (
+	'open' => '开启',
+	'close' => '关闭',
   'ajax_sending' => '正在发送数据',
   'page_main' => '首页',
   'page_error' => '网站出现错误，请联系<a href="mailto:%s">管理员</a>！',

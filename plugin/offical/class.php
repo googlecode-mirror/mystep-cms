@@ -104,6 +104,11 @@ class plugin_offical implements plugin {
 		$str_sql .= " order by ".$att_list['order'];
 		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
 		
+		if(!empty($att_list['web_id'])) {
+			$setting_sub = getSubSetting($att_list['web_id']);
+			$str_sql = str_replace("{db_pre}", $setting_sub['db']['name'].".".$setting_sub['db']['pre'], $str_sql);
+		}
+		
 		$cur_content = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_{$att_list['template']}.tpl", $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_classic.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
 		$block = $block_all[0];
@@ -188,6 +193,7 @@ mytpl;
 	
 	public static function parse_link(MyTPL $tpl, $att_list = array()) {
 		$result = "";
+		if(!isset($att_list['idx'])) $att_list['idx'] = "";
 		if(!isset($att_list['type'])) $att_list['type'] = "";
 		if(!isset($att_list['limit']) || !is_numeric($att_list['limit'])) $att_list['limit'] = 0;
 		if($att_list['type']=="image") {
@@ -200,6 +206,7 @@ mytpl;
 			$tpl_file = $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_link_txt.tpl";
 			$result = <<<mytpl
 <?php
+\$link_idx = "{$att_list['idx']}";
 \$link_list = \$GLOBALS['link_txt'];
 mytpl;
 		}
@@ -213,6 +220,7 @@ mytpl;
 \$max_count = count(\$link_list);
 if({$att_list['limit']}>0 && {$att_list['limit']}<\$max_count) \$max_count = {$att_list['limit']};
 for(\$i=0; \$i<\$max_count; \$i++) {
+	if(!empty(\$link_idx) && \$link_list[\$i]['idx']!=\$link_idx) continue;
 	echo <<<content
 {$unit}
 content;

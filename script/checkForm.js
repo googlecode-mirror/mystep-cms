@@ -10,6 +10,8 @@
 *                                                 *
 **************************************************/
 
+if(typeof(language)=="undefined") $.getScript("language.js.php");
+
 function checkForm(the_form, myChecker){
 	var obj_list = new Array();
 	var the_obj = null;
@@ -168,29 +170,4 @@ function checkForm(the_form, myChecker){
 		flag = true;
 	}
 	return flag;
-}
-
-function Get_Obj(the_area){
-	var obj_list = new Array();
-	var args = Get_Obj.arguments;
-	for(var i=1; i<args.length; i++) {
-		try {
-			obj_list.append(the_area.getElementsByTagName(args[i]));
-		} catch(e) {
-			obj_list.append(Get_Obj_single(the_area, args[i]));
-		}
-	}
-	return(obj_list);
-}
-
-function Get_Obj_single(the_area, tag_name){
-	var obj_list = new Array();
-	var obj_all = the_area.childNodes;
-	for(var i=0; i<obj_all.length; i++) {
-		if(typeof(obj_all[i].tagName)=="undefined") continue;
-		if(obj_all[i].tagName.toLowerCase()==tag_name.toLowerCase()) {
-			obj_list.append(obj_all[i]);
-		}
-	}
-	return(obj_list);
 }

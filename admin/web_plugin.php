@@ -9,9 +9,20 @@ $log_info = "";
 $plugin_path = ROOT_PATH."/plugin/";
 
 switch($method) {
+	case "view":
 	case "list":
 	case "setting":
-		build_page($method);
+		if($method=="view" && ($plugin_info = getParaInfo("plugin", "idx", $idx))) {
+			$goto_url = $setting['info']['self'];
+		} else {
+			build_page($method);
+		}
+		break;
+	case "active":
+		$log_info = $setting['language']['admin_web_plugin_active'];
+		$db->Query("update ".$setting['db']['pre']."plugin set `active`=1-`active` where `idx`='".$idx."'");
+		deleteCache("plugin");
+		delTplCache($setting['gen']['template']);
 		break;
 	case "install":
 	case "uninstall":
@@ -24,9 +35,23 @@ switch($method) {
 			$goto_url = $setting['info']['self'];
 		}
 		deleteCache("plugin");
+		if($method=="install_ok") {
+			foreach($_POST['plugin_setting'][$idx] as $key => $value) {
+				if(is_array($value)) {
+					$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
+				}
+			}
+			$result = <<<mystep
+<?php
+/*--settings--*/
+?>
+mystep;
+			$result = str_replace("/*--settings--*/", makeVarsCode($_POST['plugin_setting'], '$plugin_setting'), $result);
+			WriteFile($plugin_path.$idx."/config.php", $result, "w");
+		}
 		break;
 	case "setting_ok":
-		if(count($_POST) == 0) {
+		if(count($_POST) == 0 || !isset($_POST['plugin_setting'])) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$log_info = $setting['language']['admin_web_plugin_setup'];
@@ -76,20 +101,30 @@ function build_page($method) {
 				} else {
 					$info['uninstall'] = "none";
 				}
+				$info['active'] = $plugin_info['active']?$setting['language']['close']:$setting['language']['open'];
 				$tpl_tmp->Set_Loop("plugin_list", $info);
 			}
 		}
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_title']);
-	} else {
+	} elseif($method=="setting") {
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_setup']);
 		$plugin_info = getParaInfo("plugin", "idx", $idx);
-		if(!is_file($plugin_path.$idx."/config.php") || !is_file($plugin_path.$idx."/config-detail.php") || $plugin_info===false) {
+		include($plugin_path.$idx."/info.php");
+		if($plugin_info===false) {
 			$tpl->Set_Variable('main', showInfo($setting['language']['admin_web_plugin_err'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
+		$info['description'] = nl2br($info['description']);
 		$tpl_tmp->Set_Variable('idx', $plugin_info['idx']);
 		$tpl_tmp->Set_Variable('name', $plugin_info['name']);
+		$tpl_tmp->Set_Variable('description', $info['description']);
+		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
+	} else {
+		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_install']);
+		include($plugin_path.$idx."/info.php");
+		$info['description'] = nl2br($info['description']);
+		$tpl_tmp->Set_Variables($info);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting, $idx'));

@@ -1,10 +1,20 @@
 <div class="title"><!--title--></div>
 <div align="center">
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
-	<form id="setting" method="post" action="?method=setting_ok" onsubmit="return checkForm(this, checkPass)">
+	<form id="setting" method="post" action="?method=install" onsubmit="return checkForm(this, checkPass)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr> 
-				<td align="center" colspan=2" class="cat">“<!--name-->”参数设置</td>
+				<td align="center" colspan=2" class="cat"><!--title--> - “<!--name-->”</td>
+			</tr>
+			<tr> 
+				<td colspan=2" class="row" style="line-height:18px;">
+				<b>插件名称：</b><!--name--><br />
+				<b>插件索引：</b><!--idx--><br />
+				<b>插件板本：</b><!--ver--><br />
+				<b>入口类名：</b><!--class--><br />
+				<b>功能描述：</b><!--intro--><br />
+				<b>版权信息：</b><!--copyright-->
+				</td>
 			</tr>
 			<tr> 
 				<td colspan=2" class="row" style="line-height:18px;"><!--description--></td>
@@ -94,7 +104,7 @@ content;
 			<tr> 
 				<td align="center" colspan=2" class="cat">
 					<input type="hidden" value="<!--idx-->" name="idx" />
-					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 安 装 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>

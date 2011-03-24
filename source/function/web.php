@@ -363,6 +363,9 @@ function showInfo($msg = "", $mode = true) {
     </td></tr>
   </table>
 </div>
+<script>
+setTimeout("history.go(-1)", 2000);
+</script>
 windy2000;
 	if($mode) {
 		global $db;

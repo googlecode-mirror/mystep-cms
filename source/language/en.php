@@ -7,6 +7,8 @@ $language_info = array (
 );
 
 $language = array (
+	'open' => 'Open',
+	'close' => 'Closed',
   'ajax_sending' => 'Data Sending...',
   'page_main' => 'Main',
   'page_error' => 'An error occurs, <a href="mailto:%s">contact webmaster</a> please.',

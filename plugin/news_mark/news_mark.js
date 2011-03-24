@@ -1,4 +1,4 @@
-if(typeof(language)=="undefined") $.getScript("/script/language.js.php");
+if(typeof(language)=="undefined") $.getScript("../../script/language.js.php");
 $(".rank_bar dl").each(function(index, domEle) {
 	$(domEle).bind('mouseover', function(){
 		$(".rank_bar dt:gt("+index+")").css("background-position", "0 0");
@@ -23,7 +23,7 @@ $(".rank_bar dl").each(function(index, domEle) {
 		  var rank_max = $(".rank_bar dl").last().text();
 		  var average = Math.ceil((data.rank_total/data.rank_times-rank_min+1)*100/(rank_max-rank_min+1));
 			theObj.css("width", average+"%");
-			theObj.parent().children("dl").attr("title", language.plugin_news_mark_rank_average + " " + (data.rank_total/data.rank_times));
+			theObj.parent().children("dl").attr("title", language.plugin_news_mark_rank_average + " " + (Math.round(data.rank_total/data.rank_times*100)/100));
 			alert(language.plugin_news_mark_rank_ok);
 		}, 'json');
 	});
