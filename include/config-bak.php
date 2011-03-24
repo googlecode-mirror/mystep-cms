@@ -81,6 +81,7 @@ $expire_list = array(
 	"default" => 60*10,
 	"index" => 60*30,
 	"list" => 60*60,
+	"rss" => 60*60*6,
 	"tag" => 60*60*24,
 	"read" => 60*60*24*7,
 );
