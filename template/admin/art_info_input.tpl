@@ -7,7 +7,7 @@
 				<td class="cat" width="80">所属子站：</td>
 				<td class="row">
 					<select name="web_id">
-						<option value="">未限定</option>
+						<option value="0">未限定</option>
 <!--loop:start key="website"-->
 						<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
 <!--loop:end-->

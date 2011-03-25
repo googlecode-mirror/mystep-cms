@@ -1,6 +1,7 @@
 <?php
 $setting_comm = array();
 $setting_comm['cache'] = "Explorer Cache";
+$setting_comm['counter'] = "Visit Counter";
 $setting_comm['para_1'] = "Text test";
 $setting_comm['para_2'] = "Number test";
 $setting_comm['para_3'] = "Checkbox test";
@@ -10,6 +11,7 @@ $setting_comm['para_6'] = "Password test";
 
 $setting_descr = array();
 $setting_descr['cache'] = "Make the explorer side cache, but it will affect the website visit count";
+$setting_descr['counter'] = "Simple visit counter, query database 3 times";
 $setting_descr['para_1'] = "Alphabets only, 50 charactors as max";
 $setting_descr['para_2'] = "Numbers only, 10 digitals as max";
 $setting_descr['para_3'] = "Multiselect";
@@ -19,6 +21,7 @@ $setting_descr['para_6'] = "Input the same password twice, 15 charactors as max"
 
 $setting_type = array();
 $setting_type['cache'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['counter'] = array("radio", array("Open"=>"true", "Close"=>"false"));
 $setting_type['para_1'] = array("text", "name", "50");
 $setting_type['para_2'] = array("text", "number", "10");
 $setting_type['para_3'] = array("checkbox", array("Selection 1"=>1, "Selection 2"=>2, "Selection 3"=>3, "Selection 4"=>4));

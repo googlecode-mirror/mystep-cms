@@ -1,21 +1,21 @@
 	<div class="page_lst after">
 		<div class="fl">
 			<div class="box box_1">
-				<div class="title">最新资讯</div>
-				<div class="content after">
-<!--news limit="10"-->
+				<div class="title">子 栏 目</div>
+				<div class="menu after">
+					<!--menu web_id='$web_id' cat_id='$cat_id' deep="2"-->
 				</div>
 			</div>
 			<div class="box box_1">
-				<div class="title">111</div>
+				<div class="title">本月热贴</div>
 				<div class="content after">
-<!--news show_image="1" cat_id="1" limit="4" template="picture"-->
+<!--news_month web_id='$web_id' limit="10"-->
 				</div>
 			</div>
 			<div class="box box_1">
-				<div class="title">222</div>
+				<div class="title">好评推荐</div>
 				<div class="content after">
-<!--news show_image="1" cat_id="2" limit="4" template="picture"-->
+<!--news_mark web_id='$web_id'-->
 				</div>
 			</div>
 		</div>

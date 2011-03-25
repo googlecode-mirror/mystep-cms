@@ -39,3 +39,10 @@ $(function() {
 		});
 	});
 });
+
+function loadingShow() {
+	var theTop = ($(window).height() - $("#bar_loading").height())/2 + $(document.body).scrollTop();
+	var theLeft = ($(window).width() - $("#bar_loading").width())/2 + $(document.body).scrollLeft();
+	$("#bar_loading").css({"opacity":"0.7", "top":theTop, "left":theLeft});
+	$("#bar_loading").toggle();
+}

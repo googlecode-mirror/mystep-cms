@@ -6,6 +6,7 @@ $mystep->regTag("info", "plugin_offical::parse_info");
 $mystep->regTag("link", "plugin_offical::parse_link");
 $mystep->regTag("tag", "plugin_offical::parse_tag");
 $mystep->regTag("include", "plugin_offical::parse_include");
+$mystep->regTag("menu", "plugin_offical::parse_menu");
 
 $mystep->regStart("plugin_offical::page_start");
 $mystep->regEnd("plugin_offical::page_end");

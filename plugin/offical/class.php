@@ -44,6 +44,8 @@ class plugin_offical implements plugin {
 	}
 	
 	public static function page_end() {
+		$setting = self::setting();
+		if(!$setting['counter']) return;
 		global $db, $req;
 		include(ROOT_PATH."/include/config.php");
 		$ip = getIp();
@@ -92,7 +94,13 @@ class plugin_offical implements plugin {
 		$att_list['tag'] = preg_replace("/,+/", ",", $att_list['tag']);
 		$att_list['tag'] = trim($att_list['tag'],",");
 		if(!empty($att_list['tag'])) $att_list['tag'] = "tag like '%".str_replace(",", "%' or tag like '%", $att_list['tag'])."%'";
-		
+
+		if(!empty($att_list['cat_id'])) {
+			if($cat_info=getParaInfo("news_cat", "cat_id", $att_list['cat_id'])) {
+				$att_list['web_id'] = $cat_info['web_id'];
+			}
+		}
+
 		$str_sql = "select * from {db_pre}news_show where 1=1";
 		if(!empty($att_list['web_id'])) $str_sql .= " and web_id in ({$att_list['web_id']})";
 		if(!empty($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
@@ -290,6 +298,75 @@ mytpl;
 			if(file_exists($att_list['file'])) {
 				$result = $tpl->GetFile($att_list['file']);
 			}
+		}
+		return $result;
+	}
+	
+	public static function parse_menu(MyTPL $tpl, $att_list = array()) {
+		if(!isset($att_list['web_id'])) $att_list['web_id'] = "";
+		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
+		if(!isset($att_list['deep'])) $att_list['deep'] = 2;
+		if($att_list['cat_id']===0) $att_list['cat_id'] = "";
+		
+		$result = <<<mytpl
+<?php
+echo plugin_offical::getMenuContent("{$att_list['cat_id']}", "{$att_list['web_id']}", "{$att_list['deep']}");
+?>
+mytpl;
+		return $result;
+	}
+	
+	public static function getMenuContent($cat_id, $web_id, $deep) {
+		global $news_cat, $cache;
+		if($cat_id==0) $cat_id = "";
+		$key = md5("Menu_".$cat_id."_".$web_id."_".$deep);
+		$result = $cache->get($key);
+		if(!$result) {
+			$deep_start = 0;
+			$deep_max = 0;
+			$deep_cur = 0;
+			$max_count = count($news_cat);
+			for($i=0; $i<$max_count; $i++) {
+				if(!empty($web_id) && $web_id!=$news_cat[$i]['web_id']) continue;
+				if($deep_start>0) {
+					if($deep_cur==$news_cat[$i]['cat_layer']) {
+						if($cat_id!="" && $cat_id!=$news_cat[$i]['cat_id'] && $deep_start==$news_cat[$i]['cat_layer']) break;
+						$result .= "</li>\n";
+						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'])."\">".$news_cat[$i]['cat_name']."</a>";
+					} elseif($deep_cur<$news_cat[$i]['cat_layer']) {
+						if($news_cat[$i]['cat_layer']<$deep_max) {
+							$result .= "<ul>\n";
+							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'])."\">".$news_cat[$i]['cat_name']."</a>";
+							$deep_cur = $news_cat[$i]['cat_layer'];
+						}
+					} else {
+						if($news_cat[$i]['cat_layer']>$deep_start || $cat_id=="") {
+							$result .= "</li>\n".str_repeat("\t", $deep_cur)."</ul></li>\n";
+							for($j=$deep_cur-$news_cat[$i]['cat_layer']-1; $j>0; $j--) {
+								$result .= str_repeat("\t", $j)."</ul></li>\n";
+							}
+							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'])."\">".$news_cat[$i]['cat_name']."</a>";
+							$deep_cur = $news_cat[$i]['cat_layer'];
+						} else {
+							if($cat_id!="") break;
+						}
+					}
+				} else {
+					if($cat_id==$news_cat[$i]['cat_id'] || $cat_id=="") {
+						$deep_cur = $news_cat[$i]['cat_layer'];
+						$deep_start = $news_cat[$i]['cat_layer'];
+						$deep_max = $deep_start + $deep;
+						$result .= "<ul>\n";
+						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'])."\">".$news_cat[$i]['cat_name']."</a>";
+					}
+				}
+			}
+			$result .= "</li>\n";
+			for($i=$deep_cur-$deep_start; $i>0; $i--) {
+				$result .= str_repeat("\t", $i+1)."</ul></li>\n";
+			}
+			$result .= "</ul>\n";
+			$cache->set($key, $result, 60*60);
 		}
 		return $result;
 	}

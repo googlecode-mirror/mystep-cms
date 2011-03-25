@@ -12,7 +12,7 @@
 <!--page_start-->
 </head>
 <body>
-<div id="ajax" style="display:none;"><img src="images/loading.gif" alt="<!--lang_ajax_sending-->"></div>
+<div id="bar_loading"><img src="images/loading.gif" alt="<!--lang_ajax_sending-->"><br / ><!--lang_ajax_sending--></div>
 <div id="page_ole">
 	<div id="page_top" class="after">
 		<div class="l fl">

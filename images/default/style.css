@@ -37,8 +37,7 @@ body {text-align:center; font-family:Arial;}
 
 TABLE .cat {border:0px solid; font-size:12px; font-weight:bold; color:#15324A; padding:5px; background-color:#8AB4D6; border-right:1px solid #0C5280; border-bottom:1px solid #0C5280; border-top:1px solid #629DC5; border-left:1px solid #629DC5; vertical-align:middle;}
 TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0C5280; border-right:1px solid #0C5280; border-top:1px solid #629DC5; border-left:1px solid #629DC5; padding:5px; color:#EDF4FA; vertical-align:middle;text-align:left;}
-#bar_loading {top:0px; left:0px; color:#333333; font-size:24px; font-weight:bold; font-family:ºÚÌå; position:absolute; border:1px #999999 solid; padding:20px 50px 20px 50px; z-index:999; background-color:#CCCCCC; filter:alpha(opacity=90);}
-#login {top:0px; left:0px; position:absolute; z-index:999;}
+#bar_loading {top:0px; left:0px; display:none; color:#333333; font-size:24px; font-weight:bold; line-height:48px; font-family:ºÚÌå; position:absolute; border:1px #999999 solid; padding:20px 30px 10px 30px; z-index:999; background-color:#eeeeee; z-index:999;}
 
 #page_ole {margin:auto; text-align:left; width:980px;}
 
@@ -62,6 +61,11 @@ TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0
 .box .content LI {height:25px; line-height:25px; overflow:hidden; border-bottom:1px #990000 dotted; margin-bottom:2px;background:url(dot.gif) 2px 10px no-repeat; padding-left:10px; white-space:nowrap; word-wrap:keep-all;}
 .box .content UL.img_list LI {float:left; width:130px; text-align:center; padding:0px; margin:0 14px; line-height:20px; height:130px; overflow-y:hidden; margin-bottom:10px; border:0px; background-image:url();}
 .box .content UL.img_list LI IMG {border:1px #999999 solid; width:120px; height:90px;}
+
+.box .menu {font-size:14px; font-weight:bold; padding:10px 10px 10px 10px; background:url(box1_bottom.png); background-repeat:no-repeat; background-position:bottom center;}
+.box .menu SPAN {line-height:24px;}
+.box .menu UL {margin: 0px 0px 0px 0px;}
+.box .menu LI {line-height:24px; background:url(dot.gif) 10px 10px no-repeat; padding:0px 0px 2px 20px; white-space:nowrap; word-wrap:keep-all;}
 
 .box_1 {width:261px; background:url(box1_bg.png); margin-right:10px;}
 .box_1 .title {height:32px; text-align:center; background:url(box1_top.png); padding-top:15px; color:#990000;}
@@ -132,7 +136,7 @@ TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0
 .page_lst .main H3 {margin:20px 0px 20px 0px; padding:10px 0px 10px 0px; text-align:center; border-top:1px #ddcf7f solid; border-bottom:1px #ddcf7f solid; color:#999933;}
 .page_lst .main .bottom {border-top:1px #ddcf7f solid; clear:both; text-align:left; line-height:24px;padding:10px 0px 0px 0px; font-weight:bold;}
 .page_lst #content {color:#666600; line-height:24px; font-size:14px;}
-.page_lst #content .title_img {float:right; padding:10px 10px 10px 10px;}
+.page_lst #content .title_img {float:right; padding:10px 10px 10px 10px; width:120px;}
 
 .regist {padding:20px 0px 20px 0px; font-size:14px;}
 .regist H3 {font-weight:bold; font-size:20px; margin:0px 0px 10px 0px; text-align:center;}

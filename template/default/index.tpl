@@ -1,8 +1,8 @@
 	<div class="page_bar after">
 		<div class="box box_1">
-			<div class="title">最新情况</div>
+			<div class="title">最新通告</div>
 			<div class="content after">
-<!--info title="guide"-->
+<!--info title="notice"-->
 			</div>
 		</div>
 		<div class="box box_2">
@@ -28,7 +28,7 @@
 			<div class="title"><span class="bar">栏目标题</span></div>
 			<div class="content after">
 <!--tag limit="150"-->
-<!--news show_image="1" cat_id="4" limit="12" template="image"-->
+<!--news show_image="1" limit="12" template="image"-->
 			</div>
 		</div>
 		<div class="box box_5">
@@ -43,13 +43,13 @@
 		<div class="box box_6">
 			<div class="title"><span class="bar">栏目标题</span></div>
 			<div class="content after">
-<!--news cat_id="3" limit="9" loop="9"-->
+<!--news cat_id="1" limit="9" loop="9"-->
 			</div>
 		</div>
 		<div class="box box_7">
 			<div class="title"><span class="bar">栏目标题</span></div>
 			<div class="content after">
-<!--news cat_id="4" limit="9" loop="9"-->
+<!--news cat_id="2" limit="9" loop="9"-->
 			</div>
 		</div>
 	</div>

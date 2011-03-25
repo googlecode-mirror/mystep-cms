@@ -17,14 +17,5 @@
 <!--main-->
 	</div>
 </div>
-<script language="JavaScript">
-/*
-$(function(){
-	var obj = $("#page_main div:first").clone();
-	obj.css({position:'fixed',top:0,left:0,width:'100%'});
-	obj.prependTo("#page_main");
-});
-*/
-</script>
 </body>
 </html>

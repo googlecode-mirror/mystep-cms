@@ -8,6 +8,7 @@ $info = array(
 <b>Info: </b>Show Custom HTML content in the page from table 'info_show' of database. Attribute include: id, title
 <b>Link: </b>Show external links in the page from table 'link' of database. Attribute include: type, limit, idx
 <b>Tag: </b>Show news tags in the page from table 'news_tag' of database. Attribute include: template, limit, order
+<b>Menu: </b>Show catalog tree in the page. Attribute include: web_id, cat_id, deep
 <b>Include: </b>Include server side file in the specified position of the page. Attribute include: file"
 );
 ?>

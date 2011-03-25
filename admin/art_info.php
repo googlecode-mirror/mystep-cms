@@ -14,7 +14,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $setting['language']['plug_admin_cat_delete'];
+		$log_info = $setting['language']['admin_art_info_delete'];
 		$db->Query("delete from ".$setting['db']['pre']."info_show where id = '{$id}'");
 		break;
 	case "add_ok":
@@ -23,10 +23,10 @@ switch($method) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			if($method=="add_ok") {
-				$log_info = $setting['language']['plug_admin_cat_add'];
+				$log_info = $setting['language']['admin_art_info_add'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."info_show", $_POST, "insert", "a");
 			} else {
-				$log_info = $setting['language']['plug_admin_cat_edit'];
+				$log_info = $setting['language']['admin_art_info_edit'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."info_show", $_POST, "update", "id={$id}");
 			}
 			$db->Query($str_sql);
@@ -72,7 +72,7 @@ function build_page($method) {
 		} else {
 			$record = array();
 			$record['id'] = 0;
-			$record['web_id'] = 1;
+			$record['web_id'] = 0;
 			$record['subject'] = "";
 			$record['content'] = "";
 		}

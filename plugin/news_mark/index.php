@@ -3,6 +3,7 @@ require_once(dirname(__FILE__)."/class.php");
 
 $mystep->regTag("news_rank", "plugin_news_mark::news_rank");
 $mystep->regTag("news_jump", "plugin_news_mark::news_jump");
+$mystep->regTag("news_mark", "plugin_news_mark::news_mark");
 
 $mystep->regAjax("jump", "plugin_news_mark::ajax_jump");
 $mystep->regAjax("rank", "plugin_news_mark::ajax_rank");

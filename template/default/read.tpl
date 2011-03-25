@@ -1,21 +1,27 @@
 	<div class="page_lst after">
 		<div class="fl">
 			<div class="box box_1">
-				<div class="title">标题</div>
+				<div class="title">最新文章</div>
 				<div class="content after">
 <!--news limit="10"-->
 				</div>
 			</div>
 			<div class="box box_1">
-				<div class="title">标题</div>
+				<div class="title">图片文章</div>
 				<div class="content after">
-<!--news show_image="1" cat_id="5" limit="4" template="picture"-->
+<!--news cat_id='$cat_id' show_image="1" limit="4" template="picture"-->
 				</div>
 			</div>
 			<div class="box box_1">
-				<div class="title">标题</div>
+				<div class="title">本月热贴</div>
 				<div class="content after">
-<!--news show_image="1" cat_id="4" limit="4" template="picture"-->
+<!--news_month cat_id='$cat_id' limit="10"-->
+				</div>
+			</div>
+			<div class="box box_1">
+				<div class="title">好评推荐</div>
+				<div class="content after">
+<!--news_mark cat_id='$cat_id'-->
 				</div>
 			</div>
 		</div>

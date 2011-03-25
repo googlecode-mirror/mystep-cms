@@ -15,6 +15,7 @@ $(".rank_bar dl").each(function(index, domEle) {
 			alert(printf(language.plugin_news_mark_rank_done, theTime.format("YYYY-MM-dd hh:mm:ss")));
 			return;
 		}
+		loadingShow();
 		theDate.value = $(domEle).text();
 		var theObj = $(this).parent().children(".cur_rank");
 		$.post("ajax.php?func=rank", theDate, function(data){
@@ -25,6 +26,7 @@ $(".rank_bar dl").each(function(index, domEle) {
 			theObj.css("width", average+"%");
 			theObj.parent().children("dl").attr("title", language.plugin_news_mark_rank_average + " " + (Math.round(data.rank_total/data.rank_times*100)/100));
 			alert(language.plugin_news_mark_rank_ok);
+			loadingShow();
 		}, 'json');
 	});
 });
@@ -39,6 +41,7 @@ $(".jump_bar .t A").bind("click", function(){
 		alert(printf(language.plugin_news_mark_jump_done, theTime.format("YYYY-MM-dd hh:mm:ss")));
 		return;
 	}
+	loadingShow();
 	theDate.type = "down";
 	var theObj = $(this).parentsUntil(".jump_bar").parent().children(".l");
 	$.post("ajax.php?func=jump", theDate, function(data){
@@ -46,6 +49,7 @@ $(".jump_bar .t A").bind("click", function(){
 		var theValue = data.jump;
 	  theObj.text(theValue);
 		alert(language.plugin_news_mark_jump_ok);
+		loadingShow();
 	}, "json");
 });
 $(".jump_bar .b A").bind("click", function(){
@@ -56,6 +60,7 @@ $(".jump_bar .b A").bind("click", function(){
 		alert(printf(language.plugin_news_mark_jump_done, theTime.format("YYYY-MM-dd hh:mm:ss")));
 		return;
 	}
+	loadingShow();
 	theDate.type = "up";
 	var theObj = $(this).parentsUntil(".jump_bar").parent().children(".l");
 	$.post("ajax.php?func=jump", theDate, function(data){
@@ -63,5 +68,6 @@ $(".jump_bar .b A").bind("click", function(){
 		var theValue = data.jump;
 	  theObj.text(theValue);
 		alert(language.plugin_news_mark_jump_ok);
+		loadingShow();
 	}, "json");
 });
