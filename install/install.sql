@@ -63,6 +63,7 @@ INSERT INTO `{pre}admin_cat` VALUES
 		(0, 4, '文章分类', 'art_catalog.php', '', 255, 0, '文章分类管理'),
 		(0, 4, '文章内容', 'art_content.php', '', 255, 0, '文章内容管理'),
 		(0, 4, '文章标签', 'art_tag.php', '', 255, 0, '文章标签管理'),
+		(0, 4, '文章图示', 'art_image.php', '', 0, 0, '文章图示管理'),
 		(0, 4, '内容展示', 'art_info.php', '', 0, 0, '展示内容管理'),
 		
 		(0, 5, '更新日志', 'info_log.php', '', 0, 0, '更新日志'),
@@ -314,5 +315,16 @@ CREATE TABLE `{pre}counter` (
 	`online` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,		#最大在线人数
 	PRIMARY KEY (`date`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='简单访问统计';
+
+# ---------------------------------------------------------------------------------------------------------------
+
+# 新闻图示
+CREATE TABLE `{pre}news_image` (
+	`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`name` Char(40) NOT NULL DEFAULT '',							#名称
+	`image` Char(150) NOT NULL DEFAULT '',						#图片
+	`keyword` Char(150) NOT NULL DEFAULT '',					#关键字
+	PRIMARY KEY (`id`)
+) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻图示';
 
 # ---------------------------------------------------------------------------------------------------------------

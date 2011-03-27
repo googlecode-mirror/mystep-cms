@@ -1,4 +1,4 @@
-<div class="jump_bar">
+<div id="jump_bar">
 	<div class="l"><!--jump_jump--></div>
 	<div class="r">
 		<div class="t">&darr; <a href="javascript:"><!--lang_plugin_news_mark_down--></a> &darr;</div>

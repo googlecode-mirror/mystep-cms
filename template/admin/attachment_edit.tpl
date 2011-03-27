@@ -21,9 +21,12 @@ function setWatermark() {
 	document.getElementById('watermark_no').value = watermark_no + "0";
 	return true;
 }
+$(function(){
+	parent.setIframe('attach');
+});
 </script>
 <style>
-	#page_ole {margin:auto; min-width:100px; padding:20px 0px 20px 0px;}
+	#page_ole {margin:auto; min-width:100px; padding:0px 0px 20px 0px;}
 	td {padding:5px 5px 5px 5px;}
 </style>
 <form name="attach_edit" method="post" action="?method=edit_ok" onsubmit="return setWatermark()">
@@ -34,13 +37,13 @@ function setWatermark() {
 	</tr>
 <!--loop:start key="record"-->
 	<tr class='row'>
-		<td align='center'><input type='checkbox' name='del_att[]' value='<!--record_id-->::<!--record_file_time--><!--record_file_ext-->'></td>
+		<td align='center'><input type='checkbox' name='del_att[]' value='<!--record_id-->::<!--record_file_time--><!--record_file_ext-->' /></td>
 		<td><a href='?method=download&id=<!--record_id-->' target='_blank'><!--record_file_name--></a></td>
 		<td><!--record_file_type--></td>
 		<td align='right'><!--record_file_size--></td>
 		<td><!--record_file_time--></td>
 		<td align='center'><!--record_file_count--></td>
-		<td align='center'><input type='checkbox' name='watermark[]' value='<!--record_id-->' <!--record_check-->></td>
+		<td align='center'><input type='checkbox' name='watermark[]' value='<!--record_id-->' <!--record_check--> /></td>
 	</tr>
 <!--loop:end-->
 	<tr class="cat">
@@ -52,8 +55,8 @@ function setWatermark() {
 <table align="center">
 	<tr>
 		<td align="center" colspan="2"><br>
-			<input type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
-			<input type="button" value=" 关 闭 " name="return" onClick="self.close()">
+			<input type="Submit" value=" 确 定 " name="Submit" />&nbsp;&nbsp;
+			<input type="button" value=" 关 闭 " name="return" onClick="if(parent==null){self.close();}else{parent.$.closePopupLayer();}" />
 		</td>
 	</tr>
 </table>

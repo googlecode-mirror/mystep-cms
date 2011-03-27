@@ -29,7 +29,7 @@
 			</tr>
 			<tr>
 				<td class="cat" width="80">关 键 字：</td>
-				<td class="row"><input name="tag" type="text" value="<!--record_tag-->" maxlength="30" need="" /> 
+				<td class="row"><input id="keyword" name="tag" type="text" value="<!--record_tag-->" maxlength="100" need="" /> 
 				<span class="comment">（用于搜索相关资讯，多个关键字用逗号分隔）</span></td>
 			</tr>
 			<tr>
@@ -43,8 +43,10 @@
 			<tr>
 				<td class="cat">文章图示：</td>
 				<td class="row">
-					<input style="width:205px" name="image" type="text" maxlength="50" value="<!--record_image-->" /> &nbsp; 
-					<input class="btn" type="button" onClick="openDialog('upload_img.php?image', 400, 120, 1)" value="上传" /> <span class="comment">（用于推荐文章的图形显示）</span>
+					<input id="image" name="image" type="text" maxlength="80" value="<!--record_image-->" /> &nbsp; 
+					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','新闻图示上传','url','upload_img.php?image',420, 100)" value="上传" />
+					<input style="width:60px" class="btn" type="button" onClick="showPop('newsImage','常用新闻图示选择','id','newsImage',570)" value="选择" />
+					<span class="comment">（文章标题图形显示）</span>
 				</td>
 			</tr>
 			<tr>
@@ -88,9 +90,6 @@
 					<div>
 						<textarea id="content" name="content" style="width:100%; height:400px;"><!--record_content--></textarea>
 					</div>
-					<div>
-						<iframe src="attachment.php?method=add" name="attach" width="720" height="100" marginwidth="0" marginheight="0" hspace="0" vspace="0" frameborder="0" scrolling="no" ALLOWTRANSPARENCY="true" onload="setIframe()"></iframe>
-					</div>
 				<td>
 			</tr>
 			<tr>
@@ -105,8 +104,25 @@
 		</table>
 	</form>
 </div>
+
+<div id="newsImage" class="popshow">
+<!--loop:start key="news_image"-->
+	<dl>
+		<dt><img src="<!--news_image_image-->" title="<!--news_image_keyword-->"  onclick="putImage(this)" /></dt>
+		<dd><!--news_image_name--></dd>
+	</dl>
+<!--loop:end-->
+</div>
+
 <script type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
 <script type="text/javascript">
+if(typeof($.setupJMPopups)=="undefined") $.getScript("/script/jquery.jmpopups.js", function(){
+	$.setupJMPopups({
+		screenLockerBackground: "#000",
+		screenLockerOpacity: "0.4"
+	});
+});
+
 tinyMCE.init({
 	mode : "exact",
 	elements : "content",
@@ -115,7 +131,7 @@ tinyMCE.init({
 	plugins : "quote,bbscode,advlink,advimage,subtitle,safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
 
 	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,cleanup,|,quote,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup",
-	theme_advanced_buttons2 : "pagebreak,Subtitle,|,cut,copy,paste,pastetext,pasteword,bbscode,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code",
+	theme_advanced_buttons2 : "pagebreak,Subtitle,upload,|,cut,copy,paste,pastetext,pasteword,bbscode,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code",
 	theme_advanced_buttons3 : "",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
@@ -132,11 +148,27 @@ tinyMCE.init({
 	external_image_list_url : "lists/image_list.js",
 	media_external_list_url : "lists/media_list.js",
 	
+	setup : function(ed) {
+		ed.addButton('upload', {
+			title : 'upload',
+			image : 'images/file.gif',
+			onclick : function() {
+		     showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
+		  }
+		});
+	},
+	
 	template_replace_values : {
 		username : "A9VG",
 		staffid : "20121222"
 	}
 });
+
+function putImage(obj) {
+	$id("keyword").value = obj.title;
+	$id("image").value = obj.getAttribute("src");
+	$.closePopupLayer();
+}
 
 var cat_sub_list = new Array();
 <!--loop:start key="cat_sub"-->
@@ -157,7 +189,8 @@ function attach_remove(aid) {
 }
 
 function attach_edit() {
-	window.open('attachment.php?news_id=<!--news_id-->&method=edit&attach_list='+document.forms[0].attach_list.value,'','width=600,height=300,scrollbars=1');
+	showPop('attach','附件管理','url','attachment.php?news_id=<!--news_id-->&method=edit&attach_list='+document.forms[0].attach_list.value, 600, 200);
+	//window.open('attachment.php?news_id=<!--news_id-->&method=edit&attach_list='+document.forms[0].attach_list.value,'','width=600,height=300,scrollbars=1');
 	return;
 }
 
@@ -203,8 +236,14 @@ function checkForm_append(theForm) {
 	return true;
 }
 
-function setIframe() {
-	document.getElementsByName('attach')[0].height = attach.document.body.scrollHeight;
+function setIframe(idx) {
+	if($id("popupLayer_"+idx)) {
+		theFrame = $("#popupLayer_"+idx).find("iframe");
+		theHeight = theFrame.contents().find("body")[0].scrollHeight + 20;
+		theFrame.height(theHeight);
+		$("#popupLayer_"+idx).height($("#popupLayer_"+idx+"_title").height()+theHeight);
+		$("#popupLayer_"+idx+"_content").height(theHeight);
+	}
 }
 
 function add_color(obj_select, theColor){

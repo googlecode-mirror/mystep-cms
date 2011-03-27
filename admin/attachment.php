@@ -58,7 +58,7 @@ switch($method) {
 					window.onload = parent.setIframe;
 					parent.attach_add('{$add_str}');
 					alert("{$err_msg}");
-					history.go(-1);
+					parent.\$.closePopupLayer();
 
 mystep;
 		$tpl_info['idx'] = "script";
@@ -97,8 +97,9 @@ mystep;
 				unlink($path_upload.date("/Y/m/d/", $time)."preview/".$the_file[1]);
 				$db->Query("delete from ".$setting['db']['pre']."attachment where id = ".$the_file[0]);
 				$script .= <<<mystep
-						opener.document.forms[0].attach_list.value = opener.document.forms[0].attach_list.value.replace('{$the_file[0]}|', '');
-						opener.attach_remove('{$the_file[0]}');
+						var theOLE = parent || opener;
+						theOLE.document.forms[0].attach_list.value = theOLE.document.forms[0].attach_list.value.replace('{$the_file[0]}|', '');
+						theOLE.attach_remove('{$the_file[0]}');
 
 mystep;
 			}
@@ -110,9 +111,13 @@ mystep;
 			$db->Query("update ".$setting['db']['pre']."attachment set watermark=0 where id in ({$watermark_no})");
 		}
 		$script .= '
-			self.opener = null;
-			self.close();
-			location.href = "./";
+			if(parent==null){
+				self.opener = null;
+				self.close();
+				location.href = "./";
+			} else {
+				parent.$.closePopupLayer();
+			}
 		';
 		$tpl_info['idx'] = "script";
 		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -142,7 +147,16 @@ mystep;
 		$db->Free();
 		$script = "";
 		if($att_more) {
-			$script = "alert('".$setting['language']['admin_attachment_edit_err']."');self.close();";
+			$script = "
+				alert('".$setting['language']['admin_attachment_edit_err']."');
+				if(parent==null){
+					self.opener = null;
+					self.close();
+					location.href = './';
+				} else {
+					parent.\$.closePopupLayer();
+				}
+			";
 		}
 		break;
 	case "download":
@@ -172,9 +186,13 @@ mystep;
 		break;
 	default:
 		$script .= '
-			self.opener = null;
-			self.close();
-			location.href = "./";
+			if(parent==null){
+				self.opener = null;
+				self.close();
+				location.href = "./";
+			} else {
+				parent.$.closePopupLayer();
+			}
 		';
 		$tpl_info['idx'] = "script";
 		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);

@@ -10,19 +10,18 @@
 *                                                 *
 **************************************************/
 
-if(typeof(language)=="undefined") $.getScript("language.js.php");
+if(typeof(language)=="undefined") $.getScript(location.href.replace("http://"+location.hostname+"/", "").replace(/\/[^\/]+$/, "/").replace(/[^\/]+/, "..")+"script/language.js.php");
 
 function checkForm(the_form, myChecker){
 	var obj_list = new Array();
 	var the_obj = null;
 	var the_value, the_need, the_len;
 	var tag_name = "";
-	obj_list = Get_Obj(the_form,"input","select","textarea");
+	obj_list = $(the_form).find("input,select,textarea");
 	for(var i=0;i<obj_list.length;i++){
 		the_obj = obj_list[i];
 		if(typeof(the_obj.getAttribute)=="undefined") continue;
 		the_value = the_obj.value;
-		//the_value = the_obj.getAttribute("value");
 		the_value = (the_value==null?"":the_value.replace(/(^\s*)|(\s*$)/g,""));
 		the_need = the_obj.getAttribute("need");
 		the_len = the_obj.getAttribute("len");
@@ -153,7 +152,6 @@ function checkForm(the_form, myChecker){
 			case "":
 				if(the_value.replace(/\s/g,"").length==0) {
 					alert(language.checkform_noempty);
-					alert(the_obj.outerHTML);
 					the_obj.focus();
 					return false;
 				}

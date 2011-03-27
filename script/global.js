@@ -97,31 +97,6 @@ Array.prototype.append = function (newArray) {
 	return;
 }
 
-function Get_Obj(the_area){
-	var obj_list = new Array();
-	var args = Get_Obj.arguments;
-	for(var i=1; i<args.length; i++) {
-		try {
-			obj_list.append(the_area.getElementsByTagName(args[i]));
-		} catch(e) {
-			obj_list.append(Get_Obj_single(the_area, args[i]));
-		}
-	}
-	return(obj_list);
-}
-
-function Get_Obj_single(the_area, tag_name){
-	var obj_list = new Array();
-	var obj_all = the_area.childNodes;
-	for(var i=0; i<obj_all.length; i++) {
-		if(typeof(obj_all[i].tagName)=="undefined") continue;
-		if(obj_all[i].tagName.toLowerCase()==tag_name.toLowerCase()) {
-			obj_list.append(obj_all[i]);
-		}
-	}
-	return(obj_list);
-}
-
 function openDialog(url, width, height, mode) {
 	var sOrnaments = "dialogWidth:"+width+"px;dialogHeight:"+height+"px;center:1;dialogLeft:200;dialogTop:100;dialogHide:0;edge:raised;help:0;resizable:0;scroll:0;status:0;unadorned:0;center:1;";
 	var win = null;

@@ -14,13 +14,13 @@
 			}
 			function upload_add_file(){
 				var max_upload = 10;
-				if($("#files div").length>=max_upload ) {
+				if($("#files div").length>max_upload ) {
 					alert("同时最多上传 " + max_upload + " 个文件！");
 					return;
 				}
 				var obj = $("#files div:first");
 				obj.clone().appendTo("#files").show();
-				parent.setIframe();
+				parent.setIframe('upload');
 				return;
 			}
 			</script>
@@ -32,7 +32,7 @@
 							<div id="files">
 								<div style="padding-bottom:5px; display:none;">
 									<b>选择文件：</b>
-									<input type="file" name="the_file[]" size="60" onchange="upload_add_file();">
+									<input type="file" name="the_file[]" size="60" onchange="upload_add_file();" />
 								</div>
 							</div>
 							<div style="padding-bottom:5px">
@@ -50,7 +50,7 @@
 									<option value="300"> 300 像素 </option>
 								</select> &nbsp;
 								<input type="checkbox" id="watermark" name="watermark" value="1" <!--watermark_use--> /> <label for="watermark">添加图片水印</label> &nbsp;  (上传限度：<font color='red'><!--Max_size--></font>) &nbsp;  &nbsp; 
-								<input type="button" name="Submit" value=" 上传文件 " onclick="check()">
+								<input type="button" name="Submit" value=" 上传文件 " onclick="check()" />
 							</div>
 						</td>
 					</tr>

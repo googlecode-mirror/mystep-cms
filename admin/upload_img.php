@@ -11,18 +11,17 @@ if(count($_POST) > 0){
 	$upload->DoIt();
 	if($upload->upload_result[0]['error'] == 0) {
 		$script = "
-			if(parent.dialogArguments) {
-				parent.dialogArguments.document.forms[0].{$parent_element}.value = '{$web_url}/{$path_upload}/".$upload->upload_result[0]['new_name']."';
-			} else if(parent.opener) {
-				parent.opener.document.forms[0].{$parent_element}.value = '{$web_url}/{$path_upload}/".$upload->upload_result[0]['new_name']."';
-			}
+			var theOLE = null;
+			theOLE = parent.parent || parent.dialogArguments || parent.opener;
+			theOLE.document.forms[0].{$parent_element}.value = '{$web_url}/{$path_upload}/".$upload->upload_result[0]['new_name']."';
 			alert('".$setting['language']['admin_upload_img_ok']."');
-			parent.close();
+			if(parent.parent==null){parent.close();}else{parent.parent.$.closePopupLayer();}
+			
 		";
 	} else {
 		$script = "
 			alert('".$upload->upload_result[0]['message']."');
-			parent.close();
+			if(parent.parent==null){parent.close();}else{parent.parent.$.closePopupLayer();}
 		";
 	}
 }

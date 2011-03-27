@@ -45,6 +45,12 @@ $language = array (
   'admin_art_info_title' => '自定义内容',
   'admin_art_info_error' => '指定自定义内容不存在！',
   
+  'admin_art_image_delete' => '删除文章图示',
+  'admin_art_image_add' => '添加文章图示',
+  'admin_art_image_edit' => '编辑文章图示',
+  'admin_art_image_title' => '文章图示',
+  'admin_art_image_error' => '指定图示不存在！',
+  
   'admin_func_attach_delete' => '删除附件',
   'admin_func_attach_clean' => '清除未关联附件',
   'admin_func_attach_title' => '附件管理',

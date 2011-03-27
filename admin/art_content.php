@@ -317,6 +317,13 @@ function build_page($method) {
 		$tpl_tmp->Set_Loop('cat_sub', array('cat_id'=>$news_cat[$i]['cat_id'], 'cat_sub'=>$news_cat[$i]['cat_sub']));
 	}
 
+	//news image
+	$db->Query("select * from ".$setting['db']['pre']."news_image");
+	while($record = $db->GetRS()) {
+		HtmlTrans(&$record);
+		$tpl_tmp->Set_Loop('news_image', $record);
+	}
+	
 	$tpl_tmp->Set_Variable('check_b', $check_b);
 	$tpl_tmp->Set_Variable('check_i', $check_i);
 	$tpl_tmp->Set_Variable('check_c', $check_c);

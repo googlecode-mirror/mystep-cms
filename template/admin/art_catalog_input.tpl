@@ -52,8 +52,8 @@
 			<tr>
 				<td class="cat">分类图示：</td>
 				<td class="row">
-					<input class="input" style="width:205px" name="cat_image" type="text" size="40" maxlength="50" value="<!--cat_image-->" />
-					<input class="btn" type="button" onClick="openDialog('upload_img.php?cat_image', 400, 180, 1)" value="上传" />
+					<input class="input" name="cat_image" type="text" size="40" maxlength="50" value="<!--cat_image-->" />
+					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','分类图示上传','url','upload_img.php?cat_image',420, 100)" value="上传" />
 				</td>
 			</tr>
 			<tr>
@@ -92,6 +92,12 @@
 	</form>
 </div>
 <script Language="JavaScript1.2">
+if(typeof($.setupJMPopups)=="undefined") $.getScript("/script/jquery.jmpopups.js", function(){
+	$.setupJMPopups({
+		screenLockerBackground: "#000",
+		screenLockerOpacity: "0.4"
+	});
+});
 function changeCata(idx) {
 	var web_id=$id("cat_main").options[idx].getAttribute("webid");
 	if(web_id!=null) {

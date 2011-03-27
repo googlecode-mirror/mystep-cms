@@ -32,7 +32,7 @@
 				<td class="cat">链接图形：</td>
 				<td class="row">
 					<input name="image" type="text" maxlength="100" value="<!--image-->" /> &nbsp;
-					<input class="btn" type="button" onClick="openDialog('upload_img.php?image', 400, 120, 1)" value="上传" />
+					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','链接图上传','url','upload_img.php?image',420, 100)" value="上传" />
 				</td>
 			</tr>
 			<tr>
@@ -51,3 +51,11 @@
 		</table>
 	</form>
 </div>
+<script type="text/javascript">
+if(typeof($.setupJMPopups)=="undefined") $.getScript("/script/jquery.jmpopups.js", function(){
+	$.setupJMPopups({
+		screenLockerBackground: "#000",
+		screenLockerOpacity: "0.4"
+	});
+});
+</script>

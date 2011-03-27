@@ -1,4 +1,4 @@
-<div class="rank_bar">
+<div id="rank_bar">
 <!--loop:start-->
 	<dl title="<!--lang_plugin_news_mark_rank_average--> <!--rank_average-->"><dt></dt><dd><!--rank_value--></dd></dl>
 <!--loop:end-->

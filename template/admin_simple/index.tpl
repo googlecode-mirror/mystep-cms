@@ -110,6 +110,9 @@ function setNav() {
 		newItem.append("<a href=\""+admin_cat[i].url+"\" class=\"nav\">"+admin_cat[i].name+"</a>");
 		listOLE.append(newItem);
 	}
+	newItem = $("<li/>");
+	newItem.append("<a href=\"../\" class=\"nav\" target=\"_blank\">ËùÊôÍøÕ¾</a>");
+	listOLE.append(newItem);
 }
 $(function(){
 	setPos();

@@ -126,11 +126,6 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	} else {
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_user_detail_add']);
-		$max_count = count($user_group);
-		for($i=0; $i<$max_count; $i++) {
-			$user_group[$i]["selected"] = ($user_group[$i]['group_id']==2?"selected":"");
-			$tpl_tmp->Set_Loop('user_group', $user_group[$i]);
-		}
 		$group_id = 0;
 		$type_id = 1;
 		$record['user_id'] = 0;

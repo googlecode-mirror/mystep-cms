@@ -36,12 +36,12 @@ document.body.style.overflow="hidden";
 	<table border="0" cellspacing="0" width="400">
 		<tr id=load>
 			<td align="center">
-				<input type="hidden" name="MAX_FILE_SIZE" value="<!--MaxSize-->">
+				<input type="hidden" name="MAX_FILE_SIZE" value="<!--MaxSize-->" />
 				上传图像：
-				<input type="file" name="the_file" size="35"><br /><br />
-				<input type="button" name="Submit" value=" 上 传 " onclick="check()">
+				<input type="file" name="the_file" size="35" /><br /><br />
+				<input type="button" name="Submit" value=" 上 传 " onclick="check()" />
 				(上传限度：<font color='red'><!--Max_size--></font>)
-				<input type="button" name="Close" value=" 关 闭 " onclick="self.close()">
+				<input type="button" name="Close" value=" 关 闭 " onclick="if(parent==null){self.close();}else{parent.$.closePopupLayer();}" />
 			</td>
 		</tr>
 		<tr id=wait style="display:none">
