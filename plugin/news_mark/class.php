@@ -98,13 +98,13 @@ global \$plugin_setting;
 \$rank_max = \$plugin_setting['news_mark']['rank_max'];
 \$rank_min = \$plugin_setting['news_mark']['rank_min'];
 \$str_sql = "{$str_sql}";
-\$record = getData(\$str_sql, "record", 3600);
+\$record = getData(\$str_sql, "record", 3600*24);
 if(\$record===false) {
 	getData(\$str_sql, "remove");
 	\$webInfo = getSubSetting("{$att_list['web_id']}");
 	\$subject = \$db->getSingleResult("select subject from `".\$webInfo['db']['name']."`.`".\$webInfo['db']['pre']."news_show` where news_id='{$att_list['news_id']}'");
 	\$db->query("insert into {$setting['db']['pre']}news_mark values('{$att_list['web_id']}', '{$att_list['news_id']}', '{$att_list['cat_id']}', '".\$subject."', 0, '0', 0, 0, '0')");
-	\$record = getData(\$str_sql, "record", 3600);
+	\$record = getData(\$str_sql, "record", 3600*24);
 }
 \$record['precent'] = \$record['rank_times']==0?0:ceil((\$record['rank_total']/\$record['rank_times']-(\$rank_min)+1)*100/((\$rank_max)-(\$rank_min)+1));
 \$record['average'] = round(\$record['rank_total']/\$record['rank_times'], 2);
@@ -144,13 +144,13 @@ mytpl;
 		$result = <<<mytpl
 <?php
 \$str_sql = "{$str_sql}";
-\$record = getData(\$str_sql, "record", 3600);
+\$record = getData(\$str_sql, "record", 3600*24);
 if(\$record===false) {
 	getData(\$str_sql, "remove");
 	\$webInfo = getSubSetting("{$att_list['web_id']}");
 	\$subject = \$db->getSingleResult("select subject from `".\$webInfo['db']['name']."`.`".\$webInfo['db']['pre']."news_show` where news_id='{$att_list['news_id']}'");
 	\$db->query("insert into {$setting['db']['pre']}news_mark values('{$att_list['web_id']}', '{$att_list['news_id']}', '{$att_list['cat_id']}', '".\$subject."', 0, '0', 0, 0, '0')");
-	\$record = getData(\$str_sql, "record", 3600);
+	\$record = getData(\$str_sql, "record", 3600*24);
 }
 echo <<<content
 {$content}
@@ -197,10 +197,10 @@ mytpl;
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."news_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
 		$result = <<<mytpl
 <?php
-
+global \$plugin_setting;
 \$n = 0;
 \$str_sql = str_replace(" and cat_id in (0)", "", "{$str_sql}");
-\$result = getData(\$str_sql, "all", 600);
+\$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
@@ -234,7 +234,7 @@ mytpl;
 		$db->query("update ".$setting['db']['pre']."news_mark set jump=jump".$value.", jump_time=UNIX_TIMESTAMP() where web_id='".$web_id."' and news_id='".$news_id."'");
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
 		getData($str_sql, "remove");
-		$record = getData($str_sql, "record", 3600);
+		$record = getData($str_sql, "record", 3600*24);
 		return json_encode(chg_charset($record, $setting['gen']['charset'], "utf-8"));
 	}
 	
@@ -244,7 +244,7 @@ mytpl;
 		$db->query("update ".$setting['db']['pre']."news_mark set rank_total=rank_total".$value.", rank_times=rank_times+1, rank_time=UNIX_TIMESTAMP() where web_id='".$web_id."' and news_id='".$news_id."'");
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
 		getData($str_sql, "remove");
-		$record = getData($str_sql, "record", 3600);
+		$record = getData($str_sql, "record", 3600*24);
 		return json_encode(chg_charset($record, $setting['gen']['charset'], "utf-8"));
 	}
 }

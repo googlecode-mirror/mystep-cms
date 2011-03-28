@@ -174,10 +174,10 @@ mystep;
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."news_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
 		$result = <<<mytpl
 <?php
-
+global \$plugin_setting;
 \$n = 0;
 \$str_sql = str_replace(" and cat_id in (0)", "", "{$str_sql}");
-\$result = getData(\$str_sql, "all", 600);
+\$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];

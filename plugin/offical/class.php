@@ -127,11 +127,11 @@ class plugin_offical implements plugin {
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."news_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
 		$result = <<<mytpl
 <?php
-
+global \$plugin_setting;
 \$n = 0;
 \$str_sql = str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}");
 \$str_sql = str_replace(" and cat_id in (0)", "", \$str_sql);
-\$result = getData(\$str_sql, "all", 600);
+\$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
@@ -192,7 +192,8 @@ mytpl;
 		if(!empty($str_sql)) {
 			$result = <<<mytpl
 <?php
-echo getData("{$str_sql}", "result", 3600);
+global \$plugin_setting;
+echo getData("{$str_sql}", "result", \$plugin_setting['offical']['ct_info']);
 ?>
 mytpl;
 		}
@@ -257,11 +258,12 @@ mytpl;
 		//$str_sql = addslashes($str_sql);
 		$result = <<<mytpl
 <?php
+global \$plugin_setting;
 \$base_size = 8;
 \$dyn_size = 32;
 \$count_max = 0;
 \$tag_list = array();
-\$result = getData(str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}"), "all", 600);
+\$result = getData(str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}"), "all", \$plugin_setting['offical']['ct_tag']);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];

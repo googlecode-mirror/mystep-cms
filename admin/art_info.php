@@ -22,6 +22,7 @@ switch($method) {
 		if(count($_POST) == 0) {
 			$goto_url = $setting['info']['self'];
 		} else {
+			if(get_magic_quotes_gpc()) strip_slash($_POST);
 			if($method=="add_ok") {
 				$log_info = $setting['language']['admin_art_info_add'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."info_show", $_POST, "insert", "a");
