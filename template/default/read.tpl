@@ -21,7 +21,7 @@
 			<div class="box box_1">
 				<div class="title">ºÃÆÀÍÆ¼ö</div>
 				<div class="content after">
-<!--news_mark cat_id='$cat_id'-->
+<!--news_mark cat_id='$cat_id' limit="10"-->
 				</div>
 			</div>
 		</div>

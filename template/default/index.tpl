@@ -26,8 +26,10 @@
 	<div class="page_bar after">
 		<div class="box box_4">
 			<div class="title"><span class="bar">À¸Ä¿±êÌâ</span></div>
+				<div class="taglist">
+<!--tag limit="100"-->
+				</div>
 			<div class="content after">
-<!--tag limit="150"-->
 <!--news show_image="1" limit="12" template="image"-->
 			</div>
 		</div>

@@ -15,7 +15,7 @@
 			<div class="box box_1">
 				<div class="title">ºÃÆÀÍÆ¼ö</div>
 				<div class="content after">
-<!--news_mark web_id='$web_id'-->
+<!--news_mark web_id='$web_id' limit="10"-->
 				</div>
 			</div>
 		</div>

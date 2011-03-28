@@ -47,7 +47,7 @@ if($cat_main > 0) {
 }
 
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-$news_count = getData("select count(*) from ".$setting['db']['pre']."news_show where 1=1".($cat_id==0?"":" and cat_id='{$cat_id}'"), "result");
+$news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show where 1=1".($cat_id==0?"":" and cat_id='{$cat_id}'"), "result");
 if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', (empty($cat_main_link)?"":" - {$cat_main_link}").' - <a href="'.getFileURL(0, $cat_idx).'">'.$cat_name.'</a>');
 $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
@@ -56,7 +56,7 @@ $tpl_tmp->Set_Variable('page_list', PageList($page, ceil($news_count/$page_size)
 
 $limit = (($page-1)*$page_size).", ".$page_size;
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
-unset($tpl_temp);
+unset($tpl_tmp);
 if(!empty($cat_idx)) {
 	$setting['web']['title'] = $cat_comment."_".$setting['web']['title'];
 	$setting['web']['keyword'] = $cat_name.",".$cat_comment;
