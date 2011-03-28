@@ -118,7 +118,7 @@
 			if ($.browser.msie && $.browser.version < 7) {
 				$("select:not(.hidden-by-jmp)").addClass("hidden-by-jmp hidden-by-" + openedPopups[openedPopups.length-1].name).css("visibility","hidden");
 			}
-			$('#popupLayerScreenLocker').css("z-index",parseInt(openedPopups.length == 1 ? 999 : $("#popupLayer_" + openedPopups[openedPopups.length - 2].name).css("z-index")) + 1);
+			$('#popupLayerScreenLocker').css("z-index",parseInt(openedPopups.length == 1 ? 400000 : $("#popupLayer_" + openedPopups[openedPopups.length - 2].name).css("z-index")) + 1);
 		} else {
 			$("body").append("<div id='popupLayerScreenLocker'><!-- --></div>");
 			$("#popupLayerScreenLocker").css({
@@ -186,7 +186,7 @@
 			var theContent = $("<div/>").attr("id", idElement+"_content").addClass("content").html(data).css({"width":"100%", "height":"auto", "overflow":"hidden"});
 			var theClose = $("<span id='"+idElement+"_close'>X</span>").css({"position":"absolute","right":"10px","font-weight":"bold","cursor":"pointer","font-size":"14px"}).appendTo(theTitle);
 			data = theTitle.outerHTML() + theContent.outerHTML();
-			var zIndex = parseInt(openedPopups.length == 1 ? 1000 : $("#popupLayer_" + openedPopups[openedPopups.length - 2].name).css("z-index")) + 2;
+			var zIndex = parseInt(openedPopups.length == 1 ? 500000 : $("#popupLayer_" + openedPopups[openedPopups.length - 2].name).css("z-index")) + 2;
 		}	else {
 			var zIndex = $("#" + idElement).css("z-index");
 		}

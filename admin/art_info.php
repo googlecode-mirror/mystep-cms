@@ -58,6 +58,7 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_If('empty', ($n==0));
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_info_title']);
+		$tpl_tmp->Set_Variable('web_id', $web_id);
 	} else {
 		if($method == "edit") {
 			$db->Query("select * from ".$setting['db']['pre']."info_show where id='{$id}'");
@@ -76,6 +77,7 @@ function build_page($method) {
 			$record['web_id'] = 0;
 			$record['subject'] = "";
 			$record['content'] = "";
+			$record['attach_list'] = "|";
 		}
 		$tpl_tmp->Set_Variables($record);
 		

@@ -163,6 +163,7 @@ CREATE TABLE `{pre}info_show` (
 	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`web_id` TINYINT UNSIGNED DEFAULT 0,							#所属子站
 	`subject` Char(100) NOT NULL,											#展示标题
+	`attach_list` Char(255) default '',								#相关附件
 	`content` TEXT NOT NULL,													#展示内容
 	INDEX (`web_id`),
 	PRIMARY KEY (`id`)

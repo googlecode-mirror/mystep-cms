@@ -33,8 +33,10 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center" class="row">
+					<input class="btn" name="attach_list" type="hidden" value="<!--attach_list-->">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 附 件 " onclick="attach_edit()" />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
 			</tr>
@@ -43,6 +45,12 @@
 </div>
 <script type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
 <script type="text/javascript">
+if(typeof($.setupJMPopups)=="undefined") $.getScript("/script/jquery.jmpopups.js", function(){
+	$.setupJMPopups({
+		screenLockerBackground: "#000",
+		screenLockerOpacity: "0.4"
+	});
+});
 tinyMCE.init({
 	mode : "textareas",
 	language : "zh",
@@ -50,7 +58,7 @@ tinyMCE.init({
 	plugins : "safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
 	theme_advanced_buttons1 : "newdocument,fullscreen,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,|,charmap,media",
-	theme_advanced_buttons2 : "pagebreak,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,image,cleanup,code,preview",
+	theme_advanced_buttons2 : "upload,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,image,cleanup,code,preview",
 	theme_advanced_buttons3 : "",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
@@ -62,6 +70,16 @@ tinyMCE.init({
 	external_link_list_url : "lists/link_list.js",
 	external_image_list_url : "lists/image_list.js",
 	media_external_list_url : "lists/media_list.js",
+	
+	setup : function(ed) {
+		ed.addButton('upload', {
+			title : 'upload',
+			image : 'images/file.gif',
+			onclick : function() {
+		     showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
+		  }
+		});
+	},
 
 	dialog_type : "modal",
 	relative_urls : true,
@@ -96,5 +114,34 @@ function myHandleEvent(e) {
 		}
 	}
 	return true;
+}
+
+function setIframe(idx) {
+	if($id("popupLayer_"+idx)) {
+		theFrame = $("#popupLayer_"+idx).find("iframe");
+		theHeight = theFrame.contents().find("body")[0].scrollHeight + 20;
+		if(theHeight>650) theHeight = 650;
+		theFrame.height(theHeight);
+		$("#popupLayer_"+idx).height($("#popupLayer_"+idx+"_title").height()+theHeight);
+		$("#popupLayer_"+idx+"_content").height(theHeight);
+	}
+}
+
+function attach_add(str) {
+	tinyMCE.execCommand("mceInsertContent", false, str);
+}
+
+function attach_remove(aid) {
+	var content;
+	content = tinyMCE.get('content').getContent();
+	var re = new RegExp("<a id\\=\"att_"+aid+".+?<\\/a>", "ig");
+	content = content.replace(re, "");
+	tinyMCE.get('content').setContent(content);
+	return;
+}
+
+function attach_edit() {
+	showPop('attach','附件管理','url','attachment.php?method=edit&attach_list='+document.forms[0].attach_list.value, 600, 200);
+	return;
 }
 </script>

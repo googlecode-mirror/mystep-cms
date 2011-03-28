@@ -109,6 +109,7 @@ function setNav() {
 	for(var i=0; i<admin_cat.length; i++) {
 		if(group.power_func!=",all," && group.power_func.indexOf(","+admin_cat[i].id+",")==-1) continue;
 		newItem = $("<li/>");
+		if(admin_cat[i].url=="###") admin_cat[i].url="javascript:";
 		newItem.append("<a href=\""+admin_cat[i].url+"\" class=\"nav\">"+admin_cat[i].name+"</a>");
 		if(admin_cat[i].sub!=null && admin_cat[i].sub.length>0) {
 			newSubItem = $("<ul/>");
@@ -121,7 +122,7 @@ function setNav() {
 		listOLE.append(newItem);
 	}
 	newItem = $("<li/>");
-	newItem.append("<a href=\"###\" class=\"nav\">ÍøÕ¾</a>");
+	newItem.append("<a href=\"javascript:\" class=\"nav\">ÍøÕ¾</a>");
 	newSubItem = $("<ul/>");
 	$("#website").append('<option value="">È«²¿Ä¬ÈÏÍøÕ¾</option>');
 	for(i=0; i<website.length; i++) {
@@ -135,10 +136,6 @@ function setNav() {
 			$(this).children("ul").stop(true,true).show(400);
 		},function(){
 			$(this).children("ul").stop(true,true).hide();
-	});
-	
-	$("a[href='###']").bind('click', function() {
-	 return false;
 	});
 }
 $(function(){
