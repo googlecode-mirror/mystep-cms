@@ -13,7 +13,8 @@
 				<b>插件板本：</b><!--ver--><br />
 				<b>入口类名：</b><!--class--><br />
 				<b>功能描述：</b><!--intro--><br />
-				<b>版权信息：</b><!--copyright-->
+				<b>版权信息：</b><!--copyright--><br />
+				<b>检测信息：</b><!--check-->
 				</td>
 			</tr>
 			<tr> 

@@ -3,7 +3,7 @@
 			<div class="box box_1">
 				<div class="title">вс ю╦ д©</div>
 				<div class="menu after">
-					<!--menu web_id='$web_id' cat_id='$cat_id' deep="2"-->
+<!--menu web_id='$web_id' cat_id='$cat_id' deep="2" class="catList"-->
 				</div>
 			</div>
 			<div class="box box_1">

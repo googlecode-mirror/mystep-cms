@@ -76,6 +76,11 @@ mystep;
 		return $info;
 	}
 	
+	public static function check() {
+		//make some check for current plugin
+		return "";
+	}
+	
 	public static function page_end() {
 		global $db, $setting, $news_id, $cat_id, $subject;
 		if($setting['info']['self']!="read.php") return;

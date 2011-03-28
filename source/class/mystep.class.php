@@ -246,6 +246,7 @@ class MyStep extends class_common {
 
 interface plugin {
     public static function info();
+    public static function check();
     public static function install();
     public static function uninstall();
 }

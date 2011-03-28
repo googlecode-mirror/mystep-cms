@@ -76,6 +76,11 @@ mystep;
 		return $info;
 	}	
 	
+	public static function check() {
+		//make some check for current plugin
+		return "";
+	}
+	
 	public static function news_rank(MyTPL $tpl, $att_list = array()) {
 		global $setting;
 		$result = "";

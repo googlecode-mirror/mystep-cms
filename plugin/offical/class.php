@@ -14,6 +14,11 @@ class plugin_offical implements plugin {
 		return $info;
 	}
 	
+	public static function check() {
+		//make some check for current plugin
+		return "";
+	}
+	
 	public static function setting() {
 		$plugin_setting['offical'] = null;
 		if(is_file(dirname(__FILE__)."/config.php")) include(dirname(__FILE__)."/config.php");
@@ -308,22 +313,24 @@ mytpl;
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = "";
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
 		if(!isset($att_list['deep'])) $att_list['deep'] = 2;
+		if(!isset($att_list['class'])) $att_list['class'] = "";
 		if($att_list['cat_id']===0) $att_list['cat_id'] = "";
 		
 		$result = <<<mytpl
 <?php
-echo plugin_offical::getMenuContent("{$att_list['cat_id']}", "{$att_list['web_id']}", "{$att_list['deep']}");
+echo plugin_offical::getMenuContent("{$att_list['cat_id']}", "{$att_list['web_id']}", "{$att_list['deep']}", "{$att_list['class']}");
 ?>
 mytpl;
 		return $result;
 	}
 	
-	public static function getMenuContent($cat_id, $web_id, $deep) {
+	public static function getMenuContent($cat_id, $web_id, $deep, $class="") {
 		global $news_cat, $cache;
 		if($cat_id==0) $cat_id = "";
 		$key = md5("Menu_".$cat_id."_".$web_id."_".$deep);
 		$result = $cache->get($key);
 		if(!$result) {
+			$result = "";
 			$deep_start = 0;
 			$deep_max = 0;
 			$deep_cur = 0;
@@ -358,7 +365,7 @@ mytpl;
 						$deep_cur = $news_cat[$i]['cat_layer'];
 						$deep_start = $news_cat[$i]['cat_layer'];
 						$deep_max = $deep_start + $deep;
-						$result .= "<ul>\n";
+						$result .= "<ul class=\"{$class}\">\n";
 						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'])."\">".$news_cat[$i]['cat_name']."</a>";
 					}
 				}

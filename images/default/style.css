@@ -127,9 +127,9 @@ TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0
 
 .page_lst .box_2 {width:700px; margin:0px;}
 .page_lst .box_2 .title .c2 {float:right; text-align:right; padding:4px 10px 0px 0px;}
-.page_lst .box_2 .content {height:100%; padding:0px 30px 10px 30px;}
+.page_lst .box_2 .content {height:100%; padding:10px 10px 10px 10px;}
 
-.page_lst .pic_news {margin:30px 10px 30px 10px; line-height:20px; color:#990000;}
+.page_lst .pic_news {margin:0px 0px 10px 0px; padding:5px 5px 5px 5px; line-height:20px; color:#990000; background-color:#fefefe; border:1px #eeeeee solid;}
 .page_lst .pic_news H4 {font-weight:bold; font-size:16px; margin-bottom:10px;}
 .page_lst .pic_news IMG {float:left; width:180px; height:120px; margin:0px 20px 0px 0px; border:1px #999999 dotted;}
 .page_lst .pic_news .describe {word-wrap:break-word; word-break:break-all;}

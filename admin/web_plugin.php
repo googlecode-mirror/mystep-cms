@@ -126,6 +126,10 @@ function build_page($method) {
 		$info['description'] = nl2br($info['description']);
 		$tpl_tmp->Set_Variables($info);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
+		include($plugin_path.$idx."/class.php");
+		$check_info = call_user_func(array($info['class'], "check"));
+		if(empty($check_info)) $check_info = '<span style="color:green">'.$setting['language']['admin_web_plugin_check_ok'].'</span>';
+		$tpl_tmp->Set_Variable('check', $check_info);
 	}
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting, $idx'));
 	unset($tpl_tmp);

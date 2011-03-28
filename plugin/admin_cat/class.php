@@ -70,5 +70,10 @@ mystep;
 		if(is_file(dirname(__FILE__)."/info.php")) include(dirname(__FILE__)."/info.php");
 		return $info;
 	}
+	
+	public static function check() {
+		//make some check for current plugin
+		return "";
+	}
 }
 ?>
