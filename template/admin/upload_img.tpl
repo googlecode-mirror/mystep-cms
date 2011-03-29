@@ -1,6 +1,6 @@
 <script language="JavaScript">
 <!--script-->
-if(typeof(window.dialogArguments)=='undefined' && typeof(window.opener)=='undefined') {
+if(typeof(window.dialogArguments)=='undefined' && typeof(window.opener)=='undefined' && typeof(window.parent)=='undefined') {
 	window.opener = null;
 	self.close();
 	location.href = './';
@@ -27,8 +27,7 @@ function check(){
 	}
 }
 
-window.focus();
-if(window.opener!=undefined) window.resizeTo(400,160);
+if(window.opener!='undefined') window.resizeTo(400,160);
 document.body.style.overflow="hidden";
 </script>
 <br />
