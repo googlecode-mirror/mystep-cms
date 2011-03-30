@@ -11,7 +11,7 @@ $setting['web']['s_user'] = 'mystep';
 $setting['web']['s_pass'] = 'c4ca4238a0b923820dcc509a6f75849b';
 $setting['web']['close'] = false;
 $setting['web']['close_page'] = '/index.html';
-$setting['web']['cache_mode'] = 'memcache';
+$setting['web']['cache_mode'] = 'file';
 
 $setting['db'] = array();
 $setting['db']['host'] = '127.0.0.1:3306';

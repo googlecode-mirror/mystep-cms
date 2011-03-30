@@ -151,7 +151,7 @@ CREATE TABLE `{pre}news_detail` (
 	`page` TINYINT UNSIGNED DEFAULT 1,								#分页索引
 	`sub_title` Char(100) DEFAULT '',									#子标题
 	`ctype` TINYINT UNSIGNED DEFAULT 1,								#内容类型(ubb, html)
-	`content` TEXT NOT NULL,													#新闻内容
+	`content` MEDIUMTEXT NOT NULL,										#新闻内容
 	INDEX (`news_id`),
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻内容';
@@ -164,7 +164,7 @@ CREATE TABLE `{pre}info_show` (
 	`web_id` TINYINT UNSIGNED DEFAULT 0,							#所属子站
 	`subject` Char(100) NOT NULL,											#展示标题
 	`attach_list` Char(255) default '',								#相关附件
-	`content` TEXT NOT NULL,													#展示内容
+	`content` MEDIUMTEXT NOT NULL,										#展示内容
 	INDEX (`web_id`),
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='内容展示';

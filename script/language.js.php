@@ -11,19 +11,21 @@ include(ROOT_PATH."/source/language/".$setting['gen']['language'].".php");
 $org_lng = array_merge($org_lng, $language);
 unset($language);
 
-includeCache("plugin");
-$max_count = count($GLOBALS['plugin']);
-for($i=0; $i<$max_count; $i++) {
-	$dir = ROOT_PATH."/plugin/".$plugin[$i]['idx']."/language";
-	if(is_file($dir."/default.php")) {
-		include($dir."/default.php");
-		if(isset($language)) $org_lng = array_merge($org_lng, $language);
-		unset($language);
-	}
-	if(is_file($dir."/".$setting['gen']['language'].".php")) {
-		include($dir."/".$setting['gen']['language'].".php");
-		if(isset($language)) $org_lng = array_merge($org_lng, $language);
-		unset($language);
+if(checkCache('plugin')) {
+	includeCache("plugin");
+	$max_count = count($GLOBALS['plugin']);
+	for($i=0; $i<$max_count; $i++) {
+		$dir = ROOT_PATH."/plugin/".$plugin[$i]['idx']."/language";
+		if(is_file($dir."/default.php")) {
+			include($dir."/default.php");
+			if(isset($language)) $org_lng = array_merge($org_lng, $language);
+			unset($language);
+		}
+		if(is_file($dir."/".$setting['gen']['language'].".php")) {
+			include($dir."/".$setting['gen']['language'].".php");
+			if(isset($language)) $org_lng = array_merge($org_lng, $language);
+			unset($language);
+		}
 	}
 }
 

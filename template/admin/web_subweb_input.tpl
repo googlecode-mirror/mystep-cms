@@ -68,7 +68,6 @@ $setting_skip['session']['mode'] = '';
 $setting_skip['cookie'] = array();
 $setting_skip['cookie']['path'] = '';
 $setting_skip['cookie']['prefix'] = '';
-$setting_skip['cookie']['domain'] = '';
 $setting_skip['path'] = array();
 $setting_skip['path']['admin'] = '';
 $setting_skip['path']['template'] = '';

@@ -97,7 +97,14 @@ function getSubSetting($web_id) {
 			$setting_sub['info'] = $theWeb;
 		}
 	}
-	if(is_null($setting_sub)) include(ROOT_PATH."/include/config_main.php");
+	if(is_null($setting_sub)) {
+		global $setting;
+		$setting_sub = array();
+		$setting_sub['web'] = $setting['web'];
+		$setting_sub['db'] = $setting['db'];
+		$setting_sub['gen'] = $setting_sub['gen'];
+		$setting_sub['cookie'] = $setting['cookie'];
+	}
 	return $setting_sub;
 }
 

@@ -393,19 +393,21 @@ function MultiDel($dir){
 }
 
 function isWriteable($file){
-	if(is_dir($file)){
-		$dir = $file;
-		$writeable = false;
-		$tmpFile = tempnam($dir, "tmp");
-		if($fp = @fopen($tmpFile, 'w')){
-		 fclose($fp);
-		 unlink($tmpFile);
-		 $writeable = true;
-		}
+	//will work in despite of Windows ACLs bug
+	//see http://bugs.php.net/bug.php?id=27609
+	//see http://bugs.php.net/bug.php?id=30931
+	if($file{strlen($file)-1}=='/') {
+		return isWriteable($file.uniqid(mt_rand()).'.tmp');
+	} else if(is_dir($file)) {
+		return isWriteable($file.'/'.uniqid(mt_rand()).'.tmp');
 	} else {
-		$writeable = is_writable($file);
+		$rm = file_exists($file);
+		$f = @fopen($file, 'a');
+		if($f===false) return false;
+		fclose($f);
+		if(!$rm) unlink($file);
+		return true;
 	}
-	return $writeable;
 }
 /*---------------------------------------Functions 4 File End---------------------------------------*/
 
