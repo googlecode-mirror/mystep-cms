@@ -10,7 +10,7 @@ if($setting['gen']['cache']) {
 	$cache_info = false;
 }
 $tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
-
+$web_id = $setting['info']['web']['web_id'];
 if($tpl->Is_Cached()) {
 	echo $tpl->Get_Content();
 	$mystep->pageEnd();

@@ -7,7 +7,7 @@
 				<td class="cat" width="80">所属栏目：</td>
 				<td class="row">
 					<input name="web_id" type="hidden" value="<!--web_id-->" />
-					<select name="cat_main" id="cat_main" onchange="changeCata(this.selectedIndex)">
+					<select name="cat_main" id="cat_main">
 						<option value="0">顶级栏目</option>
 <!--loop:start key="catalog"-->
 						<option value="<!--catalog_cat_id-->" webid=<!--catalog_web_id--> <!--catalog_selected-->><!--catalog_cat_name--></option>
@@ -60,9 +60,9 @@
 			<tr>
 				<td class="cat">显示位置：</td>
 				<td class="row">
-					<input type="checkbox" id="cat_show_1" class="cbox" name="cat_show[]" value="1" <!--cat_show_1--> /><label for="cat_show_1"> 主页导航</label> &nbsp;
-					<input type="checkbox" id="cat_show_2" class="cbox" name="cat_show[]" value="2" <!--cat_show_2--> /><label for="cat_show_2"> 列表页导航</label> &nbsp;
-					<input type="checkbox" id="cat_show_4" class="cbox" name="cat_show[]" value="4" <!--cat_show_4--> /><label for="cat_show_4"> 内容页导航</label> &nbsp;
+					<input type="checkbox" id="cat_show_1" class="cbox" name="cat_show[]" value="1" <!--cat_show_1--> /><label for="cat_show_1"> 主导航</label> &nbsp;
+					<input type="checkbox" id="cat_show_2" class="cbox" name="cat_show[]" value="2" <!--cat_show_2--> /><label for="cat_show_2"> 列表导航</label> &nbsp;
+					<input type="checkbox" id="cat_show_4" class="cbox" name="cat_show[]" value="4" <!--cat_show_4--> /><label for="cat_show_4"> 自定义导航</label> &nbsp;
 					<input1 class="input" name="cat_show" type="text" size="20" maxlength="7" value="<!--cat_show-->" />
 				</td>
 			</tr>

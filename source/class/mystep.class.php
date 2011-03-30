@@ -145,6 +145,7 @@ class MyStep extends class_common {
 			}
 			unset($setting_sub['db']);
 			$setting = arrayMerge($setting, $setting_sub);
+			$req->init($setting['cookie'], $setting['session']);
 		}
 		
 		$max_count = count($this->func_start);
@@ -192,19 +193,13 @@ class MyStep extends class_common {
 		$tpl->Set_Variable('last_modify', date("Y-m-d H:i:s"));
 		$this->pushAddedContent($tpl, "start", "end");
 		$max_count = count($news_cat);
-		$show_list = array(
-			"index.php" => 1,
-			"list.php" => 2,
-			"read.php" => 4,
-		);
 		for($i=0; $i<$max_count; $i++) {
 			if($news_cat[$i]['cat_layer']==1 && $news_cat[$i]['web_id']==$setting['info']['web']['web_id']) {
-				if(($news_cat[$i]['cat_show'] & $show_list[$setting['info']['self']]) != $show_list[$setting['info']['self']]) continue;
-				if(empty($news_cat[$i]['cat_link'])) $news_cat[$i]['cat_link'] = getFileURL(0, $news_cat[$i]['cat_idx']);
+				if(($news_cat[$i]['cat_show'] & 1) != 1) continue;
+				if(empty($news_cat[$i]['cat_link'])) $news_cat[$i]['cat_link'] = getFileURL(0, $news_cat[$i]['cat_idx'], $setting['info']['web']['web_id']);
 				$tpl->Set_Loop('news_cat', $news_cat[$i]);
 			}
 		}
-		
 		if(count(ob_list_handlers())==0 && !headers_sent()) ob_start();
 		echo $tpl->Get_Content('$db, $setting');
 	}

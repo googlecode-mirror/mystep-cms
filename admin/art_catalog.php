@@ -99,6 +99,10 @@ switch($method) {
 				$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "update", "cat_id={$cat_id}");
 			}
 			$db->Query($str_sql);
+			if($method=="add_ok" && $group['power_cat']!="all") {
+				$db->Query("update ".$setting['db']['pre']."user_group set power_cat = concat(power_cat, ',".$db->GetInsertId()."') where group_id='".$usergroup."'");
+				deleteCache("user_group");
+			}
 			deleteCache("news_cat");
 		}
 		break;
@@ -113,12 +117,13 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $cat_id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $news_cat, $cat_id, $group;
 
 	$tpl_info['idx'] = "art_catalog_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	if($method == "list") {
+		$tpl_tmp->Set_Variable("group", json_encode(chg_charset($group, $setting['gen']['charset'], "utf-8")));
 		$tpl_tmp->Set_Variable("news_cat", json_encode(chg_charset($news_cat, $setting['gen']['charset'], "utf-8")));
 		$max_count = count($news_cat);
 		for($i=0; $i<$max_count; $i++) {

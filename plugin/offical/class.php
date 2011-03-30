@@ -337,15 +337,16 @@ mytpl;
 			$max_count = count($news_cat);
 			for($i=0; $i<$max_count; $i++) {
 				if(!empty($web_id) && $web_id!=$news_cat[$i]['web_id']) continue;
+				if(($news_cat[$i]['cat_show'] & 2) != 2) continue;
 				if($deep_start>0) {
 					if($deep_cur==$news_cat[$i]['cat_layer']) {
 						if($cat_id!="" && $cat_id!=$news_cat[$i]['cat_id'] && $deep_start==$news_cat[$i]['cat_layer']) break;
 						$result .= "</li>\n";
-						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'])."\">".$news_cat[$i]['cat_name']."</a>";
+						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id'])."\">".$news_cat[$i]['cat_name']."</a>";
 					} elseif($deep_cur<$news_cat[$i]['cat_layer']) {
 						if($news_cat[$i]['cat_layer']<$deep_max) {
 							$result .= "<ul>\n";
-							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'])."\">".$news_cat[$i]['cat_name']."</a>";
+							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id'])."\">".$news_cat[$i]['cat_name']."</a>";
 							$deep_cur = $news_cat[$i]['cat_layer'];
 						}
 					} else {
@@ -354,7 +355,7 @@ mytpl;
 							for($j=$deep_cur-$news_cat[$i]['cat_layer']-1; $j>0; $j--) {
 								$result .= str_repeat("\t", $j)."</ul></li>\n";
 							}
-							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'])."\">".$news_cat[$i]['cat_name']."</a>";
+							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id'])."\">".$news_cat[$i]['cat_name']."</a>";
 							$deep_cur = $news_cat[$i]['cat_layer'];
 						} else {
 							if($cat_id!="") break;
@@ -366,7 +367,7 @@ mytpl;
 						$deep_start = $news_cat[$i]['cat_layer'];
 						$deep_max = $deep_start + $deep;
 						$result .= "<ul class=\"{$class}\">\n";
-						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'])."\">".$news_cat[$i]['cat_name']."</a>";
+						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id'])."\">".$news_cat[$i]['cat_name']."</a>";
 					}
 				}
 			}
@@ -375,7 +376,7 @@ mytpl;
 				$result .= str_repeat("\t", $i+1)."</ul></li>\n";
 			}
 			$result .= "</ul>\n";
-			$cache->set($key, $result, 60*60);
+			$cache->set($key, $result, 1);
 		}
 		return $result;
 	}

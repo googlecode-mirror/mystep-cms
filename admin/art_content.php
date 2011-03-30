@@ -192,6 +192,7 @@ function build_page($method) {
 	$check_b = "";
 	$check_c = "";
 	
+	if(empty($group['power_cat'])) $group['power_cat'] = 0;
 	if($method == "list") {
 		$page = $req->getGet("page");
 		$keyword = $req->getGet("keyword");
@@ -306,7 +307,7 @@ function build_page($method) {
 	if(empty($web_id)) $web_id=1;
 	$max_count = count($news_cat);
 	for($i=0; $i<$max_count; $i++) {
-		if($method != "add" && $news_cat[$i]['web_id']!=$web_id) continue;
+		if(($method != "add" || $setting['info']['web']['web_id']!=1) && $news_cat[$i]['web_id']!=$web_id) continue;
 		if(!empty($news_cat[$i]['cat_link'])) continue;
 		$news_cat[$i]['cat_name'] = ((isset($news_cat[$i+1]) && $news_cat[$i+1]['cat_layer']==$news_cat[$i]['cat_layer'])?"©À ":"©¸ ").$news_cat[$i]['cat_name'];
 		for($j=1; $j<$news_cat[$i]['cat_layer']; $j++) {

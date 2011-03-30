@@ -11,7 +11,7 @@
 			<td class="cat" width="60">²Ù×÷</td>
 			<td class="cat" width="60">×ÊÑ¶</td>
 		</tr>
-<!--loop:start key="record"-->
+<!--loop:start key="record" time="20"-->
 		<tr align="center">
 			<td class="row" align="center"><!--record_cat_id--></td>
 			<td class="row" align="center"><!--record_web_name--></td>
@@ -25,6 +25,10 @@
 	</table>
 </div>
 <script language="javascript">
+parent.group=<!--group-->;
+parent.group.power_cat = "," + parent.group.power_cat + ",";
+parent.group.power_web = "," + parent.group.power_web + ",";
+parent.group.power_func = "," + parent.group.power_func + ",";
 parent.news_cat = <!--news_cat-->;
-parent.showCat(parent.document.getElementById("cat_tree"), parent.getWebCat(), true);
+parent.showCat(parent.document.getElementById("cat_tree"), parent.getWebCat(<!--web_id-->), true);
 </script>

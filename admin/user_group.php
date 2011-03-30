@@ -110,7 +110,7 @@ function build_page($method) {
 				$max_count = count($thePowerWeb);
 				for($i=0; $i<$max_count; $i++) {
 					$theWeb = getParaInfo("website", "web_id", $thePowerWeb[$i]);
-					$record['power_web'] .= $theCata['name'].", ";
+					$record['power_web'] .= $theWeb['name'].", ";
 				}
 				$record['power_web'] = substr($record['power_web'], 0, -2);
 			}

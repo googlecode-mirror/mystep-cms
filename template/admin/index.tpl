@@ -143,6 +143,10 @@ $(function(){
 	$(window).bind("resize", setPos);
 	setNav();
 	showCat($id("cat_tree"), getWebCat());
+	if($("#cat_tree").height()>$("#main").height()) {
+		$("#cat_tree").css({"height":($("#main").height()-50),"overflow-y":"auto"});
+		$("#page_main .list").css({"height":$("#main").height(),"overflow-y":"hidden"});
+	}
 });
 if(top != window) history.go(-1);
 
