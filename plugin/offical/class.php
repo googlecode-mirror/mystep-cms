@@ -329,15 +329,18 @@ mytpl;
 		if($cat_id==0) $cat_id = "";
 		$key = md5("Menu_".$cat_id."_".$web_id."_".$deep);
 		$result = $cache->get($key);
+		$result = false;
 		if(!$result) {
 			$result = "";
 			$deep_start = 0;
 			$deep_max = 0;
 			$deep_cur = 0;
+			$catInfo = getParaInfo("news_cat", "cat_id", $cat_id);
+			if(!$catInfo) $catInfo = array("cat_layer"=>1);
 			$max_count = count($news_cat);
 			for($i=0; $i<$max_count; $i++) {
 				if(!empty($web_id) && $web_id!=$news_cat[$i]['web_id']) continue;
-				if(($news_cat[$i]['cat_show'] & 2) != 2) continue;
+				if(($news_cat[$i]['cat_show'] & 2)!=2 || ($deep_start==0 && $news_cat[$i]['cat_layer']>$catInfo['cat_layer'])) continue;
 				if($deep_start>0) {
 					if($deep_cur==$news_cat[$i]['cat_layer']) {
 						if($cat_id!="" && $cat_id!=$news_cat[$i]['cat_id'] && $deep_start==$news_cat[$i]['cat_layer']) break;
@@ -371,12 +374,14 @@ mytpl;
 					}
 				}
 			}
-			$result .= "</li>\n";
-			for($i=$deep_cur-$deep_start; $i>0; $i--) {
-				$result .= str_repeat("\t", $i+1)."</ul></li>\n";
+			if(!empty($result)) {
+				$result .= "</li>\n";
+				for($i=$deep_cur-$deep_start; $i>0; $i--) {
+					$result .= str_repeat("\t", $i+1)."</ul></li>\n";
+				}
+				$result .= "</ul>\n";
+				$cache->set($key, $result, 1);
 			}
-			$result .= "</ul>\n";
-			$cache->set($key, $result, 1);
 		}
 		return $result;
 	}

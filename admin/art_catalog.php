@@ -128,6 +128,7 @@ function build_page($method) {
 		$max_count = count($news_cat);
 		for($i=0; $i<$max_count; $i++) {
 			if(!$GLOBALS['op_mode'] && $news_cat[$i]['web_id']!=$setting['info']['web']['web_id']) continue;
+			if($group['power_cat']!="all" && strpos(','.$group['power_cat'].',', ','.$news_cat[$i]['cat_id'].',')===false) continue;
 			$news_cat[$i]['cat_name'] = ((isset($news_cat[$i+1]) && $news_cat[$i+1]['cat_layer']==$news_cat[$i]['cat_layer'])?"©À ":"©¸ ").$news_cat[$i]['cat_name'];
 			for($j=1; $j<$news_cat[$i]['cat_layer']; $j++) {
 				$news_cat[$i]['cat_name'] = "&nbsp;".$news_cat[$i]['cat_name'];
@@ -191,6 +192,7 @@ function build_page($method) {
 		$max_count = count($news_cat);
 		for($i=0; $i<$max_count; $i++) {
 			if(($method == "edit" || !$GLOBALS['op_mode']) && $news_cat[$i]['web_id']!=$record['web_id']) continue;
+			if($group['power_cat']!="all" && strpos(','.$group['power_cat'].',', ','.$news_cat[$i]['cat_id'].',')===false) continue;
 			if($news_cat[$i]['cat_id']==$record['cat_id']) {
 				$cur_layer = $news_cat[$i]['cat_layer'];
 				continue;
