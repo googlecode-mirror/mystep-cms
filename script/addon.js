@@ -38,6 +38,7 @@ $(function() {
 			}
 		});
 	});
+	setSlide();
 });
 
 function loadingShow() {

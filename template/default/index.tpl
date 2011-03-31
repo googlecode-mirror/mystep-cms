@@ -26,17 +26,20 @@
 	<div class="page_bar after">
 		<div class="box box_4">
 			<div class="title"><span class="bar">栏目标题</span></div>
-				<div class="taglist">
+			<div class="taglist">
 <!--tag limit="100"-->
-				</div>
+			</div>
+			<div style="width:640px; height:480px; overflow:hidden; margin:auto;">
+<!--news limit="4" template="slide" imgage="1"-->
+			</div>
 			<div class="content after">
-<!--news show_image="1" limit="12" template="image"-->
+<!--news show_image="1" limit="4" template="image"-->
 			</div>
 		</div>
 		<div class="box box_5">
 			<div class="title"><span class="bar">栏目标题</span></div>
 			<div class="content after">
-<!--news cat_id="2" limit="5" template="describe" loop="5"-->
+<!--news cat_id="2" limit="8" template="describe" loop="8"-->
 			</div>
 		</div>
 	</div>

@@ -11,7 +11,7 @@
 				</td>
 			</tr>
 			<tr> 
-				<td class="cat" width="80">文件名称：</td>
+				<td class="cat" width="80">文件名称：<span>*</span></td>
 				<td class="row">
 					<input name="file_name" type="text" size="20" maxlength="20" value="<!--file_name-->" <!--readonly--> need="" />
 				</td>

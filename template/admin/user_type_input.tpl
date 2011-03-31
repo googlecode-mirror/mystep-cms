@@ -4,7 +4,7 @@
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr> 
-				<td class="cat" width="120">分类名称：</td>
+				<td class="cat" width="120">分类名称：<span>*</span></td>
 				<td class="row">
 					<input name="type_id" type="hidden" value="<!--type_id-->" />
 					<input id="type_name" name="type_name" type="text" maxlength="20" value="<!--type_name-->" need="" />
@@ -12,7 +12,7 @@
 			</tr>
 <!--loop:start key="user_power"-->
 			<tr> 
-				<td class="cat" width="120"><!--user_power_name-->：</td>
+				<td class="cat" width="120"><!--user_power_name-->：<span>*</span></td>
 				<td class="row">
 					<input name="<!--user_power_idx-->" type="text" maxlength="100" value="<!--user_power_value-->" need="<!--user_power_format-->" />
 					<span class="comment">（<!--user_power_comment-->）</span>

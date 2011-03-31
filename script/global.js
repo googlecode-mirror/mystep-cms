@@ -263,3 +263,42 @@ function watermark(obj, rate, copyright, char_c, jam_tag) {
 	}
 	return result;
 }
+
+function setSlide() {
+	var objs = $(".slide");
+	var items = null;
+	var temp_num = "";
+	for(var i=0; i<objs.length; i++) {
+		items = objs[i].getElementsByTagName("DL");
+		if(items.length>0) {
+			temp_num = "";
+			for(var j=0, m=items.length; j<m; j++){
+				temp_num += "<li>"+(j+1)+"</li>";
+			}
+			temp_num = "<ul>"+temp_num+"</ul>";
+			$("<div/>").addClass("slide-num").html(temp_num).appendTo(objs[i]);
+		}
+		$("<div/>").addClass("slide-show").appendTo(objs[i]);
+		
+		$(".slide li").click(function(){
+			var theObj = $(this).parentsUntil(".slide").parent();
+			clearTimeout(theObj.data("timeout"));
+			theObj = theObj[0];
+			theObj.slide(parseInt(this.innerHTML)-1);
+		});
+		
+		objs[i].slide = function(idx) {
+			var max = $(this).find("dl").length;
+			if(idx>=max) idx = 0;
+			$(this).find("DL").hide();
+			var item = $(this).find("DL").eq(idx);
+			$(this).find(".slide-show").html(item.find("dt").html());
+			$(this).find(".slide-num li").removeClass("selected");
+			$(this).find(".slide-num li").eq(idx).addClass("selected");
+			item.animate({opacity: 'toggle'}, 2000);
+			var self = this;
+			$(this).data("timeout", setTimeout(function(){self.slide(idx+1)}, 5000));
+		}
+		objs[i].slide(0);
+	}
+}

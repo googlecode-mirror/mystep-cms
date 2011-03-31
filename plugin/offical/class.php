@@ -83,6 +83,14 @@ class plugin_offical implements plugin {
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
 		if(!isset($att_list['order'])) $att_list['order'] = " `order` desc, news_id desc";
 		if(!isset($att_list['setop'])) $att_list['setop'] = "";
+		if(!empty($att_list['setop'])) {
+			$show_list = array(
+				"index.php" => 1,
+				"list.php" => 2,
+				"read.php" => 4,
+			);
+			$att_list['setop'] = $show_list[$setting['info']['self']] + ($att_list['setop']=="img"?2:1) * 1024;
+		}
 		if(!isset($att_list['show_image'])) $att_list['show_image'] = "";
 		if(!isset($att_list['xid'])) $att_list['xid'] = "";
 		if(!isset($att_list['css1'])) $att_list['css1'] = "";
@@ -92,27 +100,23 @@ class plugin_offical implements plugin {
 		if(!isset($att_list['condition'])) $att_list['condition'] = "";
 		if(!isset($att_list['show_catalog'])) $att_list['show_catalog'] = "";
 		if(!isset($att_list['show_date'])) $att_list['show_date'] = "";
-		if(isset($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
+		if(!empty($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
 		if(!isset($att_list['tag'])) $att_list['tag'] = "";
 		$att_list['tag'] = str_replace("£¬", ",", $att_list['tag']);
 		$att_list['tag'] = str_replace(" ", ",", $att_list['tag']);
 		$att_list['tag'] = preg_replace("/,+/", ",", $att_list['tag']);
 		$att_list['tag'] = trim($att_list['tag'],",");
-		if(!empty($att_list['tag'])) $att_list['tag'] = "tag like '%".str_replace(",", "%' or tag like '%", $att_list['tag'])."%'";
-
+		if(!empty($att_list['tag'])) $att_list['tag'] = "a.tag like '%".str_replace(",", "%' or a.tag like '%", $att_list['tag'])."%'";
 		if(!empty($att_list['cat_id'])) {
-			if($cat_info=getParaInfo("news_cat", "cat_id", $att_list['cat_id'])) {
-				$att_list['web_id'] = $cat_info['web_id'];
-			}
+			if($cat_info=getParaInfo("news_cat", "cat_id", $att_list['cat_id'])) $att_list['web_id'] = $cat_info['web_id'];
 		}
-
-		$str_sql = "select * from {db_pre}news_show where 1=1";
-		if(!empty($att_list['web_id'])) $str_sql .= " and web_id in ({$att_list['web_id']})";
-		if(!empty($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
-		if(!empty($att_list['show_image'])) $str_sql .= " and image!=''";
-		if(!empty($att_list['setop'])) $str_sql .= " and (setop & {$setop})={$setop}";
+		$str_sql = "select a.* from {db_pre}news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1";
+		if(!empty($att_list['web_id'])) $str_sql .= " and a.web_id='{$att_list['web_id']}'";
+		if(!empty($att_list['cat_id'])) $str_sql .= " and (a.cat_id ='{$att_list['cat_id']}' || b.cat_main='{$att_list['cat_id']}')";
+		if(!empty($att_list['show_image'])) $str_sql .= " and a.image!=''";
+		if(!empty($att_list['setop'])) $str_sql .= " and (a.setop & {$att_list['setop']})={$att_list['setop']}";
 		if(!empty($att_list['tag'])) $str_sql .= " and (".$att_list['tag'].")";
-		if(!empty($att_list['xid'])) $str_sql .= " and news_id not in (".$att_list['xid'].")";
+		if(!empty($att_list['xid'])) $str_sql .= " and a.news_id not in (".$att_list['xid'].")";
 		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
 		$str_sql .= " order by ".$att_list['order'];
 		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
@@ -182,7 +186,7 @@ mytpl;
 		$result = str_replace($block, $result, $cur_content);
 		return $result;
 	}
-	
+
 	public static function parse_info(MyTPL $tpl, $att_list = array()) {
 		global $setting;
 		$result = "";
@@ -314,22 +318,22 @@ mytpl;
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
 		if(!isset($att_list['deep'])) $att_list['deep'] = 2;
 		if(!isset($att_list['class'])) $att_list['class'] = "";
+		if(!isset($att_list['all'])) $att_list['all'] = "";
 		if($att_list['cat_id']===0) $att_list['cat_id'] = "";
 		
 		$result = <<<mytpl
 <?php
-echo plugin_offical::getMenuContent("{$att_list['cat_id']}", "{$att_list['web_id']}", "{$att_list['deep']}", "{$att_list['class']}");
+echo plugin_offical::getMenuContent("{$att_list['cat_id']}", "{$att_list['web_id']}", "{$att_list['deep']}", "{$att_list['class']}", "{$att_list['all']}");
 ?>
 mytpl;
 		return $result;
 	}
 	
-	public static function getMenuContent($cat_id, $web_id, $deep, $class="") {
+	public static function getMenuContent($cat_id, $web_id, $deep, $class="", $all="") {
 		global $news_cat, $cache;
 		if($cat_id==0) $cat_id = "";
 		$key = md5("Menu_".$cat_id."_".$web_id."_".$deep);
 		$result = $cache->get($key);
-		$result = false;
 		if(!$result) {
 			$result = "";
 			$deep_start = 0;
@@ -340,16 +344,18 @@ mytpl;
 			$max_count = count($news_cat);
 			for($i=0; $i<$max_count; $i++) {
 				if(!empty($web_id) && $web_id!=$news_cat[$i]['web_id']) continue;
-				if(($news_cat[$i]['cat_show'] & 2)!=2 || ($deep_start==0 && $news_cat[$i]['cat_layer']>$catInfo['cat_layer'])) continue;
+				if(empty($all) && (($news_cat[$i]['cat_show'] & 2)!=2 || ($deep_start==0 && $news_cat[$i]['cat_layer']>$catInfo['cat_layer']))) continue;
 				if($deep_start>0) {
+					$theLink = $news_cat[$i]['cat_link'];
+					if(empty($theLink)) $theLink = getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id']);
 					if($deep_cur==$news_cat[$i]['cat_layer']) {
 						if($cat_id!="" && $cat_id!=$news_cat[$i]['cat_id'] && $deep_start==$news_cat[$i]['cat_layer']) break;
 						$result .= "</li>\n";
-						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id'])."\">".$news_cat[$i]['cat_name']."</a>";
+						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".$theLink."\">".$news_cat[$i]['cat_name']."</a>";
 					} elseif($deep_cur<$news_cat[$i]['cat_layer']) {
 						if($news_cat[$i]['cat_layer']<$deep_max) {
 							$result .= "<ul>\n";
-							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id'])."\">".$news_cat[$i]['cat_name']."</a>";
+							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".$theLink."\">".$news_cat[$i]['cat_name']."</a>";
 							$deep_cur = $news_cat[$i]['cat_layer'];
 						}
 					} else {
@@ -358,7 +364,7 @@ mytpl;
 							for($j=$deep_cur-$news_cat[$i]['cat_layer']-1; $j>0; $j--) {
 								$result .= str_repeat("\t", $j)."</ul></li>\n";
 							}
-							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id'])."\">".$news_cat[$i]['cat_name']."</a>";
+							$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".$theLink."\">".$news_cat[$i]['cat_name']."</a>";
 							$deep_cur = $news_cat[$i]['cat_layer'];
 						} else {
 							if($cat_id!="") break;
@@ -366,11 +372,13 @@ mytpl;
 					}
 				} else {
 					if($cat_id==$news_cat[$i]['cat_id'] || $cat_id=="") {
+						$theLink = $news_cat[$i]['cat_link'];
+						if(empty($theLink)) $theLink = getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id']);
 						$deep_cur = $news_cat[$i]['cat_layer'];
 						$deep_start = $news_cat[$i]['cat_layer'];
 						$deep_max = $deep_start + $deep;
 						$result .= "<ul class=\"{$class}\">\n";
-						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id'])."\">".$news_cat[$i]['cat_name']."</a>";
+						$result .= str_repeat("\t", $news_cat[$i]['cat_layer'])."<li><a href=\"".$theLink."\">".$news_cat[$i]['cat_name']."</a>";
 					}
 				}
 			}
@@ -380,7 +388,7 @@ mytpl;
 					$result .= str_repeat("\t", $i+1)."</ul></li>\n";
 				}
 				$result .= "</ul>\n";
-				$cache->set($key, $result, 1);
+				$cache->set($key, $result, 3600);
 			}
 		}
 		return $result;

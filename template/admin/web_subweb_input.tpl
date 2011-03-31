@@ -4,20 +4,20 @@
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
-				<td class="cat" width="120">×ÓÕ¾Ãû³Æ£º</td>
+				<td class="cat" width="120">×ÓÕ¾Ãû³Æ£º<span>*</span></td>
 				<td class="row">
 					<input name="web_id" type="hidden" value="<!--web_id-->" />
 					<input type="text" name="name" value="<!--name-->" need="" />
 				</td>
 			</tr>
 			<tr> 
-				<td class="cat">ÍøÕ¾Ë÷Òı£º</td>
+				<td class="cat">ÍøÕ¾Ë÷Òı£º<span>*</span></td>
 				<td class="row">
 					<input type="text" name="idx" value="<!--idx-->" need="" />
 				</td>
 			</tr>
 			<tr> 
-				<td class="cat">ÍøÕ¾ÓòÃû£º</td>
+				<td class="cat">ÍøÕ¾ÓòÃû£º<span>*</span></td>
 				<td class="row">
 					<input type="text" name="host" value="<!--host-->" need="" />
 				</td>
@@ -48,7 +48,6 @@ $setting_skip['db']['pconnect'] = '';
 $setting_skip['db']['charset'] = '';
 $setting_skip['db']['pconnect'] = '';
 $setting_skip['gen'] = array();
-$setting_skip['gen']['language'] = '';
 $setting_skip['gen']['charset'] = '';
 $setting_skip['gen']['gzip_level'] = '';
 $setting_skip['gen']['cache'] = '';

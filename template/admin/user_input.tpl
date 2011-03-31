@@ -4,7 +4,7 @@
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(password.value==password_c.value){return checkForm(this)}else{alert('两次输入的密码不一致！');return false;}">
 		<table id="input_area" width="400" cellspacing="0" cellpadding="0" align="center">
 			<tr> 
-				<td class="cat" width="80">用户名称：</td>
+				<td class="cat" width="80">用户名称：<span>*</span></td>
 				<td class="row">
 					<input name="user_id" type="hidden" value="<!--user_id-->" />
 					<input name="username" type="text" size="20" maxlength="20" value="<!--username-->" need="" />
@@ -24,7 +24,7 @@
 				</td>
 			</tr>
 			<tr> 
-				<td class="cat" width="80">电子邮件：</td>
+				<td class="cat" width="80">电子邮件：<span>*</span></td>
 				<td class="row">
 					<input name="email" type="email" size="20" maxlength="20" need="email" value="<!--email-->" />
 				</td>

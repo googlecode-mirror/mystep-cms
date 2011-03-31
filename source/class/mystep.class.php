@@ -108,7 +108,7 @@ class MyStep extends class_common {
 		}
 	}
 	
-	public function pageStart() {
+	public function pageStart($setPlugin = false) {
 		global $setting, $db, $req, $cache;
 		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
 		date_default_timezone_set("PRC");
@@ -127,11 +127,9 @@ class MyStep extends class_common {
 		$db = $this->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 		$cache = $this->getInstance("MyCache", $setting['web']['cache_mode']);
 		
+		$setting['info'] = array();
 		$setting['info']['time_start'] = GetMicrotime();
 		$setting['info']['self'] = strtolower(basename($req->getServer("PHP_SELF")));
-		$this->getLanguage(ROOT_PATH."/source/language/");
-		$setting['language']=$this->language;
-
 		$host = $req->getServer("HTTP_HOST");
 		includeCache("website");
 		$setting['info']['web'] = getParaInfo("website", "host", $host);
@@ -147,6 +145,10 @@ class MyStep extends class_common {
 			$setting = arrayMerge($setting, $setting_sub);
 			$req->init($setting['cookie'], $setting['session']);
 		}
+		
+		if($setPlugin) $this->setPlugin();
+		$this->getLanguage(ROOT_PATH."/source/language/");
+		$setting['language']=$this->language;
 		
 		$max_count = count($this->func_start);
 		for($i=0; $i<$max_count; $i++) {

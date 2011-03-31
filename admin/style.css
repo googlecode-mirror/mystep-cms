@@ -66,6 +66,7 @@ DIV .nav {margin:20px auto 20px auto; text-align:center; font-size:12px; font-we
 DIV .addnew {position:absolute; top:36px; left:10px; width:120px; height:32px; padding:5px 0px; font-size:14px; text-align:center; font-weight:bold; background-image:url("images/btn.gif"); background-repeat:no-repeat;}
 TABLE .cat {border:1px solid #629DC5; padding:5px 10px; vertical-align:middle; font-weight:bold; background-color:#F2F9FD;}
 TABLE .row {border:1px solid #629DC5; padding:5px 10px; vertical-align:middle;}
+TABLE .cat span {color:red;}
 
 #list_area,
 #input_area {width:800px; border:1px solid #629DC5; margin:10px;}

@@ -14,7 +14,7 @@ header("Pragma: no-cache");
 
 $mystep = new MyStep();
 $mystep->getLanguage(dirname(ROOT_PATH.$_SERVER['PHP_SELF'])."/language/");
-$mystep->pageStart();
+$mystep->pageStart(true);
 $db->Reconnect(true, $setting['db']['name']);
 
 $usergroup = $req->getSession("usergroup");
@@ -35,6 +35,5 @@ if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "fil
 		$mystep->pageEnd(false);
 	}
 }
-
 
 ?>

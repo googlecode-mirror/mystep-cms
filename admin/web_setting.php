@@ -47,7 +47,6 @@ if(!empty($log_info)) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_setting_title']);
-	$setting['watermark']['mode'] = array(($setting['watermark']['mode']&1)==1, ($setting['watermark']['mode']&2)==2);
 	
 	include(ROOT_PATH."/include/config-detail.php");
 	foreach($setting_comm as $key => $value) {
@@ -56,7 +55,7 @@ if(!empty($log_info)) {
 		}
 	}
 	$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);
-	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
+	$tpl->Set_Variable('main', $tpl_tmp->Get_Content());
 	unset($tpl_tmp);
 	$mystep->show($tpl);
 }

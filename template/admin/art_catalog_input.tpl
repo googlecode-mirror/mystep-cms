@@ -25,14 +25,14 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">分类名称：</td>
+				<td class="cat">分类名称：<span>*</span></td>
 				<td class="row">
 					<input class="input" name="cat_name" type="text" size="20" maxlength="20" value="<!--cat_name-->" need="" />
 					<input name="cat_id" type="hidden" value="<!--cat_id-->" />
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">分类索引：</td>
+				<td class="cat">分类索引：<span>*</span></td>
 				<td class="row">
 					<input class="input" name="cat_idx" type="text" size="20" maxlength="20" value="<!--cat_idx-->" need="" />
 				</td>
@@ -44,7 +44,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">分类描述：</td>
+				<td class="cat">分类描述：<span>*</span></td>
 				<td class="row">
 					<input class="input" name="cat_comment" type="text" size="20" maxlength="50" value="<!--cat_comment-->" need="" />
 				</td>

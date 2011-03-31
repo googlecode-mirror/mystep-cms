@@ -123,10 +123,6 @@ function getList($layer = 1, $cat_main = 0) {
 
 function buildParaList($idx) {
 	global $db, $setting;
-	if(is_null($db)) {
-		global $mystep;
-		$db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
-	}
 	$cache_para = array();
 	switch($idx) {
 		case "news_cat":

@@ -4,7 +4,7 @@
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this, checkForm_append)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
-				<td class="cat" width="120">所属栏目：</td>
+				<td class="cat" width="120">所属栏目：<span>*</span></td>
 				<td class="row" width="680">
 					<input type="hidden" name="news_id" value="<!--record_news_id-->" />
 					<input id="web_id" type="hidden" name="web_id" value="<!--record_web_id-->" />
@@ -18,7 +18,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">文章标题：</td>
+				<td class="cat" width="80">文章标题：<span>*</span></td>
 				<td class="row">
 					<input name="subject" type="text" id="title" value="<!--record_subject-->" maxlength="100" need="" /> &nbsp; 
 					<select id="profix" onchange="title_change()" style="width:80px"></select> &nbsp; 
@@ -28,7 +28,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">关 键 字：</td>
+				<td class="cat" width="80">关 键 字：<span>*</span></td>
 				<td class="row"><input id="keyword" name="tag" type="text" value="<!--record_tag-->" maxlength="100" need="" /> 
 				<span class="comment">（用于搜索相关资讯，多个关键字用逗号分隔）</span></td>
 			</tr>
@@ -50,11 +50,11 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">阅读权限：</td>
+				<td class="cat">阅读权限：<span>*</span></td>
 				<td class="row"><input name="view_lvl" type="text" maxlength="2" value="<!--record_view_lvl-->" need="digital" /> <span class="comment">（浏览当前文章需要达到的级别）</span></td>
 			</tr>
 			<tr>
-				<td class="cat">列表排序：</td>
+				<td class="cat">列表排序：<span>*</span></td>
 				<td class="row"><input name="order" type="text" maxlength="3" value="<!--record_order-->" need="digital" /> <span class="comment">（文章排序，序号越大越靠前）</span></td>
 			</tr>
 			<tr>
@@ -74,7 +74,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">文章描述：</td>
+				<td class="cat" width="80">文章描述：<span>*</span></td>
 				<td class="row">
 					<textarea name="describe" style="width:100%;height:54px;" need="" /><!--record_describe--></textarea>
 				</td>

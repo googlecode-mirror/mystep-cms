@@ -197,7 +197,7 @@ function build_page($method) {
 				$cur_layer = $news_cat[$i]['cat_layer'];
 				continue;
 			}
-			if(!empty($news_cat[$i]['cat_link'])) continue;
+			//if(!empty($news_cat[$i]['cat_link'])) continue;
 			if($news_cat[$i]['cat_layer'] > $cur_layer) {
 				continue;
 			} else {

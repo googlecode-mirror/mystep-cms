@@ -308,7 +308,7 @@ function build_page($method) {
 	$max_count = count($news_cat);
 	for($i=0; $i<$max_count; $i++) {
 		if(($method != "add" || $setting['info']['web']['web_id']!=1) && $news_cat[$i]['web_id']!=$web_id) continue;
-		if(!empty($news_cat[$i]['cat_link'])) continue;
+		//if(!empty($news_cat[$i]['cat_link'])) continue;
 		$news_cat[$i]['cat_name'] = ((isset($news_cat[$i+1]) && $news_cat[$i+1]['cat_layer']==$news_cat[$i]['cat_layer'])?"©À ":"©¸ ").$news_cat[$i]['cat_name'];
 		for($j=1; $j<$news_cat[$i]['cat_layer']; $j++) {
 			$news_cat[$i]['cat_name'] = "&nbsp;".$news_cat[$i]['cat_name'];

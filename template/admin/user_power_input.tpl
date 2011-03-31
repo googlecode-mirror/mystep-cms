@@ -4,21 +4,21 @@
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr> 
-				<td class="cat" width="120">权限名称：</td>
+				<td class="cat" width="120">权限名称：<span>*</span></td>
 				<td class="row">
 					<input name="power_id" type="hidden" value="<!--power_id-->" />
 					<input name="name" type="text" maxlength="20" value="<!--name-->" need="" />
 				</td>
 			</tr>
 			<tr> 
-				<td class="cat" width="120">权限索引：</td>
+				<td class="cat" width="120">权限索引：<span>*</span></td>
 				<td class="row">
 					<input name="idx_org" type="hidden" value="<!--idx-->" />
 					<input name="idx" type="text" value="<!--idx-->" need="alpha" />
 				</td>
 			</tr>
 			<tr> 
-				<td class="cat" width="120">默 认 值：</td>
+				<td class="cat" width="120">默 认 值：<span>*</span></td>
 				<td class="row">
 					<input id="value" name="value" type="text" value="<!--value-->" need="" />
 				</td>
@@ -36,7 +36,7 @@
 				</td>
 			</tr>
 			<tr> 
-				<td class="cat" width="120">权限描述：</td>
+				<td class="cat" width="120">权限描述：<span>*</span></td>
 				<td class="row">
 					<input name="comment" type="text" value="<!--comment-->" need="" />
 				</td>

@@ -15,7 +15,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">展示标题：</td>
+				<td class="cat" width="80">展示标题：<span>*</span></td>
 				<td class="row">
 					<input name="subject" type="text" id="title" value="<!--subject-->" maxlength="100" need="" />
 					<input type="hidden" name="id" value="<!--id-->" />

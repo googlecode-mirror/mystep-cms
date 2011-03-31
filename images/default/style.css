@@ -90,7 +90,7 @@ TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0
 
 .box_5 {float:right; width:260px; border:1px #990000 solid;}
 .box_5 .title {height:27px; background:url(bar_2.png);}
-.box_5 .content {height:420px; *height:410px; background-color:#FFFFFF;}
+.box_5 .content {background-color:#FFFFFF;}
 .box_5 .content LI {height:78px; overflow:hidden; background:url();}
 .box_5 .content .c1 {text-align:left; height:50px;}
 .box_5 .content .c2 {text-align:right;}
@@ -107,6 +107,18 @@ TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0
 .box_8 .title {height:17px; background:url(bar_1.png);}
 .box_8 .content {background-color:#FFFFFF; text-align:left;}
 .box_8 .content IMG {width:150px; height:50px; border:1px #999999 solid; margin:5px 3px 0px 0px;}
+
+.slide {position:relative;width:100%; height:100%;}
+.slide a {color:#FFF;}
+.slide a:hover {color:#FFF;}
+.slice dl {display:none;}
+.slide dd {text-align:center;}
+.slide dd img {width:100%; height:100%;}
+.slide .slide-num {position:absolute; bottom:20px; height:20px; font-size:12px; width:100%;}
+.slide .slide-num ul {float:right;}
+.slide .slide-num li {float:left; padding:0 7px; background:#666; margin:0px 5px 0px 0px; color:#FFF; height:20px; line-height:20px; cursor:pointer;}
+.slide .slide-num li.selected {background:#faa213; cursor:auto;}
+.slide .slide-show {position:absolute; bottom:0px; background:#faa213; height:20px; font-weight:bold; font-size:14px; width:100%; line-height:20px; padding:0 5px;}
 
 .taglist {width:94%; background:#F9F9F9; border:1px solid #DFDFDF; margin:10px auto 10px auto; overflow:hidden; padding:10px;}
 .taglist h4 {font-weight:bold; margin-bottom:10px;}

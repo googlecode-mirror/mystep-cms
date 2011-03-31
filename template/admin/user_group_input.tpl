@@ -4,7 +4,7 @@
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr> 
-				<td class="cat" width="120">组群名称：</td>
+				<td class="cat" width="120">组群名称：<span>*</span></td>
 				<td class="row">
 					<input name="group_id" type="hidden" value="<!--group_id-->" />
 					<input id="group_name" name="group_name" type="text" maxlength="20" value="<!--group_name-->" need="" />

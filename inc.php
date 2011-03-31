@@ -16,8 +16,7 @@ include(ROOT_PATH."/source/class/abstract.class.php");
 include(ROOT_PATH."/source/class/mystep.class.php");
 
 $mystep = new MyStep();
-$mystep->setPlugin();
-$mystep->pageStart();
+$mystep->pageStart(true);
 $cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/".$setting['info']['web']['idx']."/";
 $tpl_info = array(
 		"idx" => "main",

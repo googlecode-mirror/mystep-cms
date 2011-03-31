@@ -4,14 +4,14 @@
 	<form name="link_edit" method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
-				<td class="cat" width="80">链接名称：</td>
+				<td class="cat" width="80">链接名称：<span>*</span></td>
 				<td class="row">
 					<input name="id" type="hidden" value="<!--id-->" />
 					<input name="link_name" type="text" size="20" maxlength="40" value="<!--link_name-->" need="" />
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">链接索引：</td>
+				<td class="cat">链接索引：<span>*</span></td>
 				<td class="row">
 					<input name="idx" id="idx" type="text" size="20" maxlength="20" value="<!--idx-->" need="" /> &nbsp;
 					<select class="btn" onchange="$id('idx').value=this.value">
@@ -23,7 +23,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">链接地址：</td>
+				<td class="cat">链接地址：<span>*</span></td>
 				<td class="row">
 					<input name="link_url" type="text" size="20" maxlength="100" value="<!--link_url-->" need="url" />
 				</td>

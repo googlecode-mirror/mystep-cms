@@ -32,6 +32,7 @@ if($cat_info = getParaInfo("news_cat", "cat_idx", $cat_idx)) {
 	$page_size = $list_limit[0];
 	$cat_main = 0;
 }
+$menu_cat_id = $cat_id;
 
 if(isset($cat_info['cat_type'])) {
 	$tpl_info['idx'] = "list_".$cat_info['cat_type'];
@@ -41,14 +42,15 @@ if(isset($cat_info['cat_type'])) {
 
 $cat_main_link = "";
 if($cat_main > 0) {
+	$menu_cat_id = $cat_main;
 	if($cat_info = getParaInfo("news_cat", "cat_id", $cat_main)) {
-		$cat_main_link = '<a href="'.getFileURL(0, $cat_info['cat_idx']).'">'.$cat_info['cat_name'].'</a>';
+		$cat_main_link = '<a href="'.getFileURL(0, $cat_info['cat_idx'], $cat_info['web_id']).'">'.$cat_info['cat_name'].'</a>';
 	}
 }
 
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 $news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show where 1=1".($cat_id==0?"":" and cat_id='{$cat_id}'"), "result");
-if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', (empty($cat_main_link)?"":" - {$cat_main_link}").' - <a href="'.getFileURL(0, $cat_idx).'">'.$cat_name.'</a>');
+if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', (empty($cat_main_link)?"":" - {$cat_main_link}").' - <a href="'.getFileURL(0, $cat_idx, $web_id).'">'.$cat_name.'</a>');
 $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 $tpl_tmp->Set_Variable('cat_main_link', $cat_main_link);
