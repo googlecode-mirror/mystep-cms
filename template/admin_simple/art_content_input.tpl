@@ -74,7 +74,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">文章描述：<span>*</span></td>
+				<td class="cat" width="80">文章描述：<span>*</span><br /><br />（限120字）</td>
 				<td class="row">
 					<textarea name="describe" style="width:100%;height:54px;" need="" /><!--record_describe--></textarea>
 				</td>
@@ -82,7 +82,9 @@
 			<tr>
 				<td class="cat" width="80" valign="top">主要内容：</td>
 				<td class="row">
-					<input name="get_remote_file" class="cbox" id="get_remote_file" type="checkbox" value="1" <!--get_remote_file--> /><label for="get_remote_file">自动复制外网图片到本地</label>&nbsp; 
+					<input name="get_remote_file" class="cbox" id="get_remote_file" type="checkbox" value="1" <!--get_remote_file--> /><label for="get_remote_file">自动复制外网图片到本地</label>
+					&nbsp; &nbsp;
+					[<a href="javascript:" onclick="attach_mine()">我的附件</a>]
 				</td>
 			</tr>
 			<tr>
@@ -193,6 +195,12 @@ function attach_edit() {
 	return;
 }
 
+function attach_mine() {
+	showPop('attach_mine','我的附件','url','attachment.php?method=mine', 600, 200);
+	//window.open('attachment.php?method=mine','','width=600,height=300,scrollbars=1');
+	return;
+}
+
 function profix_changed(cat_id) {
 	if(cat_id==null || cat_id=="") {
 		$id("profix").disabled = true;
@@ -232,7 +240,13 @@ function checkForm_append(theForm) {
 	if(theForm.link.value!="" && $id("content").value=="") {
 		$id("content").value = theForm.link.value;
 	}
-	return true;
+	var flag = true;
+	var theLen = theForm.describe.value.Tlength();
+	if(theLen>250) {
+		alert(printf("当前描述长度为 %1 字节，请限制在 %2 字节内！", theLen, 230));
+		flag = false;
+	}
+	return flag;
 }
 
 function setIframe(idx) {

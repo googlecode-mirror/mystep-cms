@@ -21,11 +21,11 @@
 		</tr>
 <!--if:end-->
 <!--loop:start key="record" time="20"-->
-		<tr align="center">
-			<td class="row"><!--record_date--></td>
-			<td class="row"><!--record_pv--></a></td>
-			<td class="row"><!--record_iv--></td>
-			<td class="row"><!--record_online--></td>
+		<tr class="row" align="center">
+			<td><!--record_date--></td>
+			<td><!--record_pv--></a></td>
+			<td><!--record_iv--></td>
+			<td><!--record_online--></td>
 		 </tr>
 <!--loop:end-->
 	</table>

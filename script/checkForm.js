@@ -13,6 +13,14 @@
 if(typeof(language)=="undefined") $.getScript(location.href.replace("http://"+location.hostname+"/", "").replace(/\/[^\/]+$/, "/").replace(/[^\/]+/, "..")+"script/language.js.php");
 
 function checkForm(the_form, myChecker){
+	var flag = false;
+	if(typeof(myChecker)=="function") {
+		flag = myChecker(the_form);
+	} else {
+		flag = true;
+	}
+	if(flag==false) return false;
+	
 	var obj_list = new Array();
 	var the_obj = null;
 	var the_value, the_need, the_len;
@@ -161,11 +169,5 @@ function checkForm(the_form, myChecker){
 		}
 	}
 	
-	var flag = false;
-	if(typeof(myChecker)=="function") {
-		flag = myChecker(the_form);
-	} else {
-		flag = true;
-	}
-	return flag;
+	return true;
 }

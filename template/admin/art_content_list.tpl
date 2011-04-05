@@ -24,7 +24,7 @@
 	关键字：<input type="text" size="8" value="<!--keyword-->" onkeypress="if(window.event.keyCode==13)location.href='?web_id=<!--web_id-->&keyword='+this.value" /><input type="button" value="检索" onclick="location.href='?web_id=<!--web_id-->&keyword='+this.previousSibling.value" />
 </div>
 <div align="center">
-	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
+	<table id="list_area" cellSpacing="0" cellPadding="0" align="center" border="1">
 		<tr align="center"> 
 			<td class="cat" width="30"><a href="?keyword=<!--keyword-->&cat_id=<!--cat_id-->&web_id=<!--web_id-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
 			<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=cat_id&order_type=<!--order_type-->&cat_id=<!--cat_id-->&web_id=<!--web_id-->"><font color="#000000">栏目</font></a></td>
@@ -34,13 +34,13 @@
 			<td class="cat" width="90"><font color="#000000">相关操作</font></td>
 		</tr>
 <!--loop:start key="record" time="20"-->
-		<tr align="center">
-			<td class="row"><!--record_news_id--></td>
-			<td class="row"><a href="?cat_id=<!--record_cat_id-->&web_id=<!--record_web_id-->" /><!--record_cat_name--></a></td>
-			<td class="row" align="left"><a href="<!--record_link-->" target="_blank"><!--record_subject--></a></td>
-			<td class="row"><!--record_add_user--></td>
-			<td class="row"><!--record_add_date--></td>
-			<td class="row">
+		<tr class="row" align="center">
+			<td><!--record_news_id--></td>
+			<td><a href="?cat_id=<!--record_cat_id-->&web_id=<!--record_web_id-->" /><!--record_cat_name--></a></td>
+			<td align="left"><a href="<!--record_link-->" target="_blank"><!--record_subject--></a></td>
+			<td><!--record_add_user--></td>
+			<td><!--record_add_date--></td>
+			<td>
 				<a href="?method=unlock&web_id=<!--record_web_id-->&news_id=<!--record_news_id-->">解锁</a>
 				<a href="?method=edit&web_id=<!--record_web_id-->&news_id=<!--record_news_id-->">修改</a>
 				<a href="?method=delete&web_id=<!--record_web_id-->&news_id=<!--record_news_id-->" onclick="return confirm('是否确定要删除该文章？')">删除</a>

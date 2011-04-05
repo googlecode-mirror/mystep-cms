@@ -17,12 +17,12 @@
 			<td class="cat" width="80">操作</td>
 		</tr>
 <!--loop:start key="file"-->
-		<tr>
-			<td class="row"><!--file_name--></td>
-			<td class="row"><!--file_size--></td>
-			<td class="row"><!--file_attr--></td>
-			<td class="row"><!--file_time--></td>
-			<td class="row" align="center">
+		<tr class="row">
+			<td><!--file_name--></td>
+			<td><!--file_size--></td>
+			<td><!--file_attr--></td>
+			<td><!--file_time--></td>
+			<td align="center">
 				<a href="?method=edit&idx=<!--tpl_idx-->&file=<!--file_name-->">修改</a> &nbsp;
 				<a href="?method=delete&idx=<!--tpl_idx-->&file=<!--file_name-->" onclick="return confirm('是否确定删除当前模板文件？')">删除</a></td>
 			</td>

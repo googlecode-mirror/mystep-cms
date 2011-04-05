@@ -17,11 +17,11 @@
 			<td class="cat" width="60">操作</td>
 		</tr>
 <!--loop:start key="record" time="15"-->
-		<tr align="center">
-			<td class="row" align="center"><!--record_id--></td>
-			<td class="row" align="left"><!--record_subject--></td>
-			<td class="row" align="left"><!--record_content--></td>
-			<td class="row" align="center"><a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('请按确定继续。')">删除</a></td>
+		<tr class="row" align="center">
+			<td align="center"><!--record_id--></td>
+			<td align="left"><!--record_subject--></td>
+			<td align="left"><!--record_content--></td>
+			<td align="center"><a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('请按确定继续。')">删除</a></td>
 		</tr>
 <!--loop:end-->
 	</table>

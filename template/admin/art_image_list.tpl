@@ -10,12 +10,12 @@
 			<td class="cat"><font color="#000000">相关操作</font></td>
 		</tr>
 <!--loop:start key="record" time="15"-->
-		<tr align="center">
-			<td class="row"><!--record_id--></td>
-			<td class="row"><!--record_name--></td>
-			<td class="row"><!--record_keyword--></td>
-			<td class="row"><img src="<!--record_image-->" height="60" /></td>
-			<td class="row" align="center"><a href="?method=edit&id=<!--record_id-->">编辑</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('该操作将不可恢复！请按确定继续。')">删除</a></td>
+		<tr class="row" align="center">
+			<td><!--record_id--></td>
+			<td><!--record_name--></td>
+			<td><!--record_keyword--></td>
+			<td><img src="<!--record_image-->" height="60" /></td>
+			<td align="center"><a href="?method=edit&id=<!--record_id-->">编辑</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('该操作将不可恢复！请按确定继续。')">删除</a></td>
 		</tr>
 <!--loop:end-->
 	</table>

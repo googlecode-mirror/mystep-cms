@@ -24,7 +24,7 @@
 					<td class="cat" width="55">Ïà¹Ø²Ù×÷</td>
 				</tr>
 <!--loop:start key="record" time="20"-->
-				<tr onMouseOver="this.bgColor='#BEC5DE'" onMouseOut="this.bgColor=''" align="center">
+				<tr align="center">
 					<td class="row"><!--record_id--></td>
 					<td class="row"><!--record_news_id--></td>
 					<td class="row" align="left"><a href="<!--record_web_url-->/files?<!--record_id-->" target="_blank"><!--record_file_name--></a></td>

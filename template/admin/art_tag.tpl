@@ -30,13 +30,13 @@
 			<td class="cat" width="80">Ïà¹Ø²Ù×÷</td>
 		</tr>
 <!--loop:start key="record" time="20"-->
-		<tr align="center">
-			<td class="row"><!--record_id--></td>
-			<td class="row"><a href="<!--record_link-->" target="_blank"><!--record_tag--> </a></td>
-			<td class="row"><!--record_count--></td>
-			<td class="row"><!--record_click--></td>
-			<td class="row"><!--record_add_date--></td>
-			<td class="row"><!--record_update_date--></td>
+		<tr align="center" class="row">
+			<td><!--record_id--></td>
+			<td><a href="<!--record_link-->" target="_blank"><!--record_tag--> </a></td>
+			<td><!--record_count--></td>
+			<td><!--record_click--></td>
+			<td><!--record_add_date--></td>
+			<td><!--record_update_date--></td>
 			<td class="row" align="center"><a href="?method=delete&id=<!--record_id-->&web_id=<!--web_id-->">É¾³ý</a></td>
 		</tr>
 <!--loop:end-->

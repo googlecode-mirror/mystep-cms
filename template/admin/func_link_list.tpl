@@ -25,13 +25,13 @@
 			<td class="cat" width="60">相关操作</td>
 		</tr>
 <!--loop:start key="record" time="20"-->
-		<tr align="center">
-			<td class="row"><!--record_id--></td>
-			<td class="row"><!--record_idx--></td>
-			<td class="row" align="left"><a href="<!--record_link_url-->" target="_blank"><!--record_link_name--></a></td>
-			<td class="row"><!--record_image--></td>
-			<td class="row"><!--record_level--></td>
-			<td class="row"><a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('是否确认删除该项目？')">删除</a></td>
+		<tr class="row" align="center">
+			<td><!--record_id--></td>
+			<td><!--record_idx--></td>
+			<td align="left"><a href="<!--record_link_url-->" target="_blank"><!--record_link_name--></a></td>
+			<td><!--record_image--></td>
+			<td><!--record_level--></td>
+			<td><a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('是否确认删除该项目？')">删除</a></td>
 		</tr>
 <!--loop:end-->
 	</table>

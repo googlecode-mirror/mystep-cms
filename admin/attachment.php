@@ -20,8 +20,8 @@ switch($method) {
 				$name = str_replace($ext, "", $upload->upload_result[$i]['name']);
 				$upload->upload_result[$i]['name'] = substrPro($name, 0, 80).$ext;
 				$upload->upload_result[$i]['new_name'] = str_replace(".upload", "", $upload->upload_result[$i]['new_name']);
-				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$upload->upload_result[$i]['name']."', '".$upload->upload_result[$i]['type']."', '".$upload->upload_result[$i]['size']."', '{$comment}', '".str_replace(strrchr($upload->upload_result[$i]['new_name'],"."),"",$upload->upload_result[$i]['new_name'])."', 0, '', '".$req->getSession('username')."', {$watermark})";
-				$db->Query($qrl_str);
+				$str_sql = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$upload->upload_result[$i]['name']."', '".$upload->upload_result[$i]['type']."', '".$upload->upload_result[$i]['size']."', '{$comment}', '".str_replace(strrchr($upload->upload_result[$i]['new_name'],"."),"",$upload->upload_result[$i]['new_name'])."', 0, '', '".$req->getSession('username')."', {$watermark})";
+				$db->Query($str_sql);
 				$new_id = $db->GetInsertId();
 				if($new_id != 0) {
 					if(strpos($upload->upload_result[$i]['type'],"image")===0) {
@@ -68,7 +68,6 @@ mystep;
 	case "add":
 		$tpl_info['idx'] = "attachment_add";
 		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-		$tpl_tmp->Set_Variable('script', $script);
 		$Max_size = ini_get('upload_max_filesize');
 		$tpl_tmp->Set_Variable('Max_size', $Max_size);
 		switch(strtoupper(substr($Max_size,-1))){
@@ -126,17 +125,16 @@ mystep;
 	case "edit":
 		$tpl_info['idx'] = "attachment_edit";
 		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-		$tpl_tmp->Set_Variable('script', $script);
 		$news_id = $req->getGet("news_id");
 		$attach_list = $req->getGet("attach_list");
 		$attach_list = split("\|", $attach_list);
-		$qrl_str = "select * from ".$setting['db']['pre']."attachment where ";
+		$str_sql = "select * from ".$setting['db']['pre']."attachment where ";
 		$max_count = count($attach_list);
 		for($i=0; $i<$max_count; $i++) {
-			if(!empty($attach_list[$i])) $qrl_str .= "id={$attach_list[$i]} or ";
+			if(!empty($attach_list[$i])) $str_sql .= "id={$attach_list[$i]} or ";
 		}
-		$qrl_str .= (empty($news_id) ? "1=0" : "news_id={$news_id}");
-		$db->Query($qrl_str);
+		$str_sql .= (empty($news_id) ? "1=0" : "news_id={$news_id}");
+		$db->Query($str_sql);
 		$att_more = true;
 		while($record = $db->GetRS()) {
 			$att_more = false;
@@ -158,6 +156,62 @@ mystep;
 				}
 			";
 		}
+		$tpl_tmp->Set_Variable('script', $script);
+		break;
+	case "mine":
+		$tpl_info['idx'] = "attachment_mine";
+		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
+
+		$order = $req->getGet("order");
+		$order_type = $req->getGet("order_type");
+		if(empty($order_type)) $order_type = "desc";
+		$keyword = $req->getGet("keyword");
+		$tpl_tmp->Set_Variable('keyword', $keyword);
+
+		$str_sql = "select count(*) as counter from ".$setting['db']['pre']."attachment where add_user='".$_SESSION['username']."'";
+		if(!empty($keyword)) $str_sql.= " and file_name like '%{$keyword}%'";
+		$counter = $db->GetSingleResult($str_sql);
+		$page = $req->getGet("page");
+		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
+		$tpl_tmp->Set_Variables($page_arr);
+
+		$str_sql = "select * from ".$setting['db']['pre']."attachment where add_user='".$_SESSION['username']."'";
+		if(!empty($keyword)) $str_sql.= " and file_name like '%{$keyword}%'";
+		if(empty($order)) $order="id";
+		$str_sql.= " order by $order {$order_type}".(($order=="id")?"":", id desc");
+		$str_sql.= " limit $page_start, $page_size";
+		$db->Query($str_sql);
+		$att_more = true;
+		$tpl_tmp->Set_Variable('order_type_org', $order_type);
+		if($order_type=="desc") {
+			$order_type = "asc";
+		} else {
+			$order_type = "desc";
+		}
+		$tpl_tmp->Set_Variable('order', $order);
+		$tpl_tmp->Set_Variable('order_type', $order_type);
+		while($record = $db->GetRS()) {
+			$att_more = false;
+			HtmlTrans(&$record);
+			$record['web_url'] = $setting['web']['url'];
+			$record['file_time'] = date("Y-m-d H:m:s", substr($record['file_time'],0, 10));
+			$tpl_tmp->Set_Loop('record', $record);
+		}
+		$db->Free();
+		$script = "";
+		if($att_more) {
+			$script = "
+				alert('".$setting['language']['admin_attachment_edit_err']."');
+				if(parent==null){
+					self.opener = null;
+					self.close();
+					location.href = './';
+				} else {
+					parent.\$.closePopupLayer();
+				}
+			";
+		}
+		$tpl_tmp->Set_Variable('script', $script);
 		break;
 	case "download":
 		$id = $req->getGet("id");

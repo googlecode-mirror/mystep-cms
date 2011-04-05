@@ -89,6 +89,10 @@
 		
 		return this;
 	}
+	
+	$.setPopupLayersPosition = function() {
+		setPopupLayersPosition();
+	}
 
 	function setScreenLockerSize() {
 		if (popupLayerScreenLocker) {

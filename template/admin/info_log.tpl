@@ -24,13 +24,13 @@
 		</tr>
 <!--if:end-->
 <!--loop:start key="record" time="20"-->
-		<tr align="center">
-			<td class="row"><!--record_id--></td>
-			<td class="row"><!--record_user--></td>
-			<td class="row"><!--record_group--></a></td>
+		<tr class="row" align="center">
+			<td><!--record_id--></td>
+			<td><!--record_user--></td>
+			<td><!--record_group--></a></td>
 			<td class="row" align="left"><!--record_link--></td>
-			<td class="row"><!--record_comment--></a></td>
-			<td class="row"><!--record_time--></td>
+			<td><!--record_comment--></a></td>
+			<td><!--record_time--></td>
 		 </tr>
 <!--loop:end-->
 	</table>

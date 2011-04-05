@@ -33,7 +33,7 @@ class plugin_offical implements plugin {
 			header("Cache-Control: private, max-age=".$expires);
 			header("Last-Modified: ".gmdate('D, d M Y H:i:s')." GMT");
 			header("Expires: ".gmdate('D, d M Y H:i:s', time()+$expires)." GMT");
-	    $etag = md5($_SERVER['URL']);
+			$etag = md5($_SERVER['URL']);
 			if ($_SERVER['HTTP_IF_NONE_MATCH'] == $etag){
 				header('Etag:'.$etag, true, 304);
 				exit();
@@ -43,7 +43,7 @@ class plugin_offical implements plugin {
 		} else {
 			header("Expires: -1");
 			header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0");
-      header("Cache-Control: private", false);
+			header("Cache-Control: private", false);
 			header("Pragma: no-cache");	
 		}
 	}

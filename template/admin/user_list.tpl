@@ -27,13 +27,13 @@
 			<td class="cat"><font color="#000000">相关操作</font></td>
 		</tr>
 <!--loop:start key="record" time="15"-->
-		<tr align="center">
-			<td class="row"><!--record_user_id--></td>
-			<td class="row"><!--record_username--></td>
-			<td class="row"><!--record_group_name--></td>
-			<td class="row"><a href="mailto:<!--record_email-->" /><!--record_email--></a></td>
-			<td class="row"><!--record_regdate--></td>
-			<td class="row" align="center"><a href="?method=edit&user_id=<!--record_user_id-->">编辑</a> <a href="?method=delete&user_id=<!--record_user_id-->" onclick="return confirm('该操作将不可恢复！请按确定继续。')">删除</a></td>
+		<tr class="row" align="center">
+			<td><!--record_user_id--></td>
+			<td><!--record_username--></td>
+			<td><!--record_group_name--></td>
+			<td><a href="mailto:<!--record_email-->" /><!--record_email--></a></td>
+			<td><!--record_regdate--></td>
+			<td align="center"><a href="?method=edit&user_id=<!--record_user_id-->">编辑</a> <a href="?method=delete&user_id=<!--record_user_id-->" onclick="return confirm('该操作将不可恢复！请按确定继续。')">删除</a></td>
 		</tr>
 <!--loop:end-->
 	</table>

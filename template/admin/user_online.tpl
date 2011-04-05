@@ -19,12 +19,12 @@
 			<td class="cat"><a href="?keyword=<!--keyword-->&order=url&order_type=<!--order_type-->"><font color="#000000">µ±Ç°Ò³Ãæ</font></a></td>
 		</tr>
 <!--loop:start key="record" time="20"-->
-		<tr align="center">
-			<td class="row"><!--record_ip--></td>
-			<td class="row"><!--record_username--> (<!--record_sid-->)</td>
-			<td class="row"><!--record_usertype--></td>
-			<td class="row"><!--record_reflash--></td>
-			<td class="row" align="left"><a href="<!--record_url-->" target="_blank"><!--record_url--></a></td>
+		<tr class="row" align="center">
+			<td><!--record_ip--></td>
+			<td><!--record_username--> (<!--record_sid-->)</td>
+			<td><!--record_usertype--></td>
+			<td><!--record_reflash--></td>
+			<td align="left"><a href="<!--record_url-->" target="_blank"><!--record_url--></a></td>
 		</tr>
 <!--loop:end-->
 	</table>
