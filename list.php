@@ -20,7 +20,7 @@ if($tpl->Is_Cached()) {
 $cat_id = 0;
 $web_id = $setting['info']['web']['web_id'];
 $list_limit = array_values($setting['list']);
-if($cat_info = getParaInfo("news_cat", "cat_idx", $cat_idx)) {
+if($cat_info = getParaInfo("news_cat_sub", "cat_idx", $cat_idx)) {
 	$cat_id = $cat_info['cat_id'];
 	$cat_name = $cat_info['cat_name'];
 	$cat_comment = $cat_info['cat_comment'];
@@ -43,7 +43,7 @@ if(isset($cat_info['cat_type'])) {
 $cat_main_link = "";
 if($cat_main > 0) {
 	$menu_cat_id = $cat_main;
-	if($cat_info = getParaInfo("news_cat", "cat_id", $cat_main)) {
+	if($cat_info = getParaInfo("news_cat_sub", "cat_id", $cat_main)) {
 		$cat_main_link = '<a href="'.getFileURL(0, $cat_info['cat_idx'], $cat_info['web_id']).'">'.$cat_info['cat_name'].'</a>';
 	}
 }

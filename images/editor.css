@@ -19,4 +19,4 @@ body {font-size:12px;}
 body a {color:#990000; text-decoration:none;}
 body a:hover {text-decoration:underline; color:#FF0084;}
 
-p {margin:0px 0px 0px 0px;}
+p {text-indent:28px; margin:0px 0px 10px 0px; line-height:24px;}

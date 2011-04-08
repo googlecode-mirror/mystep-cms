@@ -63,8 +63,8 @@ INSERT INTO `{pre}admin_cat` VALUES
 		(0, 4, '文章分类', 'art_catalog.php', '', 255, 0, '文章分类管理'),
 		(0, 4, '文章内容', 'art_content.php', '', 255, 0, '文章内容管理'),
 		(0, 4, '文章标签', 'art_tag.php', '', 255, 0, '文章标签管理'),
-		(0, 4, '文章图示', 'art_image.php', '', 0, 0, '文章图示管理'),
-		(0, 4, '内容展示', 'art_info.php', '', 0, 0, '展示内容管理'),
+		(0, 4, '文章图示', 'art_image.php', '', 255, 0, '文章图示管理'),
+		(0, 4, '内容展示', 'art_info.php', '', 255, 0, '展示内容管理'),
 		
 		(0, 5, '更新日志', 'info_log.php', '', 0, 0, '更新日志'),
 		(0, 5, '错误察看', 'info_err.php', '', 0, 0, '错误察看'),
@@ -322,6 +322,7 @@ CREATE TABLE `{pre}counter` (
 # 新闻图示
 CREATE TABLE `{pre}news_image` (
 	`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`web_id` TINYINT UNSIGNED DEFAULT 0,							#所属子站
 	`name` Char(40) NOT NULL DEFAULT '',							#名称
 	`image` Char(150) NOT NULL DEFAULT '',						#图片
 	`keyword` Char(150) NOT NULL DEFAULT '',					#关键字

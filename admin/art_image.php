@@ -5,6 +5,7 @@ $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $id = $req->getReq("id");
 $log_info = "";
+if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
 
 switch($method) {
 	case "add":
@@ -13,12 +14,18 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $setting['language']['admin_art_image_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."news_image where id = '{$id}'");
+		if(!$op_mode && $web_id!=$_POST['web_id']) {
+			$goto_url = $setting['info']['self'];
+		} else {
+			$log_info = $setting['language']['admin_art_image_delete'];
+			$db->Query("delete from ".$setting['db']['pre']."news_image where id = '{$id}'");
+		}
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
+			$goto_url = $setting['info']['self'];
+		} elseif(!$op_mode && $web_id!=$_POST['web_id']) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$_POST['image'] = str_replace("//", "/", $_POST['image']);
@@ -43,16 +50,25 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $web_id;
 
 	$tpl_info['idx'] = "art_image_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	if($method == "list") {
-		$db->Query("select * from ".$setting['db']['pre']."news_image order by id asc");
+		$str_sql = "select * from ".$setting['db']['pre']."news_image";
+		if(!empty($web_id)) $str_sql .= " where web_id='".$web_id."'";
+		$str_sql .= " order by id asc";
+		$db->Query($str_sql);
 		while($record = $db->GetRS()) {
+			if($webInfo = getParaInfo("website", "web_id", $record['web_id'])) {
+				$record['web_id'] = $webInfo['name'];
+			} else {
+				$record['web_id'] = "ALL";
+			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
+		$tpl_tmp->Set_Variable('web_id', $web_id);
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_image_title']);
 	} else {
 		if($method == "edit") {
@@ -69,6 +85,7 @@ function build_page($method) {
 		} else {
 			$record = array();
 			$record['id'] = 0;
+			$record['web_id'] = $web_id;
 			$record['name'] = "";
 			$record['keyword'] = "";
 			$record['image'] = "";
@@ -79,6 +96,13 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('method', $method);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}
+	
+	$max_count = count($GLOBALS['website']);
+	for($i=0; $i<$max_count; $i++) {
+		$GLOBALS['website'][$i]['selected'] = $GLOBALS['website'][$i]['web_id']==$web_id?"selected":"";
+		$tpl_tmp->Set_Loop("website", $GLOBALS['website'][$i]);
+	}
+	$db->Free();
 	
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 	unset($tpl_tmp);

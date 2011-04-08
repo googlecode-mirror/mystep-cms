@@ -133,7 +133,7 @@ tinyMCE.init({
 	plugins : "quote,bbscode,advlink,advimage,subtitle,safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
 
 	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,cleanup,|,quote,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup",
-	theme_advanced_buttons2 : "pagebreak,Subtitle,upload,|,cut,copy,paste,pastetext,pasteword,bbscode,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code",
+	theme_advanced_buttons2 : "pagebreak,Subtitle,upload,|,cut,copy,paste,pastetext,pasteword,bbscode,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
 	theme_advanced_buttons3 : "",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
@@ -156,6 +156,19 @@ tinyMCE.init({
 			image : 'images/file.gif',
 			onclick : function() {
 		     showPop('upload','¸½¼þÉÏ´«','url','attachment.php?method=add',560, 150);
+		  }
+		});
+		ed.addButton('change', {
+			title : 'Div Mode',
+			image : 'images/div.png',
+			onclick : function() {
+				var content = tinyMCE.get('content').getContent();
+				if(content.indexOf("<div>")==-1) {
+					content = content.replace(/<p>(.+?)<\/p>/ig, "<div>$1</div>");
+				} else {
+					content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
+				}
+				tinyMCE.get('content').setContent(content);
 		  }
 		});
 	},

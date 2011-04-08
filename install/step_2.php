@@ -94,6 +94,7 @@ $cookie_domain = ".".implode(".", array_slice(explode(".", $req->getServer("SERV
 			<table align="center">
 				<tr>
 					<td>
+						<input type="hiddeng" name="setting[cookie][domain]" value="<?=$cookie_domain?>">
 						<input type="button" onclick="location.href='./?step=1'" value="上一步"> &nbsp; &nbsp; &nbsp; &nbsp; <input type="submit" value="下一步">
 						<input type="hidden" name="step" value="3" />
 					</td>

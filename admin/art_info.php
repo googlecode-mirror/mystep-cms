@@ -6,6 +6,7 @@ if(empty($method)) $method = "list";
 $id = $req->getReq("id");
 $web_id = $req->getReq("web_id");
 $log_info = "";
+if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
 
 switch($method) {
 	case "add":
@@ -14,12 +15,18 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $setting['language']['admin_art_info_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."info_show where id = '{$id}'");
+		if(!$op_mode && $web_id!=$_POST['web_id']) {
+			$goto_url = $setting['info']['self'];
+		} else {
+			$log_info = $setting['language']['admin_art_info_delete'];
+			$db->Query("delete from ".$setting['db']['pre']."info_show where id = '{$id}'");
+		}
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
+			$goto_url = $setting['info']['self'];
+		} elseif(!$op_mode && $web_id!=$_POST['web_id']) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			if(get_magic_quotes_gpc()) strip_slash($_POST);
@@ -50,10 +57,18 @@ function build_page($method) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	if($method == "list") {
-		$db->Query("select * from ".$setting['db']['pre']."info_show order by id asc");
+		$str_sql = "select * from ".$setting['db']['pre']."info_show";
+		if(!empty($web_id)) $str_sql .= " where web_id='".$web_id."'";
+		$str_sql .= " order by id asc";
+		$db->Query($str_sql);
 		$n = 0;
 		while($record = $db->GetRS()) {
 			$n++;
+			if($webInfo = getParaInfo("website", "web_id", $record['web_id'])) {
+				$record['web_id'] = $webInfo['name'];
+			} else {
+				$record['web_id'] = "ALL";
+			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$tpl_tmp->Set_If('empty', ($n==0));
@@ -74,7 +89,7 @@ function build_page($method) {
 		} else {
 			$record = array();
 			$record['id'] = 0;
-			$record['web_id'] = 0;
+			$record['web_id'] = $web_id;
 			$record['subject'] = "";
 			$record['content'] = "";
 			$record['attach_list'] = "|";

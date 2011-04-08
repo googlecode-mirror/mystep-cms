@@ -2,11 +2,18 @@
 require("inc.php");
 
 includeCache("news_cat");
-
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $cat_id = $req->getReq("cat_id");
 $log_info = "";
+
+if($webInfo = getParaInfo("news_cat", "cat_id", $cat_id)) {
+	if(!$op_mode && $setting['info']['web']['web_id']!=$webInfo['web_id']) {
+		$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_catalog_error'], 0));
+		$mystep->show($tpl);
+		$mystep->pageEnd(false);
+	}
+}
 
 switch($method) {
 	case "add":

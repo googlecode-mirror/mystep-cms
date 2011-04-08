@@ -4,7 +4,6 @@
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">
 			<td class="cat"><a href="?order_type=<!--order_type-->"><font color="#000000">ฑเบล</font></a></td>
-			<td class="cat" width="60"><a href="?order=web_id&order_type=<!--order_type-->"><font color="#000000">ห๙ส๔อ๘ีพ</a></td>
 			<td class="cat"><a href="?order=name&order_type=<!--order_type-->"><font color="#000000">ร๛ณฦ</font></a></td>
 			<td class="cat"><a href="?order=keyword&order_type=<!--order_type-->"><font color="#000000">นุผüืึ</font></a></td>
 			<td class="cat"><a href="?order=image&order_type=<!--order_type-->"><font color="#000000">อผฦฌ</font></a></td>
@@ -13,7 +12,6 @@
 <!--loop:start key="record" time="15"-->
 		<tr class="row" align="center">
 			<td><!--record_id--></td>
-			<td><!--record_web_id--></td>
 			<td><!--record_name--></td>
 			<td><!--record_keyword--></td>
 			<td><img src="<!--record_image-->" height="60" /></td>

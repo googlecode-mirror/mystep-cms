@@ -26,7 +26,7 @@
 			<tr> 
 				<td class="cat" width="80">µç×ÓÓÊ¼þ£º<span>*</span></td>
 				<td class="row">
-					<input name="email" type="email" size="20" maxlength="20" need="email" value="<!--email-->" />
+					<input name="email" type="email" size="20" maxlength="50" need="email" value="<!--email-->" />
 				</td>
 			</tr>
 			<tr> 

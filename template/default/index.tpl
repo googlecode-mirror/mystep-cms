@@ -30,7 +30,7 @@
 <!--tag limit="100"-->
 			</div>
 			<div style="width:640px; height:480px; overflow:hidden; margin:auto;">
-<!--news limit="4" template="slide" imgage="1"-->
+<!--news limit="4" template="slide" show_image="1"-->
 			</div>
 			<div class="content after">
 <!--news show_image="1" limit="4" template="image"-->

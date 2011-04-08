@@ -3,21 +3,11 @@
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" width="400" cellspacing="0" cellpadding="0" align="center">
-			<tr>
-				<td class="cat" width="80">所属子站：</td>
-				<td class="row">
-					<select name="web_id">
-						<option value="0">未限定</option>
-<!--loop:start key="website"-->
-						<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
-<!--loop:end-->
-					</select>
-				</td>
-			</tr>
 			<tr> 
 				<td class="cat" width="80">图示名称：<span>*</span></td>
 				<td class="row">
 					<input name="id" type="hidden" value="<!--id-->" />
+					<input name="web_id" type="hidden" value="<!--web_id-->" />
 					<input name="name" type="text" size="20" maxlength="30" value="<!--name-->" need="" />
 				</td>
 			</tr>

@@ -231,6 +231,16 @@ function buildParaList($idx) {
 }
 
 function getParaInfo($idx, $col, $value) {
+	if($idx=="news_cat_sub") {
+		global $setting;
+		$max_count = count($GLOBALS['news_cat']);
+		for($i=0; $i<$max_count; $i++) {
+			if(!isset($GLOBALS['news_cat'][$i][$col])) continue;
+			if(strtolower($GLOBALS['news_cat'][$i][$col]) == strtolower($value) && $GLOBALS['news_cat'][$i]['web_id']==$setting['info']['web']['web_id']) {
+				return $GLOBALS['news_cat'][$i];
+			} 
+		}
+	}
 	if(!isset($GLOBALS[$idx]) || !is_array($GLOBALS[$idx]) ) return false;
 	$max_count = count($GLOBALS[$idx]);
 	for($i=0; $i<$max_count; $i++) {

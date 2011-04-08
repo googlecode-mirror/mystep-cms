@@ -33,25 +33,29 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $setting['language']['admin_art_content_delete'];
-		$sql_list = array();
-		$db->Query("delete from ".$setting['db']['pre_sub']."news_show where news_id = '{$news_id}'");
-		$db->Query("delete from ".$setting['db']['pre_sub']."news_detail where news_id = '{$news_id}'");
-		$db->Query("select * from ".$setting['db']['pre']."attachment where web_id='{$web_id}' and news_id={$news_id}");
-		while($record = $db->GetRS()) {
-			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/", substr($record['file_time'],0, 10));
-			$the_ext = GetFileExt($record['file_name']);
-			if($the_ext=="php") $the_ext = "txt";
-			$the_file = $record['file_time'].".".$the_ext;
-			MultiDel($the_path.$the_file);
-			MultiDel($the_path."cache/".$the_file);
-			MultiDel($the_path."preview/".$the_file);
-			MultiDel($the_path."preview/cache/".$the_file);
-			$sql_list[] = "delete from ".$setting['db']['pre']."attachment where id=".$record['id'];
+		if(!$op_mode && $web_id!=$_POST['web_id']) {
+			$goto_url = $setting['info']['self'];
+		} else {
+			$log_info = $setting['language']['admin_art_content_delete'];
+			$sql_list = array();
+			$db->Query("delete from ".$setting['db']['pre_sub']."news_show where news_id = '{$news_id}'");
+			$db->Query("delete from ".$setting['db']['pre_sub']."news_detail where news_id = '{$news_id}'");
+			$db->Query("select * from ".$setting['db']['pre']."attachment where web_id='{$web_id}' and news_id={$news_id}");
+			while($record = $db->GetRS()) {
+				$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/", substr($record['file_time'],0, 10));
+				$the_ext = GetFileExt($record['file_name']);
+				if($the_ext=="php") $the_ext = "txt";
+				$the_file = $record['file_time'].".".$the_ext;
+				MultiDel($the_path.$the_file);
+				MultiDel($the_path."cache/".$the_file);
+				MultiDel($the_path."preview/".$the_file);
+				MultiDel($the_path."preview/cache/".$the_file);
+				$sql_list[] = "delete from ".$setting['db']['pre']."attachment where id=".$record['id'];
+			}
+			$db->Free();
+			$db->BatchExec($sql_list);
+			delCacheFile($news_id);
 		}
-		$db->Free();
-		$db->BatchExec($sql_list);
-		delCacheFile($news_id);
 		break;
 	case "unlock":
 		$log_info = $setting['language']['admin_art_content_unlock'];
@@ -60,6 +64,8 @@ switch($method) {
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
+			$goto_url = $setting['info']['self'];
+		} elseif(!$op_mode && $web_id!=$_POST['web_id']) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$_POST['style'] = implode(",", $_POST['style']);
