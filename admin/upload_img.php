@@ -2,6 +2,7 @@
 require("inc.php");
 $parent_element = $_SERVER['QUERY_STRING'];
 if(empty($parent_element)) $parent_element = "image";
+set_time_limit(0); 
 
 $script = "";
 if(count($_POST) > 0){

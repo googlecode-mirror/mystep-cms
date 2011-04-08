@@ -3,6 +3,7 @@ require("inc.php");
 $method	= $req->getGet("method");
 $path_upload = ROOT_PATH."/".$setting['path']['upload'];
 $script = "";
+set_time_limit(0); 
 switch($method) {
 	case "add_ok":
 		$comment = $req->getPost('comment');

@@ -92,14 +92,14 @@ function checkForm(the_form, myChecker){
 				}
 				break;
 			case "alpha":
-				if(!/^[a-z_]+$/i.test(the_value)) {
+				if(!/^[a-z_\d]+$/i.test(the_value)) {
 					alert(language.checkform_err_alpha);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
 				}
 				break;
 			case "word":
-				if(!/^[\w ]+$/i.test(the_value)) {
+				if(!/^[\w\s\-]+$/i.test(the_value)) {
 					alert(language.checkform_err_word);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;
