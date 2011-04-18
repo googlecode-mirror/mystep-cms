@@ -114,7 +114,7 @@ class MyStep extends class_common {
 		date_default_timezone_set("PRC");
 		set_magic_quotes_runtime(0);
 		set_time_limit(30);
-		ini_set('memory_limit', '32M');
+		ini_set('memory_limit', '128M');
 		
 		error_reporting(E_ALL ^ E_NOTICE);
 		set_error_handler("ErrorHandler");

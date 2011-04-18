@@ -78,11 +78,12 @@ class plugin_offical implements plugin {
 	public static function parse_news(MyTPL $tpl, $att_list = array()) {
 		global $setting;
 		$result = "";
-		if(!isset($att_list['template'])) $att_list['template'] = "classic";
-		$template = $att_list['template'];
+		/*
 		foreach($att_list as $key => $value) {
 			eval("\$att_list['".$key."'] = \"".$value."\";");
 		}
+		*/
+		if(!isset($att_list['template'])) $att_list['template'] = "classic";
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = "";
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
 		if(!isset($att_list['order'])) $att_list['order'] = " `order` desc, news_id desc";
@@ -180,7 +181,7 @@ content;
 	unset(\$record);
 }
 unset(\$result);
-for(; \$n<={$att_list['loop']}; \$n++) {
+for(; \$n<{$att_list['loop']}; \$n++) {
 	\$unit = str_replace("style=\"\"", "style=\"".(\$n%2?"{$att_list['css1']}":"{$att_list['css2']}")."\"", "{$unit_blank}");
 	echo \$unit;
 	echo "\\n";

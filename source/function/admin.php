@@ -51,7 +51,7 @@ function GetPageList($counter, $qry_str="", $page=1, $page_size=20) {
 	return array($page_arr, $page_start, $page_size);
 }
 
-function GetPictures_news($news_id, $web_id, $content, $zoom = 600) {
+function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 	global $db, $setting;
 	if(is_array($content)) {
 		$tmp = $content;
@@ -64,7 +64,7 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 600) {
 	$max_count = count($tmp);
 	for($n=0; $n<$max_count; $n++) {
 		$attach_list = "";
-		preg_match_all("/\<img.+src\=\"(.+?)\"[^>]+?>/ixs", $tmp[$n], $arr);
+		preg_match_all("/\<img.+src\=\"(.+?)\"[^>]+?>/i", $tmp[$n], $arr);
 		$img_list = $arr[1];
 		$max_count2 = count($img_list);
 		for($i=0; $i<$max_count2; $i++) {

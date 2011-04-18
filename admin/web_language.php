@@ -23,21 +23,7 @@ if(is_null($cur_lng)) $cur_lng = $setting['gen']['language'];
 if($method=="update" && count($_POST)>0) {
 	$log_info = $setting['language']['admin_web_language_update'];
 	if(empty($cur_lng)) $cur_lng = "default";
-	if(empty($_POST['lng_new_idx'])) {
-		$setting['gen']['language'] = $cur_lng;
-		$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);
-		$expire_list = var_export($expire_list, true);
-		$content = <<<mystep
-<?php
-\$setting = array();
-
-/*--settings--*/
-\$expire_list = {$expire_list};
-?>
-mystep;
-		$content = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $content);
-		WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
-	} else {
+	if(!empty($_POST['lng_new_idx'])) {
 		$cur_lng = $_POST['lng_new_idx'];
 		$language_info = array(
 			"author" => $_POST['lng_new_author'],
@@ -59,7 +45,7 @@ mystep;
 	WriteFile($lng_dir.$cur_lng.".php", $content, "wb");
 
 	write_log($log_info, "cur_lng=".$cur_lng);
-	$goto_url = $setting['info']['self'];
+	$goto_url = $setting['info']['self']."?cur_lng=".$cur_lng;
 } else {
 	$tpl_info['idx'] = "web_language";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);

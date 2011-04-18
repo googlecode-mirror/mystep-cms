@@ -70,6 +70,7 @@ switch($method) {
 		} else {
 			$_POST['style'] = implode(",", $_POST['style']);
 			if(get_magic_quotes_gpc()) strip_slash($_POST);
+			$_POST['content'] = preg_replace("/ mso(\-\w+)+\:[^;]+?;/", "", $_POST['content']);
 			$_POST['content'] = preg_replace("/[\/]+files/", "/files", $_POST['content']);
 			$_POST['content'] = str_replace("<!-- pagebreak -->", "</p><!-- pagebreak --><p>", $_POST['content']);
 			$_POST['content'] = preg_replace("/<p>[\r\n\s]*<\/p>/i", "", $_POST['content']);
