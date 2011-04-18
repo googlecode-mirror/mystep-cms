@@ -173,7 +173,7 @@ switch($method) {
 
 if(!empty($log_info)) {
 	write_log($log_info, "news_id={$news_id}");
-	$goto_url = $setting['info']['self']."?web_id=".$web_id;
+	$goto_url = $setting['info']['self']."?web_id=".$web_id."&cat_id=".$cat_id;
 }
 $mystep->pageEnd(false);
 
@@ -308,6 +308,16 @@ function build_page($method) {
 		$tpl_tmp->Set_Variables($record, "record");
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_add']);
 	}
+	
+	//news image
+	$str_sql = "select * from ".$setting['db']['pre']."news_image";
+	if(!empty($web_id)) $str_sql .= " where web_id='".$web_id."'";
+	$str_sql .= " order by id asc";
+	$db->Query($str_sql);
+	while($record = $db->GetRS()) {
+		HtmlTrans(&$record);
+		$tpl_tmp->Set_Loop('news_image', $record);
+	}
 
 	//catalog select
 	if(empty($web_id)) $web_id=1;
@@ -322,13 +332,6 @@ function build_page($method) {
 		$news_cat[$i] = preg_replace("/^©À /", "", preg_replace("/^©¸ /", "", $news_cat[$i]));
 		$tpl_tmp->Set_Loop('catalog', array('cat_id'=>$news_cat[$i]['cat_id'], 'web_id'=>$news_cat[$i]['web_id'], 'cat_name'=>$news_cat[$i]['cat_name'], 'selected'=>($cat_id==$news_cat[$i]['cat_id']?"selected":"")));
 		$tpl_tmp->Set_Loop('cat_sub', array('cat_id'=>$news_cat[$i]['cat_id'], 'cat_sub'=>$news_cat[$i]['cat_sub']));
-	}
-
-	//news image
-	$db->Query("select * from ".$setting['db']['pre']."news_image");
-	while($record = $db->GetRS()) {
-		HtmlTrans(&$record);
-		$tpl_tmp->Set_Loop('news_image', $record);
 	}
 	
 	$tpl_tmp->Set_Variable('check_b', $check_b);

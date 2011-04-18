@@ -10,7 +10,7 @@
 *                                                 *
 **************************************************/
 
-if(typeof(language)=="undefined") $.getScript(location.href.replace("http://"+location.hostname+"/", "").replace(/\/[^\/]+$/, "/").replace(/[^\/]+/, "..")+"script/language.js.php");
+if(typeof(language)=="undefined") $.getScript(rlt_path + "script/language.js.php");
 
 function checkForm(the_form, myChecker){
 	var flag = false;

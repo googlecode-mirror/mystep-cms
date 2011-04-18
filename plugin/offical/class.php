@@ -79,6 +79,10 @@ class plugin_offical implements plugin {
 		global $setting;
 		$result = "";
 		if(!isset($att_list['template'])) $att_list['template'] = "classic";
+		$template = $att_list['template'];
+		foreach($att_list as $key => $value) {
+			eval("\$att_list['".$key."'] = \"".$value."\";");
+		}
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = "";
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
 		if(!isset($att_list['order'])) $att_list['order'] = " `order` desc, news_id desc";

@@ -38,12 +38,12 @@
 			</tr>
 			<tr>
 				<td class="cat" width="80">跳转网址：</td>
-				<td class="row"><input name="link" type="text" maxlength="100" value="<!--record_link-->" /> <span class="comment">（点击文章标题所链接到的网址）</span></td>
+				<td class="row"><input name="link" type="text" maxlength="150" value="<!--record_link-->" /> <span class="comment">（点击文章标题所链接到的网址）</span></td>
 			</tr>
 			<tr>
 				<td class="cat">文章图示：</td>
 				<td class="row">
-					<input id="image" name="image" type="text" maxlength="50" value="<!--record_image-->" /> &nbsp; 
+					<input id="image" name="image" type="text" maxlength="150" value="<!--record_image-->" /> &nbsp; 
 					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','新闻图示上传','url','upload_img.php?image',420, 100)" value="上传" />
 					<input style="width:60px" class="btn" type="button" onClick="showPop('newsImage','常用新闻图示选择','id','newsImage',570)" value="选择" />
 					<span class="comment">（用于推荐文章的图形显示）</span>
@@ -118,7 +118,7 @@
 
 <script type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
 <script type="text/javascript">
-if(typeof($.setupJMPopups)=="undefined") $.getScript("/script/jquery.jmpopups.js", function(){
+if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.4"

@@ -100,14 +100,14 @@ CREATE TABLE `{pre}news_cat` (
 	`cat_id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,			#分类索引
 	`web_id` TINYINT UNSIGNED DEFAULT 0,										#所属子站
 	`cat_main` SMALLINT UNSIGNED NOT NULL DEFAULT 0,				#主分类索引
-	`cat_name` Char(20) NOT NULL,														#分类名称
-	`cat_comment` Char(80) NOT NULL,												#分类描述
+	`cat_name` Char(40) NOT NULL,														#分类名称
+	`cat_comment` Char(200) NOT NULL,												#分类描述
 	`cat_idx` Char(20) DEFAULT '',													#分类索引（用于目录名等）
-	`cat_image` Char(100) DEFAULT '',												#分类图示
+	`cat_image` Char(200) DEFAULT '',												#分类图示
 	`cat_sub` Char(240) DEFAULT '',													#前缀列表（半角逗号间隔）
 	`cat_order` TINYINT DEFAULT 1,													#分类排序
 	`cat_type` TINYINT NOT NULL,														#分类显示模式（0 标题列表，1 图片简介，2 图片展示）
-	`cat_link` Char(100) DEFAULT '',												#分类链接
+	`cat_link` Char(200) DEFAULT '',												#分类链接
 	`cat_layer` TINYINT UNSIGNED NOT NULL DEFAULT 0,				#分类层级
 	`cat_show` TINYINT UNSIGNED NOT NULL DEFAULT 0,					#显示位置（0 不显示，以二进制模式扩充）
 	PRIMARY KEY (`cat_id`)
@@ -123,14 +123,14 @@ CREATE TABLE `{pre}news_show` (
 	`news_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`cat_id` SMALLINT UNSIGNED NOT NULL,								#新闻类型索引
 	`web_id` TINYINT UNSIGNED DEFAULT 0,								#所属子站
-	`subject` Char(120) NOT NULL,												#新闻标题
+	`subject` Char(150) NOT NULL,												#新闻标题
 	`style` Char(40) NOT NULL,													#标题样式
 	`views` MEDIUMINT UNSIGNED DEFAULT 0,								#浏览次数
 	`describe` Char(255) DEFAULT '',										#新闻描述
 	`original` Char(40) NOT NULL DEFAULT '',						#作者/出处
 	`link` Char(255) DEFAULT '',												#跳转网址
 	`tag` Char(120) NOT NULL DEFAULT '',								#相关索引
-	`image` Char(100) NOT NULL DEFAULT '',							#相关图片
+	`image` Char(200) NOT NULL DEFAULT '',							#相关图片
 	`setop` SMALLINT UNSIGNED,													#推送模式
 	`order` TINYINT UNSIGNED,														#列表排序
 	`view_lvl` Char(10) NOT NULL DEFAULT '0',						#阅读权限
@@ -193,7 +193,7 @@ CREATE TABLE `{pre}attachment` (
 	`news_id` MEDIUMINT UNSIGNED,								#关联索引
 	`file_name` Char(150) NOT NULL,							#附件文件名
 	`file_type` Char(40) NOT NULL,							#附件类型
-	`file_size` MEDIUMINT UNSIGNED NOT NULL,		#附件大小
+	`file_size` INT UNSIGNED NOT NULL,					#附件大小
 	`file_comment` Char(200) DEFAULT '',				#文件说明
 	`file_time` Char(15) DEFAULT 0,							#附件上传时间（unixtimestamp）
 	`file_count` MEDIUMINT UNSIGNED DEFAULT 0,	#附件下载次数

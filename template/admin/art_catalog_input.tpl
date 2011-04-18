@@ -27,7 +27,7 @@
 			<tr>
 				<td class="cat">分类名称：<span>*</span></td>
 				<td class="row">
-					<input class="input" name="cat_name" type="text" size="20" maxlength="20" value="<!--cat_name-->" need="" />
+					<input class="input" name="cat_name" type="text" size="20" maxlength="30" value="<!--cat_name-->" need="" />
 					<input name="cat_id" type="hidden" value="<!--cat_id-->" />
 				</td>
 			</tr>
@@ -46,13 +46,13 @@
 			<tr>
 				<td class="cat">分类描述：<span>*</span></td>
 				<td class="row">
-					<input class="input" name="cat_comment" type="text" size="20" maxlength="50" value="<!--cat_comment-->" need="" />
+					<input class="input" name="cat_comment" type="text" size="20" maxlength="120" value="<!--cat_comment-->" need="" />
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">分类图示：</td>
 				<td class="row">
-					<input class="input" name="cat_image" type="text" size="40" maxlength="50" value="<!--cat_image-->" />
+					<input class="input" name="cat_image" type="text" size="40" maxlength="120" value="<!--cat_image-->" />
 					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','分类图示上传','url','upload_img.php?cat_image',420, 100)" value="上传" />
 				</td>
 			</tr>
@@ -78,7 +78,7 @@
 			<tr>
 				<td class="cat">外部链接：</td>
 				<td class="row">
-					<input class="input" name="cat_link" type="text" size="20" maxlength="100" value="<!--cat_link-->" />
+					<input class="input" name="cat_link" type="text" size="20" maxlength="150" value="<!--cat_link-->" />
 				</td>
 			</tr>
 			<tr>
@@ -92,7 +92,7 @@
 	</form>
 </div>
 <script Language="JavaScript1.2">
-if(typeof($.setupJMPopups)=="undefined") $.getScript("/script/jquery.jmpopups.js", function(){
+if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.4"

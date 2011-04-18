@@ -43,7 +43,7 @@
 	</form>
 </div>
 <script type="text/javascript">
-if(typeof($.setupJMPopups)=="undefined") $.getScript("/script/jquery.jmpopups.js", function(){
+if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.4"
