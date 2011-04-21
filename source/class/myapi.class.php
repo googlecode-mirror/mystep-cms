@@ -1,7 +1,7 @@
 <?php
 /********************************************
 *                                           *
-* Name    : My Ajax                         *
+* Name    : My Api                          *
 * Author  : Windy2000                       *
 * Time    : 2010-12-12                      *
 * Email   : windy2006@gmail.com             *
@@ -14,11 +14,11 @@
 /*--------------------------------------------------------------------------------------------------------------------
 
   How To Use:
-	$ajax->init()						// Set the Template Class
-	$ajax->run($method)			// run registered function
+	$Api->init()						// Set the Template Class
+	$Api->run($method)			// run registered function
 --------------------------------------------------------------------------------------------------------------------*/
 
-class MyAjax extends class_common {
+class MyApi extends class_common {
 	protected
 		$methods = array();
 			

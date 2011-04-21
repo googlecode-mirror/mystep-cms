@@ -77,6 +77,7 @@ $setting['memcache']['expire'] = 86400;
 $setting['memcache']['threshold'] = 10240;
 $setting['memcache']['min_savings'] = 0.5;
 
+
 $expire_list = array (
   'default' => 600,
   'index' => 1800,

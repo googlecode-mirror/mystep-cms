@@ -11,6 +11,10 @@ $mystep->regTag("menu", "plugin_offical::parse_menu");
 $mystep->regStart("plugin_offical::page_start");
 $mystep->regEnd("plugin_offical::page_end");
 
+$mystep->regApi("rss", "plugin_offical::api_rss");
+$mystep->regApi("news", "plugin_offical::api_news");
+$mystep->regApi("newslist", "plugin_offical::api_newslist");
+
 $mystep->setAddedContent("start", '<script language="JavaScript" src="/script/jquery.js"></script>');
 $mystep->setAddedContent("start", '<script language="JavaScript" src="/script/global.js"></script>');
 $mystep->setAddedContent("end", '<script language="JavaScript" src="/script/addon.js"></script>');

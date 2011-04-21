@@ -16,6 +16,7 @@ class MyStep extends class_common {
 		$func_start = array(),
 		$func_end = array(),
 		$func_tag = array(),
+		$func_api = array(),
 		$func_ajax = array(),
 		$language = array(),
 		$content = array();
@@ -42,6 +43,9 @@ class MyStep extends class_common {
 				break;
 			case 'MyAjax':
 				$obj->regMethods($this->func_ajax);
+				break;
+			case 'MyApi':
+				$obj->regMethods($this->func_api);
 				break;
 			default:
 				break;
@@ -112,9 +116,10 @@ class MyStep extends class_common {
 		global $setting, $db, $req, $cache;
 		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
 		date_default_timezone_set("PRC");
-		set_magic_quotes_runtime(0);
+		set_magic_quotes_runtime(false);
 		set_time_limit(30);
 		ini_set('memory_limit', '128M');
+		ini_set('magic_quotes_gpc', 'Off');
 		
 		error_reporting(E_ALL ^ E_NOTICE);
 		set_error_handler("ErrorHandler");
@@ -237,6 +242,14 @@ class MyStep extends class_common {
 			$this->func_ajax[$name] = $name;
 		} else {
 			$this->func_ajax[$name] = $method;
+		}
+	}
+	
+	public function regApi($name, $method="") {
+		if(empty($method)) {
+			$this->func_api[$name] = $name;
+		} else {
+			$this->func_api[$name] = $method;
 		}
 	}
 }

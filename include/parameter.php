@@ -1,7 +1,7 @@
 <?php
 $ms_version = array(
-	'ver' => '0.87',
-	'date' => '2011-03-30',
+	'ver' => '0.90',
+	'date' => '2011-04-20',
 	'charset' => 'GBK',
 	'language' => 'CHS',
 );
@@ -13,6 +13,7 @@ $class_list = array(
 	"imageCreator_file" => "image.class.php",
 	"coordinateMaker" => "image.class.php",
 	"MagickWand" => "magickwand.class.php",
+	"MyApi" => "myapi.class.php",
 	"MyAjax" => "myajax.class.php",
 	"MyCache" => "mycache.class.php",
 	"MyFSO" => "myfso.class.php",

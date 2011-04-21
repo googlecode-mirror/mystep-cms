@@ -243,11 +243,15 @@ function html2js($str){
 function chg_charset($content, $from="gbk", $to="utf-8") {
 	$result = null;
 	if(is_string($content)){
-		$result = iconv($from, $to.'//TRANSLIT//IGNORE',$content);
+		$result = iconv($from, $to.'//TRANSLIT//IGNORE', $content);
 		if($result===false && function_exists("mb_detect_encoding")) {
-			$encode = mb_detect_encoding($content, array("UTF-8","EUC-CN","ISO-8859-1"));
-			$content = str_replace(chr(0x0A),chr(0x20),$content); 
-			$result = mb_convert_encoding($content, "utf-8", $encode);
+			$encode = mb_detect_encoding($content, array("ASCII","GB2312","GBK","BIG5","UTF-8","EUC-CN","ISO-8859-1"));
+			$content = str_replace(chr(0x0A), chr(0x20), $content); 
+			if($encode!="" && strtolower($encode)!=strtolower($to)) {
+				$result = mb_convert_encoding($content, $to, $encode);
+			} else {
+				$result = $content;
+			}
 		}
 	} elseif(is_array($content)) {
 		foreach($content as $key => $value) {
@@ -262,6 +266,58 @@ function chg_charset_file($file_src, $file_dst, $from="gbk", $to="utf-8") {
 	$content = file_get_contents($file_src);
 	$content = iconv($from, $to.'//TRANSLIT//IGNORE',$content);
 	return WriteFile($file_dst, $content, "wb");
+}
+
+function toJson($var, $charset="") {
+	if(!empty($charset)) $var = chg_charset($var, $charset, "utf-8");
+	return json_encode($var);
+}
+
+function toXML($var) {
+	$result = "";
+	if(is_array($var)) {
+		foreach($var as $key => $value) {
+			if(is_numeric($key)) $key = "item";
+			if($key=="item") $result .= "\n";
+			$result .= "<{$key}>";
+			if($key=="item") $result .= "\n";
+			$result .= toXML($value);
+			$result .= "</{$key}>";
+			$result .= "\n";
+		}
+	} else {
+		if(preg_match("/[<>&\r\n]+/", $var)) {
+			$result = "<![CDATA[".$var."]]>";
+		} else {
+			$result = $var;
+		}
+	}
+	return $result;
+}
+
+function toString($var) {
+	$result = "";
+	switch(true) {
+		case is_string($var):
+			$result = $var;
+			break;
+		case is_numeric($var):
+			$result = (STRING)$var;
+			break;
+		case is_array($var):
+			$result = join(",", $var);
+			break;
+		case is_bool($var):
+			$result = $var?"true":"false";
+			break;
+		case is_object($var):
+			$result = (STRING)$var;
+			break;
+		default:
+			$result = "";
+			break;
+	}
+	return $result;
 }
 /*---------------------------------------String Functions End-------------------------------------*/
 

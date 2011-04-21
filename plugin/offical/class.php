@@ -75,6 +75,118 @@ class plugin_offical implements plugin {
 		$result = $db->Query("replace into ".$setting['db']['pre']."counter values(curdate(), $pv, $iv, $online)");
 	}
 	
+	public static function api_rss($id=0, $mode="cat") {
+		global $setting, $db;
+		$cat_id = "";
+		if($mode=="cat") {
+			if($cat_info = getParaInfo("news_cat", "cat_id", $id)) {
+				$web_info = getSubSetting($cat_info['web_id']);
+				$cat_id = $id;
+			} else {
+				$web_info = getSubSetting($setting['info']['web']['web_id']);
+			}
+		} else {
+			$web_info = getSubSetting($id);
+		}
+		$charset_tag = '<?xml version="1.0" encoding="'.$setting['db']['charset'].'"?>'."\n";
+		$tpl_info = array(
+				"idx" => "rss",
+				"style" => "",
+				"path" => dirname(__FILE__),
+				);
+		$tpl = new MyTpl;
+		$tpl->init($tpl_info);
+		
+		$tpl->Set_Variable('web_title', $setting['web']['title']);
+		$tpl->Set_Variable('web_url', $setting['web']['url']);
+		$tpl->Set_Variable('web_email', $setting['web']['email']);
+		$tpl->Set_Variable('page_keywords', $setting['web']['keyword']);
+		$tpl->Set_Variable('page_description', $setting['web']['description']);
+		$tpl->Set_Variable('charset_tag', $charset_tag);
+		$tpl->Set_Variable('cat_txt', $cat_txt);
+		$tpl->Set_Variable('now', date("r"));
+		$db->Query("
+				select a.*, b.cat_name from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show a 
+					left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id 
+				where 1=1".(empty($cat_id)?"":" and a.cat_id=".$cat_id)." limit ".$setting['list']['rss']
+			);
+		while($record = $db->GetRS()) {
+			$record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['web_id']);
+			$record['add_date'] = date("r", strtotime($record['add_date']));
+			$tpl->Set_Loop("record", $record);
+		}
+		$db->Free();
+		header('Content-Type: application/rss+xml; charset='.$setting['gen']['charset']);
+		return $tpl->Get_Content('$db, $setting');
+	}
+	
+	public static function api_news($id, $web_id=1, $return="json") {
+		global $setting, $db;
+		if(!is_numeric($id)) return;
+		$web_info = getSubSetting($web_id);
+		$result = $db->GetSingleRecord("select * from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show where news_id=".$id);
+		$result['link'] = getFileURL($result['news_id'], $result['cat_idx'], $result['web_id']);
+		$result['add_date'] = date("Y-m-d H:i:s", strtotime($result['add_date']));
+		$result['content'] = array();
+		$db->Query("select * from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_detail where news_id=".$id." order by page asc");
+		while($record = $db->GetRS()) {
+			$result['content'][] = $record['content'];
+		}
+		$db->Free();
+		if($return=="json") {
+			$result = toJson($result, $setting['db']['charset']);
+		} else {
+			$result = '<?xml version="1.0" encoding="'.$setting['db']['charset'].'"?>'."\n<news>\n".toXML($result)."</news>";
+			header('Content-Type: application/rss+xml; charset='.$setting['gen']['charset']);
+		}
+		if(get_magic_quotes_gpc()) {
+			$result = str_replace('\r', '', $result);
+			$result = str_replace('\n', '', $result);
+			$result = stripslashes($result);
+		}
+		return $result;
+	}
+	
+	public static function api_newslist($id=0, $mode="cat", $return="json") {
+		global $setting, $db;
+		$cat_id = "";
+		if($mode=="cat") {
+			if($cat_info = getParaInfo("news_cat", "cat_id", $id)) {
+				$web_info = getSubSetting($cat_info['web_id']);
+				$cat_id = $id;
+			} else {
+				$web_info = getSubSetting($setting['info']['web']['web_id']);
+			}
+		} else {
+			$web_info = getSubSetting($id);
+		}
+		
+		$db->Query("
+				select a.*, b.cat_name from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show a 
+					left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id 
+				where 1=1".(empty($cat_id)?"":" and a.cat_id=".$cat_id)." limit ".$setting['list']['rss']
+			);
+		$result = array();
+		while($record = $db->GetRS()) {
+			$record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['web_id']);
+			$record['add_date'] = date("Y-m-d H:i:s", strtotime($record['add_date']));
+			$result[] = $record;
+		}
+		
+		if($return=="json") {
+			$result = toJson($result, $setting['db']['charset']);
+		} else {
+			$result = '<?xml version="1.0" encoding="'.$setting['db']['charset'].'"?>'."\n<newsList>\n".toXML($result)."</newsList>";
+			header('Content-Type: application/rss+xml; charset='.$setting['gen']['charset']);
+		}
+		if(get_magic_quotes_gpc()) {
+			$result = str_replace('\r', '', $result);
+			$result = str_replace('\n', '', $result);
+			$result = stripslashes($result);
+		}
+		return $result;
+	}
+	
 	public static function parse_news(MyTPL $tpl, $att_list = array()) {
 		global $setting;
 		$result = "";

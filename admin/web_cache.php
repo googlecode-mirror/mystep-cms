@@ -6,9 +6,11 @@ $log_info = "";
 
 if($method=="update" && count($_POST)>0) {
 	$log_info = $setting['language']['admin_web_cache_update'];
+	$cur_setting = $setting;
+	unset($setting);
+	include(ROOT_PATH."/include/config.php");
 	$setting['gen']['cache'] = ($_POST['cache']=="true");
 	$setting['web']['cache_mode'] = $_POST['cache_mode'];
-	$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);
 	$expire_list = array();
 	$max_count = count($_POST['page']);
 	for($i=0; $i<$max_count; $i++) {
@@ -18,7 +20,6 @@ if($method=="update" && count($_POST)>0) {
 		$expire_list[$_POST['page'][$i]] = $value;
 	}
 	$expire_list = var_export($expire_list, true);
-	
 	$content = <<<mystep
 <?php
 \$setting = array();
@@ -29,6 +30,8 @@ if($method=="update" && count($_POST)>0) {
 mystep;
 	$content = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $content);
 	WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+	unset($setting);
+	$setting = $cur_setting;
 } elseif($method=="clean") {
 	$log_info = $setting['language']['admin_web_cache_clean'];
 	$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
