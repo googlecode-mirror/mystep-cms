@@ -88,7 +88,7 @@ class plugin_offical implements plugin {
 		} else {
 			$web_info = getSubSetting($id);
 		}
-		$charset_tag = '<?xml version="1.0" encoding="'.$setting['db']['charset'].'"?>'."\n";
+		$charset_tag = '<?xml version="1.0" encoding="'.$setting['gen']['charset'].'"?>'."\n";
 		$tpl_info = array(
 				"idx" => "rss",
 				"style" => "",
@@ -133,17 +133,6 @@ class plugin_offical implements plugin {
 			$result['content'][] = $record['content'];
 		}
 		$db->Free();
-		if($return=="json") {
-			$result = toJson($result, $setting['db']['charset']);
-		} else {
-			$result = '<?xml version="1.0" encoding="'.$setting['db']['charset'].'"?>'."\n<news>\n".toXML($result)."</news>";
-			header('Content-Type: application/rss+xml; charset='.$setting['gen']['charset']);
-		}
-		if(get_magic_quotes_gpc()) {
-			$result = str_replace('\r', '', $result);
-			$result = str_replace('\n', '', $result);
-			$result = stripslashes($result);
-		}
 		return $result;
 	}
 	
@@ -171,18 +160,6 @@ class plugin_offical implements plugin {
 			$record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['web_id']);
 			$record['add_date'] = date("Y-m-d H:i:s", strtotime($record['add_date']));
 			$result[] = $record;
-		}
-		
-		if($return=="json") {
-			$result = toJson($result, $setting['db']['charset']);
-		} else {
-			$result = '<?xml version="1.0" encoding="'.$setting['db']['charset'].'"?>'."\n<newsList>\n".toXML($result)."</newsList>";
-			header('Content-Type: application/rss+xml; charset='.$setting['gen']['charset']);
-		}
-		if(get_magic_quotes_gpc()) {
-			$result = str_replace('\r', '', $result);
-			$result = str_replace('\n', '', $result);
-			$result = stripslashes($result);
 		}
 		return $result;
 	}

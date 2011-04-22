@@ -28,7 +28,7 @@ if(empty($cat_idx)) {
 }
 $cat_txt .= sprintf($setting['language']['page_update_lastest'], $setting['list']['rss']);
 
-$charset_tag = '<?xml version="1.0" encoding="'.$setting['db']['charset'].'"?>'."\n";
+$charset_tag = '<?xml version="1.0" encoding="'.$setting['gen']['charset'].'"?>'."\n";
 
 $tpl->Set_Variable('charset_tag', $charset_tag);
 $tpl->Set_Variable('cat_txt', $cat_txt);

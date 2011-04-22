@@ -304,3 +304,4 @@ function setSlide() {
 }
 
 var rlt_path = location.href.replace("http://"+location.hostname+"/", "").replace(/\/[^\/]+$/, "/").replace(/[^\/]+/, "..");
+if(rlt_path=="..") rlt_path = "./";

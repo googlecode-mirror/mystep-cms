@@ -1,4 +1,4 @@
-if(typeof(language)=="undefined") $.getScript("../../script/language.js.php");
+if(typeof(language)=="undefined") $.getScript(rlt_path+"/script/language.js.php");
 $("#rank_bar dl").each(function(index, domEle) {
 	$(domEle).bind('mouseover', function(){
 		$("#rank_bar dt:gt("+index+")").css("background-position", "0 0");
@@ -29,7 +29,6 @@ $("#rank_bar dl").each(function(index, domEle) {
 			loadingShow();
 		}, 'json');
 	});
-	return false;
 });
 $("#rank_bar").bind('mouseover mouseout', function(){
 	$("#rank_bar .cur_rank").toggle();

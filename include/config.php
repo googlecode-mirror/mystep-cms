@@ -24,7 +24,7 @@ $setting['db']['pre'] = 'ms_';
 $setting['db']['pre_sub'] = 'ms_';
 
 $setting['gen'] = array();
-$setting['gen']['language'] = 'en';
+$setting['gen']['language'] = 'default';
 $setting['gen']['charset'] = 'gbk';
 $setting['gen']['gzip_level'] = 4;
 $setting['gen']['cache'] = false;
@@ -61,10 +61,10 @@ $setting['content']['max_length'] = 10000;
 $setting['content']['get_remote_img'] = true;
 
 $setting['watermark'] = array();
-$setting['watermark']['mode'] = 3;
 $setting['watermark']['txt'] = 'MyStep CMS';
 $setting['watermark']['img'] = 'images/logo.png';
 $setting['watermark']['credit'] = 'Original From MyStep';
+$setting['watermark']['mode'] = '';
 
 $setting['memcache'] = array();
 $setting['memcache']['server'] = '';

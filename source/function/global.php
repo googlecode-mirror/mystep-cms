@@ -304,17 +304,19 @@ function toString($var) {
 		case is_numeric($var):
 			$result = (STRING)$var;
 			break;
-		case is_array($var):
-			$result = join(",", $var);
-			break;
 		case is_bool($var):
 			$result = $var?"true":"false";
+			break;
+		/*
+		case is_array($var):
+			$result = join(",", $var);
 			break;
 		case is_object($var):
 			$result = (STRING)$var;
 			break;
+		*/
 		default:
-			$result = "";
+			$result = serialize($var);
 			break;
 	}
 	return $result;
