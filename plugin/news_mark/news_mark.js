@@ -18,7 +18,7 @@ $("#rank_bar dl").each(function(index, domEle) {
 		loadingShow();
 		theDate.value = $(domEle).text();
 		var theObj = $(this).parent().children(".cur_rank");
-		$.post("ajax.php?func=rank", theDate, function(data){
+		$.post("ajax.php?func=rank&return=json", theDate, function(data){
 			$.cookie("rank_"+theDate.web_id+"_"+theDate.news_id, data.rank_time, {expires:1});
 		  var rank_min = $("#rank_bar dl").first().text();
 		  var rank_max = $("#rank_bar dl").last().text();
@@ -44,7 +44,7 @@ $("#jump_bar .t A").bind("click", function(){
 	loadingShow();
 	theDate.type = "down";
 	var theObj = $(this).parentsUntil("#jump_bar").parent().children(".l");
-	$.post("ajax.php?func=jump", theDate, function(data){
+	$.post("ajax.php?func=jump&return=json", theDate, function(data){
 		$.cookie("jump_"+theDate.web_id+"_"+theDate.news_id, data.jump_time, {expires:1});
 		var theValue = data.jump;
 	  theObj.text(theValue);
@@ -64,7 +64,7 @@ $("#jump_bar .b A").bind("click", function(){
 	loadingShow();
 	theDate.type = "up";
 	var theObj = $(this).parentsUntil("#jump_bar").parent().children(".l");
-	$.post("ajax.php?func=jump", theDate, function(data){
+	$.post("ajax.php?func=jump&return=json", theDate, function(data){
 		$.cookie("jump_"+theDate.web_id+"_"+theDate.news_id, data.jump_time, {expires:1});
 		var theValue = data.jump;
 	  theObj.text(theValue);

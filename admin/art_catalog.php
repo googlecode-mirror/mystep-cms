@@ -130,8 +130,8 @@ function build_page($method) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	if($method == "list") {
-		$tpl_tmp->Set_Variable("group", json_encode(chg_charset($group, $setting['gen']['charset'], "utf-8")));
-		$tpl_tmp->Set_Variable("news_cat", json_encode(chg_charset($news_cat, $setting['gen']['charset'], "utf-8")));
+		$tpl_tmp->Set_Variable("group", toJson($group, $setting['gen']['charset']));
+		$tpl_tmp->Set_Variable("news_cat", toJson($news_cat, $setting['gen']['charset']));
 		$max_count = count($news_cat);
 		for($i=0; $i<$max_count; $i++) {
 			if(!$GLOBALS['op_mode'] && $news_cat[$i]['web_id']!=$setting['info']['web']['web_id']) continue;

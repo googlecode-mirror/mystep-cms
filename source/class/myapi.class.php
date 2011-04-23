@@ -34,10 +34,32 @@ class MyApi extends class_common {
 		}
 	}
 	
-	public function run($method, $para=array()) {
+	public function run($method, $para=array(), $return="", $charset="utf-8") {
 		$result = "";
 		if(isset($this->methods[$method])) {
 			$result = call_user_func_array($this->methods[$method], $para);
+		}
+		switch($return) {
+			case "j":
+			case "json":
+				$result = toJson($result, $charset);
+				if(get_magic_quotes_gpc()) {
+					$result = str_replace('\r', "\r", $result);
+					$result = str_replace('\n', "\n", $result);
+					$result = stripslashes($result);
+				}
+				break;
+			case "x":
+			case "xml":
+				$result = '<?xml version="1.0" encoding="'.$charset.'"?>'."\n<mystep>\n".toXML($result)."</mystep>";
+				header('Content-Type: application/xml; charset='.$charset);
+				break;
+			case "s":
+			case "string":
+				$result = toString($result);
+				break;
+			default:
+				break;
 		}
 		return $result;
 	}

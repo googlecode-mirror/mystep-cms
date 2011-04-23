@@ -9,14 +9,14 @@ includeCache("news_cat");
 $tpl->Set_Variable("username", $_SESSION['username']);
 $tpl->Set_Variable("usergroup", $group['group_name']);
 $tpl->Set_Variable("web_id", $setting['info']['web']['web_id']);
-$tpl->Set_Variable("group", json_encode(chg_charset($group, $setting['gen']['charset'], "utf-8")));
+$tpl->Set_Variable("group", toJson($group, $setting['gen']['charset']));
 if($op_mode) {
-	$tpl->Set_Variable("admin_cat", json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8")));
+	$tpl->Set_Variable("admin_cat", toJson($admin_cat, $setting['gen']['charset']));
 } else {
-	$tpl->Set_Variable("admin_cat", json_encode(chg_charset($admin_cat_plat, $setting['gen']['charset'], "utf-8")));
+	$tpl->Set_Variable("admin_cat", toJson($admin_cat_plat, $setting['gen']['charset']));
 }
-$tpl->Set_Variable("website", json_encode(chg_charset($website, $setting['gen']['charset'], "utf-8")));
-$tpl->Set_Variable("news_cat", json_encode(chg_charset($news_cat, $setting['gen']['charset'], "utf-8")));
+$tpl->Set_Variable("website", toJson($website, $setting['gen']['charset']));
+$tpl->Set_Variable("news_cat", toJson($news_cat, $setting['gen']['charset']));
 
 $mystep->show($tpl);
 $mystep->pageEnd(false);

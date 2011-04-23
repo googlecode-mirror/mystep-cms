@@ -26,7 +26,7 @@ class plugin_news_mark implements plugin {
 		} else {
 			deleteCache("admin_cat");
 			includeCache("admin_cat");
-			$admin_cat = json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8"));
+			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
 <script language="javascript">
 parent.admin_cat = {$admin_cat};
@@ -57,7 +57,7 @@ mystep;
 		} else {
 			deleteCache("admin_cat");
 			includeCache("admin_cat");
-			$admin_cat = json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8"));
+			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
 <script language="javascript">
 parent.admin_cat = {$admin_cat};
@@ -180,7 +180,7 @@ mytpl;
 		$att_list['time'] *= 60*60*24;
 	
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where 1=1";
-		if(!empty($att_list['web_id'])) $str_sql .= " and web_id in ({$att_list['web_id']})";
+		if(!empty($att_list['web_id'])) $str_sql .= " and web_id='{$att_list['web_id']}'";
 		if(!empty($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
 		if($att_list['type'] == "jump") {
 			$str_sql .= " and jump_time>(UNIX_TIMESTAMP()-".$att_list['time'].") order by jump desc";
@@ -190,7 +190,6 @@ mytpl;
 		$str_sql .= ", news_id desc";
 		
 		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
-		//$str_sql = addslashes($str_sql);
 		
 		$cur_content = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_{$att_list['template']}.tpl", $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_classic.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
@@ -239,8 +238,7 @@ mytpl;
 		$db->query("update ".$setting['db']['pre']."news_mark set jump=jump".$value.", jump_time=UNIX_TIMESTAMP() where web_id='".$web_id."' and news_id='".$news_id."'");
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
 		getData($str_sql, "remove");
-		$record = getData($str_sql, "record", 3600*24);
-		return json_encode(chg_charset($record, $setting['gen']['charset'], "utf-8"));
+		return getData($str_sql, "record", 3600*24);
 	}
 	
 	public static function ajax_rank($news_id, $web_id, $value) {
@@ -249,8 +247,7 @@ mytpl;
 		$db->query("update ".$setting['db']['pre']."news_mark set rank_total=rank_total".$value.", rank_times=rank_times+1, rank_time=UNIX_TIMESTAMP() where web_id='".$web_id."' and news_id='".$news_id."'");
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
 		getData($str_sql, "remove");
-		$record = getData($str_sql, "record", 3600*24);
-		return json_encode(chg_charset($record, $setting['gen']['charset'], "utf-8"));
+		return getData($str_sql, "record", 3600*24);
 	}
 }
 ?>

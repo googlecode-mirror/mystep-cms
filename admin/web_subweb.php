@@ -94,8 +94,8 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_subweb_title']);
 		global $admin_cat;
-		$tpl_tmp->Set_Variable("admin_cat", json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8")));
-		$tpl_tmp->Set_Variable("website", json_encode(chg_charset($website, $setting['gen']['charset'], "utf-8")));
+		$tpl_tmp->Set_Variable("admin_cat", toJson($admin_cat, $setting['gen']['charset']));
+		$tpl_tmp->Set_Variable("website", toJson($website, $setting['gen']['charset']));
 	} else {
 		$tpl_tmp->Set_Variable('title', ($method == "add"?$setting['language']['admin_web_subweb_add']:$setting['language']['admin_web_subweb_edit']));
 		if($method == "edit") {

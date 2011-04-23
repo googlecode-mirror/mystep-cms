@@ -120,7 +120,7 @@ class plugin_offical implements plugin {
 		return $tpl->Get_Content('$db, $setting');
 	}
 	
-	public static function api_news($id, $web_id=1, $return="json") {
+	public static function api_news($id=0, $web_id=1) {
 		global $setting, $db;
 		if(!is_numeric($id)) return;
 		$web_info = getSubSetting($web_id);
@@ -136,7 +136,7 @@ class plugin_offical implements plugin {
 		return $result;
 	}
 	
-	public static function api_newslist($id=0, $mode="cat", $return="json") {
+	public static function api_newslist($id=0, $mode="cat") {
 		global $setting, $db;
 		$cat_id = "";
 		if($mode=="cat") {

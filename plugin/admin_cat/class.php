@@ -23,7 +23,7 @@ class plugin_admin_cat implements plugin {
 		} else {
 			deleteCache("admin_cat");
 			includeCache("admin_cat");
-			$admin_cat = json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8"));
+			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
 <script language="javascript">
 parent.admin_cat = {$admin_cat};
@@ -52,7 +52,7 @@ mystep;
 		} else {
 			deleteCache("admin_cat");
 			includeCache("admin_cat");
-			$admin_cat = json_encode(chg_charset($admin_cat, $setting['gen']['charset'], "utf-8"));
+			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
 <script language="javascript">
 parent.admin_cat = {$admin_cat};
