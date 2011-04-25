@@ -312,6 +312,7 @@ mytpl;
 			$tpl_file = $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_link_img.tpl";
 			$result = <<<mytpl
 <?php
+\$link_idx = "{$att_list['idx']}";
 \$link_list = \$GLOBALS['link_img'];
 mytpl;
 		} else {

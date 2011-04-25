@@ -54,7 +54,6 @@ if(!empty($log_info)) {
 			$tpl_tmp->Set_Loop("anchor", array("pos"=>str_replace("_comm", "", $key), "name"=>$value));
 		}
 	}
-	$setting['cookie']['prefix'] = str_replace(substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_", "", $setting['cookie']['prefix']);
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content());
 	unset($tpl_tmp);
 	$mystep->show($tpl);

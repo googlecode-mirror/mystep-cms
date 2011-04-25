@@ -7,7 +7,7 @@
 	</select>
 </div>
 <div class="nav">
-	<a href="?method=rebuild">重新整理</a>
+	<a href="?method=rebuild&web_id=<!--web_id-->">重新整理</a>
 	&nbsp;|&nbsp; 
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页， &nbsp;
 	<a href="<!--page_first-->">首页</a> &nbsp;
@@ -21,12 +21,12 @@
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">
-			<td class="cat" width="40"><a href="?keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
-			<td class="cat"><a href="?keyword=<!--keyword-->&order=tag&order_type=<!--order_type-->"><font color="#000000">关键字</font></a></td>
-			<td class="cat" width="80"><a href="?keyword=<!--keyword-->&order=count&order_type=<!--order_type-->"><font color="#000000">出现次数</font></a></td>
-			<td class="cat" width="80"><a href="?keyword=<!--keyword-->&order=click&order_type=<!--order_type-->"><font color="#000000">点击次数</font></a></td>
-			<td class="cat" width="120"><a href="?keyword=<!--keyword-->&order=add_date&order_type=<!--order_type-->"><font color="#000000">发表时间</font></a></td>
-			<td class="cat" width="120"><a href="?keyword=<!--keyword-->&order=update_date&order_type=<!--order_type-->"><font color="#000000">更新时间</font></a></td>
+			<td class="cat" width="40"><a href="?keyword=<!--keyword-->&order_type=<!--order_type-->&web_id=<!--web_id-->"><font color="#000000">编号</font></a></td>
+			<td class="cat"><a href="?keyword=<!--keyword-->&order=tag&order_type=<!--order_type-->&web_id=<!--web_id-->"><font color="#000000">关键字</font></a></td>
+			<td class="cat" width="80"><a href="?keyword=<!--keyword-->&order=count&order_type=<!--order_type-->&web_id=<!--web_id-->"><font color="#000000">出现次数</font></a></td>
+			<td class="cat" width="80"><a href="?keyword=<!--keyword-->&order=click&order_type=<!--order_type-->&web_id=<!--web_id-->"><font color="#000000">点击次数</font></a></td>
+			<td class="cat" width="120"><a href="?keyword=<!--keyword-->&order=add_date&order_type=<!--order_type-->&web_id=<!--web_id-->"><font color="#000000">发表时间</font></a></td>
+			<td class="cat" width="120"><a href="?keyword=<!--keyword-->&order=update_date&order_type=<!--order_type-->&web_id=<!--web_id-->"><font color="#000000">更新时间</font></a></td>
 			<td class="cat" width="80">相关操作</td>
 		</tr>
 <!--loop:start key="record" time="20"-->

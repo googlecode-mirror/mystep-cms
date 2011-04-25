@@ -47,6 +47,7 @@ switch($method) {
 			$new_setting = $_POST['setting'];
 			$new_setting['web']['url'] = "http://".$_POST['host'];
 			$new_setting['web']['title'] = $_POST['name'];
+			$new_setting['watermark']['mode'] = array_sum($new_setting['watermark']['mode']);
 			unset($_POST['setting']);
 			$result = <<<mystep
 <?php

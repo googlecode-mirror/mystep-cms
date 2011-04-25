@@ -64,10 +64,10 @@ $setting['watermark'] = array();
 $setting['watermark']['txt'] = 'MyStep CMS';
 $setting['watermark']['img'] = 'images/logo.png';
 $setting['watermark']['credit'] = 'Original From MyStep';
-$setting['watermark']['mode'] = '';
+$setting['watermark']['mode'] = 2;
 
 $setting['memcache'] = array();
-$setting['memcache']['server'] = '';
+$setting['memcache']['server'] = '127.0.0.1';
 $setting['memcache']['weight'] = 2;
 $setting['memcache']['persistant'] = true;
 $setting['memcache']['timeout'] = 1;

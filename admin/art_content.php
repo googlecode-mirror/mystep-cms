@@ -33,7 +33,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		if(!$op_mode && $web_id!=$_POST['web_id']) {
+		if(!$op_mode && $web_id!=$_GET['web_id']) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$log_info = $setting['language']['admin_art_content_delete'];

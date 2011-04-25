@@ -5,7 +5,7 @@ $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $id = $req->getGet("id");
 $web_id = $req->getReq("web_id");
-if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
+if(!$op_mode || empty($web_id)) $web_id = $setting['info']['web']['web_id'];
 $log_info = "";
 
 $setting_sub = getSubSetting($web_id);
@@ -29,7 +29,8 @@ switch($method) {
 		break;
 	case "rebuild":
 		$log_info = $setting['language']['admin_art_tag_rebuild'];
-		$db_tmp = new MySQL($setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
+		$db_tmp = new MySQL;
+		$db_tmp->init($setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 		$db_tmp->Connect(false);
 		$db_tmp->SelectDB($setting['db']['name']);
 		$db_tmp->Query("update ".$setting['db']['pre_sub']."news_tag set `count`=0");
@@ -45,14 +46,14 @@ switch($method) {
 			for($n=0; $n<$max_count; $n++) {
 				$the_tag[$n] = trim($the_tag[$n], "_");
 				$the_tag[$n] = mysql_real_escape_string($the_tag[$n]);
-				if(strlen(trim($the_tag[$n]))<3 || (preg_match("/[\d\.]+/", $the_tag[$n]) && $the_tag[$n]!="007")) {
-					$db_tmp->Query("update news_show set tag = replace('{$the_tag[$n]},', '', tag) where news_id='{$record['news_id']}'");
-					$db_tmp->Query("update news_show set tag = replace(',{$the_tag[$n]}', '', tag) where news_id='{$record['news_id']}'");
+				if(strlen($the_tag[$n])<3 || preg_match("/[\d\.]+/", $the_tag[$n])) {
+					$db_tmp->Query("update ".$setting['db']['pre_sub']."news_show set tag = replace('{$the_tag[$n]},', '', tag) where news_id='{$record['news_id']}'");
+					$db_tmp->Query("update ".$setting['db']['pre_sub']."news_show set tag = replace(',{$the_tag[$n]}', '', tag) where news_id='{$record['news_id']}'");
 					continue;
 				}
-				if(strlen($the_tag[$n]>24)) {
-					$the_tag[$n] = substrPro($the_tag[$n], 0, 24);
-					$db_tmp->Query("update ".$setting['db']['pre_sub']."news_show set tag = '".$the_tag[$n]."' where news_id='{$record['news_id']}'");
+				if(strlen($the_tag[$n]>50)) {
+					$the_tag[$n] = substrPro($the_tag[$n], 0, 50);
+					//$db_tmp->Query("update ".$setting['db']['pre_sub']."news_show set tag = '".$the_tag[$n]."' where news_id='{$record['news_id']}'");
 				}
 				if($db_tmp->GetSingleResult("select id from ".$setting['db']['pre_sub']."news_tag where `tag` = '".$the_tag[$n]."'")) {
 					$db_tmp->Query("update ".$setting['db']['pre_sub']."news_tag set `count` = `count` + 1, update_date = UNIX_TIMESTAMP() where `tag` = '".$the_tag[$n]."'");
@@ -82,7 +83,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $web_id;
+	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $id, $web_id, $setting_sub;
 
 	$tpl_info['idx'] = "art_tag";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -97,7 +98,7 @@ function build_page($method) {
 	$str_sql = "select count(*) as counter from ".$setting['db']['pre_sub']."news_tag where 1=1";
 	if(!empty($keyword)) $str_sql.= " and tag like '%{$keyword}%'";
 	$counter = $db->GetSingleResult($str_sql);
-	list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
+	list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}&web_id={$web_id}", $page);
 	$tpl_tmp->Set_Variables($page_arr);
 	
 	$str_sql = "select * from ".$setting['db']['pre_sub']."news_tag where 1=1";
@@ -108,9 +109,9 @@ function build_page($method) {
 	while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if($setting['gen']['rewrite']) {
-				$record['link'] = $setting['web']['url']."/".$setting['path']['cache']."/tag/".urlencode($record['tag']).$setting['gen']['cache_ext'];
+				$record['link'] = $setting_sub['web']['url']."/".$setting['path']['cache']."/tag/".urlencode($record['tag']).$setting['gen']['cache_ext'];
 			} else {
-				$record['link'] = "../tag.php?tag=".urlencode($record['tag']);
+				$record['link'] = $setting_sub['web']['url']."/tag.php?tag=".urlencode($record['tag']);
 			}
 			$record['add_date'] = date("Y-m-d", $record['add_date']);
 			$record['update_date'] = date("Y-m-d", $record['update_date']);

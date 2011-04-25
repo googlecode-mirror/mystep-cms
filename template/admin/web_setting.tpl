@@ -12,6 +12,7 @@
 $language = $setting['language'];
 include(ROOT_PATH."/include/config.php");
 include(ROOT_PATH."/include/config-detail.php");
+$setting['watermark']['mode'] = array(($setting['watermark']['mode']&1)==1, ($setting['watermark']['mode']&2)==2);
 
 $cur_section = "";
 foreach($setting as $key1 => $value1) {

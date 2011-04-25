@@ -76,7 +76,6 @@ $setting_skip['content'] = array();
 $setting_skip['content']['max_length'] = '';
 $setting_skip['content']['get_remote_img'] = '';
 $setting_skip['watermark'] = array();
-$setting_skip['watermark']['mode'] = '';
 $setting_skip['watermark']['credit'] = '';
 $setting_skip['memcache'] = array();
 $setting_skip['memcache']['server'] = '';
@@ -95,6 +94,8 @@ if($GLOBALS['subweb_idx']) {
 		$setting = arrayMerge($setting, $setting_sub);
 	}
 }
+$setting['watermark']['mode'] = array(($setting['watermark']['mode']&1)==1, ($setting['watermark']['mode']&2)==2);
+
 
 $cur_section = "";
 foreach($setting as $key1 => $value1) {
