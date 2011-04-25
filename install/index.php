@@ -74,6 +74,7 @@ echo <<<mystep
 	<META content="text/html; charset=gbk" http-equiv=Content-Type>
 	<LINK rel=stylesheet type=text/css href="style.css" media=all>
 	<META name=Copyright content="Windy2006@gmail.com">
+	<script language="JavaScript" src="../script/jquery.js"></script>
 	<script language="JavaScript" src="../script/global.js"></script>
 	<script language="JavaScript" src="../script/checkForm.js"></script>
 </HEAD>

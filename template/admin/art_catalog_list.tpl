@@ -11,7 +11,7 @@
 			<td class="cat" width="60">²Ù×÷</td>
 			<td class="cat" width="60">×ÊÑ¶</td>
 		</tr>
-<!--loop:start key="record" time="20"-->
+<!--loop:start key="record"-->
 		<tr class="row" align="center">
 			<td align="center"><!--record_cat_id--></td>
 			<td align="center"><!--record_web_name--></td>

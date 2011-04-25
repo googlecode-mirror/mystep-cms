@@ -39,7 +39,7 @@
 	<div id="page_bottom" class="after">
 		<!--info title="copyright"-->
 	</div>
-	<div align="center"><!--lang_page_update--> : <!--last_modify--></div>
+	<div align="center"><!--lang_page_update_time--> : <!--last_modify--></div>
 </div>
 <!--page_end-->
 </body>

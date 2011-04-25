@@ -15,6 +15,7 @@ $language = array (
   'page_update' => 'Update',
   'page_no' => 'Page %s',
   'page_all_news' => 'All News',
+  'page_update' => 'News Update',
   'page_update_lastest' => '( Lastest %d )',
   'info_compressmode' => 'Compass Mode: ',
   'info_compresslevel' => 'Compass Level: ',

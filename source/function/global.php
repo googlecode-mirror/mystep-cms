@@ -176,8 +176,8 @@ function arrayMerge($arr_1, $arr_2) {
 
 function HtmlTrans(&$para) {
 	//Coded By Windy2000 20030805 v1.0
-	$search  = array("'",		"\"",		"<",	">",	"  ",		"\t");
-	$replace = array("&#39;",	"&quot;",	"&lt;",	"&gt;",	"&nbsp; ",	"&nbsp; &nbsp; ");
+	$search = array("'", "\"", "<", ">", "  ", "\t");
+	$replace = array("&#39;", "&quot;", "&lt;", "&gt;", "&nbsp; ", "&nbsp; &nbsp; ");
 	if(is_array($para)) {
 		foreach($para as $key => $value) {
 			$para[$key] = str_replace($search, $replace, $value);

@@ -81,9 +81,10 @@ $sign = $free>10 ? "w" : "nw";
 		</tr>
 <?php
 $theList = array(
+	"include/config.php",
+	"include/",
 	"template/",
 	"plugin/",
-	"include/",
 	"files/",
 	"cache/",
 );
