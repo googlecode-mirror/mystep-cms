@@ -97,6 +97,7 @@ function setPos() {
 	var theHeight = $(window).height() - 120;
 	$("#main").width(theWidth);
 	$("#main").height(theHeight);
+	$("#cat_tree").height(theHeight - 50);
 }
 function setNav() {
 	var listOLE = $("#menu_nav ul:first");

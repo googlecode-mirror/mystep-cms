@@ -57,7 +57,7 @@ INSERT INTO `{pre}admin_cat` VALUES
 		
 		(0, 3, '附件管理', 'func_attach.php', '', 0, 0, '附件管理'),
 		(0, 3, '友情链接', 'func_link.php', '', 0, 0, '友情链接管理'),
-		(0, 3, '子站管理', 'web_subweb.php', '', 0, 0, '子站管理'),
+		(0, 3, '子站管理', 'web_subweb.php', '', 255, 0, '子站管理'),
 		(0, 3, '数据备份', 'func_backup.php', '', 0, 0, '数据备份'),
 		
 		(0, 4, '文章分类', 'art_catalog.php', '', 255, 0, '文章分类管理'),

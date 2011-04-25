@@ -5,6 +5,10 @@ includeCache("website");
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $web_id = $req->getGet("web_id");
+if(!$op_mode) {
+	$web_id = $setting['info']['web']['web_id'];
+	if($method!="edit_ok") $method = "edit";
+}
 $log_info = "";
 
 switch($method) {

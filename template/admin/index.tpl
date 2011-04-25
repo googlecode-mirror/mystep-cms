@@ -99,6 +99,7 @@ function setPos() {
 	var theHeight = $(window).height() - 120;
 	$("#main").width(theWidth);
 	$("#main").height(theHeight);
+	$("#cat_tree").height(theHeight - 50);
 }
 function setNav() {
 	var listOLE = $("#menu_nav ul:first");
@@ -122,7 +123,7 @@ function setNav() {
 		listOLE.append(newItem);
 	}
 	newItem = $("<li/>");
-	newItem.append("<a href=\"javascript:\" class=\"nav\">网站</a>");
+	newItem.append("<a href=\"javascript:\" class=\"nav\">所属网站</a>");
 	newSubItem = $("<ul/>");
 	$("#website").append('<option value="">全部默认网站</option>');
 	for(i=0; i<website.length; i++) {
