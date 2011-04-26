@@ -21,7 +21,6 @@ $setting['db']['pconnect'] = false;
 $setting['db']['charset'] = 'gbk';
 $setting['db']['name'] = 'mystep';
 $setting['db']['pre'] = 'ms_';
-$setting['db']['pre_sub'] = 'ms_';
 
 $setting['gen'] = array();
 $setting['gen']['language'] = 'default';

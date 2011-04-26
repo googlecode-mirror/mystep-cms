@@ -40,6 +40,7 @@ class MyTpl extends class_common {
 			);
 			
 	public
+		$allow_script = false,
 		$hash = "",
 		$delimiter_l = "<!--",
 		$delimiter_r = "-->",
@@ -153,6 +154,11 @@ class MyTpl extends class_common {
 
 		global $tpl_para;
 		$tpl_cache = $this->tpl_info['content'];
+		
+		if(!$this->allow_script) {
+			$tpl_cache = preg_replace("/<\?php.+?\?>/is", "", $tpl_cache);
+		}
+		
 		preg_match_all("/".preg_quote($this->delimiter_l)."(\w+):start(\s+\w+\s*=\s*(\"|')[^\\3]+\\3)*".preg_quote($this->delimiter_r).".*".preg_quote($this->delimiter_l)."\\1:end".preg_quote($this->delimiter_r)."/isU", $tpl_cache, $block_all);
 		$max_count = count($block_all[0]);
 		for($i=0; $i<$max_count; $i++) {

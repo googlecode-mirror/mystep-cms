@@ -12,7 +12,7 @@ $language = array (
   'ajax_sending' => 'Data Sending...',
   'page_main' => 'Main',
   'page_error' => 'An error occurs, <a href="mailto:%s">contact webmaster</a> please.',
-  'page_update' => 'Update',
+  'page_update_time' => 'Update',
   'page_no' => 'Page %s',
   'page_all_news' => 'All News',
   'page_update' => 'News Update',

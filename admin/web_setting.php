@@ -45,6 +45,7 @@ if(!empty($log_info)) {
 } else {
 	$tpl_info['idx'] = "web_setting";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
+	$tpl_tmp->allow_script = true;
 	
 	$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_setting_title']);
 	
@@ -54,7 +55,7 @@ if(!empty($log_info)) {
 			$tpl_tmp->Set_Loop("anchor", array("pos"=>str_replace("_comm", "", $key), "name"=>$value));
 		}
 	}
-	$tpl->Set_Variable('main', $tpl_tmp->Get_Content());
+	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting'));
 	unset($tpl_tmp);
 	$mystep->show($tpl);
 }

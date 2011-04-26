@@ -89,6 +89,7 @@ function build_page($method) {
 
 	$tpl_info['idx'] = "web_subweb_".($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
+	$tpl_tmp->allow_script = true;
 
 	if($method == "list") {
 		$str_sql = "select * from ".$setting['db']['pre']."website order by web_id";
