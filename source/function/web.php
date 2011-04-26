@@ -317,16 +317,20 @@ function getFileURL($news_id=0, $cat_idx="", $web_id=1, $page=1) {
 	$webInfo = getParaInfo("website", "web_id", $web_id);
 	$url = $webInfo['host'];
 	if($setting['gen']['rewrite']) {
-		$url = str_replace("//", "/", $url."/".$setting['path']['cache']."/");
-		$url = "http://".$url;
-		if(!empty($cat_idx)) {
-			$url .= $cat_idx."/";
-		} else {
-			$url .= "misc/";
-		}
+		$url = "http://".str_replace("//", "/", $url);
 		if($news_id==0) {
+			if(!empty($cat_idx)) {
+				$url .= "/catalog/".$cat_idx."/";
+			} else {
+				$url .= "/catalog/misc/";
+			}
 			if($page>1) $url .= "index_{$page}".$setting['gen']['cache_ext'];
 		} else {
+			if(!empty($cat_idx)) {
+				$url .= "/article/".$cat_idx."/";
+			} else {
+				$url .= "/article/misc/";
+			}
 			$url .= $news_id.($page==1?"":"_{$page}").$setting['gen']['cache_ext'];
 		}
 		$url = preg_replace("/([^:])\/+/", "\\1/", $url);

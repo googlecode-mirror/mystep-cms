@@ -106,7 +106,7 @@ function build_page($method) {
 			$record['idx'] = "";
 			$record['link_name'] = "";
 			$record['link_url'] = "http://";
-			$record['level'] = "0";
+			$record['level'] = "1";
 			$record['image'] = "";
 		}
 		$tpl_tmp->Set_Variables($record);

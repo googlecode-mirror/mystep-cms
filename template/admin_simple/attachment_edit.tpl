@@ -12,7 +12,7 @@
 <!--loop:start key="record"-->
 	<tr class='row'>
 		<td align='center'><input type='checkbox' name='del_att[]' value='<!--record_id-->::<!--record_file_time--><!--record_file_ext-->' /></td>
-		<td><a href='?method=download&id=<!--record_id-->' target='_blank'><!--record_file_name--></a></td>
+		<td><a href="javascript:" onclick="attach_add('<!--record_id-->', '<!--record_news_id-->', '<!--record_file_name-->', '<!--record_file_type-->')"><!--record_file_name--></a></td>
 		<td><!--record_file_type--></td>
 		<td align='right'><!--record_file_size--></td>
 		<td><!--record_file_time--></td>
@@ -37,6 +37,22 @@
 </form><br />
 <script language="JavaScript">
 <!--script-->
+
+function attach_add(id, news_id, file_name, file_type) {
+	var code = "";
+	if(file_type.indexOf("image")==-1) {
+		code = '<br /><a id="att_'+id+'" href="/files?'+id+'" target="_blank">'+file_name+'</a><br />';
+	} else {
+		code = '<br /><a id="att_'+id+'" href="/files/show.htm?'+id+'" target="_blank"><img src="/files/?'+id+'" alt="'+file_name+'" /></a><br />';
+	}
+	if(news_id==0) {
+		parent.document.forms[0].attach_list.value += id+'|';
+	}
+	parent.attach_add(code);
+	parent.$.closePopupLayer();
+	return;
+}
+
 function check_it(group, mode) {
 	var all_box = document.getElementsByName(group);
 	for(var i=0; i<all_box.length; i++) {

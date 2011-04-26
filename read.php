@@ -15,11 +15,12 @@ $add_date = strtotime($add_date);
 if($cat_info = getParaInfo("news_cat", "cat_id", $cat_id)) {
 	$cat_idx = $cat_info['cat_idx'];
 	$cat_name = $cat_info['cat_name'];
+	$menu_cat_id = $cat_info['cat_main'];
+	if($menu_cat_id==0) $menu_cat_id = $cat_info['cat_id'];
 } else {
 	$goto_url = "/";
 	$mystep->pageEnd();
 }
-
 $page = $req->getGet("page");
 if(!is_numeric($page)) $page = 1;
 if($page < 1) $page = 1;
@@ -73,7 +74,7 @@ $tpl_tmp->Set_Variables($detail, "record");
 if($page_count==1) {
 	$tpl_tmp->Set_Variable('sub_page', 'new Array()');
 } else {
-	$result = getData("select sub_title, page from ".$setting['db']['pre_sub']."news_detail where news_id='{$news_id}' order by page", "all", 600);
+	$result = getData("select sub_title, page from ".$setting['db']['pre_sub']."news_detail where news_id='{$news_id}' order by page", "all", 1200);
 	$max_count = count($result);
 	for($i=0; $i<$max_count; $i++) {
 		$result[$i]['url'] = getFileURL($news_id, $cat_idx, $setting['info']['web']['web_id'], $result[$i]['page']);
@@ -81,7 +82,7 @@ if($page_count==1) {
 		$result[$i]['txt'] = sprintf($setting['language']['page_no'], $result[$i]['page']);
 		if(!empty($result[$i]['sub_title'])) $result[$i]['txt'] .= " - ".$result[$i]['sub_title'];
 	}
-	$tpl_tmp->Set_Variable('sub_page', json_encode(chg_charset($result, $setting['gen']['charset'], "utf-8")));
+	$tpl_tmp->Set_Variable('sub_page', toJson($result, $setting['gen']['charset']));
 	unset($result);
 }
 
@@ -118,7 +119,7 @@ $tag = explode(",", $detail['tag']);
 $max_count = count($tag);
 for($i=0; $i<$max_count; $i++) {
 	if($setting['gen']['rewrite']) {
-		$tpl_tmp->Set_Loop('tag_list', array("link"=>$setting['web']['url']."/".$setting['path']['cache']."/tag/".urlencode($tag[$i]).$setting['gen']['cache_ext'], "tag"=>$tag[$i]));
+		$tpl_tmp->Set_Loop('tag_list', array("link"=>$setting['web']['url']."/tag/".urlencode($tag[$i]).$setting['gen']['cache_ext'], "tag"=>$tag[$i]));
 	} else {
 		$tpl_tmp->Set_Loop('tag_list', array("link"=>"tag.php?tag=".urlencode($tag[$i]), "tag"=>$tag[$i]));
 	}

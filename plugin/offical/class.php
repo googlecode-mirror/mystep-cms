@@ -203,6 +203,8 @@ class plugin_offical implements plugin {
 		if(!empty($att_list['tag'])) $att_list['tag'] = "a.tag like '%".str_replace(",", "%' or a.tag like '%", $att_list['tag'])."%'";
 		if(!empty($att_list['cat_id'])) {
 			if($cat_info=getParaInfo("news_cat", "cat_id", $att_list['cat_id'])) $att_list['web_id'] = $cat_info['web_id'];
+		} else {
+			$att_list['web_id'] = $setting['info']['web']['web_id'];
 		}
 		$str_sql = "select a.* from {db_pre}news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1";
 		if(!empty($att_list['web_id'])) $str_sql .= " and a.web_id='{$att_list['web_id']}'";
@@ -333,7 +335,8 @@ mytpl;
 \$max_count = count(\$link_list);
 if({$att_list['limit']}>0 && {$att_list['limit']}<\$max_count) \$max_count = {$att_list['limit']};
 for(\$i=0; \$i<\$max_count; \$i++) {
-	if(!empty(\$link_idx) && \$link_list[\$i]['idx']!=\$link_idx) continue;
+	if(\$link_list[\$i]['level']==0) continue;
+	if(!empty(\$link_idx) && strpos(",".\$link_idx.",", ",".\$link_list[\$i]['idx'].",")===false) continue;
 	echo <<<content
 {$unit}
 content;
@@ -372,7 +375,7 @@ global \$plugin_setting;
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
 	if(\$setting['gen']['rewrite']) {
-		\$record['link'] = \$setting['web']['url'].\$path_cache."/tag/".urlencode(\$record['tag']).\$setting['gen']['cache_ext'];
+		\$record['link'] = \$setting['web']['url']."/tag/".urlencode(\$record['tag']).\$setting['gen']['cache_ext'];
 	} else {
 		\$record['link'] = \$setting['web']['url']."/tag.php?tag=".urlencode(\$record['tag']);
 	}
@@ -431,6 +434,7 @@ mytpl;
 		$result = $cache->get($key);
 		if(!$result) {
 			$result = "";
+			$last_idx = -1;
 			$deep_start = 0;
 			$deep_max = 0;
 			$deep_cur = 0;
@@ -439,7 +443,16 @@ mytpl;
 			$max_count = count($news_cat);
 			for($i=0; $i<$max_count; $i++) {
 				if(!empty($web_id) && $web_id!=$news_cat[$i]['web_id']) continue;
-				if(empty($all) && (($news_cat[$i]['cat_show'] & 2)!=2 || ($deep_start==0 && $news_cat[$i]['cat_layer']>$catInfo['cat_layer']))) continue;
+				if(empty($all)) {
+					if($deep_start==0 && $news_cat[$i]['cat_layer']!=$catInfo['cat_layer']) continue;
+					if(($news_cat[$i]['cat_show'] & 2)!=2) {
+						if($last_idx==-1) $last_idx = $i;
+						continue;
+					}
+					if($deep_start>0 && ($news_cat[$i]['cat_show'] & 2)==2 && $last_idx!=-1 && $news_cat[$last_idx]['cat_layer']<$news_cat[$i]['cat_layer']) continue;
+				}
+				$last_idx = -1;
+				//if(empty($all) && (($news_cat[$i]['cat_show'] & 2)!=2 || ($deep_start==0 && $news_cat[$i]['cat_layer']>$catInfo['cat_layer']))) continue;
 				if($deep_start>0) {
 					$theLink = $news_cat[$i]['cat_link'];
 					if(empty($theLink)) $theLink = getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id']);

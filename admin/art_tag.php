@@ -109,7 +109,7 @@ function build_page($method) {
 	while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if($setting['gen']['rewrite']) {
-				$record['link'] = $setting_sub['web']['url']."/".$setting['path']['cache']."/tag/".urlencode($record['tag']).$setting['gen']['cache_ext'];
+				$record['link'] = $setting_sub['web']['url']."/tag/".urlencode($record['tag']).$setting['gen']['cache_ext'];
 			} else {
 				$record['link'] = $setting_sub['web']['url']."/tag.php?tag=".urlencode($record['tag']);
 			}
