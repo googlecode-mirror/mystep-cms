@@ -108,6 +108,7 @@ if(\$record===false) {
 	getData(\$str_sql, "remove");
 	\$webInfo = getSubSetting("{$att_list['web_id']}");
 	\$subject = \$db->getSingleResult("select subject from `".\$webInfo['db']['name']."`.`".\$webInfo['db']['pre']."news_show` where news_id='{$att_list['news_id']}'");
+	\$subject = mysql_real_escape_string(\$subject);
 	\$db->query("insert into {$setting['db']['pre']}news_mark values('{$att_list['web_id']}', '{$att_list['news_id']}', '{$att_list['cat_id']}', '".\$subject."', 0, '0', 0, 0, '0')");
 	\$record = getData(\$str_sql, "record", 3600*24);
 }
@@ -154,6 +155,7 @@ if(\$record===false) {
 	getData(\$str_sql, "remove");
 	\$webInfo = getSubSetting("{$att_list['web_id']}");
 	\$subject = \$db->getSingleResult("select subject from `".\$webInfo['db']['name']."`.`".\$webInfo['db']['pre']."news_show` where news_id='{$att_list['news_id']}'");
+	\$subject = mysql_real_escape_string(\$subject);
 	\$db->query("insert into {$setting['db']['pre']}news_mark values('{$att_list['web_id']}', '{$att_list['news_id']}', '{$att_list['cat_id']}', '".\$subject."', 0, '0', 0, 0, '0')");
 	\$record = getData(\$str_sql, "record", 3600*24);
 }

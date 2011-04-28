@@ -14,7 +14,8 @@
 				<b>入口类名：</b><!--class--><br />
 				<b>功能描述：</b><!--intro--><br />
 				<b>版权信息：</b><!--copyright--><br />
-				<b>检测信息：</b><!--check-->
+				<b>检测信息：</b>
+				<div style="margin:-16px 0px 0px 66px;"><!--check--></div>
 				</td>
 			</tr>
 			<tr> 

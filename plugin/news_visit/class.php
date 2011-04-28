@@ -85,6 +85,7 @@ mystep;
 		global $db, $setting, $news_id, $cat_id, $subject;
 		if($setting['info']['self']!="read.php" || empty($cat_id)) return;
 		$info_count = $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_visit where web_id='".$setting['info']['web']['web_id']."' and news_id='".$news_id."'");
+		$subject = mysql_real_escape_string($subject);
 		if($info_count===false) {
 			$db->Query("insert into ".$setting['db']['pre']."news_visit values('".$setting['info']['web']['web_id']."', '{$news_id}', '{$cat_id}', '{$subject}', 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1)");
 		} else {

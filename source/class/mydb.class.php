@@ -35,7 +35,7 @@
 	$mydb->getSetting()																	// get current db settings
 	$mydb->checkTBL()																		// check if the working db can be used
 
-	External Method : $mydb->WriteFile, $mydb->MakeDir, $mydb->GetFile
+	External Method : $mydb->MakeDir, $mydb->GetFile
 --------------------------------------------------------------------------------------------------------------------*/
 
 class MyDB extends class_common {
@@ -47,7 +47,7 @@ class MyDB extends class_common {
 		$DB_err	= "",
 		$DB_tlen	= 500,
 		$DB_maxlen	= 10,
-		$DB_separator	= "\0",
+		$DB_separator	= "\0";
 
 	public function init($DB_name, $DB_path="./", $DB_tlen=500) {
 		$this->DB_name = $DB_name;
@@ -269,7 +269,7 @@ class MyDB extends class_common {
 
 	public function queryDate($condition, $single=true, &$fp_pos, &$row_pos) {
 		if(!$this->checkTBL()) return false;
-		$condition = explode("|", $condition);
+		$condition = explode("&", $condition);
 		$max_count = count($condition);
 		for($i=0; $i<$max_count; $i++) {
 			if(strpos($condition[$i], ">=")>0) {
@@ -371,19 +371,19 @@ class MyDB extends class_common {
 	
 	public function setOrder(&$result, $col="rand", $desc=false) {
 		if(!is_array($result)) return;
-		public function cmp_asc($a, $b) {
+		function cmp_asc($a, $b) {
 			$a = $a[$GLOBALS['col_name']];
 			$b = $b[$GLOBALS['col_name']];
 			if ($a == $b) return 0;
 			return ($a < $b) ? -1 : 1;
 		}
-		public function cmp_desc($a, $b) {
+		function cmp_desc($a, $b) {
 			$a = $a[$GLOBALS['col_name']];
 			$b = $b[$GLOBALS['col_name']];
 			if ($a == $b) return 0;
 			return ($a > $b) ? -1 : 1;
 		}
-		public function cmp_rand($a, $b) {
+		function cmp_rand($a, $b) {
 			$a = rand();
 			$b = rand();
 			return ($a > $b) ? -1 : 1;
@@ -426,6 +426,13 @@ class MyDB extends class_common {
 		} else {
 			return true;
 		}
+	}
+	
+	public function WriteFile($content, $offset=0) {
+		if($this->DB_fp==null) $this->openTBL();
+		fseek($this->DB_fp, $offset);
+		fwrite($this->DB_fp, $content);
+		return true;
 	}
 }
 ?>
