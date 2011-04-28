@@ -30,7 +30,8 @@ CREATE TABLE `{pre}admin_cat` (
 	`path` Char(100) DEFAULT '' NOT NULL,										#管理文件路径
 	`web_id` TINYINT UNSIGNED DEFAULT 0,										#所属子站
 	`order` TINYINT UNSIGNED DEFAULT 0,											#显示顺序
-	`comment` Char(255) DEFAULT '' NOT NULL,									#目录说明
+	`comment` Char(255) DEFAULT '' NOT NULL,								#目录说明
+	INDEX `order` (`order`),
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='管理目录';
 
@@ -87,7 +88,9 @@ CREATE TABLE `{pre}plugin` (
 	`class` Char(20) DEFAULT '' NOT NULL,										#插件类
 	`active` BOOL NOT NULL DEFAULT 0,												#是否启用
 	`intro` Char(255) DEFAULT '' NOT NULL,									#插件信息
-	`copyright` Char(255) DEFAULT '' NOT NULL,							#版权信息 
+	`copyright` Char(255) DEFAULT '' NOT NULL,							#版权信息
+	`order` TINYINT UNSIGNED,																#执行顺序
+	INDEX `order` (`order`),
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='网站插件';
 
@@ -138,6 +141,7 @@ CREATE TABLE `{pre}news_show` (
 	`add_user` Char(20) NOT NULL,												#录入人
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#录入日期
 	INDEX `catalog` (`web_id`, `cat_id`),
+	INDEX `order` (`order`, `news_id`),
 	PRIMARY KEY (`news_id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻描述';
 

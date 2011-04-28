@@ -1,7 +1,7 @@
 <div class="title"><!--title--></div>
 <div align="center">
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
-	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(checkForm(this)){$id('web_id').disabled=false;return true;}else{return false;}">
+	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="cat" width="80">ËùÊôÀ¸Ä¿£º</td>

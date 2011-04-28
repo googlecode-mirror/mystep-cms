@@ -130,6 +130,7 @@ $language = array (
   'admin_web_plugin_install' => '安装插件',
   'admin_web_plugin_uninstall' => '卸载插件',
   'admin_web_plugin_active' => '插件状态设置',
+  'admin_web_plugin_order' => '插件执行顺序设置',
   'admin_web_plugin_setup' => '插件参数设定',
   'admin_web_plugin_title' => '插件管理',
   'admin_web_plugin_err' => '当前插件无可用设置信息！',

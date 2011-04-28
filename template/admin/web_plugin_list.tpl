@@ -1,7 +1,9 @@
 <div class="title"><!--title--></div>
 <div align="center">
+<form method="post" action="?method=order">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">
+			<td class="cat" width="30">排序</td>
 			<td class="cat" width="30">编号</td>
 			<td class="cat" width="100">插件名称</td>
 			<td class="cat" width="60">插件版本</td>
@@ -11,6 +13,10 @@
 		</tr>
 <!--loop:start key="plugin_list" time="15"-->
 		<tr class="row" align="center">
+			<td>
+				<input type="hidden" name="idx[]" value="<!--plugin_list_idx-->" size="2" />
+				<input type="text" name="order[]" value="<!--plugin_list_order-->" size="2" />
+			</td>
 			<td><!--plugin_list_id--></td>
 			<td><!--plugin_list_name--></td>
 			<td><!--plugin_list_ver--></td>
@@ -24,5 +30,12 @@
 			</td>
 		</tr>
 <!--loop:end-->
+		<tr>
+			<td colspan="8" align="center" class="cat">
+				<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+				<input class="btn" type="reset" value=" 重 置 " />
+			</td>
+		</tr>
 	</table>
+	</form>
 </div>

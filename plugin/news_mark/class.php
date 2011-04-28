@@ -13,7 +13,7 @@ class plugin_news_mark implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['var'].'", "'.$info['plugin_news_mark'].'", 1, "'.$info['intro'].'", "'.$info['copyright'].'")');
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['var'].'", "'.$info['plugin_news_mark'].'", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'news_mark.php', '../plugin/news_mark/', 0, 0, '".$info['cat_desc']."')");
 		$err = array();
 		if($db->GetError($err)) {

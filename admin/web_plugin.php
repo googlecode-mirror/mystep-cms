@@ -24,6 +24,14 @@ switch($method) {
 		deleteCache("plugin");
 		delTplCache($setting['gen']['template']);
 		break;
+	case "order":
+		$log_info = $setting['language']['admin_web_plugin_order'];
+		for($i=0,$m=count($_POST['idx']); $i<$m; $i++) {
+			if(!is_numeric($_POST['order'][$i])) $_POST['order'][$i] = 1;
+			$db->Query("update ".$setting['db']['pre']."plugin set `order`=".$_POST['order'][$i]." where `idx`='".$_POST['idx'][$i]."'");
+		}
+		deleteCache("plugin");
+		break;
 	case "install":
 	case "uninstall":
 		include($plugin_path.$idx."/info.php");
@@ -85,6 +93,8 @@ function build_page($method) {
 
 	$tpl_info['idx'] = "web_plugin_".$method;
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
+	$tpl_tmp->allow_script = true;
+
 	if($method == "list") {
 		$fso = $mystep->getInstance("MyFSO");
 		$plugin_list = $fso->Get_List($plugin_path);
@@ -97,9 +107,11 @@ function build_page($method) {
 				$info['install'] = "";
 				$info['uninstall'] = "";
 				if($plugin_info = getParaInfo("plugin", "idx", $info['idx'])) {
+					$info['order'] = $plugin_info['order'];
 					$info['install'] = "none";
 				} else {
 					$info['uninstall'] = "none";
+					$info['order'] = 0;
 				}
 				$info['active'] = $plugin_info['active']?$setting['language']['close']:$setting['language']['open'];
 				$tpl_tmp->Set_Loop("plugin_list", $info);

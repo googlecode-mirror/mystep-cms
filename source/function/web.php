@@ -214,7 +214,7 @@ function buildParaList($idx) {
 			break;
 		case "plugin":
 			$theList = array();
-			$db->Query("select * from ".$setting['db']['pre'].$idx." order by id");
+			$db->Query("select * from ".$setting['db']['pre'].$idx." order by `order` desc, id asc");
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				$record['url'] = $record['path'].$record['file'];
