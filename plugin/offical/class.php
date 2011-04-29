@@ -62,7 +62,10 @@ class plugin_offical implements plugin {
 			$req->setCookie("cnt_visitor", $ip, 60*60*24);
 			$add_ip = 1;
 		}
-		$count_online = $db->GetSingleResult("select count(*) from ".$setting['db']['pre']."user_online");
+		if($add_ip==1 && $db->query("select ip from ".$setting['db']['pre']."user_online where ip='".$ip."'")) {
+			$add_ip = 0;
+		}
+		$count_online = $db->GetSingleResult("select count(distinct ip) from ".$setting['db']['pre']."user_online");
 		if($record = $db->GetSingleRecord("select pv, iv, online from ".$setting['db']['pre']."counter where date=curdate()")) {
 			$pv = $record['pv'] + 1;
 			$iv = $record['iv'] + $add_ip;

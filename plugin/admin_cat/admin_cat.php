@@ -68,7 +68,7 @@ function build_page($method) {
 	global $mystep, $req, $db, $setting, $id;
 
 	$tpl_info = array(
-		"idx" => "admin_cat_".($method=="list"?"list":"input"),
+		"idx" => ($method=="list"?"list":"input"),
 		"style" => "",
 		"path" => "./",
 	);
