@@ -34,7 +34,7 @@ switch($method) {
 		$db_tmp->Connect(false);
 		$db_tmp->SelectDB($setting['db']['name']);
 		$db_tmp->Query("update ".$setting['db']['pre_sub']."news_tag set `count`=0");
-		$db->ReConnect(true);
+		$db->ReConnect(true, $setting['db']['name']);
 		$db->Query("select news_id, tag from ".$setting['db']['pre_sub']."news_show order by news_id");
 		while($record = $db->GetRS()) {
 			$the_tag = $record['tag'];

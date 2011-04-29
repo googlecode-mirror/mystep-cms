@@ -14,7 +14,8 @@
 <!--loop:start key="catalog"-->
 						<option value="<!--catalog_cat_id-->" web_id="<!--catalog_web_id-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
-					</select> <span class="comment">（请选择当前文章所属的类别）</span>
+					</select> &nbsp; 
+					<input style="width:80px" class="btn" type="button" onClick="showPop('newsCatalog','多栏目同时发布','id','newsCatalog',200)" value="其他栏目" /> <span class="comment">（请选择当前文章所属的类别）</span>
 				</td>
 			</tr>
 			<tr>
@@ -97,6 +98,7 @@
 			<tr>
 				<td colspan="2" align="center" class="row">
 					<input class="btn" name="attach_list" type="hidden" value="|">
+					<input class="btn" name="multi_cata" type="hidden" value="">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 附 件 " onclick="attach_edit()" />&nbsp;&nbsp;
@@ -114,6 +116,15 @@
 		<dd><!--news_image_name--></dd>
 	</dl>
 <!--loop:end-->
+</div>
+
+<div id="newsCatalog" class="popshow">
+	<div style="width:190px; height:200px; overflow-y:auto;">
+<!--loop:start key="catalog"-->
+		<input type="checkbox" name="multi_cata" value="<!--catalog_cat_id-->," /> <!--catalog_cat_name--> <br />
+<!--loop:end-->
+	</div>
+	<div style="text-align:center;margin-top:10px;"><input class="btn" type="button" onClick="putMultiCata()" value=" 确 定 " /></div>
 </div>
 
 <script type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
@@ -182,6 +193,16 @@ tinyMCE.init({
 function putImage(obj) {
 	$id("keyword").value = obj.title;
 	$id("image").value = obj.getAttribute("src");
+	$.closePopupLayer();
+}
+
+function putMultiCata() {
+	var objs = $("#popupLayer_newsCatalog input[name='multi_cata']");
+	var theList = "";
+	for(var i=0, m=objs.length; i<m; i++) {
+		if(objs[i].checked) theList += objs[i].value;
+	}
+	document.forms[0].multi_cata.value = theList;
 	$.closePopupLayer();
 }
 

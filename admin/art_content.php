@@ -68,6 +68,7 @@ switch($method) {
 		} elseif(!$op_mode && $web_id!=$_POST['web_id']) {
 			$goto_url = $setting['info']['self'];
 		} else {
+			$multi_cata = $_POST['multi_cata'];
 			$_POST['style'] = implode(",", $_POST['style']);
 			if(get_magic_quotes_gpc()) strip_slash($_POST);
 			$_POST['content'] = preg_replace("/ mso(\-\w+)+\:[^;]+?;/", "", $_POST['content']);
@@ -75,7 +76,7 @@ switch($method) {
 			$_POST['content'] = str_replace("<!-- pagebreak -->", "</p><!-- pagebreak --><p>", $_POST['content']);
 			$_POST['content'] = preg_replace("/<p>[\r\n\s]*<\/p>/i", "", $_POST['content']);
 			$content = explode("<!-- pagebreak -->", str_replace('="../', '="'.$setting['web']['url'].'/', $_POST['content']));
-			unset($_POST['content']);
+			unset($_POST['content'], $_POST['multi_cata']);
 			$sub_title = array();
 			$max_count = count($content);
 			for($i=0; $i<$max_count; $i++) {
@@ -109,7 +110,7 @@ switch($method) {
 			unset($_POST['setop_mode']);
 			$get_remote_file = $_POST['get_remote_file'];
 			unset($_POST['get_remote_file']);
-			$db->ReConnect(true);
+			$db->ReConnect(true, $setting['db']['name']);
 			
 			if($method=="add_ok") {
 				$log_info = $setting['language']['admin_art_content_add'];
@@ -166,6 +167,19 @@ switch($method) {
 			$db->Query("update ".$setting['db']['pre_sub']."news_show set pages='".count($sub_title)."' where news_id='{$news_id}'");
 			
 			if($get_remote_file) GetPictures_news($news_id, $web_id, $content);
+			
+			$cid_list = explode(',', $multi_cata);
+			$theCat = $_POST['cat_id'];
+			$sql_list = array();
+			$_POST['add_user'] = $req->getSession("username");
+			for($i=0,$m=count($cid_list);$i<$m;$i++) {
+				if(is_numeric($cid_list[$i]) && $theCat!=$cid_list[$i]) {
+					$_POST['cat_id'] = $cid_list[$i];
+					$_POST['link'] = getFileURL($news_id, $_POST['cat_id'], $_POST['web_id']);
+					$sql_list[] = $db->buildSQL($setting['db']['pre_sub']."news_show", $_POST, "insert");
+				}
+			}
+			$db->BatchExec($sql_list);
 		}
 		break;
 	default:

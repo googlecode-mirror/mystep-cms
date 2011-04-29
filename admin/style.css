@@ -82,7 +82,7 @@ TABLE .cat span {color:red;}
 
 .popshow {position:absolute; border:1px #000 solid; display:none; overflow:hidden;}
 .popshow .title {text-align:left; border:1px solid #629DC5; padding:5px 5px 5px 25px; font-weight:bold; color:#fff; background-color:#3275AB; background-image:url("images/arrow.gif"); background-repeat:no-repeat; background-position:5px center;}
-.popshow .content {padding:10px 10px 10px 10px; background-color:#fff;}
-.popshow .content DL {float:left; margin: 0px 5px 10px 5px;}
-.popshow .content DT IMG {border:1px #dddddd solid; width:120px; height:90px; cursor:pointer;}
-.popshow .content DD {font-size:14px; font-weight:bold; padding:5px 0px 0px 0px;}
+.popshow .content {padding:10px 10px 10px 10px; background-color:#fff; text-align:left;}
+.popshow DL {float:left; margin: 0px 5px 10px 5px;}
+.popshow DT IMG {border:1px #dddddd solid; width:120px; height:90px; cursor:pointer;}
+.popshow DD {font-size:14px; font-weight:bold; padding:5px 0px 0px 0px; text-align:center;}
