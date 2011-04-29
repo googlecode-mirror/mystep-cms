@@ -95,21 +95,19 @@ mystep;
 		$plugin_setting = self::setting();
 		$ip = getIp();
 		$ip2 = substr($ip, 0, strrpos($ip, ".")).".*";
-		$record = $db->getSingleRecord("select * from ".$setting['db']['pre']."se_detect where ip='{$ip}' || ip='{$ip2}'");
-		if($plugin_setting['counter']) $db->query("update ".$setting['db']['pre']."se_detect set `count`=`count`+1 where ip='".$record['ip']."'");
-		
-		if($counter = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date=curdate()")) {
-			$counter[$record['idx']] += 1;
-		} else {
-			$counter = array();
-			$counter['date'] = date("Y-m-d");
-			$counter[$record['idx']] = 1;
-		}
-		$db->Query($db->buildSQL($setting['db']['pre']."se_count", $counter, "replace"));
-		
-		if(strpos($plugin_setting['ban'], $record['idx'])!==false) {
-			header("HTTP/1.1 404 Not Found");
-			exit();
+		if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."se_detect where ip='{$ip}' || ip='{$ip2}'")) {
+			if($plugin_setting['counter']) $db->query("update ".$setting['db']['pre']."se_detect set `count`=`count`+1 where ip='".$record['ip']."'");
+			if($counter = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date=curdate()")) {
+				$counter[$record['idx']] += 1;
+			} else {
+				$counter = array();
+				$counter['date'] = date("Y-m-d");
+				$counter[$record['idx']] = 1;
+			}
+			if(strpos($plugin_setting['ban'], $record['idx'])!==false) {
+				header("HTTP/1.1 404 Not Found");
+				exit();
+			}
 		}
 		return;
 	}
