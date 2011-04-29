@@ -1,5 +1,6 @@
 <?php
 require("../inc.php");
+include("agent.php");
 
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
@@ -17,12 +18,19 @@ switch($method) {
 		$log_info = $setting['language']['plug_se_detect_delete'];
 		$db->Query("delete from ".$setting['db']['pre']."se_detect where idx = '{$idx}'");
 		$db->Query("alter table ".$setting['db']['pre']."se_count drop `{$idx}`");
+		unset($agent[$idx]);
+		$content = "<?PHP
+\$agent = ".var_export($agent, true).";			
+?>";
+		WriteFile("agent.php", $content, "wb");
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
 			$goto_url = $setting['info']['self'];
 		} else {
+			unset($agent[$_POST['idx_org']]);
+			$agent[$_POST['idx']] = $_POST['keyword'];
 			$ip_info = array();
 			$str_sql = "select ip,`count` from ".$setting['db']['pre']."se_detect";
 			$db->Query($str_sql);
@@ -42,7 +50,7 @@ switch($method) {
 			}
 			$_POST['ip'] = str_replace("\r", "", $_POST['ip']);
 			$ip_list = explode("\n", $_POST['ip']);
-			unset($_POST['ip'], $_POST['idx_org']);
+			unset($_POST['ip'], $_POST['idx_org'], $_POST['keyword']);
 			for($i=0,$m=count($ip_list);$i<$m;$i++) {
 				if(strlen($ip_list[$i])<5) continue;
 				$_POST['ip'] = $ip_list[$i];
@@ -51,6 +59,10 @@ switch($method) {
 				if(isset($ip_info[$_POST['ip']])) $_POST['count'] = $ip_info[$_POST['ip']];
 				$db->Query($db->buildSQL($setting['db']['pre']."se_detect", $_POST, "replace"));
 			}
+			$content = "<?PHP
+\$agent = ".var_export($agent, true).";			
+?>";
+			WriteFile("agent.php", $content, "wb");
 		}
 		break;
 	default:
@@ -64,7 +76,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $setting, $idx;
+	global $mystep, $req, $db, $setting, $idx, $agent;
 	$tpl_info = array(
 			"idx" => "main",
 			"style" => "",
@@ -74,12 +86,12 @@ function build_page($method) {
 	$tpl_info['idx'] = (($method=="add" || $method=="edit")?"input":$method);
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	if($method == "list") {
-		$str_sql = "select idx, count(*) as counter from ".$setting['db']['pre']."se_detect group by idx order by idx";
-		$db->Query($str_sql);
-		while($record = $db->GetRS()) {
+		foreach($agent as $key => $value) {
+			$record = array();
+			$record['idx'] = $key;
+			$record['counter'] = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."se_detect where idx='".$key."'");
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$db->Free();
 		$tpl_tmp->Set_Variable('title', $setting['language']['plug_se_detect_title']);
 	} elseif($method == "view") {
 		$fields = $db->GetTabFields($setting['db']['name'], $setting['db']['pre']."se_count");
@@ -103,10 +115,12 @@ function build_page($method) {
 		$record = array();
 		$record['idx'] = '';
 		$record['idx_org'] = '';
+		$record['keyword'] = "";
 		$record['ip'] = "";
 		if($method == "edit") {
 			$record['idx'] = $idx;
 			$record['idx_org'] = $idx;
+			$record['keyword'] = $agent[$idx];
 			$db->Query("select ip from ".$setting['db']['pre']."se_detect where idx='{$idx}'");
 			while($tmp = $db->GetRS()) {
 				$record['ip'] .= $tmp['ip']."\n";

@@ -80,9 +80,9 @@ mystep;
 		);
 		foreach($theList as $cur) {
 			if(isWriteable(dirname(__FILE__).$cur)) {
-				$result .= $cur . ' <span style="color:green">¿ÉÐ´</span><br />';
+				$result .= $cur . ' <span style="color:green">Writable</span><br />';
 			} else {
-				$result .= $cur . ' <span style="color:red">²»¿ÉÐ´</span><br />';
+				$result .= $cur . ' <span style="color:red">Readonly</span><br />';
 			}
 		}
 		return $result;

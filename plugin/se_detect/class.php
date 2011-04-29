@@ -80,8 +80,19 @@ mystep;
 	}	
 	
 	public static function check() {
-		//make some check for current plugin
-		return "";
+		$result = "";
+		$theList = array(
+			"/agent.php",
+			"/agent.txt",
+		);
+		foreach($theList as $cur) {
+			if(isWriteable(dirname(__FILE__).$cur)) {
+				$result .= $cur . ' <span style="color:green">Writable</span><br />';
+			} else {
+				$result .= $cur . ' <span style="color:red">Readonly</span><br />';
+			}
+		}
+		return $result;
 	}
 	
 	public static function setting() {
@@ -93,22 +104,41 @@ mystep;
 	public static function page_start() {
 		global $db, $setting;
 		$plugin_setting = self::setting();
+		include(dirname(__FILE__)."/agent.php");
+		$agent_cur = strtolower($_SERVER['HTTP_USER_AGENT']);
 		$ip = getIp();
 		$ip2 = substr($ip, 0, strrpos($ip, ".")).".*";
-		if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."se_detect where ip='{$ip}' || ip='{$ip2}'")) {
-			if($plugin_setting['counter']) $db->query("update ".$setting['db']['pre']."se_detect set `count`=`count`+1 where ip='".$record['ip']."'");
-			if($counter = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date=curdate()")) {
-				$counter[$record['idx']] += 1;
-			} else {
-				$counter = array();
-				$counter['date'] = date("Y-m-d");
-				$counter[$record['idx']] = 1;
+		$found = false;
+		foreach($agent as $key => $value) {
+			if(strpos($agent_cur, strtolower($value))!==false) {
+				if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."se_detect where ip='{$ip}' || ip='{$ip2}'")) {
+					$record['count'] += 1;
+				} else {
+					$record = array();
+					$record['idx'] = $key;
+					$record['ip'] = $ip;
+					$record['count'] = 1;
+				}
+				$db->Query($db->buildSQL($setting['db']['pre']."se_detect", $record, "replace"));
+				
+				if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date=curdate()")) {
+					$record[$key] += 1;
+				} else {
+					$record = array();
+					$record['date'] = date("Y-m-d");
+					$record[$key] = 1;
+				}
+				$db->Query($db->buildSQL($setting['db']['pre']."se_count", $record, "replace"));
+				if(strpos($plugin_setting['ban'], $key)!==false) {
+					header("HTTP/1.1 404 Not Found");
+					exit();
+				}
+				$found = true;
+				break;
 			}
-			$db->Query($db->buildSQL($setting['db']['pre']."se_count", $counter, "replace"));
-			if(strpos($plugin_setting['ban'], $record['idx'])!==false) {
-				header("HTTP/1.1 404 Not Found");
-				exit();
-			}
+		}
+		if(!$found && (strpos($agent_cur, "spider")!==false || strpos($agent_cur, "bot")!==false)) {
+			WriteFile("agent.txt", $agent_cur."\n");
 		}
 		return;
 	}

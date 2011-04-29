@@ -10,6 +10,12 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="cat" width="80">นุผüืึฃบ</td>
+				<td class="row">
+					<input name="keyword" type="text" value="<!--keyword-->" maxlength="200" />
+				</td>
+			</tr>
+			<tr>
 				<td class="cat" colspan="2">ห๙ส๔IPฃบ</td>
 			</tr>
 			<tr>
