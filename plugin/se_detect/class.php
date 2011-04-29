@@ -104,6 +104,7 @@ mystep;
 				$counter['date'] = date("Y-m-d");
 				$counter[$record['idx']] = 1;
 			}
+			$db->Query($db->buildSQL($setting['db']['pre']."se_count", $counter, "replace"));
 			if(strpos($plugin_setting['ban'], $record['idx'])!==false) {
 				header("HTTP/1.1 404 Not Found");
 				exit();

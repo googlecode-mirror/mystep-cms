@@ -82,12 +82,10 @@ function build_page($method) {
 		$db->Free();
 		$tpl_tmp->Set_Variable('title', $setting['language']['plug_se_detect_title']);
 	} elseif($method == "view") {
-		$str_sql = "select distinct(idx) as idx from ".$setting['db']['pre']."se_detect";
-		$db->Query($str_sql);
-		while($record = $db->GetRS()) {
-			$tpl_tmp->Set_Loop('se', $record);
+		$fields = $db->GetTabFields($setting['db']['name'], $setting['db']['pre']."se_count");
+		for($i=1, $m=count($fields); $i<$m; $i++) {
+			$tpl_tmp->Set_Loop('se', array('idx'=>$fields[$i]));
 		}
-		$db->Free();
 		$str_sql = "select * from ".$setting['db']['pre']."se_count";
 		$db->Query($str_sql);
 		while($record = $db->GetRS()) {
