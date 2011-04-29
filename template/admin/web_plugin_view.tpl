@@ -25,7 +25,6 @@
 $language = $setting['language'];
 include(ROOT_PATH."/plugin/".$idx."/config.php");
 include(ROOT_PATH."/plugin/".$idx."/config-detail.php");
-
 if(!isset($setting_type)) {
 	echo <<<content
 			<tr> 

@@ -18,6 +18,9 @@ if($op_mode) {
 $tpl->Set_Variable("website", toJson($website, $setting['gen']['charset']));
 $tpl->Set_Variable("news_cat", toJson($news_cat, $setting['gen']['charset']));
 
+$tpl->Set_Variable("year", date('Y'));
+$tpl->Set_Variables($ms_version, "ms_version");
+
 $mystep->show($tpl);
 $mystep->pageEnd(false);
 ?>

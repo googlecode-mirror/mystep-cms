@@ -1,0 +1,10 @@
+<?php
+$language = array(
+	"plug_se_detect_delete" => "É¾³ýËÑË÷ÒýÇæ",
+	"plug_se_detect_pos" => "ËÑË÷ÒýÇæÅÅÐò",
+	"plug_se_detect_add" => "Ìí¼ÓËÑË÷ÒýÇæ",
+	"plug_se_detect_edit" => "ÐÞ¸ÄËÑË÷ÒýÇæ",
+	"plug_se_detect_title" => "ËÑË÷ÒýÇæÎ¬»¤",
+	"plug_se_detect_error" => "²»´æÔÚÏà¹ØËÑË÷ÒýÇæ",
+);
+?>

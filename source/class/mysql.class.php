@@ -559,8 +559,7 @@ class MySQL extends class_common {
 	}
 
 	public function Close(&$err_info = array()) {
-		if($this->DB_result != NULL)
-			$this->Free();
+		if($this->DB_result != NULL) $this->Free();
 		if($this->DB_conn!=NULL && is_resource($this->DB_conn)) mysql_close($this->DB_conn);
 		if($this->DB_select!=NULL) $this->DB_select = NULL;
 		return $this->DB_count;

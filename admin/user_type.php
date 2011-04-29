@@ -52,10 +52,10 @@ function build_page($method) {
 	if($method == "list") {
 		$str_sql = "select * from ".$setting['db']['pre']."user_type order by type_id";
 		$db->Query($str_sql);
+		$max_count = count($user_power);
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			$record['user_power'] = "";
-			$max_count = count($user_power);
 			for($i=0; $i<$max_count; $i++) {
 				$record['user_power'] .= "<td class=\"row\">".$record[$user_power[$i]['idx']]."</td>\n";
 			}

@@ -1,12 +1,6 @@
 <?php
 require("../inc.php");
 include("info.php");
-$tpl_info = array(
-		"idx" => "main",
-		"style" => "",
-		"path" => "./",
-		);
-$tpl = $mystep->getInstance("MyTpl", $tpl_info);
 
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
@@ -69,7 +63,14 @@ unset($mydb);
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $tpl, $tpl_info, $setting, $idx, $mydb;
+	global $mystep, $req, $db, $setting, $idx, $mydb;
+	$tpl_info = array(
+			"idx" => "main",
+			"style" => "",
+			"path" => "./",
+			);
+	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
+
 	$tpl_info['idx'] = ($method=="list"?"list":"input");
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	if($method == "list") {
