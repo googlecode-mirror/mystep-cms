@@ -207,7 +207,7 @@ class plugin_offical implements plugin {
 		if(!empty($att_list['cat_id'])) {
 			if($cat_info=getParaInfo("news_cat", "cat_id", $att_list['cat_id'])) $att_list['web_id'] = $cat_info['web_id'];
 		} else {
-			$att_list['web_id'] = $setting['info']['web']['web_id'];
+			//$att_list['web_id'] = $setting['info']['web']['web_id'];
 		}
 		$str_sql = "select a.* from {db_pre}news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1";
 		if(!empty($att_list['web_id'])) $str_sql .= " and a.web_id='{$att_list['web_id']}'";
@@ -238,7 +238,7 @@ class plugin_offical implements plugin {
 global \$plugin_setting;
 \$n = 0;
 \$str_sql = str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}");
-\$str_sql = str_replace(" and cat_id in (0)", "", \$str_sql);
+\$str_sql = str_replace(" and (a.cat_id ='0' || b.cat_main='0')", "", \$str_sql);
 \$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {

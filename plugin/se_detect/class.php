@@ -138,7 +138,7 @@ mystep;
 			}
 		}
 		if(!$found && (strpos($agent_cur, "spider")!==false || strpos($agent_cur, "bot")!==false)) {
-			WriteFile("agent.txt", $agent_cur."\n");
+			WriteFile(dirname(__FILE__)."/agent.txt", $agent_cur."\n");
 		}
 		return;
 	}

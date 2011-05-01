@@ -94,7 +94,7 @@ CREATE TABLE `{pre}plugin` (
 	PRIMARY KEY (`id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='网站插件';
 
-INSERT INTO `{pre}plugin` VALUES (0, "官方插件", "offical", "1.0", "plugin_offical", 1, "Offical Plugin Show, you may treat it as an example.", "Copyright 2010 Windy2000");
+INSERT INTO `{pre}plugin` VALUES (0, "官方插件", "offical", "1.0", "plugin_offical", 1, "Offical Plugin Show, you may treat it as an example.", "Copyright 2010 Windy2000", 1);
 
 # ---------------------------------------------------------------------------------------------------------------
 

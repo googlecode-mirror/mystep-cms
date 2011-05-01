@@ -1,13 +1,14 @@
 <?PHP
 $agent = array (
-  '¹È¸è_Feed' => 'Feedfetcher-Google',
-  '¹È¸è_Bot' => 'Googlebot',
-  '°Ù¶È' => 'Baiduspider',
-  'ÓÐµÀ' => 'YodaoBot',
-  'ÑÅ»¢' => 'Yahoo! Slurp',
-  'ËÑËÑ_1' => 'Sosospider',
-  'ËÑËÑ_2' => 'Sosoimagespider',
-  'ËÑ¹·_1' => 'Sogou Web Sprider',
-  '¹È¸è' => 'google',
+  '¹È¸è' => 'Google',
+  '°Ù¶È' => 'Baidu',
+  'ÑÅ»¢' => 'Yahoo',
+  'ËÑËÑ' => 'Soso',
+  'ËÑ¹·' => 'Sogou',
+  'ÓÐµÀ' => 'youdao',
+  '±ØÓ¦_msn' => 'msnbot',
+  '±ØÓ¦_bing' => 'bingbot',
+  'Majestic-12' => 'mj12bot',
+  '»ªÎªÈüÃÅÌú¿Ë' => 'huaweisymantecspider',
 );			
 ?>
