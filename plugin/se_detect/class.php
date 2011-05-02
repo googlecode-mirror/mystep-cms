@@ -121,11 +121,12 @@ mystep;
 				}
 				$db->Query($db->buildSQL($setting['db']['pre']."se_detect", $record, "replace"));
 				
-				if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date='".date("Y-m-d")."'")) {
+				$theDate = date("Y-m-d");
+				if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date='".$theDate)."'")) {
 					$record[$key] += 1;
 				} else {
 					$record = array();
-					$record['date'] = date("Y-m-d");
+					$record['date'] = $theDate;
 					$record[$key] = 1;
 				}
 				$db->Query($db->buildSQL($setting['db']['pre']."se_count", $record, "replace"));
