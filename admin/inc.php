@@ -12,6 +12,9 @@ header("Expires: -1");
 header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0", false);
 header("Pragma: no-cache");
 
+include(ROOT_PATH."/plugin/offical/config.php");
+date_default_timezone_set($plugin_setting['offical']['timezone']);
+
 $mystep = new MyStep();
 $mystep->getLanguage(dirname(__FILE__)."/language/");
 $mystep->pageStart();
@@ -36,10 +39,15 @@ if($setting['info']['self']=="login.php") {
 	}
 }
 
+if($group['power_web']!="all" && strpos(",".$group['power_web'].",", ",".$setting['info']['web']['web_id'].",")===false) {
+	echo showInfo($setting['language']['admin_nopower']);
+	$mystep->pageEnd(false);
+}
+
 includeCache("admin_cat");
 if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "file", $setting['info']['self'])) {
 	if(strpos(",".$group['power_func'].",", ",".$cat_info['id'].",")===false) {
-		echo '<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">'.$setting['language']['admin_nopower'].'</div>';
+		echo showInfo($setting['language']['admin_nopower']);
 		$mystep->pageEnd(false);
 	}
 }

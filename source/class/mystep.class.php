@@ -115,7 +115,6 @@ class MyStep extends class_common {
 	public function pageStart($setPlugin = false) {
 		global $setting, $db, $req, $cache;
 		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
-		date_default_timezone_set("PRC");
 		set_magic_quotes_runtime(false);
 		set_time_limit(30);
 		ini_set('memory_limit', '128M');

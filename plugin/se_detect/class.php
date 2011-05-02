@@ -121,7 +121,7 @@ mystep;
 				}
 				$db->Query($db->buildSQL($setting['db']['pre']."se_detect", $record, "replace"));
 				
-				if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date=curdate()")) {
+				if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date='".date("Y-m-d")."'")) {
 					$record[$key] += 1;
 				} else {
 					$record = array();
