@@ -94,11 +94,18 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_Variable('title', $setting['language']['plug_se_detect_title']);
 	} elseif($method == "view") {
+		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."se_count");
+		$tpl_tmp->Set_If('empty', ($counter==0));
+		$page = $req->getGet("page");
+		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?order={$order}&order_type={$order_type}", $page);
+		$tpl_tmp->Set_Variables($page_arr);
+		
 		$fields = $db->GetTabFields($setting['db']['name'], $setting['db']['pre']."se_count");
 		for($i=1, $m=count($fields); $i<$m; $i++) {
 			$tpl_tmp->Set_Loop('se', array('idx'=>$fields[$i]));
 		}
-		$str_sql = "select * from ".$setting['db']['pre']."se_count";
+		$tpl_tmp->Set_Variable("field_count", $m);
+		$str_sql = "select * from ".$setting['db']['pre']."se_count order by date desc";
 		$db->Query($str_sql);
 		while($record = $db->GetRS()) {
 			$detail = "";
