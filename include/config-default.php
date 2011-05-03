@@ -30,6 +30,7 @@ $setting['gen']['cache'] = false;
 $setting['gen']['rewrite'] = false;
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'default';
+$setting['gen']['timezone'] = 'Etc/GMT-8';
 
 $setting['list'] = array();
 $setting['list']['txt'] = 30;

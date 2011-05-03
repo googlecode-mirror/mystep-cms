@@ -53,6 +53,7 @@ $setting_skip['gen']['gzip_level'] = '';
 $setting_skip['gen']['cache'] = '';
 $setting_skip['gen']['rewrite'] = '';
 $setting_skip['gen']['cache_ext'] = '';
+$setting_skip['gen']['timezone'] = '';
 $setting_skip['list'] = array();
 $setting_skip['list']['txt'] = '';
 $setting_skip['list']['img'] = '';

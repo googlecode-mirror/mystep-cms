@@ -46,7 +46,6 @@ class plugin_offical implements plugin {
 			header("Cache-Control: private", false);
 			header("Pragma: no-cache");	
 		}
-		date_default_timezone_set($setting['timezone']);
 	}
 	
 	public static function page_end() {

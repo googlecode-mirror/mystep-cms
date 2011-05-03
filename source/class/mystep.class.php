@@ -122,6 +122,7 @@ class MyStep extends class_common {
 		
 		error_reporting(E_ALL ^ E_NOTICE);
 		set_error_handler("ErrorHandler");
+		date_default_timezone_set($setting['gen']['timezone']);
 		
 		ob_start();
 		ob_implicit_flush(false);

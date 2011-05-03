@@ -50,6 +50,7 @@ $setting_comm['gen']['cache'] = 'Ò³Ãæ»º´æ';
 $setting_comm['gen']['rewrite'] = '¾²Ì¬Á¬½Ó';
 $setting_comm['gen']['cache_ext'] = '¾²Ì¬À©Õ¹Ãû';
 $setting_comm['gen']['template'] = 'Ä¬ÈÏÄ£°å';
+$setting_comm['gen']['timezone'] = "Ê±Çø½ÃÕý";
 $setting_comm['gen_descr']['language'] = 'ÍøÕ¾ÏÔÊ¾ÓïÖÖÇÐ»»';
 $setting_comm['gen_descr']['charset'] = 'ÍøÕ¾ÏÔÊ¾±àÂë¼¯';
 $setting_comm['gen_descr']['gzip_level'] = 'GZIP Ñ¹ËõÒ³ÃæµÄ¼¶±ð£¨0-9£©£¬0 Îª¹Ø±ÕÑ¹Ëõ';
@@ -57,6 +58,7 @@ $setting_comm['gen_descr']['cache'] = '¿ªÆôÒ³Ãæ»º´æ£¬¼õÉÙ¹Ì¶¨Ê±¼äÄÚµÄ²éÑ¯ÆµÂÊ£¬Ô
 $setting_comm['gen_descr']['rewrite'] = '½«ÍøÕ¾Á´½Ó×ª»»Îª¾²Ì¬Á¬½Ó£¬Ðè·þÎñÆ÷¿ªÆô URL_Rewrite Ö§³Ö';
 $setting_comm['gen_descr']['cache_ext'] = '¾²Ì¬Á¬½ÓºÍ»º´æÎÄ¼þµÄÀ©Õ¹Ãû';
 $setting_comm['gen_descr']['template'] = 'ÍøÕ¾Ç°Ì¨ÏÔÊ¾ÑùÊ½';
+$setting_comm['gen_descr']['timezone'] = "Éè¶¨ÍøÕ¾ÏÔÊ¾Ê±Çø";
 
 $setting_comm['list'] = array();
 $setting_comm['list_comm'] = 'ÁÐ±íÏÔÊ¾ÊýÁ¿ÉèÖÃ';
@@ -171,6 +173,7 @@ $setting_type['gen']['cache'] = array("radio", array("¿ªÆô"=>"true", "¹Ø±Õ"=>"fa
 $setting_type['gen']['rewrite'] = array("radio", array("¿ªÆô"=>"true", "¹Ø±Õ"=>"false"));
 $setting_type['gen']['cache_ext'] = array("text", "", "10");
 $setting_type['gen']['template'] = array("text", "alpha", "20");
+$setting_type['gen']['timezone'] = array("select", array("GMT-12"=>"Etc/GMT+12", "GMT-11"=>"Etc/GMT+11", "GMT-10"=>"Etc/GMT+10", "GMT-9"=>"Etc/GMT+9", "GMT-8"=>"Etc/GMT+8", "GMT-7"=>"Etc/GMT+7", "GMT-6"=>"Etc/GMT+6", "GMT-5"=>"Etc/GMT+5", "GMT-4"=>"Etc/GMT+4", "GMT-3"=>"Etc/GMT+3", "GMT-2"=>"Etc/GMT+2", "GMT-1"=>"Etc/GMT+1", "GMT"=>"Etc/GMT", "GMT+1"=>"Etc/GMT-1", "GMT+2"=>"Etc/GMT-2", "GMT+3"=>"Etc/GMT-3", "GMT+4"=>"Etc/GMT-4", "GMT+5"=>"Etc/GMT-5", "GMT+6"=>"Etc/GMT-6", "GMT+7"=>"Etc/GMT-7", "GMT+8"=>"Etc/GMT-8", "GMT+9"=>"Etc/GMT-9", "GMT+10"=>"Etc/GMT-10", "GMT+11"=>"Etc/GMT-11", "GMT+12"=>"Etc/GMT-12"));
 
 $setting_type['list'] = array();
 $setting_type['list']['txt'] = array("text", "digital", "2");
