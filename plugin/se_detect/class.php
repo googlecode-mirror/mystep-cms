@@ -108,7 +108,7 @@ mystep;
 		$agent_cur = strtolower($_SERVER['HTTP_USER_AGENT']);
 		$ip = getIp();
 		$ip2 = substr($ip, 0, strrpos($ip, ".")).".*";
-		$found = false;
+		$GLOBALS['se_bot'] = "";
 		foreach($agent as $key => $value) {
 			if(strpos($agent_cur, strtolower($value))!==false) {
 				if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."se_detect where ip='{$ip}' || ip='{$ip2}'")) {
@@ -134,14 +134,20 @@ mystep;
 					header("HTTP/1.1 404 Not Found");
 					exit();
 				}
-				$found = true;
+				$GLOBALS['se_bot'] = $key;
 				break;
 			}
 		}
-		if(!$found && (strpos($agent_cur, "spider")!==false || strpos($agent_cur, "bot")!==false)) {
+		if(empty($GLOBALS['se_bot']) && (strpos($agent_cur, "spider")!==false || strpos($agent_cur, "bot")!==false)) {
 			WriteFile(dirname(__FILE__)."/agent.txt", $agent_cur."\n");
 		}
 		return;
+	}
+	
+	public static function page_end() {
+		if(!empty($GLOBALS['se_bot']) && $req->getSession("username")=="Guest") {
+			$req->setSession("username", $GLOBALS['se_bot']);
+		}
 	}
 }
 ?>
