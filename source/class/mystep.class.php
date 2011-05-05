@@ -165,7 +165,7 @@ class MyStep extends class_common {
 		$req->SessionStart($GLOBALS['sess_handle']);
 		$username = $req->getSession("username");
 		if((empty($username) || $username=="Guest") && $req->getCookie('ms_user')!="") checkUser();
-		$req->setSession("url", $req->getServer("URL"));
+		$req->setSession("url", "http://".$req->getServer("HTTP_HOST").$req->getServer("URL"));
 		$req->setSession("ip", GetIp());
 	}
 	

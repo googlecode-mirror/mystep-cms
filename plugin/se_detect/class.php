@@ -145,7 +145,8 @@ mystep;
 	}
 	
 	public static function page_end() {
-		if(!empty($GLOBALS['se_bot']) && $req->getSession("username")=="Guest") {
+		global $req;
+		if(!empty($GLOBALS['se_bot'])) {
 			$req->setSession("username", $GLOBALS['se_bot']);
 		}
 	}
