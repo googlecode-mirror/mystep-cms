@@ -9,10 +9,10 @@
 					<input type="hidden" name="news_id" value="<!--record_news_id-->" />
 					<input id="web_id" type="hidden" name="web_id" value="<!--record_web_id-->" />
 					<input type="hidden" name="pages" value="<!--record_pages-->" />
-					<select id="cat_id" name="cat_id" onchange="profix_changed(this.value);$id('web_id').value=this.options[this.selectedIndex].getAttribute('web_id');" need="" />
+					<select id="cat_id" name="cat_id" onchange="profix_changed(this.value);$id('web_id').value=this.options[this.selectedIndex].getAttribute('web_id');$id('view_lvl').value=this.options[this.selectedIndex].getAttribute('view_lvl');" need="" />
 						<option value="">请选择</option>
 <!--loop:start key="catalog"-->
-						<option value="<!--catalog_cat_id-->" web_id="<!--catalog_web_id-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
+						<option value="<!--catalog_cat_id-->" web_id="<!--catalog_web_id-->" view_lvl="<!--catalog_view_lvl-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
 					</select> &nbsp; 
 					<input style="width:80px" class="btn" type="button" onClick="showPop('newsCatalog','多栏目同时发布','id','newsCatalog',200)" value="其他栏目" /> <span class="comment">（请选择当前文章所属的类别）</span>
@@ -52,7 +52,7 @@
 			</tr>
 			<tr>
 				<td class="cat">阅读权限：<span>*</span></td>
-				<td class="row"><input name="view_lvl" type="text" maxlength="2" value="<!--record_view_lvl-->" need="digital" /> <span class="comment">（浏览当前文章需要达到的级别）</span></td>
+				<td class="row"><input name="view_lvl" id="view_lvl" type="text" maxlength="2" value="<!--record_view_lvl-->" need="digital" /> <span class="comment">（浏览当前文章需要达到的级别）</span></td>
 			</tr>
 			<tr>
 				<td class="cat">列表排序：<span>*</span></td>

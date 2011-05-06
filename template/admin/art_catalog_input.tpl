@@ -57,6 +57,13 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="cat">阅读权限：<span>*</span></td>
+				<td class="row">
+					<input name="view_lvl_org" type="hidden" value="<!--view_lvl-->" /> 
+					<input name="view_lvl" type="text" maxlength="2" value="<!--view_lvl-->" need="digital" /> 
+					<span class="comment">（浏览当前分类文章需要达到的级别）</span></td>
+			</tr>
+			<tr>
 				<td class="cat">显示模式：</td>
 				<td class="row">
 					<select name="cat_type">

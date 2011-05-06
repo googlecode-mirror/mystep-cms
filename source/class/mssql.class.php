@@ -14,7 +14,7 @@
 /*--------------------------------------------------------------------------------------------------------------------
 
   How To Use:
-	$MSSQL = new DB_Manager($host, $user, $pass, $charse)	// Set the Database Class
+	$MSSQL = new MSSQL($host, $user, $pass, $charse)	// Set the Database Class
 	$MSSQL->ReadSqlFile($file)			// Read SQL File And Send Content of the File to HandleSQL($strSQL)
 	$MSSQL->HandleSQL($strSQL)			// Split the SQL Query String into a array from a whole String (Maybe Read from a File)
 	$MSSQL->BatchExec($ArrSQL)			// Execute Multi Query from an Array (Use HandleSQL First)
@@ -24,7 +24,7 @@
 	$MSSQL->SeekData($line)				// Seek Data Row in the $MSSQL->DB_resut
 	$MSSQL->GetResult($line, $field="")		// The Same Use as mssql_result
 	$MSSQL->GetRS()					// Return The Current Result as an Array and Set the Point of Result to the Next Result
-	$MySQL->GetDBs()				// Get the Databases List of Current MySQL Server as an Array
+	$MSSQL->GetDBs()				// Get the Databases List of Current MySQL Server as an Array
 	$MSSQL->GetTabs($the_db)			// Get the Tables List of Current Selected Database as an Array
 	$MSSQL->GetQueryFields()			// Get the Columns List of Current Query
 	$MSSQL->Free()					// Free the $MSSQL->DB_result in order to Release the System Resource

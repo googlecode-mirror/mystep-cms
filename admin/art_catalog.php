@@ -83,6 +83,8 @@ switch($method) {
 			}
 			$_POST['cat_show'] = array_sum($_POST['cat_show']);
 			if(is_null($_POST['cat_show'])) $_POST['cat_show'] = 0;
+			$view_lvl_org = $_POST['view_lvl_org'];
+			unset($_POST{'view_lvl_org'});
 			if($method=="add_ok") {
 				$log_info = $setting['language']['admin_art_catalog_add'];
 				$_POST['cat_order'] = 1 + $db->GetSingleResult("select max(cat_order) from ".$setting['db']['pre']."news_cat");
@@ -104,6 +106,15 @@ switch($method) {
 				}
 				multiChange($cat_id, $_POST['cat_layer']);
 				$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "update", "cat_id={$cat_id}");
+				if($view_lvl_org!=$_POST['view_lvl'] && is_numeric($_POST['view_lvl'])) {
+					$setting_sub = getSubSetting($webInfo['web_id']);
+					if($setting['db']['name']==$setting_sub['db']['name']) {
+						$setting['db']['pre_sub'] = $setting_sub['db']['pre'];
+					} else {
+						$setting['db']['pre_sub'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
+					}
+					$db->Query("update ".$setting['db']['pre_sub']."news_show set view_lvl='".$_POST['view_lvl']."' where cat_id = '{$cat_id}' and view_lvl='".$view_lvl_org."'");
+				}
 			}
 			$db->Query($str_sql);
 			if($method=="add_ok" && $group['power_cat']!="all") {
@@ -177,6 +188,8 @@ function build_page($method) {
 			$record['cat_comment'] = "";
 			$record['cat_image'] = "";
 			$record['cat_link'] = "";
+			$record['view_lvl'] = 0;
+			$record['view_lvl_org'] = 0;
 			$web_disabled = "";
 			$record['cat_show_1'] = "checked";
 			$record['cat_show_2'] = "checked";

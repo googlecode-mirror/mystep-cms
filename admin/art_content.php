@@ -318,8 +318,12 @@ function build_page($method) {
 		$record['image'] = "";
 		$record['content'] = "";
 		$record['pages'] = 1;
-		$record['view_lvl'] = 0;
 		$record['order'] = 0;
+		if(!empty($cat_id) && $cat_info = getParaInfo("news_cat", "cat_id", $cat_id)) {
+			$record['view_lvl'] = $cat_info['view_lvl'];
+		} else {
+			$record['view_lvl'] = 0;
+		}
 		$tpl_tmp->Set_Variables($record, "record");
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_add']);
 	}
@@ -345,7 +349,7 @@ function build_page($method) {
 			$news_cat[$i]['cat_name'] = "&nbsp;".$news_cat[$i]['cat_name'];
 		}
 		$news_cat[$i] = preg_replace("/^©À /", "", preg_replace("/^©¸ /", "", $news_cat[$i]));
-		$tpl_tmp->Set_Loop('catalog', array('cat_id'=>$news_cat[$i]['cat_id'], 'web_id'=>$news_cat[$i]['web_id'], 'cat_name'=>$news_cat[$i]['cat_name'], 'selected'=>($cat_id==$news_cat[$i]['cat_id']?"selected":"")));
+		$tpl_tmp->Set_Loop('catalog', array('cat_id'=>$news_cat[$i]['cat_id'], 'web_id'=>$news_cat[$i]['web_id'], 'cat_name'=>$news_cat[$i]['cat_name'], 'view_lvl'=>$news_cat[$i]['view_lvl'], 'selected'=>($cat_id==$news_cat[$i]['cat_id']?"selected":"")));
 		$tpl_tmp->Set_Loop('cat_sub', array('cat_id'=>$news_cat[$i]['cat_id'], 'cat_sub'=>$news_cat[$i]['cat_sub']));
 	}
 	

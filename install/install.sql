@@ -113,12 +113,11 @@ CREATE TABLE `{pre}news_cat` (
 	`cat_link` Char(200) DEFAULT '',												#分类链接
 	`cat_layer` TINYINT UNSIGNED NOT NULL DEFAULT 0,				#分类层级
 	`cat_show` TINYINT UNSIGNED NOT NULL DEFAULT 0,					#显示位置（0 不显示，以二进制模式扩充）
+	`view_lvl` Char(10) NOT NULL DEFAULT '0',								#阅读权限
 	PRIMARY KEY (`cat_id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻分类';
 
-INSERT INTO `{pre}news_cat` VALUES
-		(0, 1, 0, '网站通告', '网站通告', 'notice', '', '', 0, 0, '', 1, 0),
-		(0, 1, 0, '新闻资讯', '新闻资讯 时事报道 体育新闻 健康生活', 'news', '', '时事,娱乐,体育,健康', 1, 0, '', 1, 255);
+INSERT INTO `{pre}news_cat` VALUES (0, 1, 0, '新闻资讯', '新闻资讯 时事报道 体育新闻 健康生活', 'news', '', '时事,娱乐,体育,健康', 1, 0, '', 1, 255, 0);
 # ---------------------------------------------------------------------------------------------------------------
 
 # 新闻描述
