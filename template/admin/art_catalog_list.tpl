@@ -30,5 +30,5 @@ parent.group.power_cat = "," + parent.group.power_cat + ",";
 parent.group.power_web = "," + parent.group.power_web + ",";
 parent.group.power_func = "," + parent.group.power_func + ",";
 parent.news_cat = <!--news_cat-->;
-parent.showCat(parent.document.getElementById("cat_tree"), parent.getWebCat(<!--web_id-->), true);
+parent.showCat(parent.document.getElementById("cat_tree"), parent.getWebCat(parent.document.getElementById("website").value), true);
 </script>

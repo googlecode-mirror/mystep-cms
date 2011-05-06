@@ -55,7 +55,7 @@ class MSSQL extends class_common {
 		return;
 	}
 
-	public function Connect($pconnect = false) {
+	public function Connect($pconnect = false, $the_db = "") {
 		if($pconnect) {
 			$this->DB_conn = mssql_pconnect($this->DB_host, $this->DB_user, $this->DB_pass);
 		} else {
@@ -64,6 +64,7 @@ class MSSQL extends class_common {
 		$this->DB_qstr = "none (Connect to MSSQL Server)";
 		if($this->GetErrorCode() != 0)	$this->Error("Could not connect to MSSQL Server");
 		mssql_query( "SET TEXTSIZE 1024000", $this->DB_conn);
+		if(!empty($the_db)) $this->SelectDB($the_db);
 		return;
 	}
 
