@@ -257,6 +257,8 @@ function chg_charset($content, $from="gbk", $to="utf-8") {
 		foreach($content as $key => $value) {
 			$result[$key] = chg_charset($value, $from, $to);
 		}
+	} elseif(is_numeric($content)) {
+		$result = $content;
 	}
 	return $result;
 }

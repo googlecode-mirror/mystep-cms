@@ -18,6 +18,7 @@ class MyStep extends class_common {
 		$func_tag = array(),
 		$func_api = array(),
 		$func_ajax = array(),
+		$module = array(),
 		$language = array(),
 		$content = array();
 	
@@ -132,11 +133,14 @@ class MyStep extends class_common {
 		$db = $this->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 		$cache = $this->getInstance("MyCache", $setting['web']['cache_mode']);
 		
+		includeCache("website");
+		includeCache("user_group");
+		includeCache("user_type");
+		
 		$setting['info'] = array();
 		$setting['info']['time_start'] = GetMicrotime();
 		$setting['info']['self'] = strtolower(basename($req->getServer("PHP_SELF")));
 		$host = $req->getServer("HTTP_HOST");
-		includeCache("website");
 		$setting['info']['web'] = getParaInfo("website", "host", $host);
 		if($setting['info']['web']) {
 			$setting_sub = getSubSetting($setting['info']['web']['web_id']);
@@ -160,8 +164,6 @@ class MyStep extends class_common {
 			call_user_func($this->func_start[$i]);
 		}
 
-		includeCache("user_group");
-		includeCache("user_type");
 		$req->SessionStart($GLOBALS['sess_handle']);
 		$username = $req->getSession("username");
 		if((empty($username) || $username=="Guest") && $req->getCookie('ms_user')!="") checkUser();
@@ -250,6 +252,19 @@ class MyStep extends class_common {
 			$this->func_api[$name] = $name;
 		} else {
 			$this->func_api[$name] = $method;
+		}
+	}
+	
+	public function regModule($module, $page) {
+		if(is_file($page))
+			$this->module[$module] = $page;
+	}
+	
+	public function module($module) {
+		if(isset($this->module[$module])) {
+			include($this->module[$module]);
+		} else {
+			$GLOBALS['goto_url'] = "/";
 		}
 	}
 }

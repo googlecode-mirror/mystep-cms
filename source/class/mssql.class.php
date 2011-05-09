@@ -24,6 +24,8 @@
 	$MSSQL->SeekData($line)				// Seek Data Row in the $MSSQL->DB_resut
 	$MSSQL->GetResult($line, $field="")		// The Same Use as mssql_result
 	$MSSQL->GetRS()					// Return The Current Result as an Array and Set the Point of Result to the Next Result
+	$MSSQL->GetSingleResult($sql)			// Get the first single value of the first line of the recordset
+	$MSSQL->GetSingleRecord($sql, $mode)			// Get the first line of the recordset
 	$MSSQL->GetDBs()				// Get the Databases List of Current MySQL Server as an Array
 	$MSSQL->GetTabs($the_db)			// Get the Tables List of Current Selected Database as an Array
 	$MSSQL->GetQueryFields()			// Get the Columns List of Current Query
@@ -99,6 +101,25 @@ class MSSQL extends class_common {
 		return $num_rows;
 	}
 
+	public function GetSingleResult($sql){
+		$row_num = $this->Query($sql);
+		$result = ($row_num>0 ? $this->GetResult(0) : "");
+		$this->free();
+		return $result;
+	}
+
+	public function GetSingleRecord($sql, $mode = true){
+		$row_num = $this->Query($sql);
+		if($row_num>0) {
+			$result = $this->GetRS();
+		} else {
+			$result = false;
+		}
+		$this->free();
+		if($result===false) return false;
+		return $mode?$result:array_values($result);
+	}
+
 	public function SeekData($line) {
 		if($this->DB_result == NULL) return false;
 		$flag = mssql_data_seek($this->DB_result, $line);
@@ -110,13 +131,6 @@ class MSSQL extends class_common {
 		if($this->DB_result == NULL) return false;
 		eval("\$result = mssql_result(\$this->DB_result, $line".($field===''?"":(is_numeric($field)?", $field":", '$field'")).");");
 		if($this->GetErrorCode() != 0)	$this->Error("Error Occur in Query !");
-		return $result;
-	}
-
-	public function GetSingleResult($sql){
-		$row_num = $this->Query($sql);
-		$result = ($row_num>0 ? $this->GetResult(0,0) : "");
-		$this->Free();
 		return $result;
 	}
 
@@ -240,13 +254,12 @@ class MSSQL extends class_common {
 		$code   = mssql_result($rsCode, 0, "code"); 
 		mssql_free_result($rsCode);
 		return $code;
-   }
+	}
    
-   protected function Error($str, $exit=false) {
-		$msg_ext  = "";
-		$msg_ext .= "Query String: ".$this->DB_qstr."\n";
-		$msg_ext .= "MSSQL Message: ".$this->GetErrorCode()." - ".mssql_get_last_message();
-		parent::Error($str, $msg_ext, $exit);
+	protected function Error($str, $exit=false) {
+		$str .= "Query String: ".$this->DB_qstr."\n";
+		$str .= "MSSQL Message: ".$this->GetErrorCode()." - ".mssql_get_last_message();
+		parent::Error($str, $exit);
 		return;
 	}
 }

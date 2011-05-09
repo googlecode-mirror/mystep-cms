@@ -35,6 +35,8 @@ body {text-align:center; font-family:Arial;}
 .watermark{position:absolute; display:block; width:1px; height:1px; overflow:hidden;}
 @media print{.watermark{display:none;}}
 
+TABLE TD {padding:5px 5px 5px 5px;}
+TABLE .thead {text-align:center;font-weight:bold;background-color:#ccc;}
 TABLE .cat {border:0px solid; font-size:12px; font-weight:bold; color:#15324A; padding:5px; background-color:#8AB4D6; border-right:1px solid #0C5280; border-bottom:1px solid #0C5280; border-top:1px solid #629DC5; border-left:1px solid #629DC5; vertical-align:middle;}
 TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0C5280; border-right:1px solid #0C5280; border-top:1px solid #629DC5; border-left:1px solid #629DC5; padding:5px; color:#EDF4FA; vertical-align:middle;text-align:left;}
 #bar_loading {top:0px; left:0px; display:none; color:#333333; font-size:24px; font-weight:bold; line-height:48px; font-family:ºÚÌå; position:absolute; border:1px #999999 solid; padding:20px 30px 10px 30px; z-index:999; background-color:#eeeeee; z-index:999;}
