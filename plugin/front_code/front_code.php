@@ -66,8 +66,8 @@ function build_page($method) {
 	global $mystep, $req, $db, $setting, $idx, $mydb;
 	$tpl_info = array(
 			"idx" => "main",
-			"style" => "",
-			"path" => "./",
+		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
+		"path" => ROOT_PATH."/".$setting['path']['template'],
 			);
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
 

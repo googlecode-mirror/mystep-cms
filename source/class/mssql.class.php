@@ -127,7 +127,7 @@ class MSSQL extends class_common {
 		return $flag;
 	}
 
-	public function GetResult($line, $field=""){
+	public function GetResult($line, $field=0){
 		if($this->DB_result == NULL) return false;
 		eval("\$result = mssql_result(\$this->DB_result, $line".($field===''?"":(is_numeric($field)?", $field":", '$field'")).");");
 		if($this->GetErrorCode() != 0)	$this->Error("Error Occur in Query !");

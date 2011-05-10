@@ -22,6 +22,7 @@ class sess_mystep {
 	
 	public static function sess_write($sid, $sess_data) {
 		global $setting;
+		include(ROOT_PATH."/include/config.php");
 		extract(MyReq::sessDecode($sess_data));
 		$reflash = $_SERVER["REQUEST_TIME"];
 		if(empty($username)) $username = "Guest";
@@ -44,6 +45,7 @@ class sess_mystep {
 			mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE reflash < " . ($_SERVER["REQUEST_TIME"] - $setting['session']['expire'] * 60), self::$cnt);
 			mysql_close(self::$cnt);
 		}
+		unset($setting);
 		return;
 	}
 }

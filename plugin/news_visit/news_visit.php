@@ -3,8 +3,8 @@ require("../inc.php");
 include("info.php");
 $tpl_info = array(
 		"idx" => "news_visit",
-		"style" => "",
-		"path" => "./",
+		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
+		"path" => ROOT_PATH."/".$setting['path']['template'],
 		);
 $tpl = $mystep->getInstance("MyTpl", $tpl_info);
 

@@ -178,14 +178,16 @@ class MyStep extends class_common {
 			call_user_func($this->func_end[$i]);
 		}
 		$setting['info']['query_count'] = $GLOBALS['db']->Close();
-		unset($GLOBALS['db'],
-					$GLOBALS['req'],
-					$GLOBALS['tpl']);
 		if(!empty($GLOBALS['goto_url'])) {
 			header("location: ".$GLOBALS['goto_url']);
-			exit();
+		} else {
+			GzDocOut($setting['gen']['gzip_level'], $show_info);
 		}
-		GzDocOut($setting['gen']['gzip_level'], $show_info);
+		unset($GLOBALS['db'],
+					$GLOBALS['req'],
+					$GLOBALS['setting'],
+					$this);
+		exit();
 	}
 	
 	public function show(MyTpl $tpl) {
@@ -211,6 +213,7 @@ class MyStep extends class_common {
 		}
 		if(count(ob_list_handlers())==0 && !headers_sent()) ob_start();
 		echo $tpl->Get_Content('$db, $setting');
+		unset($tpl);
 	}
 	
 	public function regStart($func) {
@@ -262,6 +265,7 @@ class MyStep extends class_common {
 	
 	public function module($module) {
 		if(isset($this->module[$module])) {
+			global $mystep, $req, $db, $tpl_info, $setting, $goto_url;
 			include($this->module[$module]);
 		} else {
 			$GLOBALS['goto_url'] = "/";

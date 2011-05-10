@@ -79,8 +79,8 @@ function build_page($method) {
 	global $mystep, $req, $db, $setting, $idx, $agent;
 	$tpl_info = array(
 			"idx" => "main",
-			"style" => "",
-			"path" => "./",
+			"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
+			"path" => ROOT_PATH."/".$setting['path']['template'],
 			);
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
 	$tpl_info['idx'] = (($method=="add" || $method=="edit")?"input":$method);

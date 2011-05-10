@@ -142,7 +142,7 @@ class MyTpl extends class_common {
 	}
 	
 	public function Get_TPL_Cache() {
-		$cache_file = $this->tpl_info['path']."/cache/".$this->tpl_info['style']."/".$this->tpl_info['idx'].".php";
+		$cache_file = $this->tpl_info['path']."/cache/".str_replace("../", "", $this->tpl_info['style'])."/".$this->tpl_info['idx'].".php";
 		if(file_exists($cache_file)) {
 			$tpl_time = preg_replace("/^.+?(\d+).+$/", "\\1", $this->GetFile($cache_file, 18));
 			if($tpl_time==filemtime($this->tpl_info['file'])) {
@@ -382,7 +382,7 @@ mytpl;
 			}
 			//$content = preg_replace("/[\s\t ]*[\r\n]+[\s\t ]*/", "", $content);
 			$content = preg_replace("/^".preg_quote($this->delimiter_l)."\d+".preg_quote($this->delimiter_r)."[\r\n]*/", "", $content);
-			//$content = preg_replace("/".preg_quote($this->delimiter_l).".+?".preg_quote($this->delimiter_r)."/", "", $content);
+			$content = preg_replace("/".preg_quote($this->delimiter_l).".+?".preg_quote($this->delimiter_r)."/", "", $content);
 			if($this->cache['use'] && $this->cache['expire'] > 0) $this->WriteFile($this->cache['file'], $content, 'w');
 		}
 		return $content;

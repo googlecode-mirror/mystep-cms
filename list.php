@@ -1,6 +1,7 @@
 <?php
 require("inc.php");
 $page = $req->getGet("page");
+$prefix = $req->getGet("pre");
 if(!is_numeric($page) || $page < 1) $page = 1;
 $cat_idx = strtolower($req->getGet("cat"));
 if($setting['gen']['cache']) {
@@ -26,11 +27,13 @@ if($cat_info = getParaInfo("news_cat_sub", "cat_idx", $cat_idx)) {
 	$cat_comment = $cat_info['cat_comment'];
 	$page_size = $list_limit[$cat_info['cat_type']];
 	$cat_main = $cat_info['cat_main'];
+	$sub_list = $cat_info['cat_sub'];
 } else {
 	$cat_name = $setting['language']['page_update'];
 	$cat_idx = "";
 	$page_size = $list_limit[0];
 	$cat_main = 0;
+	$sub_list = "";
 }
 $menu_cat_id = $cat_id;
 
@@ -48,13 +51,27 @@ if($cat_main > 0) {
 	}
 }
 
+$condition = "1=1";
+if(!empty($prefix)) {
+	$condition = "subject like '[".$prefix."]%'";
+}
+
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-$news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".($cat_id==0?"":" and a.cat_id ='{$cat_id}' || b.cat_main='{$cat_id}'"), "result");
+$news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".($cat_id==0?"":" and (a.cat_id ='{$cat_id}' || b.cat_main='{$cat_id}')").(empty($condition)?"":"and {$condition}"), "result");
 if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', (empty($cat_main_link)?"":" - {$cat_main_link}").' - <a href="'.getFileURL(0, $cat_idx, $web_id).'">'.$cat_name.'</a>');
 $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 $tpl_tmp->Set_Variable('cat_main_link', $cat_main_link);
 $tpl_tmp->Set_Variable('page_list', PageList($page, ceil($news_count/$page_size)));
+
+$prefix_list = "";
+if(strlen($sub_list)>0) {
+	$sub_list = explode(",", $sub_list);
+	for($i=0,$m=count($sub_list);$i<$m;$i++) {
+		$prefix_list .= '<a href="?cat='.$cat_idx.'&pre='.$sub_list[$i].'">'.$sub_list[$i].'</a> &nbsp; &nbsp;';
+	}
+}
+$tpl_tmp->Set_Variable('prefix_list', $prefix_list);
 
 $limit = (($page-1)*$page_size).", ".$page_size;
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));

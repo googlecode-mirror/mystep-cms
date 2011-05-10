@@ -83,7 +83,7 @@ function includeCache($idx) {
 		include(ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php");
 	} else {
 		printf($GLOBALS['language']['page_error'], $setting['web']['email']);
-		exit;
+		exit();
 	}
 	return;
 }
@@ -477,26 +477,6 @@ function gotoPage($page) {
 	return $the_url;
 }
 
-function rsyncLog($file) {
-	$logFile = "/back/rsync";
-	$logSign = "rsync complete";
-	$logContent = file($logFile);
-	$result = "";
-	$max_count = count($logContent);
-	for($i=0; $i<$max_count; $i++) {
-		$logContent[$i] = str_replace("\n", "", $logContent[$i]);
-		if(strpos($logContent[$i], $logSign)!==false) {
-			$result = "";
-			continue;
-		}
-		if(strlen($logContent[$i])<3) continue;
-		$result .= $logContent[$i]."\n";
-	}
-	$result .= $file."\n";
-	WriteFile($logFile, $result, "w");
-	return;
-}
-
 function CheckCanGzip(){
 	$ENCODING = " ";
 	isset($_SERVER["HTTP_ACCEPT_ENCODING"]) ? $ENCODING.=$_SERVER["HTTP_ACCEPT_ENCODING"] : null;
@@ -548,7 +528,7 @@ function GzDocOut($level = 3, $show = false) {
 ";
 		}
 	}
-	exit();
+	return; 
 }
 
 function __autoload($class_name) {
