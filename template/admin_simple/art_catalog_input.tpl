@@ -32,6 +32,7 @@
 				<td class="cat">子 分 类：</td>
 				<td class="row">
 					<input class="input" name="cat_sub" type="text" size="20" maxlength="80" value="<!--cat_sub-->" />
+					<span class="comment">（改分类新闻所能使用的前缀，多个请用半角逗号间隔）</span>
 				</td>
 			</tr>
 			<tr>

@@ -303,5 +303,6 @@ function setSlide() {
 	}
 }
 
-var rlt_path = location.href.replace("http://"+location.hostname+"/", "").replace(/\/[^\/]+$/, "/").replace(/[^\/]+/, "..");
+var rlt_path = location.href.replace("http://"+location.hostname+"/", "").replace(/\/[^\/]+$/, "/").replace(/[^\/]+/g, "..");
+
 if(rlt_path=="..") rlt_path = "./";

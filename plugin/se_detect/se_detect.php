@@ -70,7 +70,7 @@ switch($method) {
 }
 
 if(!empty($log_info)) {
-	write_log($log_info, "id=".$id);
+	write_log($log_info, "idx=".$idx);
 	$goto_url = $setting['info']['self'];
 }
 $mystep->pageEnd(false);

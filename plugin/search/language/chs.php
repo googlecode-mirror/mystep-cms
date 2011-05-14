@@ -1,0 +1,10 @@
+<?php
+$language = array(
+	"plug_search_update" => "¸üÐÂËÑË÷ÒýÇæ",
+	"plug_search_delete" => "É¾³ý¹Ø¼ü×Ö",
+	"plug_search_title" => "ÍøÕ¾ËÑË÷ÒýÇæÎ¬»¤",
+	"plug_search_title_kw" => "¼ìË÷¹Ø¼ü×Ö¹ÜÀí",
+	"plug_search_local" => "±¾Íø",
+	"plug_search_search" => "¼ìË÷",
+);
+?>

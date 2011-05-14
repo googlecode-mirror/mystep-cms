@@ -58,8 +58,8 @@ echo "</select>";
 function add(obj) {
 	obj = $(obj).parent().parent().clone();
 	obj.find("input:first").val("");
-	obj.find("td:first").text($("#input_area tr").length - 3);
-	$("#input_area tr:last").prev().before(obj);
+	obj.find("td:first").text($("#input_area tr").length - 4);
+	$("#input_area tr:last").prev().prev().before(obj);
 }
 
 function del(obj) {
