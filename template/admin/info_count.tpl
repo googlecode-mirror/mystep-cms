@@ -10,10 +10,10 @@
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center"> 
-			<td class="cat" width="120"><a href="?order=date&order_type=<!--order_type-->"><font color="#000000">统计日期</font></a></td>
-			<td class="cat" width="120"><a href="?order=pv&order_type=<!--order_type-->"><font color="#000000">访问页数</font></a></td>
-			<td class="cat" width="120"><a href="?order=iv&order_type=<!--order_type-->"><font color="#000000">访问人数</font></a></td>
-			<td class="cat" width="120"><a href="?order=online&order_type=<!--order_type-->"><font color="#000000">最大在线人数</font></a></td>
+			<td class="cat"><a href="?order=date&order_type=<!--order_type-->"><font color="#000000">统计日期</font></a></td>
+			<td class="cat"><a href="?order=pv&order_type=<!--order_type-->"><font color="#000000">访问页数</font></a></td>
+			<td class="cat"><a href="?order=iv&order_type=<!--order_type-->"><font color="#000000">访问人数</font></a></td>
+			<td class="cat"><a href="?order=online&order_type=<!--order_type-->"><font color="#000000">最大在线人数</font></a></td>
 		</tr>
 <!--if:start key="empty"-->
 		<tr align="center">

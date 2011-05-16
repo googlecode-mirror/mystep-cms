@@ -114,10 +114,11 @@ CREATE TABLE `{pre}news_cat` (
 	`cat_layer` TINYINT UNSIGNED NOT NULL DEFAULT 0,				#分类层级
 	`cat_show` TINYINT UNSIGNED NOT NULL DEFAULT 0,					#显示位置（0 不显示，以二进制模式扩充）
 	`view_lvl` Char(10) NOT NULL DEFAULT '0',								#阅读权限
+	`notice` Char(255) DEFAULT '',													#分类提示
 	PRIMARY KEY (`cat_id`)
 ) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻分类';
 
-INSERT INTO `{pre}news_cat` VALUES (0, 1, 0, '新闻资讯', '新闻资讯 时事报道 体育新闻 健康生活', 'news', '', '时事,娱乐,体育,健康', 1, 0, '', 1, 255, 0);
+INSERT INTO `{pre}news_cat` VALUES (0, 1, 0, '新闻资讯', '新闻资讯 时事报道 体育新闻 健康生活', 'news', '', '时事,娱乐,体育,健康', 1, 0, '', 1, 255, 0, '');
 # ---------------------------------------------------------------------------------------------------------------
 
 # 新闻描述
@@ -139,6 +140,7 @@ CREATE TABLE `{pre}news_show` (
 	`pages` TINYINT UNSIGNED NOT NULL DEFAULT 1,				#新闻页数
 	`add_user` Char(20) NOT NULL,												#录入人
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#录入日期
+	`notice` Char(255) DEFAULT '',											#文章提示
 	INDEX `catalog` (`web_id`, `cat_id`),
 	INDEX `order` (`order`, `news_id`),
 	PRIMARY KEY (`news_id`)

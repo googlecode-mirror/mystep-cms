@@ -333,26 +333,53 @@ function RemoveHeader($content) {
 	return $content;
 }
 
-function GetRemoteContent($host, $page="", $header="", $port=80, $timeout=60) {
+function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $timeout=10) {
 	//Coded By Windy_sk 20080320 v1.4
 	$errno = "";
 	$errmsg = "";
-	$fp = fsockopen($host, $port, $errno, $errmsg, $timeout);
-	if (!$fp) return false;
+	extract(parse_url($url), EXTR_SKIP);
+	if(!is_null($query)) $path .= "?".$query;
+	if(!isset($port)) $port = 80;
+	$fp = @fsockopen($host, $port, $errno, $errmsg, $timeout);
+	if(!$fp) return false;
+	stream_set_blocking($fp, true);
+	stream_set_timeout($fp, $timeout);
+	if($method!="POST") $method="GET";
 
-	$out = sprintf("GET /%s HTTP/1.1\r\n", $page);
-	$out .= sprintf("Host: %s\r\n", $host);
-	$out .= "User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)\r\n";
-	$out .= "Referer: http://{$host}\r\n";
-	$out .= "Connection: Keep-Alive\r\n";
-	$out .= $header;
-	$out .= "\r\n";
-
-	fputs($fp, $out);
-	$content = "";
-	while (!feof($fp)) $content .= fgets($fp, 255);
+	$output = sprintf("%s /%s HTTP/1.1\r\n", $method, $path);
+	$output .= sprintf("Host:%s\r\n", $host);
+	$output .= "Accept: */*\r\n";
+	$output .= "Referer:http://{$host}\r\n";
+	$output .= "User-Agent:Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.204 Safari/534.16\r\n";
+	if($method=="POST") $output .= "Content-Type:application/x-www-form-urlencoded\r\n";
+	if(is_string($header) && strlen($header)>0) {
+		$output .= $header;
+	} elseif(is_array($header) && count($header)>0) {
+		foreach($header as $key => $value) {
+			$output .= $key.":".$value."\r\n";
+		}
+	}
+	$post_data = "";
+	if(is_string($data) && strlen($data)>0) {
+		$post_data .= $data."\r\n";
+		$output .= "Content-length:".strlen($post_data)."\r\n";
+	} elseif(is_array($data) && count($data)>0) {
+		foreach($data as $key => $value) {
+			$post_data .= $key."=".$value."&";
+		}
+		$post_data = substr($post_data, 0, -1);
+		$output .= "Content-length:".strlen($post_data)."\r\n";
+	}
+	$output .= "Cache-Control:no-cache\r\n";
+	$output .= "Connection:Close\r\n";
+	$output .= "\r\n";
+	if(!empty($post_data)) $output .= $post_data."\r\n";
+	$output .= "\r\n";
+	fputs($fp, $output);
+	$status = stream_get_meta_data($fp);
+	if($status['timeout']) return false;
+	$content = stream_get_contents($fp);
 	fclose($fp);
-
 	return RemoveHeader($content);
 }
 
@@ -363,8 +390,7 @@ function GetRemoteFile($remote_file, $local_file) {
 	$fp_w = fopen($local_file, "wb");
 	if($fp_w!==false) {
 		if($fp_r===false) {
-			$urlArray = parse_url($remote_file);
-			$content = GetRemoteContent($urlArray['host'],$urlArray['path']);
+			$content = GetRemoteContent($remote_file);
 			$fp_r = !empty($content) && (strpos($content, "404 Not Found")===false);
 			if($fp_r) fwrite($fp_w, $content);
 		} else {

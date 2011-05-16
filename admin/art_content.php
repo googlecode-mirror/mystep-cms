@@ -324,6 +324,11 @@ function build_page($method) {
 		} else {
 			$record['view_lvl'] = 0;
 		}
+		if(!empty($cat_id) && $cat_info = getParaInfo("news_cat", "cat_id", $cat_id)) {
+			$record['notice'] = $cat_info['notice'];
+		} else {
+			$record['notice'] = "";
+		}
 		$tpl_tmp->Set_Variables($record, "record");
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_add']);
 	}

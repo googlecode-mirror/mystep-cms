@@ -10,7 +10,7 @@
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">
-			<td class="cat" width="120">日期</td>
+			<td class="cat" width="60">日期</td>
 <!--loop:start key="se"-->
 			<td class="cat"><!--se_idx--></td>
 <!--loop:end-->

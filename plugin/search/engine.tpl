@@ -29,3 +29,17 @@
 		</table>
 	</form>
 </div>
+<script Language="JavaScript">
+function add(obj) {
+	obj = $(obj).parent().parent().clone();
+	obj.find("input:first").val("");
+	obj.find("input").eq(1).val("");
+	obj.find("td:first").text($("#input_area tr").length - 1);
+	$("#input_area tr:last").before(obj);
+}
+function del(obj) {
+	obj = $(obj).parent().parent();
+	if(obj.find("input")[0].defaultValue.toLowerCase()!="default") obj.remove();
+}
+</script>
+

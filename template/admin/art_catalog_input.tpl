@@ -90,6 +90,14 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="cat">提示文字：</td>
+				<td class="row">
+					<input name="notice_org" type="hidden" value="<!--notice_org-->" />
+					<input class="input" name="notice" type="text" size="20" maxlength="150" value="<!--notice-->" />
+					<span class="comment">（显示于当前分类所有文章的提示文字）</span></td>
+				</td>
+			</tr>
+			<tr>
 				<td colspan="2" align="center" class="row">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
