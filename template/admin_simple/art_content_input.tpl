@@ -56,7 +56,7 @@
 			</tr>
 			<tr>
 				<td class="cat">提示文字：</td>
-				<td class="row"><input name="notice" type="text" size="20" maxlength="150" value="<!--notice-->" /> <span class="comment">（显示于文章指定位置的提示文字）</span></td>
+				<td class="row"><input name="notice" type="text" size="20" maxlength="150" value="<!--record_notice-->" /> <span class="comment">（显示于文章指定位置的提示文字）</span></td>
 			</tr>
 			<tr>
 				<td class="cat">列表排序：<span>*</span></td>

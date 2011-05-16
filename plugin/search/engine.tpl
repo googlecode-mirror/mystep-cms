@@ -42,4 +42,3 @@ function del(obj) {
 	if(obj.find("input")[0].defaultValue.toLowerCase()!="default") obj.remove();
 }
 </script>
-

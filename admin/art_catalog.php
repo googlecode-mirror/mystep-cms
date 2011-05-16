@@ -118,7 +118,7 @@ switch($method) {
 				if($view_lvl_org!=$_POST['view_lvl'] && is_numeric($_POST['view_lvl'])) {
 					$db->Query("update ".$setting['db']['pre_sub']."news_show set view_lvl='".$_POST['view_lvl']."' where cat_id = '{$cat_id}' and view_lvl='".$view_lvl_org."'");
 				}
-				if($notice_org!=$_POST['notice'] && is_numeric($_POST['notice'])) {
+				if($notice_org!=$_POST['notice']) {
 					$db->Query("update ".$setting['db']['pre_sub']."news_show set notice='".$_POST['notice']."' where cat_id = '{$cat_id}' and notice='".$notice_org."'");
 				}
 			}

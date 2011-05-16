@@ -321,12 +321,9 @@ function build_page($method) {
 		$record['order'] = 0;
 		if(!empty($cat_id) && $cat_info = getParaInfo("news_cat", "cat_id", $cat_id)) {
 			$record['view_lvl'] = $cat_info['view_lvl'];
-		} else {
-			$record['view_lvl'] = 0;
-		}
-		if(!empty($cat_id) && $cat_info = getParaInfo("news_cat", "cat_id", $cat_id)) {
 			$record['notice'] = $cat_info['notice'];
 		} else {
+			$record['view_lvl'] = 0;
 			$record['notice'] = "";
 		}
 		$tpl_tmp->Set_Variables($record, "record");

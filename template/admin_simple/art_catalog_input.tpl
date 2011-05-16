@@ -83,7 +83,7 @@
 			<tr>
 				<td class="cat">提示文字：</td>
 				<td class="row">
-					<input name="notice_org" type="hidden" value="<!--notice_org-->" />
+					<input name="notice_org" type="hidden" value="<!--notice-->" />
 					<input class="input" name="notice" type="text" size="20" maxlength="150" value="<!--notice-->" />
 					<span class="comment">（显示于当前分类所有文章的提示文字）</span></td>
 				</td>
