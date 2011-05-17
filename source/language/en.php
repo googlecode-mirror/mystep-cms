@@ -17,6 +17,7 @@ $language = array (
   'page_all_news' => 'All News',
   'page_update' => 'News Update',
   'page_update_lastest' => '( Lastest %d )',
+  'page_no_power' => 'You have no power to read current article, please login with any account has the power!',
   'info_compressmode' => 'Compass Mode: ',
   'info_compresslevel' => 'Compass Level: ',
   'info_compressrate' => 'Compass rate: ',

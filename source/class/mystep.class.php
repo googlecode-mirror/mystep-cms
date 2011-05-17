@@ -169,6 +169,10 @@ class MyStep extends class_common {
 		if((empty($username) || $username=="Guest") && $req->getCookie('ms_user')!="") checkUser();
 		$req->setSession("url", "http://".$req->getServer("HTTP_HOST").$req->getServer("URL"));
 		$req->setSession("ip", GetIp());
+		$setting['info']['user'] = array();
+		$setting['info']['user']['name'] = $req->getSession("username");
+		$setting['info']['user']['group'] = getParaInfo("user_group", "group_id", $req->getSession('usergroup'));
+		$setting['info']['user']['type'] = getParaInfo("user_type", "type_id", $req->getSession('usertype'));
 	}
 	
 	public function pageEnd($show_info = true) {

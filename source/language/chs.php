@@ -17,6 +17,7 @@ $language = array (
   'page_all_news' => '全部新闻',
   'page_update' => '最新更新',
   'page_update_lastest' => '（最新 %d 篇更新）',
+  'page_no_power' => '您的阅读权限不足，请尝试以更高级别用户登录后浏览！',
   'info_compressmode' => '压缩模式：',
   'info_compresslevel' => '压缩级别：',
   'info_compressrate' => '压缩比率：',

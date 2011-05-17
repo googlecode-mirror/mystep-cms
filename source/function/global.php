@@ -386,8 +386,8 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 function GetRemoteFile($remote_file, $local_file) {
 	//Coded By Windy_sk 20080402 v1.3
 	MakeDir(dirname($local_file));
-	$fp_r = fopen($remote_file, "rb");
-	$fp_w = fopen($local_file, "wb");
+	$fp_r = @fopen($remote_file, "rb");
+	$fp_w = @fopen($local_file, "wb");
 	if($fp_w!==false) {
 		if($fp_r===false) {
 			$content = GetRemoteContent($remote_file);
@@ -400,6 +400,7 @@ function GetRemoteFile($remote_file, $local_file) {
 			fclose($fp_r);
 		}
 		fclose($fp_w);
+		if($fp_r===false) unlink($local_file);
 	}
 	return $fp_r && $fp_w;
 }
