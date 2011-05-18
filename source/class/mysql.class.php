@@ -82,15 +82,8 @@ class MySQL extends class_common {
 			$this->DB_conn = mysql_connect($this->DB_host, $this->DB_user, $this->DB_pass, CLIENT_MULTI_RESULTS);
 		}
 		$this->DB_qstr = "none (Connect to MySQL Server)";
-		if($this->CheckError())	$this->Error("Could not connect to MySQL Server");
-		if(substr(mysql_get_server_info(),0,1)>=5) {
-			mysql_query("SET CHARACTER SET '".$this->DB_charset."'", $this->DB_conn);
-			mysql_query("SET NAMES '".$this->DB_charset."'", $this->DB_conn);
-			if($charset_collate = $this->GetSingleRecord("SHOW CHARACTER SET LIKE '".$this->DB_charset."'")) {
-				mysql_query("SET COLLATION_CONNECTION='".$charset_collate["Default collation"]."'", $this->DB_conn);
-			}
-			if($this->CheckError())	$this->Error("Unknow CharSet Name");
-		}
+		if($this->CheckError())	$this->Error("Could not connect to MySQL Server", true);
+		$this->setCharset();
 		if(!empty($the_db)) $this->SelectDB($the_db);
 		return;
 	}
@@ -99,6 +92,18 @@ class MySQL extends class_common {
 		if($this->DB_conn != NULL) $this->Close();
 		$this->Connect($pconnect, $the_db);
 		return;
+	}
+	
+	public function setCharset($charset="") {
+		if(empty($charset)) $charset = $this->DB_charset;
+		if(substr(mysql_get_server_info(),0,1)>=5) {
+			mysql_query("SET CHARACTER SET '".$charset."'", $this->DB_conn);
+			mysql_query("SET NAMES '".$charset."'", $this->DB_conn);
+			if($charset_collate = $this->GetSingleRecord("SHOW CHARACTER SET LIKE '".$charset."'")) {
+				mysql_query("SET COLLATION_CONNECTION='".$charset_collate["Default collation"]."'", $this->DB_conn);
+			}
+			if($this->CheckError())	$this->Error("Unknow CharSet Name");
+		}
 	}
 
 	public function SelectDB($the_db) {

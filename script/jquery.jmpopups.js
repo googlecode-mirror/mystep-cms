@@ -154,15 +154,15 @@
 	
 	function setPopupLayersPosition(popupElement, animate) {
 		if (popupElement) {
-						if (popupElement.width() < $(window).width()) {
+			if (popupElement.width() < $(window).width()) {
 				var leftPosition = (document.documentElement.offsetWidth - popupElement.width()) / 2;
 			} else {
-				var leftPosition = document.documentElement.scrollLeft + 5;
+				var leftPosition = $(window).scrollLeft() + 5;
 			}
 			if (popupElement.height() < $(window).height()) {
-				var topPosition = document.documentElement.scrollTop + ($(window).height() - popupElement.height()) / 2;
+				var topPosition = $(window).scrollTop() + ($(window).height() - popupElement.height()) / 2;
 			} else {
-				var topPosition = document.documentElement.scrollTop + 5;
+				var topPosition = $(window).scrollTop() + 5;
 			}
 			var positions = {
 				left: leftPosition + "px",

@@ -4,6 +4,15 @@ $page = $req->getGet("page");
 $prefix = $req->getGet("pre");
 if(!is_numeric($page) || $page < 1) $page = 1;
 $cat_idx = strtolower($req->getGet("cat"));
+
+if(is_numeric($cat_idx)) {
+	if($cat_info = getParaInfo("news_cat_sub", "cat_id", $cat_idx)) {
+		$cat_idx = $cat_info['cat_idx'];
+	} else {
+		$cat_idx = "";
+	}
+}
+
 if($setting['gen']['cache']) {
 	$cache_info = array(
 			'idx' => ($page==1?"index":"index_{$page}"),
