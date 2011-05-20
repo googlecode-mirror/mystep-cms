@@ -196,8 +196,8 @@ function build_page($method) {
 			$record['cat_link'] = "";
 			$record['view_lvl'] = 0;
 			$record['view_lvl_org'] = 0;
-			$record['notice'] = 0;
-			$record['notice_org'] = 0;
+			$record['notice'] = "";
+			$record['notice_org'] = "";
 			$web_disabled = "";
 			$record['cat_show_1'] = "checked";
 			$record['cat_show_2'] = "checked";

@@ -61,6 +61,9 @@ BODY {text-align:center; font-family:ËÎÌו, Tahoma, Verdana, Arial; padding:0px; 
 #cat_tree ul {width:150px; line-height:24px; font-size:14px; font-weight:bold;}
 #cat_tree ul li {background-image:url("images/tree_icon/endnode.gif"); background-repeat:no-repeat; background-position:top -5px; padding-left:18px;}
 
+#reset_pwd {width:280px;padding:0px;margin:0px;text-align:center;}
+#reset_pwd div {padding:5px 0px 5px 0px;}
+
 DIV .title {border:1px solid #629DC5; padding:5px 5px 5px 25px; font-weight:bold; color:#fff; background-color:#3275AB; background-image:url("images/arrow.gif"); background-repeat:no-repeat; background-position:5px center;}
 DIV .nav {margin:20px auto 20px auto; text-align:center; font-size:12px; font-weight:bold;}
 DIV .addnew {position:absolute; top:36px; left:10px; width:120px; height:32px; padding:5px 0px; font-size:14px; text-align:center; font-weight:bold; background-image:url("images/btn.gif"); background-repeat:no-repeat;}

@@ -19,7 +19,7 @@
 		</div>
 		<div class="r">
 			<div class="info">
-				登录用户：<!--username-->（<!--usergroup-->） [<a href="login.php?logout" target="_top">退出登陆</a>]
+				登录用户：<!--username-->（<!--usergroup-->） [<a href="###" onclick="showPop('modi_pwd','更改密码','id','modi_pwd',300);return false;" target="_top">更改密码</a>] [<a href="login.php?logout" target="_top">退出登陆</a>]
 			</div>
 			<div id="menu_nav">
 				<ul></ul>
@@ -43,8 +43,48 @@
 		Powered by 『 MyStep Content Managerment System V<!--ms_version_ver--> (<!--ms_version_charset-->/<!--ms_version_language-->/<!--ms_version_date-->) 』&nbsp;Copyright&copy; 2010-<!--year--> <a href="mailto:windy2006@gmail.com">Windy2000</a>
 	</div>
 </div>
+<div id="modi_pwd" style="display:none;">
+	<form id="reset_pwd" method="post" onsubmit="reset_psw(this); return false;">
+		<div>原密码：<input name="psw_org" type="password" size="28" /></div>
+		<div>新密码：<input name="psw_new" type="password" size="28" /></div>
+		<div>确　认：<input name="psw_rep" type="password" size="28" /></div>
+		<div>
+			<input type="submit" value=" 提 交 " /> &nbsp; &nbsp;
+			<input type="reset" value=" 复 位 " />
+		</div>
+	</form>
+</div>
 </body>
 <script language="JavaScript">
+if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
+	$.setupJMPopups({
+		screenLockerBackground: "#000",
+		screenLockerOpacity: "0.4"
+	});
+});
+function reset_psw(theForm) {
+	if(theForm.psw_org.value=="" || theForm.psw_new.value=="" || theForm.psw_rep.value=="") {
+		alert("请填写相关密码项！");
+		return;
+	}
+	if(theForm.psw_new.value!=theForm.psw_rep.value) {
+		alert("请确认两次输入的新密码相同！");
+		theForm.psw_new.value="";
+		theForm.psw_rep.value="";
+		theForm.psw_new.focus();
+		return;
+	}
+	var theDate = arr2json($(theForm).serializeArray());
+	$.post("../ajax.php?func=reset_psw", theDate, function(data){
+		if(data=="") {
+			alert("密码修改成功，请您重新登录！");
+			top.location.href="login.php?logout";
+		} else {
+			alert(data);
+		}
+		$.closePopupLayer();
+	});
+}
 function getSubCat(cat_id) {
 	var catList = new Array();
 	for(var i=0; i<news_cat.length; i++) {

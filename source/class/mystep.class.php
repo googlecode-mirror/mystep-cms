@@ -172,6 +172,7 @@ class MyStep extends class_common {
 		$setting['info']['user']['name'] = $req->getSession("username");
 		$setting['info']['user']['group'] = getParaInfo("user_group", "group_id", $req->getSession('usergroup'));
 		$setting['info']['user']['type'] = getParaInfo("user_type", "type_id", $req->getSession('usertype'));
+		$this->regAjax("reset_psw", "MyStep::ajax_reset_psw");
 	}
 	
 	public function pageEnd($show_info = true) {
@@ -272,6 +273,18 @@ class MyStep extends class_common {
 			include($this->module[$module]);
 		} else {
 			$GLOBALS['goto_url'] = "/";
+		}
+	}
+	
+	public static function ajax_reset_psw($psw_org, $psw_new) {
+		global $setting, $db;
+		$username = $_SESSION['username'];
+		if($username==$setting['web']['s_user'] && md5($psw_org)==$setting['web']['s_pass']) return "超级管理员请在网站设置栏目更改密码！";
+		if($user_id = $db->getSingleRecord("select user_id from ".$setting['db']['pre']."users where username='".mysql_real_escape_string($username)."' and password='".md5($psw_org)."'")) {
+			$db->query("update ".$setting['db']['pre']."users set password='".md5($psw_new)."' where username='".mysql_real_escape_string($username)."'");
+			return;
+		} else {
+			return "原用户密码录入错误，请确认！";
 		}
 	}
 }

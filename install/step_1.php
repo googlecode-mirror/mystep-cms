@@ -30,11 +30,11 @@
 		</tr>
 		<tr>
 		<td>PHP °æ±¾</td>
-		<td class="padleft">5.0</td>
+		<td class="padleft">5.2</td>
 		<td class="padleft">5.3</td>
 <?php
 	$ver = phpversion();
-	$sign = $ver>"5.0" ? "w" : "nw";
+	$sign = $ver>"5.2" ? "w" : "nw";
 ?>
 		<td class="<?=$sign?> pdleft1"><?=$ver?></td>
 		</tr>
@@ -115,6 +115,7 @@ $theList = array(
 	"fsockopen",
 	"file_get_contents",
 	"xml_parser_create",
+	"json_encode",
 	"iconv",
 );
 
