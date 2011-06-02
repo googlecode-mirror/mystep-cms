@@ -259,7 +259,7 @@ function checkUser() {
 	$ms_user = $req->getCookie('ms_user');
 	if(!is_null($ms_user)) {
 		list($user_id, $user_pwd)=explode("\t",$ms_user);
-		if($userinfo = $db->GetSingleRecord("SELECT username, group_id, type_id from ".$setting['db']['pre']."users where user_id='{$user_id}'")) {
+		if($userinfo = $db->GetSingleRecord("SELECT username, group_id, type_id from ".$setting['db']['pre']."users where user_id='{$user_id}' and password='".mysql_real_escape_string($user_pwd)."'")) {
 			$req->setSession("username", $userinfo['username']);
 			$req->setSession("usergroup", $userinfo['group_id']);
 			$req->setSession("usertype", $userinfo['type_id']);

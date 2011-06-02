@@ -17,6 +17,7 @@ switch($method) {
 	case "delete":
 		$log_info = $setting['language']['plug_se_detect_delete'];
 		$db->Query("delete from ".$setting['db']['pre']."se_detect where idx = '{$idx}'");
+		$db->Query("update ".$setting['db']['pre']."se_count set `".$setting['language']['etc']."` = `".$setting['language']['etc']."` + `{$idx}`");
 		$db->Query("alter table ".$setting['db']['pre']."se_count drop `{$idx}`");
 		unset($agent[$idx]);
 		$content = "<?PHP
@@ -40,7 +41,8 @@ switch($method) {
 			$db->Free();
 			if($method=="add_ok") {
 				$log_info = $setting['language']['plug_se_detect_add'];
-				$db->Query("alter table ".$setting['db']['pre']."se_count add `{$idx}` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL");
+				$keys = array_keys($agent);
+				$db->Query("alter table ".$setting['db']['pre']."se_count add `{$idx}` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL after `".$keys[count($keys)-2]."`");
 			} else {
 				$log_info = $setting['language']['plug_se_detect_edit'];
 				if($_POST['idx_org']!=$_POST['idx']) {

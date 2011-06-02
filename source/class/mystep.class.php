@@ -18,6 +18,7 @@ class MyStep extends class_common {
 		$func_tag = array(),
 		$func_api = array(),
 		$func_ajax = array(),
+		$func_log = array(),
 		$module = array(),
 		$language = array(),
 		$content = array();
@@ -263,8 +264,9 @@ class MyStep extends class_common {
 	}
 	
 	public function regModule($module, $page) {
-		if(is_file($page))
+		if(is_file($page)) {
 			$this->module[$module] = $page;
+		}
 	}
 	
 	public function module($module) {
@@ -276,15 +278,57 @@ class MyStep extends class_common {
 		}
 	}
 	
+	public function regLog($login, $logout) {
+		if(is_callable($login)) $this->func_log['login'] = $login;
+		if(is_callable($logout)) $this->func_log['logout'] = $logout;
+	}
+	
+	public function login($user_name, $user_psw) {
+		$user_name = mysql_real_escape_string($user_name);
+		$user_psw = mysql_real_escape_string($user_psw);
+		$result = "";
+		if(isset($this->func_log['login'])) {
+			$result = call_user_func($this->func_log['login'], $user_name, $user_psw);
+		} else {
+			global $setting, $db, $req;
+			$req->setCookie("ms_info");
+			$req->setCookie("vcode");
+			$user_info = $db->GetSingleRecord("select user_id, group_id, type_id from ".$setting['db']['pre']."users where username='{$user_name}' and password='".md5($user_psw)."'");
+			if($user_info) {
+				list($uid, $groupid) = array_values($user_info);
+			} elseif($user_name==$setting['web']['s_user'] && md5($user_psw)==$setting['web']['s_pass']) {
+				$uid=0;
+				$groupid=1;
+			}
+			if(isset($uid)) {
+				$req->setCookie("ms_user", $uid."\t".md5($user_psw), 60*60*24);
+			} else {
+				$result = $setting['language']['login_error_psw'];
+			}
+		}
+		return $result;
+	}
+	
+	public function logout() {
+		if(isset($this->func_log['logout'])) {
+			$result = call_user_func($this->func_log['logout']);
+		} else {
+			global $setting, $req;
+			$req->setCookie("ms_user");
+			$req->setCookie("ms_info", $setting['language']['login_logout'], 60*10);
+			$req->destroySession();	
+		}
+	}
+	
 	public static function ajax_reset_psw($psw_org, $psw_new) {
 		global $setting, $db;
 		$username = $_SESSION['username'];
-		if($username==$setting['web']['s_user'] && md5($psw_org)==$setting['web']['s_pass']) return "超级管理员请在网站设置栏目更改密码！";
+		if($username==$setting['web']['s_user'] && md5($psw_org)==$setting['web']['s_pass']) return $setting['language']['psw_reset_err_op'];
 		if($user_id = $db->getSingleRecord("select user_id from ".$setting['db']['pre']."users where username='".mysql_real_escape_string($username)."' and password='".md5($psw_org)."'")) {
 			$db->query("update ".$setting['db']['pre']."users set password='".md5($psw_new)."' where username='".mysql_real_escape_string($username)."'");
 			return;
 		} else {
-			return "原用户密码录入错误，请确认！";
+			return $setting['language']['psw_reset_err'];
 		}
 	}
 }

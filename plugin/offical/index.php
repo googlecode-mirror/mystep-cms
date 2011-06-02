@@ -19,5 +19,6 @@ $mystep->setAddedContent("start", '<script language="JavaScript" src="/script/jq
 $mystep->setAddedContent("start", '<script language="JavaScript" src="/script/global.js"></script>');
 $mystep->setAddedContent("end", '<script language="JavaScript" src="/script/addon.js"></script>');
 
+$mystep->regModule("offical", dirname(__FILE__)."/offical.php");
 $mystep->getLanguage(dirname(__FILE__)."/language/");
 ?>

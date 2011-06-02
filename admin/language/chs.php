@@ -82,11 +82,6 @@ $language = array (
   'admin_info_log_download' => '导出日志',
   'admin_info_log_title' => '网站维护日志',
   
-  'admin_login_error_psw' => '登录错误，错误的用户名或密码！',
-  'admin_login_error_vcode' => '校验码不正确，请重新输入！',
-  'admin_login_logout' => '您已经成功退出管理系统！',
-  'admin_login_login' => '请您登录',
-  
   'admin_user_detail_delete' => '删除用户',
   'admin_user_detail_add' => '添加用户',
   'admin_user_detail_edit' => '编辑用户',

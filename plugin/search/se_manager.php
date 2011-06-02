@@ -64,11 +64,14 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_Variable('title', $setting['language']['plug_search_title']);	
 	} elseif($method=="keyword") {
+		$order = $req->getGet("order");
+		$order_type = $req->getGet("order_type");
+		if(empty($order_type)) $order_type = "desc";
 		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."search_keyword");
 		$page = $req->getGet("page");
-		list($page_arr, $page_start, $page_size) = GetPageList($counter, "", $page);
+		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=keyword", $page);
 		$tpl_tmp->Set_Variables($page_arr);
-		$str_sql = "select * from ".$setting['db']['pre']."search_keyword order by chg_date desc limit {$page_start}, {$page_size}";
+		$str_sql = "select * from ".$setting['db']['pre']."search_keyword order by ".(empty($order)?"chg_date":"{$order}")." {$order_type} limit {$page_start}, {$page_size}";
 		$db->Query($str_sql);
 		while($record = $db->GetRS()) {
 			$record['add_date'] = date("Y-m-d H:i:s", $record['add_date']);

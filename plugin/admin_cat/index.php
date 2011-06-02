@@ -1,3 +1,3 @@
 <?php
-//No need...
+//no need
 ?>

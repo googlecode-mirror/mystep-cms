@@ -38,7 +38,13 @@ if($setting['gen']['cache']) {
 }
 $tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 if($view_lvl>$setting['info']['user']['type']['view_lvl']) {
-	$tpl->Set_Variable('main', showInfo($setting['language']['page_no_power'], false));
+	$tpl_info['idx'] = "login";
+	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
+	$ms_info = $req->getCookie("ms_info");
+	if(empty($ms_info)) $ms_info = ($req->getSession("usertype")==1)?$setting['language']['login_login']:$setting['language']['login_nopower'];
+	$tpl_tmp->Set_Variable('info', $ms_info);
+	$tpl->Set_Variable('main', $tpl_tmp->Get_Content());
+	unset($tpl_tmp);
 	$mystep->show($tpl);
 	$mystep->pageEnd();
 }

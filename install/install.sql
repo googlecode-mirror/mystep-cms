@@ -197,7 +197,7 @@ CREATE TABLE `{pre}attachment` (
 	`web_id` TINYINT UNSIGNED DEFAULT 0,				#所属子站
 	`news_id` MEDIUMINT UNSIGNED,								#关联索引
 	`file_name` Char(150) NOT NULL,							#附件文件名
-	`file_type` Char(40) NOT NULL,							#附件类型
+	`file_type` Char(80) NOT NULL,							#附件类型
 	`file_size` INT UNSIGNED NOT NULL,					#附件大小
 	`file_comment` Char(200) DEFAULT '',				#文件说明
 	`file_time` Char(15) DEFAULT 0,							#附件上传时间（unixtimestamp）

@@ -14,5 +14,7 @@ $language = array(
 	"plug_admin_cat_edit" => "修改管理目录",
 	"plug_admin_cat_title" => "管理目录维护",
 	"plug_admin_cat_error" => "不存在相关管理目录",
+	"plug_admin_cat_panle" => "管理面板",
+	"plug_admin_cat_allsub" => "全部子站",
 );
 ?>

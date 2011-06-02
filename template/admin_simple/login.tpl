@@ -36,7 +36,7 @@
 	  <td><input type="text" style="width:200px" name="check_code" value="" need="" /></td>
 	 </tr>
 	 <tr height="40">
-	  <td align="center" colspan="2"><img border="0" src="vcode.php" onclick="this.src='vcode.php?'+Math.random()" /><br /><br />（如果图片不清楚，请点击图片更换验证码）</td>
+	  <td align="center" colspan="2"><img border="0" src="../vcode.php" onclick="this.src='../vcode.php?'+Math.random()" /><br /><br />（如果图片不清楚，请点击图片更换验证码）</td>
 	 </tr>
 	 <TR height="40">
 	  <TD colspan="2" align="center">

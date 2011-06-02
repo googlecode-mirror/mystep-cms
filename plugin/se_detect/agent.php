@@ -9,6 +9,5 @@ $agent = array (
   '必应_msn' => 'msnbot',
   '必应_bing' => 'bingbot',
   'Majestic-12' => 'mj12bot',
-  '华为赛门铁克' => 'huaweisymantecspider',
 );			
 ?>

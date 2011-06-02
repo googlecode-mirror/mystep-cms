@@ -79,10 +79,10 @@ function build_page($method) {
 		for($i=0; $i<$max_count; $i++) {
 			switch($GLOBALS['admin_cat'][$i]['web_id']) {
 				case "0":
-					$GLOBALS['admin_cat'][$i]['web_id'] = "管理面板";
+					$GLOBALS['admin_cat'][$i]['web_id'] = $setting['language']['plug_admin_cat_panle'];
 					break;
 				case "255":
-					$GLOBALS['admin_cat'][$i]['web_id'] = "全部子站";
+					$GLOBALS['admin_cat'][$i]['web_id'] = $setting['language']['plug_admin_cat_allsub'];
 					break;
 				default:
 					$webInfo = getParaInfo("website", "web_id", $GLOBALS['admin_cat'][$i]['web_id']);
@@ -94,10 +94,10 @@ function build_page($method) {
 			for($j=0; $j<$max_count2; $j++) {
 				switch($GLOBALS['admin_cat'][$i]['sub'][$j]['web_id']) {
 					case "0":
-						$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id'] = "管理面板";
+						$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id'] = $setting['language']['plug_admin_cat_panle'];
 						break;
 					case "255":
-						$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id'] = "全部子站";
+						$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id'] = $setting['language']['plug_admin_cat_allsub'];
 						break;
 					default:
 						$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id'] = $GLOBALS['website'][$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id']];
