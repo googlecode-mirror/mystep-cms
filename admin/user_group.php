@@ -77,7 +77,7 @@ function build_page($method) {
 			} elseif($record['power_func']=="") {
 				$record['power_func'] = $setting['language']['admin_user_group_power_none'];
 			} else {
-				$thePowerFunc = split(",", $record['power_func']);
+				$thePowerFunc = explode(",", $record['power_func']);
 				$record['power_func'] = "";
 				$max_count = count($thePowerFunc);
 				for($i=0; $i<$max_count; $i++) {
@@ -91,7 +91,7 @@ function build_page($method) {
 			} elseif($record['power_cat']=="") {
 				$record['power_cat'] = $setting['language']['admin_user_group_cat_none'];
 			} else {
-				$thePowerCata = split(",", $record['power_cat']);
+				$thePowerCata = explode(",", $record['power_cat']);
 				$record['power_cat'] = "";
 				$max_count = count($thePowerCata);
 				for($i=0; $i<$max_count; $i++) {
@@ -105,7 +105,7 @@ function build_page($method) {
 			} elseif($record['power_web']=="") {
 				$record['power_web'] = $setting['language']['admin_user_group_web_none'];
 			} else {
-				$thePowerWeb = split(",", $record['power_web']);
+				$thePowerWeb = explode(",", $record['power_web']);
 				$record['power_web'] = "";
 				$max_count = count($thePowerWeb);
 				for($i=0; $i<$max_count; $i++) {

@@ -78,7 +78,18 @@ mystep;
 	}
 	
 	public static function check() {
-		return "";
+		$result = "";
+		$theList = array(
+			"/se.php",
+		);
+		foreach($theList as $cur) {
+			if(isWriteable(dirname(__FILE__).$cur)) {
+				$result .= $cur . ' <span style="color:green">Writable</span><br />';
+			} else {
+				$result .= $cur . ' <span style="color:red">Readonly</span><br />';
+			}
+		}
+		return $result;
 	}
 	
 	public static function tag_search(MyTPL $tpl, $att_list = array()) {

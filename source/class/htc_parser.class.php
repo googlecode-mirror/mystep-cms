@@ -253,7 +253,7 @@ class HTC_Parser extends class_common {
 		$code = str_replace("\r","",$code);
 		$code = str_replace("<br />\n", "\n", $code);
 		$code = preg_replace("/\[\:\:(.+?)\:\:\]/es","\$this->modi_multiline('\\1')", $code);
-		$temp = split("\n", $code);
+		$temp = explode("\n", $code);
 		$line = array();
 		$max_row = 0;
 		$max_col = 0;

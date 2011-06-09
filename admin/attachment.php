@@ -91,7 +91,7 @@ mystep;
 		if(isset($del_att)) {
 			$max_count = count($del_att);
 			for($i=0; $i<$max_count; $i++) {
-				$the_file = split("::", $del_att[$i]);
+				$the_file = explode("::", $del_att[$i]);
 				$time = substr(str_replace(strrchr($the_file[1], "."), "", $the_file[1]), 0, 10);
 				unlink($path_upload.date("/Y/m/d/", $time).$the_file[1]);
 				unlink($path_upload.date("/Y/m/d/", $time)."preview/".$the_file[1]);
@@ -128,7 +128,7 @@ mystep;
 		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 		$news_id = $req->getGet("news_id");
 		$attach_list = $req->getGet("attach_list");
-		$attach_list = split("\|", $attach_list);
+		$attach_list = explode("\|", $attach_list);
 		$str_sql = "select * from ".$setting['db']['pre']."attachment where ";
 		$max_count = count($attach_list);
 		for($i=0; $i<$max_count; $i++) {

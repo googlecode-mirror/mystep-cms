@@ -443,7 +443,7 @@ function MakeDir($dir) {
 	$dir = preg_replace("/\/+/", "/", $dir);
 	$flag = true;
 	if(!is_dir($dir)) {
-		$dir_list = split("/", $dir);
+		$dir_list = explode("/", $dir);
 		$this_dir = "";
 		$oldumask=umask(0);
 		$max_count = count($dir_list);

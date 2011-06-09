@@ -211,7 +211,7 @@ mytpl;
 					$cur_result .= "\n?>";
 					break;
 				case "if":
-					$part = split("<!--else-->", $cur_content);
+					$part = explode("<!--else-->", $cur_content);
 					if(isset($cur_attrib['key'])) {
 						if(!isset($tpl_para[$this->hash]['if'][$cur_attrib['key']])) $tpl_para[$this->hash]['if'][$cur_attrib['key']] = false;
 						$cur_result = <<<mytpl
@@ -261,7 +261,7 @@ mytpl;
 					if(!get_magic_quotes_gpc()) $cur_content = addslashes($cur_content);
 					$cur_result =  <<<mytpl
 <?php
-\$part = split("<!--next-->", "{$cur_content}");
+\$part = explode("<!--next-->", "{$cur_content}");
 echo \$part[rand(0, count(\$part)-1)];
 ?>
 mytpl;
@@ -295,7 +295,7 @@ mytpl;
 		$max_count = count($att_list);
 		for($i=0; $i<$max_count; $i++) {
 			if(empty($att_list[$i])) continue;
-			$tmp = split("=", trim($att_list[$i]));
+			$tmp = explode("=", trim($att_list[$i]));
 			eval("\$block_attrib['" . strtolower(trim($tmp[0])) . "'] = {$tmp[1]};");
 		}
 	}
@@ -322,7 +322,7 @@ mytpl;
 				$max_count1 = count($att_list);
 				for($j=0; $j<$max_count1; $j++) {
 					if(empty($att_list[$j])) continue;
-					$tmp = split("=", trim($att_list[$j]));
+					$tmp = explode("=", trim($att_list[$j]));
 					$tmp[1] = preg_replace('/\$(\w+)/', '{$GLOBALS[\1]}', $tmp[1]);
 					eval("\$cur_attrib['" . strtolower(trim($tmp[0])) . "'] = {$tmp[1]};");
 				}

@@ -154,7 +154,7 @@ switch($method) {
 				$db->Query($db->buildSQL($setting['db']['pre_sub']."news_detail", $cur_rec, "insert"));
 			}
 			
-			$attach_list = split("\|", $attach_list);
+			$attach_list = explode("\|", $attach_list);
 			$att_chg = "";
 			$max_count = count($attach_list);
 			for($i=0; $i<$max_count; $i++) {
