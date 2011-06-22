@@ -128,7 +128,7 @@ mystep;
 		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 		$news_id = $req->getGet("news_id");
 		$attach_list = $req->getGet("attach_list");
-		$attach_list = explode("\|", $attach_list);
+		$attach_list = explode("|", $attach_list);
 		$str_sql = "select * from ".$setting['db']['pre']."attachment where ";
 		$max_count = count($attach_list);
 		for($i=0; $i<$max_count; $i++) {
