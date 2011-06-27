@@ -8,10 +8,10 @@ $setting['web']['title'] = 'MyStep';
 $setting['web']['keyword'] = 'mystep,cms,free';
 $setting['web']['description'] = '开源网站内容管理系统';
 $setting['web']['s_user'] = 'mystep';
-$setting['web']['s_pass'] = 'c4ca4238a0b923820dcc509a6f75849b';
+$setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
 $setting['web']['close'] = false;
 $setting['web']['close_page'] = '/index.html';
-$setting['web']['cache_mode'] = 'memcache';
+$setting['web']['cache_mode'] = 'file';
 
 $setting['db'] = array();
 $setting['db']['host'] = '127.0.0.1:3306';
@@ -61,13 +61,13 @@ $setting['content']['max_length'] = 10000;
 $setting['content']['get_remote_img'] = true;
 
 $setting['watermark'] = array();
-$setting['watermark']['mode'] = 3;
 $setting['watermark']['txt'] = 'MyStep CMS';
 $setting['watermark']['img'] = 'images/logo.png';
 $setting['watermark']['credit'] = 'Original From MyStep';
+$setting['watermark']['mode'] = 2;
 
 $setting['memcache'] = array();
-$setting['memcache']['server'] = '';
+$setting['memcache']['server'] = '127.0.0.1';
 $setting['memcache']['weight'] = 2;
 $setting['memcache']['persistant'] = true;
 $setting['memcache']['timeout'] = 1;
@@ -83,7 +83,6 @@ $expire_list = array(
 	"default" => 60*10,
 	"index" => 60*30,
 	"list" => 60*60,
-	"rss" => 60*60*6,
 	"tag" => 60*60*24,
 	"read" => 60*60*24*7,
 );

@@ -286,10 +286,8 @@ mytpl;
 	}
 	
 	protected function Get_Block($attrib, $content, &$block_attrib, &$block_content) {
-		if(get_magic_quotes_gpc()) {
-			$block_content =stripslashes($content);
-			$attrib = stripslashes($attrib);
-		}
+		$block_content =stripslashes($content);
+		$attrib = stripslashes($attrib);
 		preg_match_all("/(\w+\s*=\s*(\"|')[^\\2]+\\2)/isU", $attrib, $att_list);
 		$att_list = $att_list[1];
 		$max_count = count($att_list);

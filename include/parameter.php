@@ -46,5 +46,5 @@ $sess_handle = array(
 	array($setting['session']['mode'], "sess_gc")
 );
 
-$setting['cookie']['prefix'] .= substr(md5($_ENV["USERNAME"].$_ENV["COMPUTERNAME"].$_ENV["OS"]), 0, 4)."_";
+$setting['cookie']['prefix'] .= substr(md5($_SERVER["USERNAME"].$_SERVER["COMPUTERNAME"].$_SERVER["OS"]), 0, 4)."_";
 ?>

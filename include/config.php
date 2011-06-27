@@ -2,13 +2,13 @@
 $setting = array();
 
 $setting['web'] = array();
-$setting['web']['url'] = 'http://www.mystep.com';
+$setting['web']['url'] = 'http://www.mystep.com/';
 $setting['web']['email'] = 'windy2006@gmail.com';
 $setting['web']['title'] = 'MyStep';
 $setting['web']['keyword'] = 'mystep,cms,free';
 $setting['web']['description'] = '开源网站内容管理系统';
 $setting['web']['s_user'] = 'mystep';
-$setting['web']['s_pass'] = 'c4ca4238a0b923820dcc509a6f75849b';
+$setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
 $setting['web']['close'] = false;
 $setting['web']['close_page'] = '/index.html';
 $setting['web']['cache_mode'] = 'file';
@@ -78,12 +78,12 @@ $setting['memcache']['threshold'] = 10240;
 $setting['memcache']['min_savings'] = 0.5;
 
 
-$expire_list = array (
-  'default' => 600,
-  'index' => 1800,
-  'list' => 3600,
-  'rss' => 21600,
-  'tag' => 86400,
-  'read' => 604800,
+
+$expire_list = array(
+	"default" => 60*10,
+	"index" => 60*30,
+	"list" => 60*60,
+	"tag" => 60*60*24,
+	"read" => 60*60*24*7,
 );
 ?>
