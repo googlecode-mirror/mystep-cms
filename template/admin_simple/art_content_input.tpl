@@ -187,7 +187,7 @@ tinyMCE.init({
 		});
 		ed.addButton('format', {
 			title : '文本格式化',
-			image : 'images/div.png',
+			image : 'images/format.png',
 			onclick : function() {
 				var content = tinyMCE.get('content').getContent();
 				content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
