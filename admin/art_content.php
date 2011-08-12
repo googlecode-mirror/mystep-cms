@@ -172,6 +172,7 @@ switch($method) {
 			$theCat = $_POST['cat_id'];
 			$sql_list = array();
 			$_POST['add_user'] = $req->getSession("username");
+			$_POST['setop'] = 0;
 			for($i=0,$m=count($cid_list);$i<$m;$i++) {
 				if(is_numeric($cid_list[$i]) && $theCat!=$cid_list[$i]) {
 					$_POST['cat_id'] = $cid_list[$i];
@@ -292,7 +293,7 @@ function build_page($method) {
 			$content[] = $record['content'];
 		}
 		
-		$tpl_tmp->Set_Variable('record_content', implode("\n<!-- pagebreak -->\n", $content));
+		$tpl_tmp->Set_Variable('record_content', implode("\n<p><img src=\"../script/tinymce/plugins/pagebreak/img/trans.gif\" class=\"mcePageBreak mceItemNoResize\" /></p>\n", $content));
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_edit']);
 	} else {
 		$checked = "checked";

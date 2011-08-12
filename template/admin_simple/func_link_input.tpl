@@ -7,18 +7,8 @@
 				<td class="cat" width="80">链接名称：<span>*</span></td>
 				<td class="row">
 					<input name="id" type="hidden" value="<!--id-->" />
+					<input type="hidden" name="web_id" value="<!--web_id-->" />
 					<input name="link_name" type="text" size="20" maxlength="40" value="<!--link_name-->" need="" />
-				</td>
-			</tr>
-			<tr>
-				<td class="cat" width="80">所属子站：</td>
-				<td class="row">
-					<select name="web_id">
-						<option value="0">未限定</option>
-<!--loop:start key="website"-->
-						<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
-<!--loop:end-->
-					</select>
 				</td>
 			</tr>
 			<tr>

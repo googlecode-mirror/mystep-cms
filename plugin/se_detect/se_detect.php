@@ -99,7 +99,7 @@ function build_page($method) {
 		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."se_count");
 		$tpl_tmp->Set_If('empty', ($counter==0));
 		$page = $req->getGet("page");
-		list($page_arr, $page_start, $page_size) = GetPageList($counter, "", $page);
+		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=view", $page);
 		$tpl_tmp->Set_Variables($page_arr);
 		
 		$fields = $db->GetTabFields($setting['db']['name'], $setting['db']['pre']."se_count");

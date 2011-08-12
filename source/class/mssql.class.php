@@ -257,6 +257,7 @@ class MSSQL extends class_common {
 	}
    
 	protected function Error($str, $exit=false) {
+		$str .= "\n";
 		$str .= "Query String: ".$this->DB_qstr."\n";
 		$str .= "MSSQL Message: ".$this->GetErrorCode()." - ".mssql_get_last_message();
 		parent::Error($str, $exit);

@@ -15,7 +15,7 @@
 						<option value="<!--catalog_cat_id-->" web_id="<!--catalog_web_id-->" view_lvl="<!--catalog_view_lvl-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
 					</select> &nbsp; 
-					<input style="width:80px" class="btn" type="button" onClick="showPop('newsCatalog','多栏目同时发布','id','newsCatalog',200)" value="其他栏目" /> <span class="comment">（请选择当前文章所属的类别）</span>
+					<input style="width:80px" class="btn" type="button" onClick="showPop('newsCatalog','多栏目同时发布','id','newsCatalog',200);setMultiCata();" value="其他栏目" /> <span class="comment">（请选择当前文章所属的类别）</span>
 				</td>
 			</tr>
 			<tr>
@@ -146,7 +146,7 @@ tinyMCE.init({
 	theme : "advanced",
 	plugins : "quote,bbscode,advlink,advimage,subtitle,safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
 
-	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,cleanup,|,quote,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup",
+	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,format",
 	theme_advanced_buttons2 : "pagebreak,Subtitle,upload,|,cut,copy,paste,pastetext,pasteword,bbscode,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
 	theme_advanced_buttons3 : "",
 	theme_advanced_toolbar_location : "top",
@@ -173,7 +173,7 @@ tinyMCE.init({
 		  }
 		});
 		ed.addButton('change', {
-			title : 'Div Mode',
+			title : 'Div/P 模式切换',
 			image : 'images/div.png',
 			onclick : function() {
 				var content = tinyMCE.get('content').getContent();
@@ -182,6 +182,17 @@ tinyMCE.init({
 				} else {
 					content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
 				}
+				tinyMCE.get('content').setContent(content);
+		  }
+		});
+		ed.addButton('format', {
+			title : '文本格式化',
+			image : 'images/div.png',
+			onclick : function() {
+				var content = tinyMCE.get('content').getContent();
+				content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
+				content = content.replace(/[\r\n]*<br(.*?)>[\r\n]*/ig, "</p>\n<p>");
+				content = content.replace(/<p>[\s　]+/ig, "<p>");
 				tinyMCE.get('content').setContent(content);
 		  }
 		});
@@ -207,6 +218,16 @@ function putMultiCata() {
 	}
 	document.forms[0].multi_cata.value = theList;
 	$.closePopupLayer();
+}
+
+function setMultiCata() {
+	if(document.forms[0].multi_cata.value.length>0) {
+		var objs = $("#popupLayer_newsCatalog input[name='multi_cata']");
+		var theList = "," + document.forms[0].multi_cata.value;
+		for(var i=0, m=objs.length; i<m; i++) {
+			if(theList.indexOf(","+objs[i].value)!=-1) objs[i].checked = true;
+		}
+	}
 }
 
 var cat_sub_list = new Array();

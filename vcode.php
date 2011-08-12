@@ -23,6 +23,6 @@ if($webInfo) {
 }
 $req->init($setting['cookie'], $setting['session']);
 $str = RndKey(4, 3);
-$req->setCookie("vcode", $str, 600);
+$req->setCookie("vcode", $str, 1000);
 vertify_img($str, ROOT_PATH."/images/font.ttc", 24);
 ?>

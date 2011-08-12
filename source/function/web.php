@@ -204,7 +204,7 @@ function buildParaList($idx) {
 			$cache_para[$idx] = $theList;
 			
 			$theList = array();
-			$db->Query("select * from ".$setting['db']['pre']."admin_cat order by id");
+			$db->Query("select * from ".$setting['db']['pre']."admin_cat order by `order` desc, id");
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				$record['url'] = $record['path'].$record['file'];

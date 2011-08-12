@@ -20,3 +20,5 @@ body a {color:#990000; text-decoration:none;}
 body a:hover {text-decoration:underline; color:#FF0084;}
 
 p {text-indent:28px; margin:0px 0px 10px 0px; line-height:24px;}
+blockquote{padding:5px; background-color:#eeeeee; border:1px #ccc solid;}
+ul, ol {padding-left:24px;}

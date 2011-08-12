@@ -69,7 +69,7 @@ function build_page($method) {
 		if(empty($order_type)) $order_type = "desc";
 		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."search_keyword");
 		$page = $req->getGet("page");
-		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=keyword", $page);
+		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=keyword&order=".$order, $page);
 		$tpl_tmp->Set_Variables($page_arr);
 		$str_sql = "select * from ".$setting['db']['pre']."search_keyword order by ".(empty($order)?"chg_date":"{$order}")." {$order_type} limit {$page_start}, {$page_size}";
 		$db->Query($str_sql);

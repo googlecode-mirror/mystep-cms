@@ -214,6 +214,7 @@ CREATE TABLE `{pre}attachment` (
 # 友情链接表
 CREATE TABLE `{pre}links` (
 	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`web_id` TINYINT UNSIGNED DEFAULT 0,				#所属子站
 	`idx` Char(20) DEFAULT '' NOT NULL,					#字符索引
 	`link_name` Char(100) NOT NULL,							#链接名称
 	`link_url` Char(100) NOT NULL,							#链接地址

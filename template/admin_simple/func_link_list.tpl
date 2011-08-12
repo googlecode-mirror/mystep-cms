@@ -1,18 +1,6 @@
 <div class="title"><!--title--></div>
 <div class="addnew"><a href="?method=add">添加链接</a></div>
 <div class="nav">
-	<select name="web_id" style="width:120px;text-align:center;" onchange="location.href='?web_id='+this.value">
-		<option value="">全部网站</option>
-<!--loop:start key="website"-->
-		<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
-<!--loop:end-->
-	</select>
-	<select name="idx" onchange="location.href='?idx='+this.value">
-		<option value="">全部索引</option>
-<!--loop:start key="idx"-->
-		<option value="<!--idx_idx-->" <!--idx_selected-->><!--idx_idx--></option>
-<!--loop:end-->
-	</select>
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，
 	<a href="<!--page_first-->">首页</a>&nbsp;
 	<a href="<!--page_prev-->">上页</a>&nbsp;
@@ -23,18 +11,16 @@
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">
-			<td class="cat" width="40"><a href="?order_type=<!--order_type-->&idx=<!--idx-->&web_id=<!--web_id-->"><font color="#000000">编号</font></a></td>
-			<td class="cat" width="60"><a href="?order_type=<!--order_type-->&order=web_id&idx=<!--idx-->&web_id=<!--web_id-->"><font color="#000000">所属网站</font></a></td>
-			<td class="cat"><a href="?order_type=<!--order_type-->&order=idx&idx=<!--idx-->&web_id=<!--web_id-->"><font color="#000000">链接索引</font></a></td>
-			<td class="cat"><a href="?order_type=<!--order_type-->&order=link_name&idx=<!--idx-->&web_id=<!--web_id-->"><font color="#000000">链接名称</font></a></td>
-			<td class="cat" width="200"><a href="?order_type=<!--order_type-->&order=image&idx=<!--idx-->&web_id=<!--web_id-->"><font color="#000000">链接图形</font></a></td>
-			<td class="cat" width="80"><a href="?order_type=<!--order_type-->&order=level&idx=<!--idx-->&web_id=<!--web_id-->"><font color="#000000">显示级别</font></a></td>
+			<td class="cat" width="40"><a href="?order_type=<!--order_type-->&idx=<!--idx-->"><font color="#000000">编号</font></a></td>
+			<td class="cat"><a href="?order_type=<!--order_type-->&order=idx&idx=<!--idx-->"><font color="#000000">链接索引</font></a></td>
+			<td class="cat"><a href="?order_type=<!--order_type-->&order=link_name&idx=<!--idx-->"><font color="#000000">链接名称</font></a></td>
+			<td class="cat" width="200"><a href="?order_type=<!--order_type-->&order=image&idx=<!--idx-->"><font color="#000000">链接图形</font></a></td>
+			<td class="cat" width="80"><a href="?order_type=<!--order_type-->&order=level&idx=<!--idx-->"><font color="#000000">显示级别</font></a></td>
 			<td class="cat" width="60">相关操作</td>
 		</tr>
 <!--loop:start key="record" time="20"-->
 		<tr class="row" align="center">
 			<td><!--record_id--></td>
-			<td><!--record_web_id--></td>
 			<td><!--record_idx--></td>
 			<td align="left"><a href="<!--record_link_url-->" target="_blank"><!--record_link_name--></a></td>
 			<td><!--record_image--></td>
