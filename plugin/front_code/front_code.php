@@ -65,10 +65,10 @@ $mystep->pageEnd(false);
 function build_page($method) {
 	global $mystep, $req, $db, $setting, $idx, $mydb;
 	$tpl_info = array(
-			"idx" => "main",
+		"idx" => "main",
 		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
 		"path" => ROOT_PATH."/".$setting['path']['template'],
-			);
+	);
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
 
 	$tpl_info['idx'] = ($method=="list"?"list":"input");

@@ -12,4 +12,4 @@ CREATE TABLE `{pre}news_mark` (
 	UNIQUE INDEX `web_news` (`web_id`, `news_id`),
 	INDEX (`jump`),
 	INDEX (`rank_total`)
-) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻评分';
+) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻评分';

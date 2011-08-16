@@ -5,4 +5,4 @@ CREATE TABLE `{pre}search_keyword` (
 	`add_date` Char(15) DEFAULT 0,						#首次检索日期（unixtimestamp）
 	`chg_date` Char(15) DEFAULT 0,						#最近检索日期（unixtimestamp）
 	INDEX (`keyword`)
-) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='检索索引表';
+) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='检索索引表';

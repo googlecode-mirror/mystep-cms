@@ -27,4 +27,4 @@ CREATE TABLE `{pre}news_visit` (
 	INDEX `week` (`web_id`, `week_count`),
 	INDEX `month` (`web_id`, `month_count`),
 	INDEX `year` (`web_id`, `year_count`)
-) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='内容数据统计';
+) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='内容数据统计';

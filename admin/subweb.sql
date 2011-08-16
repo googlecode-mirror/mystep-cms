@@ -27,9 +27,11 @@ CREATE TABLE `{pre}news_show` (
 	`pages` TINYINT UNSIGNED NOT NULL DEFAULT 1,				#新闻页数
 	`add_user` Char(20) NOT NULL,												#录入人
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#录入日期
+	`notice` Char(255) DEFAULT '',											#文章提示
 	INDEX `catalog` (`web_id`, `cat_id`),
+	INDEX `order` (`order`, `news_id`),
 	PRIMARY KEY (`news_id`)
-) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻描述';
+) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻描述';
 
 # ---------------------------------------------------------------------------------------------------------------
 
@@ -44,7 +46,7 @@ CREATE TABLE `{pre}news_detail` (
 	`content` TEXT NOT NULL,													#新闻内容
 	INDEX (`news_id`),
 	PRIMARY KEY (`id`)
-) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻内容';
+) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻内容';
 
 # ---------------------------------------------------------------------------------------------------------------
 
@@ -59,6 +61,6 @@ CREATE TABLE `{pre}news_tag` (
 	INDEX (`count`),
 	INDEX (`click`),
 	PRIMARY KEY (`id`)
-) TYPE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻关键字';
+) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻关键字';
 
 # ---------------------------------------------------------------------------------------------------------------
