@@ -18,9 +18,9 @@
 
 /*
 example
-$.cookie(’name’, ‘value’);
-$.cookie(’name’, ‘value’, {expires: 7, path: ‘/’, domain: ‘jquery.com’, secure: true});
-$.cookie(’name’, null);
+$.cookie('name', 'value');
+$.cookie('name', 'value', {expires: 7, path: '/', domain: 'jquery.com', secure: true});
+$.cookie('name', null);
 */
 
 jQuery.cookie = function(name, value, options) {

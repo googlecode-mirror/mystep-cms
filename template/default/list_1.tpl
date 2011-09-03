@@ -24,7 +24,7 @@
 				<div class="title"><span class="bar">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 列表</span></div>
 				<div class="content after">
 					<div class="main">
-<!--news cat_id='$cat_id' limit="$limit" template="mix" show_date="1"-->
+<!--news cat_id='$cat_id' limit='$limit' template="mix" show_date="1"-->
 					</div>
 				</div>
 				<div class="page after"><!--page_list--></div>

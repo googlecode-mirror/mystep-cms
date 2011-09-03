@@ -126,7 +126,7 @@ CREATE TABLE `{pre}news_show` (
 	`news_id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
 	`cat_id` SMALLINT UNSIGNED NOT NULL,								#新闻类型索引
 	`web_id` TINYINT UNSIGNED DEFAULT 0,								#所属子站
-	`subject` Char(150) NOT NULL,												#新闻标题
+	`subject` Char(200) NOT NULL,												#新闻标题
 	`style` Char(40) NOT NULL,													#标题样式
 	`views` MEDIUMINT UNSIGNED DEFAULT 0,								#浏览次数
 	`describe` Char(255) DEFAULT '',										#新闻描述
@@ -154,7 +154,7 @@ CREATE TABLE `{pre}news_detail` (
 	`news_id` MEDIUMINT UNSIGNED NOT NULL,						#新闻索引
 	`cat_id` SMALLINT UNSIGNED NOT NULL,							#新闻类型索引
 	`page` TINYINT UNSIGNED DEFAULT 1,								#分页索引
-	`sub_title` Char(100) DEFAULT '',									#子标题
+	`sub_title` Char(200) DEFAULT '',									#子标题
 	`ctype` TINYINT UNSIGNED DEFAULT 1,								#内容类型(ubb, html)
 	`content` MEDIUMTEXT NOT NULL,										#新闻内容
 	INDEX (`news_id`),
