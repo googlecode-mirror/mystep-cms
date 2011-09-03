@@ -24,6 +24,7 @@ class sess_mystep {
 		global $setting;
 		include(ROOT_PATH."/include/config.php");
 		extract(MyReq::sessDecode($sess_data));
+		if(strpos($url, "ajax.php")!==false) return true;
 		$reflash = $_SERVER["REQUEST_TIME"];
 		if(empty($username)) $username = "Guest";
 		if(empty($usertype)) $usertype = 1;

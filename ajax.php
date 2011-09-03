@@ -1,6 +1,5 @@
 <?php
 if(empty($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'],$_SERVER['SERVER_NAME'])!==7) die("NULL");
-
 include("inc.php");
 $ajax = $mystep->getInstance("MyAjax");
 $func = $req->getGet("func");
