@@ -14,11 +14,10 @@ CREATE TABLE `{pre}se_count` (
 	PRIMARY KEY (`date`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='搜索引擎统计';
 
-alter table `{pre}se_count` add `谷歌` mediumint(8) unsigned NOT NULL default '0';
-alter table `{pre}se_count` add `百度` mediumint(8) unsigned NOT NULL default '0';
-alter table `{pre}se_count` add `有道` mediumint(8) unsigned NOT NULL default '0';
-alter table `{pre}se_count` add `雅虎` mediumint(8) unsigned NOT NULL default '0';
-alter table `{pre}se_count` add `搜搜` mediumint(8) unsigned NOT NULL default '0';
-alter table `{pre}se_count` add `必应_msn` mediumint(8) unsigned NOT NULL default '0';
-alter table `{pre}se_count` add `搜狗` mediumint(8) unsigned NOT NULL default '0';
-alter table `{pre}se_count` add `必应_bing` mediumint(8) unsigned NOT NULL default '0';
+alter table `{pre}se_count` add `有道` mediumint(8) unsigned NOT NULL default '0' after `date`;
+alter table `{pre}se_count` add `搜搜` mediumint(8) unsigned NOT NULL default '0' after `date`;
+alter table `{pre}se_count` add `搜狗` mediumint(8) unsigned NOT NULL default '0' after `date`;
+alter table `{pre}se_count` add `雅虎` mediumint(8) unsigned NOT NULL default '0' after `date`;
+alter table `{pre}se_count` add `必应` mediumint(8) unsigned NOT NULL default '0' after `date`;
+alter table `{pre}se_count` add `百度` mediumint(8) unsigned NOT NULL default '0' after `date`;
+alter table `{pre}se_count` add `谷歌` mediumint(8) unsigned NOT NULL default '0' after `date`;

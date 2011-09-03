@@ -1,0 +1,10 @@
+# 会议信息
+CREATE TABLE `{pre}meeting` (
+	`mid` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	`web_id` TINYINT UNSIGNED DEFAULT 0,	#所属网站
+	`name` Char(100),											#名称
+	`name_en` Char(100),									#名称英文
+	`notes` char(255)	DEFAULT '',					#备注
+	`add_date` DATETIME,									#添加日期
+	PRIMARY KEY (`mid`)
+) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='会议信息';

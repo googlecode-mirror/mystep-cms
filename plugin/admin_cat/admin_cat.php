@@ -139,7 +139,6 @@ function build_page($method) {
 		$tpl->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 		$max_count = count($GLOBALS['website']);
 		for($i=0; $i<$max_count; $i++) {
-			$GLOBALS['website'][$i]['selected'] = $GLOBALS['website'][$i]['web_id']==$web_id?"selected":"";
 			$tpl->Set_Loop("website", $GLOBALS['website'][$i]);
 		}
 		$max_count = count($GLOBALS['admin_cat']);
