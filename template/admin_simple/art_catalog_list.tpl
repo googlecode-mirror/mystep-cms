@@ -25,10 +25,12 @@
 	</table>
 </div>
 <script language="javascript">
-parent.group=<!--group-->;
-parent.group.power_cat = "," + parent.group.power_cat + ",";
-parent.group.power_web = "," + parent.group.power_web + ",";
-parent.group.power_func = "," + parent.group.power_func + ",";
-parent.news_cat = <!--news_cat-->;
-parent.showCat(parent.document.getElementById("cat_tree"), parent.getWebCat(<!--web_id-->), true);
+if(parent.showCat!=null) {
+	parent.group=<!--group-->;
+	parent.group.power_cat = "," + parent.group.power_cat + ",";
+	parent.group.power_web = "," + parent.group.power_web + ",";
+	parent.group.power_func = "," + parent.group.power_func + ",";
+	parent.news_cat = <!--news_cat-->;
+	parent.showCat(parent.document.getElementById("cat_tree"), parent.getWebCat(<!--web_id-->), true);
+}
 </script>

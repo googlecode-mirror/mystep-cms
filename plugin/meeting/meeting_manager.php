@@ -76,14 +76,18 @@ switch($method) {
 		$db->Query($str_sql);
 		$mid = $db->getInsertID();
 		include("config.php");
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, {$catid}, '".mysql_real_escape_string($sql_item['name'])."', 'manager.php?mid={$mid}', '../plugin/meeting/', {$sql_item['web_id']}, 0, '".$info['intro']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, {$catid}, '".mysql_real_escape_string($sql_item['name'])."', 'meeting_manager.php?mid={$mid}', '../plugin/meeting/', {$sql_item['web_id']}, 0, '".$info['intro']."')");
 		if(empty($_POST["tpl_reg_cn"])) $_POST["tpl_reg_cn"] = GetFile("tpl/default_regist_cn.tpl");
 		if(empty($_POST["tpl_reg_en"])) $_POST["tpl_reg_en"] = GetFile("tpl/default_regist_en.tpl");
+		if(empty($_POST["tpl_reglist_cn"])) $_POST["tpl_reglist_cn"] = GetFile("tpl/default_reglist_cn.tpl");
+		if(empty($_POST["tpl_reglist_en"])) $_POST["tpl_reglist_en"] = GetFile("tpl/default_reglist_en.tpl");
 		if(empty($_POST["tpl_mail_cn"])) $_POST["tpl_mail_cn"] = GetFile("tpl/default_mail_cn.tpl");
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
 		WriteFile("tpl/{$mid}_regist_cn.tpl", $_POST["tpl_reg_cn"], "wb");
 		WriteFile("tpl/{$mid}_regist_en.tpl", $_POST["tpl_reg_en"], "wb");
+		WriteFile("tpl/{$mid}_reglist_cn.tpl", $_POST["tpl_reglist_cn"], "wb");
+		WriteFile("tpl/{$mid}_reglist_en.tpl", $_POST["tpl_reglist_en"], "wb");
 		WriteFile("tpl/{$mid}_mail_cn.tpl", $_POST["tpl_mail_cn"], "wb");
 		WriteFile("tpl/{$mid}_mail_en.tpl", $_POST["tpl_mail_en"], "wb");
 		WriteFile("tpl/{$mid}_edit_reg.tpl", $_POST["tpl_edit_reg"], "wb");
@@ -153,14 +157,18 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		$str_sql = $db->buildSQL($setting['db']['pre']."meeting", $sql_item, "update", "mid={$mid}");
 		$db->Query($str_sql);
 		include("config.php");
-		$db->query("update ".$setting['db']['pre']."admin_cat set name='".mysql_real_escape_string($sql_item['name'])."' where file='manager.php?mid={$mid}' and pid={$catid}");
+		$db->query("update ".$setting['db']['pre']."admin_cat set name='".mysql_real_escape_string($sql_item['name'])."' where file='meeting_manager.php?mid={$mid}' and pid={$catid}");
 		if(empty($_POST["tpl_reg_cn"])) $_POST["tpl_reg_cn"] = GetFile("tpl/default_regist_cn.tpl");
 		if(empty($_POST["tpl_reg_en"])) $_POST["tpl_reg_en"] = GetFile("tpl/default_regist_en.tpl");
+		if(empty($_POST["tpl_reglist_cn"])) $_POST["tpl_reglist_cn"] = GetFile("tpl/default_reglist_cn.tpl");
+		if(empty($_POST["tpl_reglist_en"])) $_POST["tpl_reglist_en"] = GetFile("tpl/default_reglist_en.tpl");
 		if(empty($_POST["tpl_mail_cn"])) $_POST["tpl_mail_cn"] = GetFile("tpl/default_mail_cn.tpl");
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
 		WriteFile("tpl/{$mid}_regist_cn.tpl", $_POST["tpl_reg_cn"], "wb");
 		WriteFile("tpl/{$mid}_regist_en.tpl", $_POST["tpl_reg_en"], "wb");
+		WriteFile("tpl/{$mid}_reglist_cn.tpl", $_POST["tpl_reglist_cn"], "wb");
+		WriteFile("tpl/{$mid}_reglist_en.tpl", $_POST["tpl_reglist_en"], "wb");
 		WriteFile("tpl/{$mid}_mail_cn.tpl", $_POST["tpl_mail_cn"], "wb");
 		WriteFile("tpl/{$mid}_mail_en.tpl", $_POST["tpl_mail_en"], "wb");
 		WriteFile("tpl/{$mid}_edit_reg.tpl", $_POST["tpl_edit_reg"], "wb");
@@ -248,9 +256,11 @@ $para = '.var_export($para, true).';
 			$db->query("truncate table ".$setting['db']['pre']."meeting_".$mid);
 			$db->query("drop table ".$setting['db']['pre']."meeting_".$mid);
 			$db->Query("delete from ".$setting['db']['pre']."meeting where mid = '{$mid}'");
-			$db->query("delete from ".$setting['db']['pre']."admin_cat where file='manager.php?mid={$mid}' and pid={$catid}");
+			$db->query("delete from ".$setting['db']['pre']."admin_cat where file='meeting_manager.php?mid={$mid}' and pid={$catid}");
 			unlink("tpl/{$mid}_regist_cn.tpl");
 			unlink("tpl/{$mid}_regist_en.tpl");
+			unlink("tpl/{$mid}_reglist_cn.tpl");
+			unlink("tpl/{$mid}_reglist_en.tpl");
 			unlink("tpl/{$mid}_mail_cn.tpl");
 			unlink("tpl/{$mid}_mail_en.tpl");
 			unlink("setting/{$mid}.php");
@@ -356,12 +366,22 @@ function build_page($method) {
 		$db->Query("select * from ".$setting['db']['pre']."meeting order by mid desc");
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
+			if($record['web_id']==0) {
+				$record['web_id'] = "仅管理面板";
+			} elseif($record['web_id']==255) {
+				$record['web_id'] = "全部子站";
+			} else {
+				$webinfo = getParaInfo("website", "web_id", $record['web_id']);
+				$record['web_id'] = $webinfo['name'];
+			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$tpl_tmp->Set_Variable('title', '会议浏览浏览');
-		$tpl_tmp->Set_Variable('order_type_org', $order_type);	
+		$tpl_tmp->Set_Variable('order_type_org', $order_type);
 		$order_type = $order_type=="asc"?"desc":"asc";
 		$tpl_tmp->Set_Variable('order_type', $order_type);
+		global $admin_cat;
+		$tpl_tmp->Set_Variable('admin_cat', toJson($admin_cat, $setting['gen']['charset']));
 	} elseif($method == "edit") {
 		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."meeting where mid='{$mid}'");
 		if($record===false) {
@@ -381,6 +401,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('reg_item', toJson($para, $setting['gen']['charset']));
 		$tpl_tmp->Set_Variable('tpl_reg_cn', htmlspecialchars(GetFile("tpl/{$mid}_regist_cn.tpl")));
 		$tpl_tmp->Set_Variable('tpl_reg_en', htmlspecialchars(GetFile("tpl/{$mid}_regist_en.tpl")));
+		$tpl_tmp->Set_Variable('tpl_reglist_cn', htmlspecialchars(GetFile("tpl/{$mid}_reglist_cn.tpl")));
+		$tpl_tmp->Set_Variable('tpl_reglist_en', htmlspecialchars(GetFile("tpl/{$mid}_reglist_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("tpl/{$mid}_mail_cn.tpl")));
 		$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("tpl/{$mid}_mail_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("tpl/{$mid}_edit_reg.tpl")));
@@ -396,6 +418,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('reg_item', toJson($para, $setting['gen']['charset']));
 		$tpl_tmp->Set_Variable('tpl_reg_cn', htmlspecialchars(GetFile("tpl/default_regist_cn.tpl")));
 		$tpl_tmp->Set_Variable('tpl_reg_en', htmlspecialchars(GetFile("tpl/default_regist_en.tpl")));
+		$tpl_tmp->Set_Variable('tpl_reglist_cn', htmlspecialchars(GetFile("tpl/default_reglist_cn.tpl")));
+		$tpl_tmp->Set_Variable('tpl_reglist_en', htmlspecialchars(GetFile("tpl/default_reglist_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("tpl/default_mail_cn.tpl")));
 		$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("tpl/default_mail_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("tpl/edit_reg.tpl")));

@@ -12,13 +12,6 @@
 ********************************************/
 
 /*--------------------------------Website Functions Start-----------------------------------------*/
-function CheckPower($power) {
-	//Coded By Windy2000 20040526 v1.0
-	if(empty($_SESSION['username'])) return false;
-	if($power=="manager" && $_SESSION['usertype']==1) return true;
-	return ($_SESSION['userpower']=="all" || strpos(",".$_SESSION['userpower'].",", ",".$power.",")!==false);
-}
-
 function write_log($comment="", $q_str="") {
 	global $db, $setting;
 	$link = "http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&".$q_str;

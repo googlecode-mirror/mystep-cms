@@ -62,6 +62,18 @@
 							</td>
 						</tr>
 						<tr>
+							<td class="cat" width="100">中文列表页面：</td>
+							<td class="row">
+								<textarea name="tpl_reglist_cn" style="width:100%; height:200px;"><!--tpl_reglist_cn--></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td class="cat">英文列表页面：</td>
+							<td class="row">
+								<textarea name="tpl_reglist_en" style="width:100%; height:200px;"><!--tpl_reglist_en--></textarea>
+							</td>
+						</tr>
+						<tr>
 							<td class="cat">中文邮件模板：</td>
 							<td class="row">
 								<textarea name="tpl_mail_cn" style="width:100%; height:200px;"><!--tpl_mail_cn--></textarea>

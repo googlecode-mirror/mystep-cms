@@ -37,7 +37,7 @@ mystep;
 	}
 	
 	public static function uninstall() {
-		global $db, $setting, $admin_cat;
+		global $db, $setting, $admin_cat, $mystep;
 		$info = self::info();
 		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='front_code.php'");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
@@ -50,6 +50,13 @@ mystep;
 			</pre>
 			");
 		} else {
+			$mydb = $mystep->getInstance("MyDB", "code", dirname(__FILE__));
+			$record = $mydb->queryAll();
+			for($i=0; $i<count($record); $i++) {
+				unlink(dirname(__FILE__)."/code/".$record[$i]['idx'].".php");
+			}
+			$mydb->emptyTBL();
+			unset($mydb);
 			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);

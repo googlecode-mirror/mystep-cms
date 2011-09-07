@@ -14,7 +14,7 @@ class plugin_meeting implements plugin {
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_meeting", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '会议', 'manager.php', '../plugin/meeting/', 0, 0, '".$info['intro']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '会议', 'meeting_manager.php', '../plugin/meeting/', 0, 0, '".$info['intro']."')");
 		$new_id = $db->GetInsertId();
 		$err = array();
 		if($db->GetError($err)) {
@@ -53,6 +53,8 @@ $catid = '.$new_id.';
 			$sql_list[] = "drop table ".$setting['db']['pre']."meeting_".$record['mid'];
 			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_regist_cn.tpl");
 			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_regist_en.tpl");
+			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_reglist_cn.tpl");
+			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_reglist_en.tpl");
 			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_mail_cn.tpl");
 			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_mail_en.tpl");
 			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_edit_reg.tpl");
@@ -112,8 +114,10 @@ mystep;
 	}
 	
 	public static function tag_reg(MyTPL $tpl, $att_list = array()) {
+		global $setting;
 		$result = "";
 		if(!isset($att_list['mid'])) return "";
+		if(!isset($att_list['lng'])) $att_list['lng'] = "cn";
 		if(!isset($att_list['order'])) $att_list['order'] = "id desc";
 		if(!isset($att_list['limit'])) $att_list['limit'] = 0;
 		if(!isset($att_list['loop'])) $att_list['loop'] = 0;
@@ -143,7 +147,7 @@ content;
 	echo "\\n";
 	unset(\$record);
 }
-for(; \$n<{$att_list['loop']}; \$n++) {
+for(; \$n<{$att_list['loop']}-1; \$n++) {
 	echo "{$unit_blank}";
 	echo "\\n";
 }
