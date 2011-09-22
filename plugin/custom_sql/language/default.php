@@ -14,5 +14,6 @@ $language = array(
 	"plug_custom_sql_export" => "自定义查询导出",
 	"plug_custom_sql_title" => "自定义查询维护",
 	"plug_custom_sql_error" => "不存在相关自定义查询",
+	"plug_custom_sql_error_sql" => "请确认所输入的查询为标准的 SELECT 语句",
 );
 ?>

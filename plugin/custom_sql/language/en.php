@@ -14,5 +14,6 @@ $language = array(
 	"plug_custom_sql_export" => "Export Custom Query",
 	"plug_custom_sql_title" => "Custom SQL Manager",
 	"plug_custom_sql_error" => "Record Missing",
+	"plug_custom_sql_error_sql" => "Bad SQL, Standard SELECT is needed",
 );
 ?>

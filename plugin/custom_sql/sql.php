@@ -4,7 +4,7 @@ $sql_list = array (
   array (
     'name' => 'test',
     'fields' => '±àºÅ,Ãû³Æ,ÎÄ¼þ,ÃèÊö',
-    'sql' => 'select `id`,`name`,`file`,`comment` from ms_admin_cat',
+    'sql' => 'select `id`,`name`,`file`,`comment` from ms_admin_cat order by id',
   ),
 );			
 ?>

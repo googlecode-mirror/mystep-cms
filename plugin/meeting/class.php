@@ -62,6 +62,8 @@ $catid = '.$new_id.';
 		}
 		$db->Free();
 		$db->BatchExec($sql_list);
+		include("config.php");
+		$db->query("delete from ".$setting['db']['pre']."admin_cat where pid='".$catid."'");
 		$db->query("truncate table ".$setting['db']['pre']."meeting");
 		$db->query("drop table ".$setting['db']['pre']."meeting");
 		$db->query("delete from ".$setting['db']['pre']."admin_cat where name='ª·“È'");
@@ -86,6 +88,9 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
+			WriteFile(dirname(__FILE__)."/config.php", '<?php
+$catid = 0;
+?>', "wb");
 			showInfo($setting['language']['plugin_uninstall_done']);
 		}
 	}

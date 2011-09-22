@@ -11,6 +11,7 @@ switch($method) {
 	case "add":
 	case "edit":
 	case "list":
+	case "view":
 		build_page($method);
 		break;
 	case "delete":
@@ -28,20 +29,24 @@ switch($method) {
 		if(count($_POST) == 0) {
 			$goto_url = $setting['info']['self'];
 		} else {
-			unset($_POST['id']);
-			if($method=="add_ok") {
-				$log_info = $setting['language']['plug_custom_sql_add'];
-				$sql_list[] = $_POST;
+			if(!preg_match("/^(select|show).+/i", $_POST['sql']) || preg_match("/ into /i", $_POST['sql'])) {
+				showInfo($setting['language']['plug_custom_sql_error_sql']);
 			} else {
-				$log_info = $setting['language']['plug_custom_sql_edit'];
-				$sql_list[$id] = $_POST;
-			}
-			$content = "<?PHP
+				unset($_POST['id']);
+				if($method=="add_ok") {
+					$log_info = $setting['language']['plug_custom_sql_add'];
+					$sql_list[] = $_POST;
+				} else {
+					$log_info = $setting['language']['plug_custom_sql_edit'];
+					$sql_list[$id] = $_POST;
+				}
+				$content = "<?PHP
 \$sql_list = ".var_export($sql_list, true).";			
 ?>";
-			WriteFile("sql.php", $content, "wb");
+				WriteFile("sql.php", $content, "wb");
+			}
+			$goto_url = $setting['info']['self'];
 		}
-		$goto_url = $setting['info']['self'];
 		break;
 	case "export":
 		$log_info = $setting['language']['plug_custom_sql_export'];
@@ -69,16 +74,45 @@ function build_page($method) {
 	global $mystep, $req, $db, $setting, $id, $sql_list;
 
 	$tpl_info = array(
-		"idx" => ($method=="list"?"list":"input"),
+		"idx" => (($method!="list" && $method!="view")?"input":$method),
 		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
 		"path" => ROOT_PATH."/".$setting['path']['template'],
 	);
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
 	
-	if($method == "list") {
+	if($method == "view") {
+		$the_sql = $sql_list[$id];
+		$fields = explode(",", $the_sql['fields']);
+		$max_count = count($fields);
+		for($i=0; $i<$max_count; $i++) {
+			$tpl->Set_Loop('fields', array("name" => $fields[$i]));
+		}
+		$page = $req->getGet("page");
+		$counter = $db->GetSingleResult("select count(*) as counter from (".$the_sql['sql'].") a");
+		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=view&id=".$id, $page);
+		$tpl->Set_Variables($page_arr);
+		$the_sql['sql'] .= " limit {$page_start}, {$page_size}";
+		$db->Query($the_sql['sql']);
+		$max_count = count($fields);
+		$n = 1 + ($page - 1) * $page_size;
+		while($record = $db->GetRS()) {
+			HtmlTrans(&$record);
+			$record = array_values($record);
+			$record['no'] = $n++;
+			$record['data'] = "";
+			for($i=0; $i<$max_count; $i++) {
+				$record['data'] .= "<td class=\"row\">".$record[$i]."</td>\n";
+			}
+			$tpl->Set_Loop('record', $record);
+		}
+		$tpl->Set_Variable('title', $setting['language']['plug_custom_sql_title']);
+		$tpl->Set_Variable('title_2', $the_sql['name']);
+		$tpl->Set_Variable('id', $id);
+	} elseif($method == "list") {
 		$max_count = count($sql_list);
 		for($i=0; $i<$max_count; $i++) {
 			$sql_list[$i]['id'] = $i;
+			$sql_list[$i]['no'] = $i+1;
 			$tpl->Set_Loop('record', $sql_list[$i]);
 		}
 		$tpl->Set_Variable('title', $setting['language']['plug_custom_sql_title']);
