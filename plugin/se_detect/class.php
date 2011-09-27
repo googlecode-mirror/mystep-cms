@@ -141,7 +141,7 @@ mystep;
 		if(empty($GLOBALS['se_bot']) && (strpos($agent_cur, "spider")!==false || strpos($agent_cur, "bot")!==false)) {
 			$theDate = date("Y-m-d");
 			if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date='".$theDate."'")) {
-				if(isset($record[$setting['language']['etc']]))	$record[$setting['language']['etc']] += 1;
+				if(isset($record['其他']))	$record['其他'] += 1;
 			} else {
 				$record = array();
 				$record['date'] = $theDate;

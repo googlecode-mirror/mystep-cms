@@ -117,10 +117,10 @@ class MyStep extends class_common {
 	public function pageStart($setPlugin = false) {
 		global $setting, $db, $req, $cache;
 		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
-		ini_set("magic_quotes_runtime", 0);
 		set_time_limit(30);
 		ini_set('memory_limit', '128M');
-		ini_set('magic_quotes_gpc', 'Off');
+		ini_set('magic_quotes_runtime', 0);
+		ini_set('magic_quotes_gpc', 0);
 		
 		error_reporting(E_ALL ^ E_NOTICE);
 		set_error_handler("ErrorHandler");

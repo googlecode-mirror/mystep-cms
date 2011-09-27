@@ -88,6 +88,7 @@ function build_page($method) {
 			$tpl->Set_Loop('fields', array("name" => $fields[$i]));
 		}
 		$page = $req->getGet("page");
+		if(empty($page)) $page = 1;
 		$counter = $db->GetSingleResult("select count(*) as counter from (".$the_sql['sql'].") a");
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=view&id=".$id, $page);
 		$tpl->Set_Variables($page_arr);

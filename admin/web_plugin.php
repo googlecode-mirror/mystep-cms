@@ -118,6 +118,14 @@ function build_page($method) {
 			}
 		}
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_title']);
+		
+		global $db;
+		$db->Query("select file, count(*) as counter from ms_admin_cat where file!='###' group by file having counter>1");
+		$dp_list = "";
+		while($cur = $db->getRS()) {
+			$dp_list .= $cur['file']."  (".$cur['counter'].")\\n";
+		}
+		$tpl_tmp->Set_Variable('dp_list', $dp_list);
 	} elseif($method=="setting") {
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_setup']);
 		$plugin_info = getParaInfo("plugin", "idx", $idx);

@@ -15,7 +15,7 @@ switch($method) {
 	case "delete":
 		$log_info = $setting['language']['plug_search_delete'];
 		$k = $req->getGet('k');
-		$k = mysql_real_escape_string($k);
+		//$k = mysql_real_escape_string($k);
 		$db->Query("delete from ".$setting['db']['pre']."search_keyword where keyword = '{$k}'");
 		$goto_url = $setting['info']['self']."?method=keyword";
 		break;
