@@ -58,8 +58,12 @@ switch($method) {
 		}
 		break;
 	case "unlock":
-		$log_info = $setting['language']['admin_art_content_unlock'];
-		$db->Query("update ".$setting['db']['pre_sub']."news_show set add_date=now() where news_id = '{$news_id}'");
+		if(!$op_mode) {
+			$goto_url = $req->getServer("HTTP_REFERER");
+		} else {
+			$log_info = $setting['language']['admin_art_content_unlock'];
+			$db->Query("update ".$setting['db']['pre_sub']."news_show set add_date=now() where news_id = '{$news_id}'");
+		}
 		break;
 	case "add_ok":
 	case "edit_ok":
@@ -257,6 +261,11 @@ function build_page($method) {
 		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'");
 		if(!$record) {
 			$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_error'], 0));
+			$mystep->show($tpl);
+			$mystep->pageEnd(false);
+		}
+		if(!$op_mode && ($setting['info']['time_start']/1000-strtotime($record['add_date']))/(60*60*24)>60) {
+			$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_locked'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}

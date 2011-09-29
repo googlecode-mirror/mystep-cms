@@ -35,7 +35,6 @@
 			<td class="row"><!--record_add_user--></td>
 			<td class="row"><!--record_add_date--></td>
 			<td class="row">
-				<a href="?method=unlock&web_id=<!--record_web_id-->&news_id=<!--record_news_id-->">解锁</a>
 				<a href="?method=edit&web_id=<!--record_web_id-->&news_id=<!--record_news_id-->">修改</a>
 				<a href="?method=delete&web_id=<!--record_web_id-->&news_id=<!--record_news_id-->" onclick="return confirm('是否确定要删除该文章？')">删除</a>
 			</td>

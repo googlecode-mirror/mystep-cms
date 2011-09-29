@@ -34,6 +34,7 @@ $language = array (
   'admin_art_content_list_all' => '总列表',
   'admin_art_content_list_article' => '文章列表',
   'admin_art_content_error' => '指定的记录不存在！',
+  'admin_art_content_locked' => '所需编辑的文章已被锁定，请联系管理员解锁！',
   
   'admin_art_tag_delete' => '删除标签',
   'admin_art_tag_rebuild' => '重建标签',
