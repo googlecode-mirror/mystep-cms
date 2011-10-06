@@ -270,6 +270,12 @@ function chg_charset_file($file_src, $file_dst, $from="gbk", $to="utf-8") {
 	return WriteFile($file_dst, $content, "wb");
 }
 
+function json_decode_js($json, $assoc = FALSE){
+	$json = str_replace(array("\n","\r"),"",$json);
+	$json = preg_replace('/([{,])(\s*)([^"]+?)\s*:/','$1"$3":',$json);
+	return json_decode($json, $assoc);
+}
+
 function toJson($var, $charset="") {
 	if(!empty($charset)) $var = chg_charset($var, $charset, "utf-8");
 	return json_encode($var);
@@ -349,6 +355,7 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	$output = sprintf("%s /%s HTTP/1.1\r\n", $method, $path);
 	$output .= sprintf("Host:%s\r\n", $host);
 	$output .= "Accept: */*\r\n";
+	$output .= "Accept-Encoding: gzip, deflate\r\n";
 	$output .= "Referer:http://{$host}\r\n";
 	$output .= "User-Agent:Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.204 Safari/534.16\r\n";
 	if($method=="POST") $output .= "Content-Type:application/x-www-form-urlencoded\r\n";
@@ -380,7 +387,10 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	if($status['timeout']) return false;
 	$content = stream_get_contents($fp);
 	fclose($fp);
-	return RemoveHeader($content);
+	$gzip = (strpos($content, "Content-Encoding: gzip")!==false);
+	$content = RemoveHeader($content);
+	if($gzip) $content = gzinflate(substr($content,10));
+	return $content;
 }
 
 function GetRemoteFile($remote_file, $local_file) {

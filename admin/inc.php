@@ -1,12 +1,12 @@
 <?php
 define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 include(ROOT_PATH."/include/config.php");
-include(ROOT_PATH."/include/parameter.php");
-include(ROOT_PATH."/source/function/global.php");
-include(ROOT_PATH."/source/function/web.php");
-include(ROOT_PATH."/source/function/admin.php");
-include(ROOT_PATH."/source/class/abstract.class.php");
-include(ROOT_PATH."/source/class/mystep.class.php");
+require(ROOT_PATH."/include/parameter.php");
+require(ROOT_PATH."/source/function/global.php");
+require(ROOT_PATH."/source/function/web.php");
+require(ROOT_PATH."/source/function/admin.php");
+require(ROOT_PATH."/source/class/abstract.class.php");
+require(ROOT_PATH."/source/class/mystep.class.php");
 
 header("Expires: -1");
 header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0", false);

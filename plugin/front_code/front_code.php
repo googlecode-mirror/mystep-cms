@@ -35,7 +35,6 @@ switch($method) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$content = $_POST['content'];
-			if(get_magic_quotes_gpc()) $content = stripslashes($content);
 			if(!preg_match("/^<\?php(.+)\?>$/i", $content)) $content = "<?php\n".$content."\n?>";
 			unset($_POST['content']);
 			if($method=="add_ok") {

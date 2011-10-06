@@ -36,6 +36,12 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="cat">นุ ผü ืึฃบ<span>*</span></td>
+				<td class="row">
+					<input class="input" name="cat_keyword" type="text" size="20" maxlength="150" value="<!--cat_keyword-->" need="" />
+				</td>
+			</tr>
+			<tr>
 				<td class="cat">ทึภเร่ส๖ฃบ<span>*</span></td>
 				<td class="row">
 					<input class="input" name="cat_comment" type="text" size="20" maxlength="150" value="<!--cat_comment-->" need="" />

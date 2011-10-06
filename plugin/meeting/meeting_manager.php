@@ -63,7 +63,6 @@ switch($method) {
 		$goto_url = $setting['info']['self']."?mid={$mid}";
 		break;
 	case "add_ok":
-		if(get_magic_quotes_gpc()) strip_slash($_POST);
 		$log_info = "添加会议";
 		$sql_item = array();
 		$sql_item['mid'] = 0;
@@ -147,7 +146,6 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		$db->Query($str_sql);
 		break;
 	case "edit_ok":
-		if(get_magic_quotes_gpc()) strip_slash($_POST);
 		$log_info = "编辑会议";
 		$sql_item = array();
 		$sql_item['web_id'] = $_POST['web_id'];

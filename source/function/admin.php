@@ -106,6 +106,71 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 	return;
 }
 
+function GetPictures(&$content, $db=null, $zoom = 700) {
+	global $setting;
+	if(is_null($db)) global $db;
+	if(is_array($content)) {
+		$tmp = $content;
+	} else {
+		$tmp = array();
+		$tmp[] = $content;
+	}
+	$pic_list = array();
+	$id_list = array();
+	$max_count = count($tmp);
+	$attach_list = "";
+	for($n=0; $n<$max_count; $n++) {
+		preg_match_all("/\<img.+src\=\"(.+?)\"[^>]+?>/i", $tmp[$n], $arr);
+		$img_list = $arr[1];
+		$max_count2 = count($img_list);
+		for($i=0; $i<$max_count2; $i++) {
+			if(array_search($img_list[$i], $pic_list)===false) {
+				array_push($pic_list, $img_list[$i]);
+			} else {
+				continue;
+			}
+			if(strpos($img_list[$i], $setting['web']['url'])!==false) continue;
+			$the_time = GetMicrotime();
+			$old_name = strtolower(basename($img_list[$i]));
+			$ext = ".".GetFileExt($img_list[$i]);
+			if(empty($ext)) {
+				$ext = ".jpg";
+				$old_name .= $ext;
+			}
+			$new_name = $the_time.$ext;
+			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/");
+			MakeDir($the_path);
+			if(GetRemoteFile($img_list[$i], $the_path.$new_name)) {
+				$img_info = GetImageSize($the_path.$new_name);
+				$the_width = $img_info[0];
+				$the_height = $img_info[1];
+				if(!is_numeric($zoom)) $zoom = 600;
+				if($the_width > $zoom) {
+					$the_height *= $zoom/$the_width;
+					$the_width = $zoom;
+				}
+				MakeDir("{$the_path}/preview/");
+				img_thumb($the_path.$new_name, $the_width, $the_height, $the_path."/preview/".$new_name);
+				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$_SESSION['username']."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
+				$db->Query($qrl_str);
+				$new_id = $db->GetInsertId();
+				if($new_id != 0) {
+					$attach_list .= $new_id.",";
+					$tmp[$n] = str_replace($img_list[$i], $setting['web']['url']."/files?".$new_id, $tmp[$n]);
+					array_push($id_list, $new_id);
+				}
+			}
+		}
+	}
+	$attach_list .= "0";
+	if(count($tmp)==1) {
+		$content = $tmp[0];
+	} else {
+		$content = $tmp;
+	}
+	return $attach_list;
+}
+
 function delTplCache($tpl="", $file="") {
 	global $setting;
 	$cache_pathe = ROOT_PATH."/".$setting['path']['template']."/cache/";

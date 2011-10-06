@@ -120,7 +120,11 @@ class MyStep extends class_common {
 		set_time_limit(30);
 		ini_set('memory_limit', '128M');
 		ini_set('magic_quotes_runtime', 0);
-		ini_set('magic_quotes_gpc', 0);
+		if(get_magic_quotes_gpc()) {
+			strip_slash($_POST);
+			strip_slash($_GET);
+			strip_slash($_COOKIE);
+		}
 		
 		error_reporting(E_ALL ^ E_NOTICE);
 		set_error_handler("ErrorHandler");

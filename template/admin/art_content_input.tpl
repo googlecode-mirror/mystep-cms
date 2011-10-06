@@ -200,8 +200,8 @@ tinyMCE.init({
 	},
 	
 	template_replace_values : {
-		username : "A9VG",
-		staffid : "20121222"
+		username : "Windy2000",
+		staffid : "19781226"
 	}
 });
 

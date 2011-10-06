@@ -112,7 +112,7 @@ function showCat(theOle, theObjs, renew) {
 			newItem.append(newSubItem);
 			newSubItem.bind('click', function(e){
 				if(e.target.tagName.toLowerCase()!="li") return true;
-				$(this).children().filter("ul").toggle(500, function() {
+				$(this).children().filter("ul").slideToggle(500, function() {
 					$(this).parent().css("background-image", "url('"+(this.style.display=="none"?"images/tree_icon/plus_noLine.gif":"images/tree_icon/minus_noLine.gif")+"')");
 				});
 				if(e && e.preventDefault) {
@@ -174,7 +174,7 @@ function setNav() {
 	listOLE.append(newItem);
 
 	$("#menu_nav li:has(ul)").hover(function(){
-			$(this).children("ul").stop(true,true).show(400);
+			$(this).children("ul").stop(true,true).slideDown(400);
 		},function(){
 			$(this).children("ul").stop(true,true).hide();
 	});

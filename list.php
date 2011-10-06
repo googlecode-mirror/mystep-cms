@@ -33,6 +33,7 @@ $list_limit = array_values($setting['list']);
 if($cat_info = getParaInfo("news_cat_sub", "cat_idx", $cat_idx)) {
 	$cat_id = $cat_info['cat_id'];
 	$cat_name = $cat_info['cat_name'];
+	$cat_keyword = $cat_info['cat_keyword'];
 	$cat_comment = $cat_info['cat_comment'];
 	$page_size = $list_limit[$cat_info['cat_type']];
 	$cat_main = $cat_info['cat_main'];
@@ -86,8 +87,9 @@ $limit = (($page-1)*$page_size).", ".$page_size;
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_tmp);
 if(!empty($cat_idx)) {
-	$setting['web']['title'] = $cat_comment."_".$setting['web']['title'];
-	$setting['web']['keyword'] = $cat_name.",".$cat_comment;
+	$setting['web']['title'] = $cat_name."_".$setting['web']['title'];
+	$setting['web']['keyword'] = $cat_name.",".$cat_keyword;
+	$setting['web']['description'] = $cat_comment;
 }
 $mystep->show($tpl);
 $mystep->pageEnd();

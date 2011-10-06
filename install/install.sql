@@ -104,7 +104,8 @@ CREATE TABLE `{pre}news_cat` (
 	`web_id` TINYINT UNSIGNED DEFAULT 0,										#所属子站
 	`cat_main` SMALLINT UNSIGNED NOT NULL DEFAULT 0,				#主分类索引
 	`cat_name` Char(40) NOT NULL,														#分类名称
-	`cat_comment` Char(200) NOT NULL,												#分类描述
+	`cat_keyword` Char(100) NOT NULL,												#分类关键字
+	`cat_comment` Char(255) NOT NULL,												#分类描述
 	`cat_idx` Char(20) DEFAULT '',													#分类索引（用于目录名等）
 	`cat_image` Char(200) DEFAULT '',												#分类图示
 	`cat_sub` Char(240) DEFAULT '',													#前缀列表（半角逗号间隔）
@@ -118,7 +119,7 @@ CREATE TABLE `{pre}news_cat` (
 	PRIMARY KEY (`cat_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻分类';
 
-INSERT INTO `{pre}news_cat` VALUES (0, 1, 0, '新闻资讯', '新闻资讯 时事报道 体育新闻 健康生活', 'news', '', '时事,娱乐,体育,健康', 1, 0, '', 1, 255, 0, '');
+INSERT INTO `{pre}news_cat` VALUES (0, 1, 0, '新闻资讯', '新闻,体育,娱乐,财经,IT,汽车,房产,女人', '新闻资讯 时事报道 体育新闻 健康生活', 'news', '', '时事,娱乐,体育,健康', 1, 0, '', 1, 255, 0, '');
 # ---------------------------------------------------------------------------------------------------------------
 
 # 新闻描述
@@ -141,6 +142,7 @@ CREATE TABLE `{pre}news_show` (
 	`add_user` Char(20) NOT NULL,												#录入人
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#录入日期
 	`notice` Char(255) DEFAULT '',											#文章提示
+	`ctype` TINYINT UNSIGNED DEFAULT 1,									#内容类型(ubb, html)
 	INDEX `catalog` (`web_id`, `cat_id`),
 	INDEX `order` (`order`, `news_id`),
 	PRIMARY KEY (`news_id`)
@@ -155,7 +157,6 @@ CREATE TABLE `{pre}news_detail` (
 	`cat_id` SMALLINT UNSIGNED NOT NULL,							#新闻类型索引
 	`page` TINYINT UNSIGNED DEFAULT 1,								#分页索引
 	`sub_title` Char(200) DEFAULT '',									#子标题
-	`ctype` TINYINT UNSIGNED DEFAULT 1,								#内容类型(ubb, html)
 	`content` MEDIUMTEXT NOT NULL,										#新闻内容
 	INDEX (`news_id`),
 	PRIMARY KEY (`id`)

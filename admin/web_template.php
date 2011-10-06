@@ -25,7 +25,6 @@ switch($method) {
 			if($ext!="tpl") $_POST['file_name'] .= ".tpl";
 			$log_info = $setting['language']['admin_web_template_edit'];
 			$_POST['file_content'] = str_replace("  ", "\t", $_POST['file_content']);
-			if(get_magic_quotes_gpc()) $_POST['file_content'] = stripslashes($_POST['file_content']);
 			WriteFile($tpl_path.$idx."/".$_POST['file_name'], $_POST['file_content'], "wb");
 		}
 		break;

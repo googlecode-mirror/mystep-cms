@@ -77,9 +77,9 @@ class MySQL extends class_common {
 
 	public function Connect($pconnect = false, $the_db = "") {
 		if($pconnect) {
-			$this->DB_conn = mysql_pconnect($this->DB_host, $this->DB_user, $this->DB_pass, CLIENT_MULTI_RESULTS);
+			$this->DB_conn = mysql_pconnect($this->DB_host, $this->DB_user, $this->DB_pass);
 		} else {
-			$this->DB_conn = mysql_connect($this->DB_host, $this->DB_user, $this->DB_pass, CLIENT_MULTI_RESULTS);
+			$this->DB_conn = mysql_connect($this->DB_host, $this->DB_user, $this->DB_pass, true);
 		}
 		$this->DB_qstr = "none (Connect to MySQL Server)";
 		if($this->CheckError())	$this->Error("Could not connect to MySQL Server", true);

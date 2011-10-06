@@ -9,11 +9,11 @@ if($setting['web']['close'] && !isset($_COOKIE['force'])) {
 	header("location: ".$setting['web']['url'].$setting['web']['close_page']);
 	exit();
 }
-include(ROOT_PATH."/include/parameter.php");
-include(ROOT_PATH."/source/function/global.php");
-include(ROOT_PATH."/source/function/web.php");
-include(ROOT_PATH."/source/class/abstract.class.php");
-include(ROOT_PATH."/source/class/mystep.class.php");
+require(ROOT_PATH."/include/parameter.php");
+require(ROOT_PATH."/source/function/global.php");
+require(ROOT_PATH."/source/function/web.php");
+require(ROOT_PATH."/source/class/abstract.class.php");
+require(ROOT_PATH."/source/class/mystep.class.php");
 
 $mystep = new MyStep();
 $mystep->pageStart(true);

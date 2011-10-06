@@ -110,7 +110,7 @@ function showCat(theOle, theObjs, renew) {
 			newItem.append(newSubItem);
 			newSubItem.bind('click', function(e){
 				if(e.target.tagName.toLowerCase()!="li") return true;
-				$(this).children().filter("ul").toggle(500, function() {
+				$(this).children().filter("ul").slideToggle(500, function() {
 					$(this).parent().css("background-image", "url('"+(this.style.display=="none"?"images/tree_icon/plus_noLine.gif":"images/tree_icon/minus_noLine.gif")+"')");
 				});
 				if(e && e.preventDefault) {

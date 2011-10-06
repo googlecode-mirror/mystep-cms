@@ -125,11 +125,9 @@ class MyReq extends class_common {
 		}
 		if(empty($para)) {
 			foreach($type as $key => $value) {
-				//if(get_magic_quotes_gpc() && is_string($value)) $value = stripslashes($value);
 				$this->setGlobal($key, $value);
 			}
 		} else {
-			//return (isset($type[$para]))?(get_magic_quotes_gpc() && is_string($type[$para])?stripslashes($type[$para]):$type[$para]):null;
 			return isset($type[$para])?$type[$para]:"";
 		}
 		return true;
