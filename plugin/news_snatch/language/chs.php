@@ -13,6 +13,7 @@ $language = array(
 	"plugin_news_snatch_news_import" => "导入采集文章",
 	"plugin_news_snatch_news_edit" => "编辑采集文章",
 	"plugin_news_snatch_news_delete" => "删除采集文章",
+	"plugin_news_snatch_news_truncate" => "清空采集文章",
 	"plugin_news_snatch_snatch" => "采集文章",
 	"plugin_news_snatch_import" => "导入文章",
 	"plugin_news_snatch_interrupt" => "其他抓取进程正在运行，请稍候再试！<a href=\"cache/snatch.html\" target=\"_blank\">查看</a>",
@@ -24,6 +25,7 @@ $language = array(
 	"plugin_news_import_interrupt" => "其他导入进程正在运行，请稍候再试！<a href=\"cache/import.html\" target=\"_blank\">查看</a>",
 	"plugin_news_import_start" => "开始导入文章",
 	"plugin_news_import_succeed" => "导入成功！",
+	"plugin_news_import_failed" => "已存在！",
 	"plugin_news_import_done" => "成功导入 %d 篇文章！",
 );
 ?>

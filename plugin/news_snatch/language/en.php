@@ -13,6 +13,7 @@ $language = array(
 	"plugin_news_snatch_news_import" => "Import Snatched Article",
 	"plugin_news_snatch_news_edit" => "Edit Snatched Article",
 	"plugin_news_snatch_news_delete" => "Delete Snatched Article",
+	"plugin_news_snatch_news_truncate" => "Truncate Snatched Article",
 	"plugin_news_snatch_snatch" => "Snatch Article",
 	"plugin_news_snatch_import" => "Import Article",
 	"plugin_news_snatch_interrupt" => "There is another snatch process is running, try again later please. (<a href=\"cache/snatch.html\" target=\"_blank\">Check</a>)",
@@ -24,6 +25,7 @@ $language = array(
 	"plugin_news_import_interrupt" => "There is another import process is running, try again later please. (<a href=\"cache/import.html\" target=\"_blank\">Check</a>)",
 	"plugin_news_import_start" => "Article Import Start",
 	"plugin_news_import_succeed" => "has been imported!",
+	"plugin_news_import_failed" => "was exist.",
 	"plugin_news_import_done" => "Total %d articles has been imported!",
 );
 ?>

@@ -10,7 +10,6 @@ $info_snatch = "cache/snatch.html";
 $info_import = "cache/import.html";
 
 require("rule/list.php");
-
 switch($method) {
 	case "rule":
 	case "rule_add":
@@ -70,6 +69,11 @@ $rules = '.var_export($rules, true).';
 		$log_info = $setting['language']['plugin_news_snatch_news_edit'];
 		unset($_POST['id']);
 		$db->Query($db->buildSQL($setting['db']['pre']."news_snatch", $_POST, "update", "id={$id}"));
+		$goto_url = $setting['info']['self']."?method=news";
+		break;
+	case "news_truncate":
+		$log_info = $setting['language']['plugin_news_snatch_news_snatch'];
+		$db->Query("truncate table ".$setting['db']['pre']."news_snatch");
 		$goto_url = $setting['info']['self']."?method=news";
 		break;
 	case "news_snatch":
@@ -166,25 +170,31 @@ $rules = '.var_export($rules, true).';
 		}
 		$setting_sub['db']['pre'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
 		require_once("rule/".$idx."_import.php");
-		$db_imp = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
-		$db_imp->Connect(false, $setting['db']['name']);
 		if(!empty($id)) {
 			if($record=$db->getSingleRecord("select * from ".$setting['db']['pre']."news_snatch where id=".$id)) {
 				importData($record, $para);
 			}
 			$goto_url = $setting['info']['self']."?method=news";
 		} else {
-			$db->Query("select * from ".$setting['db']['pre']."news_snatch where idx='".$idx."'");
-			$i = 1;
-			import_log('<div class="page" style="font-size:16px;font-weight:bold;">'.$setting['language']['plugin_news_import_start'].'</div>');
+			$id_list = array();
+			$db->Query("select id from ".$setting['db']['pre']."news_snatch where idx='".$idx."' order by id");
 			while($record=$db->GetRS()) {
-				importData($record, $para);
-				import_log('<div class="item">'.($i++).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> <span class="succeed" style="color:green;">'.$setting['language']['plugin_news_import_succeed'].'</span></div>');
+				$id_list[] = $record['id'];
 			}
-			import_log('<div class="page">'.sprintf($setting['language']['plugin_news_import_done'], ($i-1)).'</div>');
+			import_log('<div class="page" style="font-size:16px;font-weight:bold;">'.$setting['language']['plugin_news_import_start'].'</div>');
+			for($i=0,$m=count($id_list);$i<$m;$i++) {
+				if($record=$db->getSingleRecord("select * from ".$setting['db']['pre']."news_snatch where id=".$id_list[$i])) {
+					if($db->getSingleRecord("select news_id from ".$setting_sub['db']['pre']."news_show where subject='".mysql_real_escape_string($item['record'])."' and add_date='".$record['item_1']."'")===false) {
+						importData($record, $para);
+						import_log('<div class="item">'.($i+1).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> <span class="succeed" style="color:green;">'.$setting['language']['plugin_news_import_succeed'].'</span></div>');
+					} else {
+						import_log('<div class="item">'.($i+1).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> <span class="failed" style="color:red;">'.$setting['language']['plugin_news_import_failed'].'</span></div>');
+					}
+					$db->Query("delete from ".$setting['db']['pre']."news_snatch where id='".$record['id']."'");
+				}
+			}
+			import_log('<div class="page">'.sprintf($setting['language']['plugin_news_import_done'], $i).'</div>');
 		}
-		$db_imp->Close();
-		unset($db_imp);
 		break;
 	default:
 		$goto_url = $setting['info']['self'];

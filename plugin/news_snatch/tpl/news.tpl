@@ -1,5 +1,7 @@
 <div class="title"><!--title--></div>
 <div class="nav">
+	<a href="?method=news_truncate">清空已抓取文章</a>
+ | 
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，
 	<a href="<!--page_first-->">首页</a>&nbsp;
 	<a href="<!--page_prev-->">上页</a>&nbsp;
@@ -32,6 +34,8 @@
 	</table>
 </div>
 <div class="nav">
+	<a href="?method=news_truncate">清空已抓取文章</a>
+ | 
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，
 	<a href="<!--page_first-->">首页</a>&nbsp;
 	<a href="<!--page_prev-->">上页</a>&nbsp;
