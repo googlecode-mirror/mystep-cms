@@ -200,7 +200,7 @@ content;
 	unset(\$record);
 }
 unset(\$result);
-for(; \$n<={$att_list['loop']}; \$n++) {
+for(; \$n<{$att_list['loop']}; \$n++) {
 	\$unit = str_replace("style=\"\"", "style=\"".(\$n%2?"{$att_list['css1']}":"{$att_list['css2']}")."\"", "{$unit_blank}");
 	echo \$unit;
 	echo "\\n";

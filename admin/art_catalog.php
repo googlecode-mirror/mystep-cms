@@ -84,42 +84,52 @@ switch($method) {
 			$_POST['cat_show'] = array_sum($_POST['cat_show']);
 			if(is_null($_POST['cat_show'])) $_POST['cat_show'] = 0;
 			$view_lvl_org = $_POST['view_lvl_org'];
-			unset($_POST{'view_lvl_org'});
+			unset($_POST['view_lvl_org']);
 			$notice_org = $_POST['notice_org'];
-			unset($_POST{'notice_org'});
+			unset($_POST['notice_org']);
+			$merge = $_POST['merge'];
+			unset( $_POST['merge']);
 			if($method=="add_ok") {
 				$log_info = $setting['language']['admin_art_catalog_add'];
 				$_POST['cat_order'] = 1 + $db->GetSingleResult("select max(cat_order) from ".$setting['db']['pre']."news_cat");
 				$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "insert", "a");
 			} else {
-				$log_info = $setting['language']['admin_art_catalog_edit'];
-				function multiChange($catid, $layer) {
-					global $db, $setting;
-					$db->Query("update ".$setting['db']['pre']."news_cat set cat_layer='{$layer}' where cat_id = '{$catid}'");
-					$catid_list = array();
-					$db->Query("select cat_id from ".$setting['db']['pre']."news_cat where cat_main = '{$catid}'");
-					while($record = $db->GetRS()) {$catid_list[] = $record['cat_id'];}
-					$db->free();
-					$max_count = count($catid_list);
-					for($i=0; $i<$max_count; $i++) {
-						multiChange($catid_list[$i], $layer+1);
-					}
-					return;
-				}
-				multiChange($cat_id, $_POST['cat_layer']);
-				$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "update", "cat_id={$cat_id}");
-				
-				$setting_sub = getSubSetting($webInfo['web_id']);
-				if($setting['db']['name']==$setting_sub['db']['name']) {
-					$setting['db']['pre_sub'] = $setting_sub['db']['pre'];
+				if(!is_null($merge) && $_POST['cat_main']!=0 && $_POST['cat_main']!=$cat_id) {
+					$log_info = $setting['language']['admin_art_catalog_merge'];
+					$db->Query("update ".$setting['db']['pre']."news_cat set cat_id='".$_POST['cat_main']."' where cat_main='{$cat_id}'");
+					$db->Query("update ".$setting['db']['pre_sub']."news_show set cat_id='".$_POST['cat_main']."' where cat_id='{$cat_id}'");
+					$db->Query("update ".$setting['db']['pre_sub']."news_detail set cat_id='".$_POST['cat_main']."' where cat_id='{$cat_id}'");
+					$str_sql = "delete from ".$setting['db']['pre']."news_cat where cat_id = '{$cat_id}'";
 				} else {
-					$setting['db']['pre_sub'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
-				}
-				if($view_lvl_org!=$_POST['view_lvl'] && is_numeric($_POST['view_lvl'])) {
-					$db->Query("update ".$setting['db']['pre_sub']."news_show set view_lvl='".$_POST['view_lvl']."' where cat_id = '{$cat_id}' and view_lvl='".$view_lvl_org."'");
-				}
-				if($notice_org!=$_POST['notice']) {
-					$db->Query("update ".$setting['db']['pre_sub']."news_show set notice='".$_POST['notice']."' where cat_id = '{$cat_id}' and notice='".$notice_org."'");
+					$log_info = $setting['language']['admin_art_catalog_edit'];
+					function multiChange($catid, $layer) {
+						global $db, $setting;
+						$db->Query("update ".$setting['db']['pre']."news_cat set cat_layer='{$layer}' where cat_id = '{$catid}'");
+						$catid_list = array();
+						$db->Query("select cat_id from ".$setting['db']['pre']."news_cat where cat_main = '{$catid}'");
+						while($record = $db->GetRS()) {$catid_list[] = $record['cat_id'];}
+						$db->free();
+						$max_count = count($catid_list);
+						for($i=0; $i<$max_count; $i++) {
+							multiChange($catid_list[$i], $layer+1);
+						}
+						return;
+					}
+					multiChange($cat_id, $_POST['cat_layer']);
+					$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $_POST, "update", "cat_id={$cat_id}");
+					
+					$setting_sub = getSubSetting($webInfo['web_id']);
+					if($setting['db']['name']==$setting_sub['db']['name']) {
+						$setting['db']['pre_sub'] = $setting_sub['db']['pre'];
+					} else {
+						$setting['db']['pre_sub'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
+					}
+					if($view_lvl_org!=$_POST['view_lvl'] && is_numeric($_POST['view_lvl'])) {
+						$db->Query("update ".$setting['db']['pre_sub']."news_show set view_lvl='".$_POST['view_lvl']."' where cat_id = '{$cat_id}' and view_lvl='".$view_lvl_org."'");
+					}
+					if($notice_org!=$_POST['notice']) {
+						$db->Query("update ".$setting['db']['pre_sub']."news_show set notice='".$_POST['notice']."' where cat_id = '{$cat_id}' and notice='".$notice_org."'");
+					}
 				}
 			}
 			$db->Query($str_sql);
@@ -166,6 +176,7 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_catalog_catalog']);
 	} else {
 		if($method == "edit") {
+			$show_merge = "inline";
 			$db->Query("select * from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
 			$record  = $db->GetRS();
 			$db->Free();
@@ -184,6 +195,7 @@ function build_page($method) {
 			//$web_disabled = ($record['cat_main']==0)?"":"disabled";
 			$web_disabled = "disabled";
 		} else {
+			$show_merge = "none";
 			$record = array();
 			$record['cat_id'] = 0;
 			$record['web_id'] = 0;
@@ -191,6 +203,7 @@ function build_page($method) {
 			$record['cat_name'] = "";
 			$record['cat_idx'] = "";
 			$record['cat_sub'] = "";
+			$record['cat_keyword'] = "";
 			$record['cat_comment'] = "";
 			$record['cat_image'] = "";
 			$record['cat_link'] = "";
@@ -241,6 +254,7 @@ function build_page($method) {
 		
 		$tpl_tmp->Set_Variable('title', ($method=='add'?$setting['language']['admin_art_catalog_add']:$setting['language']['admin_art_catalog_edit']));
 		$tpl_tmp->Set_Variable('method', $method);
+		$tpl_tmp->Set_Variable('show_merge', $show_merge);
 		$tpl_tmp->Set_Variable('web_disabled', $web_disabled);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}

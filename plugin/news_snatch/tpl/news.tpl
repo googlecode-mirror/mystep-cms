@@ -7,16 +7,16 @@
 	<a href="<!--page_prev-->">上页</a>&nbsp;
 	<a href="<!--page_next-->">下页</a>&nbsp;
 	<a href="<!--page_last-->">末页</a>&nbsp;
-	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center" onkeypress="if(window.event.keyCode==13)location.href='?keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.value" /><input type="button" value="GO" onclick="location.href='?method=news&keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
+	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center" onkeypress="if(window.event.keyCode==13)location.href='?method=news&keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.value" /><input type="button" value="GO" onclick="location.href='?method=news&keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
 &nbsp;|&nbsp;
 	关键字：<input type="text" size="8" value="<!--keyword-->" onkeypress="if(window.event.keyCode==13)location.href='?method=news&keyword='+this.value" /><input type="button" value="检索" onclick="location.href='?method=news&keyword='+this.previousSibling.value" />
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center"> 
-			<td class="cat" width="30"><a href="?keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
-			<td class="cat"><a href="?keyword=<!--keyword-->&order=original&order_type=<!--order_type-->"><font color="#000000">来源网站</font></a></td>
-			<td class="cat"><a href="?keyword=<!--keyword-->&order=subject&order_type=<!--order_type-->"><font color="#000000">新闻标题</font></a></td>
+			<td class="cat" width="30"><a href="?method=news&keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
+			<td class="cat"><a href="?method=news&keyword=<!--keyword-->&order=original&order_type=<!--order_type-->"><font color="#000000">来源网站</font></a></td>
+			<td class="cat"><a href="?method=news&keyword=<!--keyword-->&order=subject&order_type=<!--order_type-->"><font color="#000000">新闻标题</font></a></td>
 			<td class="cat" width="90"><font color="#000000">相关操作</font></td>
 		</tr>
 <!--loop:start key="record" time="20"-->

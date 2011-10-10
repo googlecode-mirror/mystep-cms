@@ -6,5 +6,6 @@ $language = array(
 	"plug_search_title_kw" => "¼ìË÷¹Ø¼ü×Ö¹ÜÀí",
 	"plug_search_local" => "±¾Íø",
 	"plug_search_search" => "¼ìË÷",
+	"plug_search_default" => "ÇëÊäÈë²éÑ¯¹Ø¼ü×Ö",
 );
 ?>

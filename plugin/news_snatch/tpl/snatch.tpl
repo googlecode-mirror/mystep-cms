@@ -9,6 +9,7 @@
 $(function(){
 	var id = "<!--id-->";
 	var show = "<!--show-->";
+	var refresh = parseInt("<!--refresh-->");
 	var info_file = "<!--info_file-->";
 	if(show.length>0) {
 		$("#info_show").css({"font-size":"18px", "font-weight":"bold", "text-align":"center"});
@@ -25,5 +26,6 @@ $(function(){
 			});
 		}, 10000);
 	}
+	if(!isNaN(refresh)) setTimeout("window.location.reload(true)", refresh*1000);
 });
 </script>

@@ -24,4 +24,7 @@ $tpl_info = array(
 		"path" => ROOT_PATH."/".$setting['path']['template'],
 		);
 includeCache("news_cat");
+
+$keyword = $req->getReq("k");
+if(empty($keyword)) $keyword = $setting['language']['plug_search_default'];
 ?>

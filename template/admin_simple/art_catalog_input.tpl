@@ -13,6 +13,7 @@
 						<option value="<!--catalog_cat_id-->" webid=<!--catalog_web_id--> <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
 					</select>
+					<span class="comment">（当前栏目的父栏目）</span>
 				</td>
 			</tr>
 			<tr>
@@ -20,12 +21,14 @@
 				<td class="row">
 					<input class="input" name="cat_name" type="text" size="20" maxlength="30" value="<!--cat_name-->" need="" />
 					<input name="cat_id" type="hidden" value="<!--cat_id-->" />
+					<span class="comment">（用于显示的栏目名称）</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">分类索引：<span>*</span></td>
 				<td class="row">
 					<input class="input" name="cat_idx" type="text" size="20" maxlength="20" value="<!--cat_idx-->" need="" />
+					<span class="comment">（作为栏目网址路径的一部分）</span>
 				</td>
 			</tr>
 			<tr>
@@ -39,12 +42,14 @@
 				<td class="cat">关 键 字：<span>*</span></td>
 				<td class="row">
 					<input class="input" name="cat_keyword" type="text" size="20" maxlength="150" value="<!--cat_keyword-->" need="" />
+					<span class="comment">（向搜索引擎告知当前栏目的关键词）</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">分类描述：<span>*</span></td>
 				<td class="row">
 					<input class="input" name="cat_comment" type="text" size="20" maxlength="150" value="<!--cat_comment-->" need="" />
+					<span class="comment">（向搜索引擎描述当前栏目）</span>
 				</td>
 			</tr>
 			<tr>
@@ -52,6 +57,7 @@
 				<td class="row">
 					<input class="input" name="cat_image" type="text" size="40" maxlength="120" value="<!--cat_image-->" />
 					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','分类图示上传','url','upload_img.php?cat_image',420, 100)" value="上传" />
+					<span class="comment">（用于标识栏目的图标）</span>
 				</td>
 			</tr>
 			<tr>
@@ -69,6 +75,7 @@
 						<option value="1" <!--cat_type_1-->>图片简介</option>
 						<option value="2" <!--cat_type_2-->>图片展示</option>
 					</select>
+					<span class="comment">（根据栏目内容选择对应的目录页展示方式）</span>
 				</td>
 			</tr>
 			<tr>
@@ -77,13 +84,14 @@
 					<input type="checkbox" id="cat_show_1" class="cbox" name="cat_show[]" value="1" <!--cat_show_1--> /><label for="cat_show_1"> 主导航</label> &nbsp;
 					<input type="checkbox" id="cat_show_2" class="cbox" name="cat_show[]" value="2" <!--cat_show_2--> /><label for="cat_show_2"> 列表导航</label> &nbsp;
 					<input type="checkbox" id="cat_show_4" class="cbox" name="cat_show[]" value="4" <!--cat_show_4--> /><label for="cat_show_4"> 自定义导航</label> &nbsp;
-					<input1 class="input" name="cat_show" type="text" size="20" maxlength="7" value="<!--cat_show-->" />
+					<span class="comment">（定义当前分类的显示位置）</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">外部链接：</td>
 				<td class="row">
 					<input class="input" name="cat_link" type="text" size="20" maxlength="150" value="<!--cat_link-->" />
+					<span class="comment">（点击栏目将会直接跳转到相关网址）</span>
 				</td>
 			</tr>
 			<tr>

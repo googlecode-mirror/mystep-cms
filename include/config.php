@@ -29,13 +29,13 @@ $setting['gen']['gzip_level'] = 4;
 $setting['gen']['cache'] = false;
 $setting['gen']['rewrite'] = false;
 $setting['gen']['cache_ext'] = '.html';
-$setting['gen']['template'] = 'default';
+$setting['gen']['template'] = 'classic';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
 
 $setting['list'] = array();
 $setting['list']['txt'] = 30;
-$setting['list']['img'] = 16;
-$setting['list']['mix'] = 15;
+$setting['list']['img'] = 10;
+$setting['list']['mix'] = 25;
 $setting['list']['rss'] = 50;
 
 $setting['session'] = array();

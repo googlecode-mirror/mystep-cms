@@ -97,6 +97,7 @@ $rules = '.var_export($rules, true).';
 			$record['item_7'] = "";
 			$record['item_8'] = "";
 			$record['item_9'] = "";
+			$record['add_date'] = date("Y-m-d H:i:s");
 			$record['content'] = "";
 			$info['cache_path'] = "cache/".date("Ymd")."/".$idx."/";
 			$info["page"] = 1;
@@ -173,22 +174,23 @@ $rules = '.var_export($rules, true).';
 		if(!empty($id)) {
 			if($record=$db->getSingleRecord("select * from ".$setting['db']['pre']."news_snatch where id=".$id)) {
 				importData($record, $para);
+				$db->Query("delete from ".$setting['db']['pre']."news_snatch where id='".$id."'");
 			}
 			$goto_url = $setting['info']['self']."?method=news";
 		} else {
 			$id_list = array();
-			$db->Query("select id from ".$setting['db']['pre']."news_snatch where idx='".$idx."' order by id");
+			$db->Query("select id from ".$setting['db']['pre']."news_snatch where idx='".$idx."' order by add_date asc, id asc");
 			while($record=$db->GetRS()) {
 				$id_list[] = $record['id'];
 			}
 			import_log('<div class="page" style="font-size:16px;font-weight:bold;">'.$setting['language']['plugin_news_import_start'].'</div>');
 			for($i=0,$m=count($id_list);$i<$m;$i++) {
 				if($record=$db->getSingleRecord("select * from ".$setting['db']['pre']."news_snatch where id=".$id_list[$i])) {
-					if($db->getSingleRecord("select news_id from ".$setting_sub['db']['pre']."news_show where subject='".mysql_real_escape_string($item['record'])."' and add_date='".$record['item_1']."'")===false) {
-						importData($record, $para);
-						import_log('<div class="item">'.($i+1).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> <span class="succeed" style="color:green;">'.$setting['language']['plugin_news_import_succeed'].'</span></div>');
-					} else {
+					if($check = $db->getSingleRecord("select news_id from ".$setting_sub['db']['pre']."news_show where subject='".mysql_real_escape_string($record['subject'])."' and add_date='".$record['add_date']."'")) {
 						import_log('<div class="item">'.($i+1).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> <span class="failed" style="color:red;">'.$setting['language']['plugin_news_import_failed'].'</span></div>');
+					} else {
+						importData($record, $para);
+						import_log('<div class="item">'.($i+1).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> <span class="succeed" style="color:green;">'.$setting['language']['plugin_news_import_succeed'].'</span></div>');		
 					}
 					$db->Query("delete from ".$setting['db']['pre']."news_snatch where id='".$record['id']."'");
 				}
@@ -284,13 +286,16 @@ function build_page($method) {
 		HtmlTrans(&$record);
 		$tpl_tmp->Set_Variables($record, "record");
 	} elseif($method=="snatch") {
-		if(file_exists($info_snatch) && (time()-filemtime($info_snatch))<600) {
+		if(file_exists($info_snatch) && (time()-filemtime($info_snatch))<600 && $req->getReq("force")!="") {
 			$show = $setting['language']['plugin_news_snatch_interrupt'];
 		} else {
 			$show = "";
-			unlink($info_snatch);
+			if(file_exists($info_snatch)) unlink($info_snatch);
 		}
+		$refresh = 3600*24;
+		if(isset($rules[$id]['para']['refresh'])) $refresh = $rules[$id]['para']['refresh'];
 		$tpl_tmp->Set_Variable('id', $id);
+		$tpl_tmp->Set_Variable('refresh', $refresh);
 		$tpl_tmp->Set_Variable('info_file', $info_snatch);
 		$tpl_tmp->Set_Variable('show', addslashes($show));
 	} elseif($method=="import") {
@@ -301,8 +306,11 @@ function build_page($method) {
 			unlink($info_import);
 		}
 		$idx = $req->getReq("idx");
+		$refresh = 3600*24;
+		if(isset($rules[$id]['para']['refresh'])) $refresh = $rules[$id]['para']['refresh'];
 		$tpl_tmp->Set_Variable('id', $id);
 		$tpl_tmp->Set_Variable('idx', $idx);
+		$tpl_tmp->Set_Variable('refresh', $refresh);
 		$tpl_tmp->Set_Variable('info_file', $info_import);
 		$tpl_tmp->Set_Variable('show', addslashes($show));
 	}

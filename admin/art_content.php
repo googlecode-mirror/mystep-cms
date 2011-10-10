@@ -18,7 +18,17 @@ if($setting['db']['name']==$setting_sub['db']['name']) {
 	$setting['db']['pre_sub'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
 }
 
-if($method=="delete" || $method=="unlock") $cat_id = $db->GetSingleResult("select cat_id from ".$setting['db']['pre_sub']."news_show where `news_id` = '{$news_id}'");
+if($method=="edit_ok" || $method=="delete") {
+	$record = $db->GetSingleRecord("select cat_id, add_date from ".$setting['db']['pre_sub']."news_show where `news_id` = '{$news_id}'");
+	$cat_id = $record['cat_id'];
+	$add_date = $record['add_date'];
+	unset($record);
+	if(!$op_mode && ($setting['info']['time_start']/1000-strtotime($add_date))/(60*60*24)>60) {
+		$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_locked'], 0));
+		$mystep->show($tpl);
+		$mystep->pageEnd(false);
+	}
+}
 
 if($group['power_cat']!="all" && !empty($cat_id) && strpos(",".$group['power_cat'].",", ",".$cat_id.",")===false) {
 	$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_nopower'], 0));
@@ -260,11 +270,6 @@ function build_page($method) {
 		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'");
 		if(!$record) {
 			$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_error'], 0));
-			$mystep->show($tpl);
-			$mystep->pageEnd(false);
-		}
-		if(!$op_mode && ($setting['info']['time_start']/1000-strtotime($record['add_date']))/(60*60*24)>60) {
-			$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_locked'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}

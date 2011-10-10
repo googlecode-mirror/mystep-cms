@@ -6,5 +6,6 @@ $language = array(
 	"plug_search_title_kw" => "Searching Keywords List",
 	"plug_search_local" => "Local",
 	"plug_search_search" => "Search",
+	"plug_search_default" => "Input the keyword please",
 );
 ?>

@@ -16,6 +16,7 @@ $language = array (
   'admin_art_catalog_change' => '变更分类顺序',
   'admin_art_catalog_add' => '添加分类',
   'admin_art_catalog_edit' => '编辑分类',
+  'admin_art_catalog_merge' => '合并分类',
   'admin_art_catalog_public' => '非网站栏目',
   'admin_art_catalog_catalog' => '文章分类目录',
   'admin_art_catalog_error' => '指定 ID 的分类不存在！',

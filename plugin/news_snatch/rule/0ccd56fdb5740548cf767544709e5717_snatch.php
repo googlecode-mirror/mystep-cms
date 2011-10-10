@@ -7,6 +7,7 @@ function snatchGetInfo($url, $para=array()) {
 	$info['page_count'] = 1;
 	$header = array();
 	if(isset($para['header'])) $header = $para['header'];
+	$info['header'] = $header;
 	if($content = GetRemoteContent($url, $header)) {
 		$content = preg_replace("/^.+?(\{.+\}).*$/", '\1', $content);
 		$content = json_decode_js($content, true);
@@ -34,7 +35,7 @@ function snatchGetInfo($url, $para=array()) {
 						unset($matches);
 					}
 				}
-				$db->Query("INSERT INTO `".$setting['db']['pre']."news_cat` VALUES (0, ".$para['web_id'].", ".$info['cat_main'].", '".mysql_real_escape_string($info['catList'][$i][0])."', '".mysql_real_escape_string($keyword)."', '".mysql_real_escape_string($descripiton)."', 'sports', '', '', 1, 0, '', 2, 255, 0, '');");
+				$db->Query("INSERT INTO `".$setting['db']['pre']."news_cat` VALUES (0, ".$para['web_id'].", ".$info['cat_main'].", '".mysql_real_escape_string($info['catList'][$i][0])."', '".mysql_real_escape_string($keyword)."', '".mysql_real_escape_string($descripiton)."', '".mysql_real_escape_string($info['catList'][$i][0])."', '', '', 1, 0, '', 2, 255, 0, '');");
 				$cat_id = $db->GetInsertId();
 			}
 			$info['catList'][$i][] = $cat_id;
@@ -56,12 +57,12 @@ function snatchGetList($record, &$info) {
 		$record['subject'] = $info['newList'][$i][1];
 		$record['original'] = "ËÑºüÍø";
 		$record['url'] = $info['newList'][$i][2];
-		$record['item_1'] = date("Y")."/".$info['newList'][$i][3];
+		$record['add_date'] = date("Y")."/".$info['newList'][$i][3];
 		$record['item_2'] = $info['newList'][$i][4];
 		
 		if(strpos($record['url'], "http://sports.sohu.com")===false) continue;
 		
-		if($content = GetRemoteContent($record['url'], $header)) {
+		if($content = GetRemoteContent($record['url'], $info['header'])) {
 			if(preg_match("/À´Ô´£º<span.+?>(.+?)<\/span>/i", $content, $matches)) {
 				$record['original'] = $matches[1];
 				unset($matches);
@@ -115,7 +116,7 @@ function snatchGetList($record, &$info) {
 					unset($matches);
 					for($n=1; $n<$pages; $n++) {
 						$cur_url = preg_replace("/(\.\w+)$/i", "_".$n."\\1", $record['url']);
-						if($page_content = GetRemoteContent($cur_url, $header)) {
+						if($page_content = GetRemoteContent($cur_url, $info['header'])) {
 							if(preg_match("/<div class\=\"textcont\" id\=\"textcont\">(.+?)<\/div>/is", $page_content, $matches)) {
 								$cur_content[$n] = $matches[1];
 								$cur_content[$n] = preg_replace("/<p class\=\"editUsr.+?<\/p>/is", "", $cur_content[$n]);

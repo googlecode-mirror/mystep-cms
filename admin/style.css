@@ -40,7 +40,7 @@ BODY {text-align:center; font-family:ËÎÌו, Tahoma, Verdana, Arial; padding:0px; 
 #page_top .r .info {text-align:right; padding:10px 10px 0px 10px;}
 
 #menu_nav {margin-right:20px;}
-#menu_nav li {z-index:100; position:relative; text-align:center; display:block; float:left; letter-spacing:1px; font-size:14px; font-weight:bold;}
+#menu_nav li {z-index:100; position:relative; text-align:center; display:block; float:left; letter-spacing:1px; font-size:14px; font-weight:bold; white-space:nowrap; word-wrap:keep-all;}
 #menu_nav li a.nav {text-decoration:none; font-weight:bold; display:block; float:left; padding:5px 8px 5px 8px; margin:24px 5px 0px 5px; border:1px solid #6d84b4;}
 #menu_nav li a.nav:link,
 #menu_nav li a.nav:visited {color:#fff; background-color:#739ace;}
@@ -59,7 +59,7 @@ BODY {text-align:center; font-family:ËÎÌו, Tahoma, Verdana, Arial; padding:0px; 
 
 #cat_tree {margin: 10px 0px 0px 0px; width:180px; overflow-x:hidden;}
 #cat_tree ul {width:150px; line-height:24px; font-size:14px; font-weight:bold;}
-#cat_tree ul li {background-image:url("images/tree_icon/endnode.gif"); background-repeat:no-repeat; background-position:top -5px; padding-left:18px;}
+#cat_tree ul li {background-image:url("images/tree_icon/endnode.gif"); background-repeat:no-repeat; background-position:0px 3px; padding-left:18px; white-space:nowrap; word-wrap:keep-all;}
 
 #reset_pwd {width:280px;padding:0px;margin:0px;text-align:center;}
 #reset_pwd div {padding:5px 0px 5px 0px;}

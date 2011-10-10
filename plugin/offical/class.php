@@ -251,12 +251,13 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 		if(\$theStyle[\$i]=="i") {
 			\$style .= "font-style:italic;";
 		} elseif((\$theStyle[\$i]=="b")) {
-			\$style .= "font-width:bold;";
+			\$style .= "font-weight:bold;";
 		} else {
 			\$style .= "color:".\$theStyle[\$i].";";
 		}
 	}
 	if(!empty(\$style)) \$record['subject'] = "<span style=\"".\$style."\">".\$record['subject']."</span>";
+	if("{$att_list['template']}"=="classic" && \$setting['info']['time_start']/1000-strtotime(\$record['add_date'])<86400) \$record['subject'] .= ' <img src="images/new.gif" />';
 	\$record['style'] = \$n++%2 ? "{$att_list['css1']}" : "{$att_list['css2']}";
 	\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
 	if(empty(\$record['link'])) \$record['link'] = getFileURL(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:""), \$record['web_id']);
@@ -309,6 +310,7 @@ mytpl;
 	}
 	
 	public static function parse_link(MyTPL $tpl, $att_list = array()) {
+		global $setting;
 		$result = "";
 		if(!isset($att_list['idx'])) $att_list['idx'] = "";
 		if(!isset($att_list['type'])) $att_list['type'] = "";
@@ -333,17 +335,18 @@ mytpl;
 		$block = $block_all[0];
 		$unit = $block_all[1];
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."link_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$link_list[\$i]['\\1']}", $unit);
-	
 		$result .= <<<mytpl
 \$max_count = count(\$link_list);
-if({$att_list['limit']}>0 && {$att_list['limit']}<\$max_count) \$max_count = {$att_list['limit']};
+\$n = 0;
 for(\$i=0; \$i<\$max_count; \$i++) {
-	if(\$link_list[\$i]['level']==0) continue;
+	if(\$link_list[\$i]['level']==0 || (\$link_list[\$i]['web_id']!=0 && \$link_list[\$i]['web_id']!={$setting['info']['web']['web_id']})) continue;
 	if(!empty(\$link_idx) && strpos(",".\$link_idx.",", ",".\$link_list[\$i]['idx'].",")===false) continue;
 	echo <<<content
 {$unit}
 content;
 	echo "\\n";
+	\$n++;
+	if({$att_list['limit']}>0 && {$att_list['limit']}<\$n) break;
 }
 ?>
 mytpl;
@@ -403,6 +406,16 @@ mytpl;
 		$result = str_replace($block, $result, $cur_content);
 		return $result;
 	}
+
+	public static function parse_login(MyTPL $tpl, $att_list = array()) {
+		global $setting;
+		if(!isset($att_list['id'])) $att_list['id'] = "";
+		if(!isset($att_list['class'])) $att_list['class'] = "";
+		$result = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_login.tpl");
+		$result = str_replace($tpl->delimiter_l."id".$tpl->delimiter_r, $att_list['id'], $result);
+		$result = str_replace($tpl->delimiter_l."class".$tpl->delimiter_r, $att_list['class'], $result);
+		return $result;
+	}
 	
 	public static function parse_include(MyTPL $tpl, $att_list = array()) {
 		$result = "";
@@ -449,7 +462,7 @@ mytpl;
 				if(empty($all)) {
 					if($deep_start==0 && $news_cat[$i]['cat_layer']!=$catInfo['cat_layer']) continue;
 					if(($news_cat[$i]['cat_show'] & 2)!=2) {
-						if($last_idx==-1) $last_idx = $i;
+						if($last_idx==-1 || $last_idx==$i-1) $last_idx = $i;
 						continue;
 					}
 					if($deep_start>0 && ($news_cat[$i]['cat_show'] & 2)==2 && $last_idx!=-1 && $news_cat[$last_idx]['cat_layer']<$news_cat[$i]['cat_layer']) continue;

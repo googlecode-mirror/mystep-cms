@@ -28,6 +28,7 @@ switch($method) {
 		$db->Query("delete from ".$setting['db']['pre_sub']."news_tag where id = '{$id}'");
 		break;
 	case "rebuild":
+		set_time_limit(0);
 		$log_info = $setting['language']['admin_art_tag_rebuild'];
 		$db_tmp = new MySQL;
 		$db_tmp->init($setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);

@@ -12,6 +12,7 @@
 						<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
 <!--loop:end-->
 					</select>
+					<span class="comment">（当前内容所属的子网站）</span>
 				</td>
 			</tr>
 			<tr>
@@ -19,6 +20,7 @@
 				<td class="row">
 					<input name="subject" type="text" id="title" value="<!--subject-->" maxlength="100" need="" />
 					<input type="hidden" name="id" value="<!--id-->" />
+					<span class="comment">（用于info标签的title属性）</span>
 				</td>
 			</tr>
 			<tr>

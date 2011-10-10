@@ -9,6 +9,7 @@
 					<input name="subject" type="text" id="title" value="<!--subject-->" maxlength="100" need="" />
 					<input type="hidden" name="id" value="<!--id-->" />
 					<input type="hidden" name="web_id" value="<!--web_id-->" />
+					<span class="comment">（用于info标签的title属性）</span>
 				</td>
 			</tr>
 			<tr>

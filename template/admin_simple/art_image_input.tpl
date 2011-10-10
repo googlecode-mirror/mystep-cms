@@ -9,17 +9,22 @@
 					<input name="id" type="hidden" value="<!--id-->" />
 					<input name="web_id" type="hidden" value="<!--web_id-->" />
 					<input name="name" type="text" size="20" maxlength="30" value="<!--name-->" need="" />
+					<span class="comment">（方便记忆和辨别的名称）</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat" width="80">关 键 字：<span>*</span></td>
-				<td class="row"><input name="keyword" type="text" value="<!--keyword-->" maxlength="100" need="" /></td>
+				<td class="row">
+					<input name="keyword" type="text" value="<!--keyword-->" maxlength="100" need="" />
+					<span class="comment">（本关键字将会直接被带入选择当前图示的文章的关键字栏目）</span>
+				</td>
 			</tr>
 			<tr>
 				<td class="cat">图示地址：<span>*</span></td>
 				<td class="row">
 					<input style="width:200px" name="image" type="text" maxlength="80" value="<!--image-->" need="" /> &nbsp; 
 					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','新闻图示上传','url','upload_img.php?image',420, 100)" value="上传" />
+					<span class="comment">（相关图片，可上传或直接给出图片网址）</span>
 				</td>
 			</tr>
 			<tr> 

@@ -16,6 +16,7 @@ $language = array (
   'admin_art_catalog_change' => 'Reorder Catalog',
   'admin_art_catalog_add' => 'Add Catalog',
   'admin_art_catalog_edit' => 'Edit Catalog',
+  'admin_art_catalog_merge' => 'Merge Catalog',
   'admin_art_catalog_public' => 'Non-website Catalog',
   'admin_art_catalog_catalog' => 'Article Catalog',
   'admin_art_catalog_error' => 'The specified catalog cannot be found!',

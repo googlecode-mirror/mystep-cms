@@ -308,7 +308,7 @@ CREATE TABLE `{pre}modify_log` (
 	`user` Char(40) NOT NULL,									#管理员名称
 	`group` Char(40) NOT NULL,								#管理员级别
 	`time` Char(15) DEFAULT 0,								#发生时间（unixtimestamp）
-	`link` Char(200),													#访问页面
+	`link` Char(255),													#访问页面
 	`comment` Char(100) DEFAULT '',					  #更新备注
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='网站维护日志';
