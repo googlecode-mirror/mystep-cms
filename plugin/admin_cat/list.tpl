@@ -20,7 +20,6 @@
 				<tr align="center">
 					<td class="cat" width="40">编号</td>
 					<td class="cat">名称</td>
-					<td class="cat">文件</td>
 					<td class="cat">所属网站</td>
 					<td class="cat">描述</td>
 					<td class="cat">顺序</td>
@@ -29,8 +28,7 @@
 		<!--loop:start key="record"-->
 				<tr>
 					<td class="row"><!--record_id--></td>
-					<td class="row"><!--record_name--></td>
-					<td class="row"><a href="/<!--admin_path--><!--record_url-->" target="_blank"><!--record_url--></a></td>
+					<td class="row"><a href="/<!--admin_path--><!--record_url-->" target="_blank"><!--record_name--></a></td>
 					<td class="row"><!--record_web_id--></td>
 					<td class="row"><!--record_comment--></td>
 					<td class="row"><input name="id[]" type="hidden" value="<!--record_id-->" /><input name="order[]" type="text" size="2" value="<!--record_order-->" /></td>

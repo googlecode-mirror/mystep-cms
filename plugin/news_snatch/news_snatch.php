@@ -286,28 +286,28 @@ function build_page($method) {
 		HtmlTrans(&$record);
 		$tpl_tmp->Set_Variables($record, "record");
 	} elseif($method=="snatch") {
-		if(file_exists($info_snatch) && (time()-filemtime($info_snatch))<600 && $req->getReq("force")!="") {
+		$refresh = 600;
+		if(isset($rules[$id]['para']['refresh'])) $refresh = $rules[$id]['para']['refresh'];
+		if(file_exists($info_snatch) && (time()-filemtime($info_snatch))<$refresh && $req->getReq("force")!="") {
 			$show = $setting['language']['plugin_news_snatch_interrupt'];
 		} else {
 			$show = "";
 			if(file_exists($info_snatch)) unlink($info_snatch);
 		}
-		$refresh = 3600*24;
-		if(isset($rules[$id]['para']['refresh'])) $refresh = $rules[$id]['para']['refresh'];
 		$tpl_tmp->Set_Variable('id', $id);
 		$tpl_tmp->Set_Variable('refresh', $refresh);
 		$tpl_tmp->Set_Variable('info_file', $info_snatch);
 		$tpl_tmp->Set_Variable('show', addslashes($show));
 	} elseif($method=="import") {
-		if(file_exists($info_import) && (time()-filemtime($info_import))<60) {
+		$refresh = 600;
+		if(isset($rules[$id]['para']['refresh'])) $refresh = $rules[$id]['para']['refresh'];
+		if(file_exists($info_import) && (time()-filemtime($info_import))<$refresh) {
 			$show = $setting['language']['plugin_news_import_interrupt'];
 		} else {
 			$show = "";
 			unlink($info_import);
 		}
 		$idx = $req->getReq("idx");
-		$refresh = 3600*24;
-		if(isset($rules[$id]['para']['refresh'])) $refresh = $rules[$id]['para']['refresh'];
 		$tpl_tmp->Set_Variable('id', $id);
 		$tpl_tmp->Set_Variable('idx', $idx);
 		$tpl_tmp->Set_Variable('refresh', $refresh);
