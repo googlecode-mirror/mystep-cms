@@ -43,12 +43,12 @@ $rules = array (
     'name' => '采集示例 - cnBeta',
     'url' => 'http://www.cnbeta.com/backend.php',
     'notes' => 'cnBeta.COM_中文业界资讯站',
-    'date' => '2011-10-10 19:14:23',
+    'date' => '2011-10-11 13:45:55',
     'idx' => '40d0748f7e0e8678a6832541ab2e5303',
     'para' => 
     array (
       'web_id' => 1,
-      'refresh' => 1200,
+      'refresh' => 3600,
       'header' => 
       array (
         'Cookie' => '__gads=ID=e254a879588a4961:T=1309521878:S=ALNI_MbECkIa4diXybxb-GOhZLqX5boPgw; __utmz=208385984.1310085649.8.6.utmccn=(organic)|utmcsr=google|utmctr=Yellowsn0w|utmcmd=organic; __utma=208385984.365053581.1308749579.1318157732.1318244901.42; __utmb=208385984; __utmc=208385984; cck_lasttime=1318244901059; cck_count=1; AJSTAT_ok_pages=1; AJSTAT_ok_times=38',

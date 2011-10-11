@@ -127,6 +127,7 @@ mytpl;
 	
 	public static function tag_keyword(MyTPL $tpl, $att_list = array()) {
 		if(!isset($att_list['limit'])) $att_list['limit'] = 10;
+		if(!isset($att_list['order'])) $att_list['order'] = "chg_date";
 		$cur_content = $tpl->Get_TPL(dirname(__FILE__)."/block_keyword.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
 		$block = $block_all[0];
@@ -137,7 +138,7 @@ mytpl;
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."keyword_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
 		$result = <<<mytpl
 <?php
-\$result = getData("select keyword from ".\$setting['db']['pre']."search_keyword order by `count` desc limit {$att_list['limit']}", "all", 60*60*24);
+\$result = getData("select keyword from ".\$setting['db']['pre']."search_keyword order by {$att_list['order']} limit {$att_list['limit']}", "all", 60*60*24);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];

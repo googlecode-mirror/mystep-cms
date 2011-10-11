@@ -167,6 +167,29 @@ class plugin_offical implements plugin {
 		return $result;
 	}
 	
+	public static function ajax_login() {
+		global $req;
+		$result = array();
+		$result['username'] = $req->getSession("username");
+		$result['usergroup'] = $req->getSession("usergroup");
+		$result['usertype'] = $req->getSession("usertype");
+		if($result['usertype']>1) {
+			if($group = getParaInfo("user_group", "group_id", $result['usergroup'])) {
+				$result['group_name'] = $group['group_name'];
+			}
+			if($type = getParaInfo("user_type", "type_id", $result['usertype'])) {
+				$result['type_name'] = $type['type_name'];
+			}
+		}
+		return $result;
+	}
+	
+	public static function login($member, $password, $vcode) {
+		global $db, $setting;
+		
+		return true;
+	}
+	
 	public static function parse_news(MyTPL $tpl, $att_list = array()) {
 		global $setting;
 		$result = "";

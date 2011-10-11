@@ -322,6 +322,7 @@ mytpl;
 					if(empty($att_list[$j])) continue;
 					$tmp = explode("=", trim($att_list[$j]));
 					$tmp[1] = preg_replace('/\$(\w+)/', '{$GLOBALS[\1]}', $tmp[1]);
+					$tmp[1] = preg_replace('/#(\w+)/', '$GLOBALS["\1"]', $tmp[1]);
 					eval("\$cur_attrib['" . strtolower(trim($tmp[0])) . "'] = {$tmp[1]};");
 				}
 				$cur_result = call_user_func($this->tags[$tag_all[1][$i]], $this, $cur_attrib);

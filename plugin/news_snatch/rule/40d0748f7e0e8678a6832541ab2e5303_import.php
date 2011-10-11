@@ -2,19 +2,22 @@
 function importData($record, $para, $db=null) {
 	global $news_show, $news_detail, $setting, $setting_sub;
 	if(is_null($db)) global $db;
-	if(!empty($record['item_5'])) {
-		$new_file = ROOT_PATH."/".$setting['path']['upload']."/pic/".date("Ym")."/".GetMicrotime().".".GetFileExt($record['item_5']);
-		if(GetRemoteFile($record['item_5'], $new_file)) $record['item_5'] = str_replace(ROOT_PATH, $setting_sub['web']['url'], $new_file);
-	}
+	
 	$item = $news_show;
 	$item['web_id'] = $para['web_id'];
 	$item['subject'] = $record['subject'];
 	$item['original'] = $record['original'];
 	$item['add_date'] = $record['add_date'];
 	$item['cat_id'] = $record['item_1'];
-	$item['tag'] = $record['item_3'];
 	$item['describe'] = $record['item_2'];
+	$item['tag'] = $record['item_3'];
 	$item['image'] = $record['item_4'];
+	if(!empty($item['image'])) {
+		$new_file = ROOT_PATH."/".$setting['path']['upload']."/article".date("/Ym/").GetMicrotime().".".GetFileExt($item['image']);
+		if(GetRemoteFile($item['image'], $new_file)) {
+			$item['image'] = str_replace(ROOT_PATH, "", $new_file);
+		}
+	}
 
 	$db->Query($db->buildSQL($setting_sub['db']['pre']."news_show", $item, "insert"));
 	unset($item);

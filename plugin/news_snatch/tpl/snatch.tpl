@@ -26,6 +26,6 @@ $(function(){
 			});
 		}, 10000);
 	}
-	if(!isNaN(refresh)) setTimeout("window.location.reload(true)", refresh*1000);
+	if(!isNaN(refresh)) setTimeout("window.location.reload(true)", (refresh+1200)*1000);
 });
 </script>

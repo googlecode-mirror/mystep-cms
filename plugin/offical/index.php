@@ -16,6 +16,8 @@ $mystep->regApi("rss", "plugin_offical::api_rss");
 $mystep->regApi("news", "plugin_offical::api_news");
 $mystep->regApi("newslist", "plugin_offical::api_newslist");
 
+$mystep->regAjax("login", "plugin_offical::ajax_login");
+
 $mystep->setAddedContent("start", '<script language="JavaScript" src="/script/jquery.js"></script>');
 $mystep->setAddedContent("start", '<script language="JavaScript" src="/script/global.js"></script>');
 $mystep->setAddedContent("end", '<script language="JavaScript" src="/script/addon.js"></script>');

@@ -123,6 +123,7 @@ $rules = '.var_export($rules, true).';
 		} else {
 			snatch_log('<div class="page">'.$setting['language']['plugin_news_snatch_info_snatch_error'].'</div>');
 		}
+		snatch_log('<div class="page">'.date("Y-m-d H:i:s").'</div>');
 		break;
 	case "news_import":
 		set_time_limit(0);
@@ -197,6 +198,49 @@ $rules = '.var_export($rules, true).';
 			}
 			import_log('<div class="page">'.sprintf($setting['language']['plugin_news_import_done'], $i).'</div>');
 		}
+		import_log('<div class="page">'.date("Y-m-d H:i:s").'</div>');
+		break;
+	case "rule_import":
+		$script = "";
+		if(count($_POST) > 0){
+			$path_upload = $setting['path']['upload']."/tmp/".date("Ym")."/";
+			$upload = new MyUploader;
+			$upload->init(ROOT_PATH."/".$path_upload, true);
+			$upload->DoIt();
+			if($upload->upload_result[0]['error'] == 0) {
+				$theFile = ROOT_PATH."/".$path_upload."/".$upload->upload_result[0]['new_name'];
+				$code = toJson(unserialize(base64_decode(file_get_contents($theFile))), $setting['gen']['charset']);
+				$script = "
+					var theOLE = null;
+					theOLE = parent.parent || parent.dialogArguments || parent.opener;
+					theOLE.newRule = {$code};
+					theOLE.importRule();
+					if(parent.parent==null){parent.close();}else{parent.parent.$.closePopupLayer();}
+					
+				";
+				unlink($theFile);
+			} else {
+				$script = "
+					alert('".$upload->upload_result[0]['message']."');
+					if(parent.parent==null){parent.close();}else{parent.parent.$.closePopupLayer();}
+				";
+			}
+		}
+		build_page("upload");
+		break;
+	case "rule_export":
+		$log_info = $setting['language']['plugin_news_snatch_export'];
+		$cur_rule = $rules[$id];
+		$cur_rule['para'] = var_export($cur_rule['para'], true);
+		$cur_rule['rule_snatch'] = GetFile("rule/".$cur_rule['idx']."_snatch.php");
+		$cur_rule['rule_import'] = GetFile("rule/".$cur_rule['idx']."_import.php");
+		$content = chunk_split(base64_encode(serialize($cur_rule)));
+		if(ob_get_length()) ob_end_clean();
+		header("Content-type: text/plain");
+		header("Accept-Ranges: bytes");
+		header("Accept-Length: ".strlen($content));
+		header("Content-Disposition: attachment; filename=".$cur_rule['name'].".rule");
+		echo $content;
 		break;
 	default:
 		$goto_url = $setting['info']['self'];
@@ -299,20 +343,45 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('info_file', $info_snatch);
 		$tpl_tmp->Set_Variable('show', addslashes($show));
 	} elseif($method=="import") {
+		$idx = $req->getReq("idx");
+		$para = array();
+		for($i=0, $m=count($rules); $i<$m; $i++) {
+			if($rules[$i]['idx']==$idx) {
+				$para = $rules[$i]['para'];
+				break;
+			}
+		}
 		$refresh = 600;
-		if(isset($rules[$id]['para']['refresh'])) $refresh = $rules[$id]['para']['refresh'];
+		if(isset($para['refresh'])) $refresh = $para['refresh'];
 		if(file_exists($info_import) && (time()-filemtime($info_import))<$refresh) {
 			$show = $setting['language']['plugin_news_import_interrupt'];
 		} else {
 			$show = "";
 			unlink($info_import);
 		}
-		$idx = $req->getReq("idx");
 		$tpl_tmp->Set_Variable('id', $id);
 		$tpl_tmp->Set_Variable('idx', $idx);
 		$tpl_tmp->Set_Variable('refresh', $refresh);
 		$tpl_tmp->Set_Variable('info_file', $info_import);
 		$tpl_tmp->Set_Variable('show', addslashes($show));
+	} elseif($method=="upload") {
+		global $script;
+		$tpl_tmp->Set_Variable('script', $script);
+		$tpl_tmp->Set_Variable('self', $setting['info']['self']);
+		$Max_size = ini_get('upload_max_filesize');
+		$tpl_tmp->Set_Variable('Max_size', $Max_size);
+		switch(strtoupper(substr($Max_size,-1))){
+			case "M":
+				$Max_size = ((int)str_replace("M","",$Max_size)) * 1024 * 1024;
+				break;
+			case "K":
+				$Max_size = ((int)str_replace("K","",$Max_size)) * 1024;
+				break;
+			default:
+				$Max_size = 1024 * 1024;
+				break;
+		}
+		$tpl_tmp->Set_Variable('MaxSize', $Max_size);
 	}
 	$tpl_tmp->Set_Variable('title', $setting['language']['plugin_news_snatch_title_'.$method]);
 	$tpl_tmp->Set_Variable('id', $id);

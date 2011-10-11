@@ -21,7 +21,7 @@ function snatchGetInfo($url, $para=array()) {
 			$info['descList'][$i] = strip_tags($info['descList'][$i]);
 			if(strlen($info['descList'][$i])>230) $info['descList'][$i] = substrPro($info['descList'][$i], 0, 230)."бнбн";
 			$info['dateList'][$i] = date("Y-m-d H:i:s", strtotime($info['dateList'][$i]));
-			$cat_id = $db->getSingleResult("select cat_id from ".$setting['db']['pre']."news_cat where cat_keyword='".mysql_real_escape_string($info['catList'][$i])."'");
+			$cat_id = $db->getSingleResult("select cat_id from ".$setting['db']['pre']."news_cat where cat_comment='".mysql_real_escape_string($info['catList'][$i])."'");
 			if(empty($cat_id)) {
 				$the_name = preg_replace("/^([^\/]+).*$/", "\\1", $info['catList'][$i]);
 				$the_idx = preg_replace("/^([^\s]+).*$/", "\\1", $the_name);
@@ -58,6 +58,7 @@ function snatchGetList($record, &$info) {
 					$cat_image = $matches[1];
 					$new_file = ROOT_PATH."/".$setting['path']['upload']."/pic".date("/Ym/").GetMicrotime().".".GetFileExt($cat_image);
 					if(GetRemoteFile($cat_image, $new_file)) {
+						$new_file = str_replace(ROOT_PATH, "", $new_file);
 						$db->Query("update ".$setting['db']['pre']."news_cat set cat_image='".mysql_real_escape_string($new_file)."' where cat_id='".$record['item_1']."'");
 					}
 				}
@@ -67,15 +68,7 @@ function snatchGetList($record, &$info) {
 				unset($matches);
 				$record['item_4'] = "";
 				if(preg_match("/<img.+?src=(.?)(http.+?)\\1.+?>/is", $record['content'], $matches)) {
-					$new_file = ROOT_PATH."/".$setting['path']['upload']."/article".date("/Ym/").GetMicrotime().".".GetFileExt($matches[2]);
-					if(GetRemoteFile($matches[2], $new_file)) {
-						$record['item_4'] = $new_file;
-					}
-				}
-				if(preg_match("/<img.+?src=(.?)(http.+?)\\1.+?>/is", $record['content'], $matches)) {
-					$record['item_5'] = $matches[2];
-				} else {
-					$record['item_5'] = "";
+					$record['item_4'] = $matches[2];
 				}
 				$record['content'] = preg_replace("/^[\r\n\s]+/is", "", $record['content']);
 				$record['content'] = preg_replace("/[\r\n\s]+$/is", "", $record['content']);

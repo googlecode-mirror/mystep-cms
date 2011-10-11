@@ -1,5 +1,5 @@
 <?php
-global $keyword, $condition, $limit;
+global $keyword, $condition, $limit, $web_id;
 $mode = $req->getGet("mode");
 $keyword = $req->getGet("k");
 

@@ -7,7 +7,8 @@
 	    <td class="cat">采集网站</td>
 	    <td class="cat">内容说明</td>
 	    <td class="cat" width="120">添加时间</td>
-	    <td class="cat" width="140">相关操作</td>
+	    <td class="cat" width="70">文章采集</td>
+	    <td class="cat" width="110">相关操作</td>
 	  </tr>
 <!--loop:start key="record" time="20"-->
 	  <tr align="center">
@@ -17,9 +18,12 @@
 	    <td class="row"><!--record_date--></td>
 	    <td class="row" align="center">
 	    	<a href="?method=snatch&id=<!--record_id-->">采集</a>&nbsp;
-	    	<a href="?method=import&idx=<!--record_idx-->">导入</a>&nbsp;
+	    	<a href="?method=import&idx=<!--record_idx-->">导入</a>
+	    </td>
+	    <td class="row" align="center">
+	    	<a href="?method=rule_export&id=<!--record_id-->">导出</a>&nbsp;
 	    	<a href="?method=rule_edit&id=<!--record_id-->">编辑</a>&nbsp;
-	    	<a href="?method=rule_delete&id=<!--record_id-->" onclick="return confirm('确认删除？？')">删除</a>
+	    	<a href="?method=rule_delete&id=<!--record_id-->" onclick="return confirm('确认删除？？')">删除</a>&nbsp;
 	    </td>
 	  </tr>
 <!--loop:end-->
