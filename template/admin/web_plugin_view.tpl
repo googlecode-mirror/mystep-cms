@@ -66,7 +66,7 @@ content;
 					$i = 0;
 					foreach($setting_type[$key][1] as $key3 => $value3) {
 						$checked = $plugin_setting[$idx][$key][$i++]?"checked":"";
-						$cur_component .= '<input type="checkbox" class="cbox" id="plugin_setting['.$idx.']['.$key.']['.$key3.']" name="plugin_setting['.$idx.']['.$key.'][]" value="'.$value3.'" '.$checked.' / /><label for="plugin_setting['.$idx.']['.$key.']['.$key3.']">'.$key3.'</label> &nbsp; ';
+						$cur_component .= '<input type="checkbox" class="cbox" id="plugin_setting['.$idx.']['.$key.']['.$key3.']" name="plugin_setting['.$idx.']['.$key.'][]" value="'.$value3.'" '.$checked.' /><label for="plugin_setting['.$idx.']['.$key.']['.$key3.']">'.$key3.'</label> &nbsp; ';
 					}
 					break;
 				case "radio":

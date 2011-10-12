@@ -69,6 +69,7 @@ mystep;
 } else {
 	$tpl_info['idx'] = "web_cache";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
+	$tpl_tmp->allow_script = true;
 	$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_cache_title']);
 	$i=1;
 	foreach($expire_list as $key => $value) {

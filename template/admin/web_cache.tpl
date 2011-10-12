@@ -25,8 +25,8 @@
 <!--loop:end-->
 			<tr>
 				<td class="row" colspan="4">页面缓存：
-					<input type="radio" class="cbox" id="cache_1" name="cache" value="true" <!--cache_1--> / /><label for="cache_1">开启</label>
-					<input type="radio" class="cbox" id="cache_2" name="cache" value="false" <!--cache_2--> / /><label for="cache_2">关闭</label>
+					<input type="radio" class="cbox" id="cache_1" name="cache" value="true" <!--cache_1--> /><label for="cache_1">开启</label>
+					<input type="radio" class="cbox" id="cache_2" name="cache" value="false" <!--cache_2--> /><label for="cache_2">关闭</label>
 					<span class="comment">开启页面缓存，减少固定时间内的查询频率，增强网站效率</span> 
 				</td>
 			</tr>
