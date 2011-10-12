@@ -49,6 +49,7 @@
 					<span class="highlight">Apple</span>
 					<span>iPhone</span>
 					<span>iPad</span>
+					<span>iTune</span>
 					<div class="more"><a href="list.php"><img src="images/classic/more.png" /></a></div>
 				</div>
 				<div class="content">
@@ -59,6 +60,9 @@
 				</div>
 				<div class="content" style="display:none;">
 <!--news cat_id="86" limit="6" loop="6" show_date="Y-m-d"-->
+				</div>
+				<div class="content" style="display:none;">
+<!--news cat_id="107" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 			</div>
 			<div class="box box_r">
@@ -75,6 +79,7 @@
 					<span class="highlight">Google</span>
 					<span>Android</span>
 					<span>Gmail</span>
+					<span>Chrome</span>
 					<div class="more"><a href="list.php"><img src="images/classic/more.png" /></a></div>
 				</div>
 				<div class="content">
@@ -85,6 +90,9 @@
 				</div>
 				<div class="content" style="display:none;">
 <!--news cat_id="52" limit="6" loop="6" show_date="Y-m-d"-->
+				</div>
+				<div class="content" style="display:none;">
+<!--news cat_id="118" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 			</div>
 			<div class="box box_r">
@@ -98,19 +106,19 @@
 		<div class="fr page_r">
 			<div class="box box_s1">
 				<div class="title">
-					<span class="highlight">游戏娱乐</span>
-					<span>智能手机</span>
-					<span>通信运营商</span>
+					<span class="highlight">网络公司</span>
+					<span>科技企业</span>
+					<span>硬件厂商</span>
 					<div class="more"><a href="list.php"><img src="images/classic/more.png" /></a></div>
 				</div>
 				<div class="content">
-<!--news cat_id="26" limit="6" loop="6" show_date="Y-m-d"-->
+<!--news cat_id="94" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 				<div class="content" style="display:none;">
-<!--news cat_id="42" limit="6" loop="6" show_date="Y-m-d"-->
+<!--news cat_id="39" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 				<div class="content" style="display:none;">
-<!--news cat_id="28" limit="6" loop="6" show_date="Y-m-d"-->
+<!--news cat_id="111" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 			</div>
 			<div class="box box_r">
@@ -163,47 +171,63 @@ $(function(){
 		return false;
 	});
 	//News Picture
+	var stop_news_image = false;
 	$("#news_image").parent().css({'height':'200px','overflow':'hidden','margin-top':'0px'});
+	$("#news_image").hover(
+		function() {stop_news_image = true;},
+		function() {stop_news_image = false;}
+	);
 	if($.browser.msie) {
 		$("#news_image").css({'height':'190px','overflow':'hidden'});
 		var item_cnt = $("#news_image").children();
 		var cur_idx = 0;
 		setInterval(function(){
-			cur_idx++;
-			if(cur_idx>=item_cnt.length) cur_idx = 0;
-			$(item_cnt).hide();
-			$(item_cnt[cur_idx]).css({'opacity':0});
-			$(item_cnt[cur_idx]).show();
-			$(item_cnt[cur_idx]).fadeTo(2000, 1);
+			if(!stop_news_image) {
+				cur_idx++;
+				if(cur_idx>=item_cnt.length) cur_idx = 0;
+				$(item_cnt).hide();
+				$(item_cnt[cur_idx]).css({'opacity':0});
+				$(item_cnt[cur_idx]).show();
+				$(item_cnt[cur_idx]).fadeTo(2000, 1);
+			}
 		}, 5000);
 	} else {
 		var content = $("#news_image").html();
 		$("#news_image").html(content + content);
 		setInterval(function(){
-			var theStep = 190;
-			var theTop = parseInt($("#news_image").css('top'));
-			if(Math.abs(theTop/theStep)>=$("#news_image").children().length/2) {
-				$("#news_image").css('top', '0px');
-				theTop = 0;
+			if(!stop_news_image) {
+				var theStep = 190;
+				var theTop = parseInt($("#news_image").css('top'));
+				if(Math.abs(theTop/theStep)>=$("#news_image").children().length/2) {
+					$("#news_image").css('top', '0px');
+					theTop = 0;
+				}
+				$("#news_image").animate({'top':theTop-theStep},1000);
 			}
-			$("#news_image").animate({'top':theTop-theStep},1000);
 		}, 5000);
 	}
 	//Picture Show
+	var stop_pic_show = false;
 	var theObj = $("#pic_show .marquee");
+	theObj.parent().hover(
+		function() {stop_pic_show = true;},
+		function() {stop_pic_show = false;}
+	);
 	if(theObj.children().length>5) {
 		var content = theObj.html();
 		theObj.html(content + content + content);
 		setInterval(function(){
-			var theObj = $("#pic_show .marquee");
-			var theStep = 187*5;
-			var theLeft = parseInt(theObj.css('left'));
-			var theLength = 187*theObj.children().length/3;
-			if(Math.abs(theLeft)>=theLength) {
-				theLeft += theLength;
-				theObj.css('left', theLeft);
+			if(!stop_pic_show) {
+				var theObj = $("#pic_show .marquee");
+				var theStep = 187*5;
+				var theLeft = parseInt(theObj.css('left'));
+				var theLength = 187*theObj.children().length/3;
+				if(Math.abs(theLeft)>=theLength) {
+					theLeft += theLength;
+					theObj.css('left', theLeft);
+				}
+				theObj.animate({'left':theLeft-theStep},1000);
 			}
-			theObj.animate({'left':theLeft-theStep},1000);
 		}, 5000);
 	}
 	//Switch Tag

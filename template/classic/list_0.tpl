@@ -6,7 +6,7 @@
 			<div class="box box_list">
 				<div class="title">最新更新</div>
 				<div class="content">
-<!--news limit="20" loop="20"-->
+<!--news limit="10" loop="10"-->
 				</div>
 			</div>
 		</div>

@@ -198,6 +198,7 @@ $rules = '.var_export($rules, true).';
 			}
 			import_log('<div class="page">'.sprintf($setting['language']['plugin_news_import_done'], $i).'</div>');
 		}
+		import_log('<div class="split">-------------------------------</div>');
 		import_log('<div class="page">'.date("Y-m-d H:i:s").'</div>');
 		break;
 	case "rule_import":

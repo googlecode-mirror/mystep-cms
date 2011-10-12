@@ -165,7 +165,7 @@ function build_page($method) {
 			if($group['power_cat']!="all" && strpos(','.$group['power_cat'].',', ','.$news_cat[$i]['cat_id'].',')===false) continue;
 			$news_cat[$i]['cat_name'] = ((isset($news_cat[$i+1]) && $news_cat[$i+1]['cat_layer']==$news_cat[$i]['cat_layer'])?"©À ":"©¸ ").$news_cat[$i]['cat_name'];
 			for($j=1; $j<$news_cat[$i]['cat_layer']; $j++) {
-				$news_cat[$i]['cat_name'] = "&nbsp;".$news_cat[$i]['cat_name'];
+				$news_cat[$i]['cat_name'] = "&nbsp; ".$news_cat[$i]['cat_name'];
 			}
 			$news_cat[$i]['cat_name'] = preg_replace("/^©À /", "", preg_replace("/^©¸ /", "", $news_cat[$i]['cat_name']));
 			$web = getParaInfo("website", "web_id", $news_cat[$i]['web_id']);
