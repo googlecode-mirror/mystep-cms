@@ -177,6 +177,13 @@ class MyStep extends class_common {
 		$setting['info']['user']['name'] = $req->getSession("username");
 		$setting['info']['user']['group'] = getParaInfo("user_group", "group_id", $req->getSession('usergroup'));
 		$setting['info']['user']['type'] = getParaInfo("user_type", "type_id", $req->getSession('usertype'));
+		if(is_null($setting['info']['user']['type'])) {
+			$setting['info']['user']['type'] = array (
+			  'type_id' => '1',
+			  'type_name' => 'Guest',
+			  'view_lvl' => '0',
+			);
+		}
 		$this->regAjax("reset_psw", "MyStep::ajax_reset_psw");
 	}
 	
