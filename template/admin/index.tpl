@@ -93,6 +93,7 @@ function getSubCat(cat_id) {
 	return catList;
 }
 function getWebCat(web_id) {
+	if(news_cat==null) return;
 	var catList = new Array();
 	for(var i=0; i<news_cat.length; i++) {
 		if((web_id=="" || web_id==null || news_cat[i].web_id==web_id) && news_cat[i].cat_layer==1) catList.append(news_cat[i]);
@@ -100,6 +101,7 @@ function getWebCat(web_id) {
 	return catList;
 }
 function showCat(theOle, theObjs, renew) {
+	if(theObjs==null) return;
 	if(renew==true) $(theOle).empty();
 	if($(theOle).children().length==0) {
 		var newItem = $("<ul/>");

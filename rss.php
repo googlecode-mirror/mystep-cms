@@ -9,11 +9,15 @@ if($cat_info = getParaInfo("news_cat", "cat_idx", $cat_idx)) {
 }
 
 $tpl_info['idx'] = "rss";
-$cache_info = array(
-	'idx' => "rss_".$web_info["info"]["web_id"].(empty($cat_idx)?"":"_{$cat_info[cat_id]}"),
-	'path' => $cache_path."/rss/",
-	'expire' => getCacheExpire(),
-);
+if($setting['gen']['cache']) {
+	$cache_info = array(
+		'idx' => "rss_".$web_info["info"]["web_id"].(empty($cat_idx)?"":"_{$cat_info[cat_id]}"),
+		'path' => $cache_path."/rss/",
+		'expire' => getCacheExpire(),
+	);
+} else {
+	$cache_info = false;
+}
 $tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 if($tpl->Is_Cached()) {
 	echo $tpl->Get_Content();
@@ -42,7 +46,6 @@ while($record = $db->GetRS()) {
 	$tpl->Set_Loop("record", $record);
 }
 $db->Free();
-
 
 header('Content-Type: application/rss+xml; charset='.$setting['gen']['charset']);
 $mystep->show($tpl);

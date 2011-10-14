@@ -1,7 +1,7 @@
 <?php
 require("inc.php");
 
-includeCache("news_cat");
+includeCache("news_cat", false);
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $cat_id = $req->getReq("cat_id");

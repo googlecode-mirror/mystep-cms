@@ -33,6 +33,7 @@ mystep;
 	unset($setting);
 	$setting = $cur_setting;
 } elseif($method=="clean") {
+	set_time_limit(0);
 	$log_info = $setting['language']['admin_web_cache_clean'];
 	$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
 	if($handle = opendir($cache_path)) {
@@ -59,6 +60,16 @@ mystep;
 		while (false !== ($file = readdir($handle))) {
 			$file = strtolower($file);
 			if($file!="." && $file!=".." && $file!=date("Ymd")) {
+				MultiDel($cache_path.$file);
+			}
+		}
+		closedir($handle);
+	}
+	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/data/";
+	if($handle = opendir($cache_path)) {
+		while (false !== ($file = readdir($handle))) {
+			$file = strtolower($file);
+			if($file!="." && $file!="..") {
 				MultiDel($cache_path.$file);
 			}
 		}

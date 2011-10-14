@@ -2,7 +2,7 @@
 function snatchGetInfo($url, $para=array()) {
 	global $db, $setting;
 	$date = isset($para['date'])?$para['date']:date("Ymd");
-	$url = "http://sports.sohu.com/_scroll_newslist/".$date."/news.inc";
+	$url = "http://news.sohu.com/_scroll_newslist/".$date."/news.inc";
 	$info = array();
 	$info['page_count'] = 1;
 	$header = array();
@@ -14,9 +14,9 @@ function snatchGetInfo($url, $para=array()) {
 		$info['catList'] = $content['category'];
 		$info['newList'] = $content['item'];
 		unset($content);
-		$info['cat_main'] = $db->getSingleResult("select cat_id from ".$setting['db']['pre']."news_cat where cat_name='体育'");
+		$info['cat_main'] = $db->getSingleResult("select cat_id from ".$setting['db']['pre']."news_cat where cat_name='新闻资讯'");
 		if(empty($info['cat_main'])) {
-			$db->Query("INSERT INTO `".$setting['db']['pre']."news_cat` VALUES (0, ".$para['web_id'].", 0, '体育', '体育,体育新闻', '最专业的体育赛事直播、报道和专家点评', 'sports', '', '', 1, 0, '', 1, 255, 0, '');");
+			$db->Query("INSERT INTO `".$setting['db']['pre']."news_cat` VALUES (0, ".$para['web_id'].", 0, '新闻资讯', '国内,国际,社会,财经,军事,体育,娱乐,文化,汽车', '国内资讯,国际资讯,社会资讯,财经资讯,军事资讯,体育资讯,娱乐资讯,文化资讯,汽车资讯', 'news', '', '', 1, 0, '', 1, 255, 0, '');");
 			$info['cat_main'] = $db->GetInsertId();
 		}
 		for($i=0, $m=count($info['catList']); $i<$m; $i++) {
@@ -52,15 +52,18 @@ function snatchGetInfo($url, $para=array()) {
 }
 
 function snatchGetList($record, &$info) {
-	global $db, $setting;
-	for($i=0, $m=count($info['newList']); $i<$m; $i++) {
+	global $db, $setting, $req;
+	$idx = $req->getCookie("ns_idx");
+	if(empty($idx)) $idx = 0;
+	for($i=$idx, $m=count($info['newList']); $i<$m; $i++) {
+		if(isset($info['para']['pre_max']) && ($i-$idx)>=$info['para']['pre_max']) break;
 		$record['subject'] = $info['newList'][$i][1];
 		$record['original'] = "搜狐网";
 		$record['url'] = $info['newList'][$i][2];
 		$record['add_date'] = date("Y")."/".$info['newList'][$i][3];
 		$record['item_2'] = $info['newList'][$i][4];
 		
-		if(strpos($record['url'], "http://sports.sohu.com")===false) continue;
+		if(strpos($record['url'], ".sohu.com")===false) continue;
 		
 		if($content = GetRemoteContent($record['url'], $info['header'])) {
 			if(preg_match("/来源：<span.+?>(.+?)<\/span>/i", $content, $matches)) {
@@ -133,7 +136,21 @@ function snatchGetList($record, &$info) {
 						}
 					}
 				}
-				$record['content'] = implode("<!-- pagebreak -->", $cur_content);
+				$record['content'] = implode("", $cur_content);
+				$flag = true;
+			} elseif(preg_match("/<div id\=\"news_c\".+?>(.+?)<div id\=\"news_s\"/is", $content, $matches)) {				$record['content'] = $matches[1];
+				if(preg_match("/<img.+?src=(.?)(http.+?)\\1.+?>/is", $record['content'], $matches)) {
+					$record['item_5'] = $matches[2];
+				} else {
+					$record['item_5'] = "";
+				}
+				$record['content'] = preg_replace("/<script.+?<\/script>/is", "", $record['content']);
+				$record['content'] = preg_replace("/<style.+?<\/style>/is", "", $record['content']);
+				$record['content'] = preg_replace("/<form.+?<\/form>/is", "", $record['content']);
+				$record['content'] = preg_replace("/<iframe.+?<\/iframe>/is", "", $record['content']);
+				$record['content'] = preg_replace("/^[\r\n\s]+/is", "", $record['content']);
+				$record['content'] = preg_replace("/[\r\n\s]+$/is", "", $record['content']);
+				unset($matches);
 				$flag = true;
 			} else {
 				snatch_log('<div class="item">'.($info['counter']++).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> 获取<span class="failed" style="color:red;">失败！</span></div>');
@@ -149,7 +166,9 @@ function snatchGetList($record, &$info) {
 		} else {
 			snatch_log('<div class="item">'.($info['counter']++).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> 获取<span class="failed" style="color:red;">失败！</span></div>');
 		}
+		$req->setCookie("ns_idx", $i, 86400);
 	}
+	if($i>=$m) $req->setCookie("ns_idx");
 	return true;
 }
 ?>

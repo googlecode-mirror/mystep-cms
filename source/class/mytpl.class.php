@@ -52,6 +52,7 @@ class MyTpl extends class_common {
 		if(!isset($tpl_info['path'])) $tpl_info['path'] = "./";
 		$this->tpl_info = $tpl_info;
 		$this->tpl_info['file'] = $tpl_info['path']."/".$tpl_info['style']."/".$tpl_info['idx'].".tpl";
+		if(!file_exists($this->tpl_info['file'])) $this->tpl_info['file'] = $tpl_info['path']."/default/".$tpl_info['idx'].".tpl";
 		$this->tpl_info['content'] = $this->Get_TPL($this->tpl_info['file']);
 		
 		global $tpl_para;

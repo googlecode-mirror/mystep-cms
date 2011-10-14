@@ -76,16 +76,19 @@ function checkCache($idx) {
 	return is_file(ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php");
 }
 
-function includeCache($idx) {
+function includeCache($idx, $show_error = true) {
 	global $setting;
 	if(!checkCache($idx)) buildParaList($idx);
 	if(checkCache($idx)) {
 		include(ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php");
+		return true;
 	} else {
-		printf($GLOBALS['language']['page_error'], $setting['web']['email']);
-		exit();
+		if($show_error) {
+			printf($setting['language']['page_error'], $setting['web']['email']);
+			exit();
+		}
+		return false;
 	}
-	return;
 }
 
 function getSubSetting($web_id) {

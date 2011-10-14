@@ -170,7 +170,7 @@ blockquote{padding:5px; background-color:#eeeeee; border:1px #ccc solid;}
 .page_main .main .bottom {border-top:1px #ddcf7f solid; clear:both; text-align:left; line-height:24px;padding:10px 0px 0px 0px; font-weight:bold;}
 
 .page_main .pic_news {margin:0px 0px 10px 0px; padding:5px 5px 5px 5px; line-height:20px; color:#990000; background-color:#fefefe; border:1px #eeeeee solid;}
-.page_main .pic_news H4 {font-weight:bold; font-size:16px; margin-bottom:10px;white-space:normal; word-wrap:break-word; word-break:break-all;}
+.page_main .pic_news H4 {font-weight:bold; font-size:16px; margin-bottom:10px; white-space:pre; word-wrap:break-word; word-break:break-all;}
 .page_main .pic_news IMG {float:left; width:180px; height:120px; margin:0px 20px 0px 0px; border:1px #ccc solid;}
 .page_main .pic_news .describe {word-wrap:break-word; word-break:break-all;}
 

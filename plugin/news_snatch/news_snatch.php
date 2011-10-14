@@ -333,7 +333,7 @@ function build_page($method) {
 	} elseif($method=="snatch") {
 		$refresh = 600;
 		if(isset($rules[$id]['para']['refresh'])) $refresh = $rules[$id]['para']['refresh'];
-		if(file_exists($info_snatch) && (time()-filemtime($info_snatch))<$refresh && $req->getReq("force")!="") {
+		if(file_exists($info_snatch) && (time()-filemtime($info_snatch))<$refresh && $req->getReq("f")=="") {
 			$show = $setting['language']['plugin_news_snatch_interrupt'];
 		} else {
 			$show = "";
@@ -354,11 +354,11 @@ function build_page($method) {
 		}
 		$refresh = 600;
 		if(isset($para['refresh'])) $refresh = $para['refresh'];
-		if(file_exists($info_import) && (time()-filemtime($info_import))<$refresh) {
+		if(file_exists($info_import) && (time()-filemtime($info_import))<$refresh && $req->getReq("f")=="") {
 			$show = $setting['language']['plugin_news_import_interrupt'];
 		} else {
 			$show = "";
-			unlink($info_import);
+			if(file_exists($info_import)) unlink($info_import);
 		}
 		$tpl_tmp->Set_Variable('id', $id);
 		$tpl_tmp->Set_Variable('idx', $idx);

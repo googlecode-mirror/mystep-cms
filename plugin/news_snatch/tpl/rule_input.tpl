@@ -42,9 +42,9 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center" style="padding:20px 0px 20px 0px;">
-					<input class="btn" type="button" value=" 导 入 " onclick="showPop('upload','导入采集规则','url','news_snatch.php?method=rule_import',420, 100)" />
 					<input class="btn" type="Submit" value=" 确 定 " name="Submit" />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " name="reset" />&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 导 入 " onclick="showPop('upload','导入采集规则','url','news_snatch.php?method=rule_import',420, 100)" />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " name="return" onClick="location.href='<!--back_url-->'" />
 			</tr>
 		</table>
