@@ -15,6 +15,6 @@ CREATE TABLE `{pre}news_snatch` (
 	`item_8` Char(255) DEFAULT '',							#采集文本
 	`item_9` Char(255) DEFAULT '',							#采集文本
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#录入日期
-	`content` TEXT NOT NULL,										#新闻内容
+	`content` MEDIUMTEXT NOT NULL,										#新闻内容
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='新闻采集';

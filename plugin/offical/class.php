@@ -270,7 +270,7 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	\$theStyle = explode(",", \$record['style']);
 	\$style = "";
 	for(\$i=0;\$i<count(\$theStyle);\$i++) {
-		\$record['subject_org'] = \$record['subject'];
+		\$record['subject_org'] = htmlspecialchars(\$record['subject']);
 		if(\$theStyle[\$i]=="i") {
 			\$style .= "font-style:italic;";
 		} elseif((\$theStyle[\$i]=="b")) {

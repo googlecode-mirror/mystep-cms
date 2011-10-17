@@ -54,6 +54,8 @@ $rules = '.var_export($rules, true).';
 		break;
 	case "rule_delete":
 		$log_info = $setting['language']['plugin_news_snatch_rule_delete'];
+		unlink("rule/".$rules[$id]['idx']."_snatch.php");
+		unlink("rule/".$rules[$id]['idx']."_import.php");
 		unset($rules[$id]);
 		WriteFile("rule/list.php", '<?php
 $rules = '.var_export($rules, true).';		
@@ -78,7 +80,7 @@ $rules = '.var_export($rules, true).';
 		break;
 	case "news_snatch":
 		set_time_limit(0);
-		$log_info = $setting['language']['plugin_news_snatch_snatch'];
+		//$log_info = $setting['language']['plugin_news_snatch_snatch'];
 		$idx = $rules[$id]['idx'];
 		require_once("rule/".$idx."_snatch.php");
 		if($info = snatchGetInfo($rules[$id]['url'], $rules[$id]['para'])) {
@@ -102,7 +104,7 @@ $rules = '.var_export($rules, true).';
 			$info['cache_path'] = "cache/".date("Ymd")."/".$idx."/";
 			$info["page"] = 1;
 			$info["page_start"] = 1;
-			$info["page_max"] = 1;
+			$info["page_max"] = 999;
 			$info["url"] = $rules[$id]['url'];
 			$info["para"] = $rules[$id]['para'];
 			$info["counter"] = 1;
@@ -124,10 +126,12 @@ $rules = '.var_export($rules, true).';
 			snatch_log('<div class="page">'.$setting['language']['plugin_news_snatch_info_snatch_error'].'</div>');
 		}
 		snatch_log('<div class="page">'.date("Y-m-d H:i:s").'</div>');
+		debug("000000000000");
+		$goto_url = $setting['info']['self'];
 		break;
 	case "news_import":
 		set_time_limit(0);
-		$log_info = $setting['language']['plugin_news_snatch_import'];
+		//$log_info = $setting['language']['plugin_news_snatch_import'];
 		$news_show = array();
 		$news_show['news_id'] = 0;
 		$news_show['cat_id'] = 1;
@@ -200,6 +204,7 @@ $rules = '.var_export($rules, true).';
 		}
 		import_log('<div class="split">-------------------------------</div>');
 		import_log('<div class="page">'.date("Y-m-d H:i:s").'</div>');
+		$goto_url = $setting['info']['self'];
 		break;
 	case "rule_import":
 		$script = "";

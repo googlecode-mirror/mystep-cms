@@ -21,15 +21,17 @@ $tpl->Set_Variable('charset_tag', $charset_tag);
 $tpl->Set_Variable('now', date("r"));
 $from = array("&", "'", '"', ">", "<");
 $to = array("&amp;", "&apos;", "&quot;", "&gt;", "&lt;");
-
-$db->Query("select cat_idx from ".$setting['db']['pre']."news_cat where web_id=".$setting['info']['web']['web_id']);
-while($record = $db->GetRS()) {
-	$record['url'] = getFileURL(0, $record['cat_idx'], $setting['info']['web']['web_id']);
+$news_all = getData("select count(*) from ".$setting['db']['pre']."news_show", "result", 86400);
+for($i=0, $m=count($news_cat); $i<$m; $i++) {
+	$record = array();
+	$record['url'] = getFileURL(0, $news_cat[$i]['cat_idx'], $setting['info']['web']['web_id']);
 	$record['url'] = str_replace($from, $to, $record['url']);
-	$record['date'] = date("Y-m-d");
+	$record['date'] = substr(getData("select max(add_date) from ".$setting['db']['pre']."news_show where cat_id=".$news_cat[$i]['cat_id'], "result", 86400), 0, 10);
+	if(empty($record['date'])) $record['date'] = date("Y-m-d");
+	$news_current = getData("select count(*) from ".$setting['db']['pre']."news_show where cat_id=".$news_cat[$i]['cat_id'], "result", 86400);
+	$record['priority'] = round($news_current/$news_all, 2);
 	$tpl->Set_Loop("record", $record);
 }
-$db->Free();
 
 header('Content-Type: application/xml; charset='.$setting['gen']['charset']);
 $mystep->show($tpl);

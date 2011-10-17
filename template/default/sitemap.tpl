@@ -5,7 +5,7 @@
 		<loc><!--record_url--></loc>
 		<lastmod><!--record_date--></lastmod>
 		<changefreq>daily</changefreq>
-		<priority>1</priority>
+		<priority><!--record_priority--></priority>
 	</url>
 <!--loop:end-->
 </urlset> 

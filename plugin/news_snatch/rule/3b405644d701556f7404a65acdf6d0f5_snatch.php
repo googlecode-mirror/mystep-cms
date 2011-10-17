@@ -87,15 +87,9 @@ function snatchGetList($record, &$info) {
 				} else {
 					$record['item_5'] = "";
 				}
-				$record['content'] = preg_replace("/<script.+?<\/script>/is", "", $record['content']);
-				$record['content'] = preg_replace("/<style.+?<\/style>/is", "", $record['content']);
-				$record['content'] = preg_replace("/<form.+?<\/form>/is", "", $record['content']);
-				$record['content'] = preg_replace("/<iframe.+?<\/iframe>/is", "", $record['content']);
 				$record['content'] = preg_replace("/<div class\=\"tagIntg.+?<\/div>/is", "", $record['content']);
 				$record['content'] = preg_replace("/<div class\=\"tagHotg.+?<\/div>/is", "", $record['content']);
 				$record['content'] = preg_replace("/<div class\=\"editer.+?<\/div>/is", "", $record['content']);
-				$record['content'] = preg_replace("/^[\r\n\s]+/is", "", $record['content']);
-				$record['content'] = preg_replace("/[\r\n\s]+$/is", "", $record['content']);
 				unset($matches);
 				$flag = true;
 			} elseif(preg_match("/<div class\=\"textcont\" id\=\"textcont\">(.+?)<\/div>/is", $content, $matches)) {
@@ -136,7 +130,7 @@ function snatchGetList($record, &$info) {
 						}
 					}
 				}
-				$record['content'] = implode("", $cur_content);
+				$record['content'] = implode("<!-- pagebreak -->", $cur_content);
 				$flag = true;
 			} elseif(preg_match("/<div id\=\"news_c\".+?>(.+?)<div id\=\"news_s\"/is", $content, $matches)) {				$record['content'] = $matches[1];
 				if(preg_match("/<img.+?src=(.?)(http.+?)\\1.+?>/is", $record['content'], $matches)) {
@@ -144,12 +138,6 @@ function snatchGetList($record, &$info) {
 				} else {
 					$record['item_5'] = "";
 				}
-				$record['content'] = preg_replace("/<script.+?<\/script>/is", "", $record['content']);
-				$record['content'] = preg_replace("/<style.+?<\/style>/is", "", $record['content']);
-				$record['content'] = preg_replace("/<form.+?<\/form>/is", "", $record['content']);
-				$record['content'] = preg_replace("/<iframe.+?<\/iframe>/is", "", $record['content']);
-				$record['content'] = preg_replace("/^[\r\n\s]+/is", "", $record['content']);
-				$record['content'] = preg_replace("/[\r\n\s]+$/is", "", $record['content']);
 				unset($matches);
 				$flag = true;
 			} else {
@@ -157,6 +145,19 @@ function snatchGetList($record, &$info) {
 			}
 			if($flag) {
 				if($db->getSingleRecord("select id from ".$setting['db']['pre']."news_snatch where url='".mysql_real_escape_string($record['url'])."'")===false) {
+					$record['content'] = preg_replace("/<script.+?<\/script>/is", "", $record['content']);
+					$record['content'] = preg_replace("/<style.+?<\/style>/is", "", $record['content']);
+					$record['content'] = preg_replace("/<form.+?<\/form>/is", "", $record['content']);
+					$record['content'] = preg_replace("/<iframe.+?<\/iframe>/is", "", $record['content']);
+					$record['content'] = preg_replace("/^[\r\n\s]+/is", "", $record['content']);
+					$record['content'] = preg_replace("/[\r\n\s]+$/is", "", $record['content']);
+					$record['content'] = preg_replace("/延伸阅读.+$/", "", $record['content']);
+					$record['content'] = preg_replace("/<DIV class\=\"tvsubject.+$/", "", $record['content']);
+					$record['content'] = str_replace("微博推荐", "", $record['content']);
+					$record['content'] = str_replace('<div class="line"></div>', "", $record['content']);
+					$record['content'] = preg_replace("/<div class\=\"stockTrends.+?<\/div>/", "", $record['content']);
+					$record['content'] = preg_replace("/[\r\n]+<div class\=\"muLink.+?<\/div>[\r\n]+/", "", $record['content']);
+					if($record['item_5']=="http://images.sohu.com/ccc.gif" || $record['item_5']=="http://photo.sohu.com/20040809/Img221437781.gif" || $record["item_5"]=="http://photocdn.sohu.com/20090828/dot.gif") $record['item_5']="";
 					snatch_log('<div class="item">'.($info['counter']++).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> 获取<span class="succeed" style="color:green;">成功！</span></div>');
 					$db->Query($db->buildSQL($setting['db']['pre']."news_snatch", $record, "insert"));
 				} else {

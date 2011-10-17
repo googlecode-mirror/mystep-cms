@@ -70,6 +70,8 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 			$the_time = GetMicrotime();
 			$old_name = strtolower(basename($img_list[$i]));
 			$ext = ".".GetFileExt($img_list[$i]);
+			$ext = preg_replace("/\?.*$/", "", $ext);
+			$old_name = preg_replace("/\?.*$/", "", $old_name);
 			//if(strpos("*.jpg.bmp.gif.png",$ext)===false) continue;
 			if(empty($ext)) {
 				$ext = ".jpg";

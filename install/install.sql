@@ -109,8 +109,8 @@ CREATE TABLE `{pre}news_cat` (
 	`cat_idx` Char(20) DEFAULT '',													#分类索引（用于目录名等）
 	`cat_image` Char(200) DEFAULT '',												#分类图示
 	`cat_sub` Char(240) DEFAULT '',													#前缀列表（半角逗号间隔）
-	`cat_order` TINYINT DEFAULT 1,													#分类排序
-	`cat_type` TINYINT NOT NULL,														#分类显示模式（0 标题列表，1 图片简介，2 图片展示）
+	`cat_order` TINYINT UNSIGNED DEFAULT 1,									#分类排序
+	`cat_type` TINYINT UNSIGNED NOT NULL DEFAULT 0,					#分类显示模式（0 标题列表，1 图片简介，2 图片展示）
 	`cat_link` Char(200) DEFAULT '',												#分类链接
 	`cat_layer` TINYINT UNSIGNED NOT NULL DEFAULT 0,				#分类层级
 	`cat_show` TINYINT UNSIGNED NOT NULL DEFAULT 0,					#显示位置（0 不显示，以二进制模式扩充）

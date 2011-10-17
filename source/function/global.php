@@ -336,6 +336,7 @@ function toString($var) {
 function RemoveHeader($content) {
 	//Coded By Windy_sk 20070420 v1.1
 	$content = preg_replace("/^.+?\r\n\r\n/s", "", $content);
+	$content = preg_replace("/^\w+[\r\n]+/", "", $content);
 	return $content;
 }
 
@@ -347,7 +348,7 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	if(!is_null($query)) $path .= "?".$query;
 	if(!isset($port)) $port = 80;
 	$fp = @fsockopen($host, $port, $errno, $errmsg, $timeout);
-	if(!$fp) return false;
+	if($fp===false) return false;
 	stream_set_blocking($fp, true);
 	stream_set_timeout($fp, $timeout);
 	if($method!="POST") $method="GET";
@@ -392,6 +393,24 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	if($gzip) $content = gzinflate(substr($content,10));
 	return $content;
 }
+
+function decode_gzip($h,$d,$rn="\r\n"){ 
+if (isset($h['Transfer-Encoding'])){ 
+ $lrn = strlen($rn); 
+ $str = ''; 
+ $ofs=0; 
+ do{ 
+    $p = strpos($d,$rn,$ofs); 
+    $len = hexdec(substr($d,$ofs,$p-$ofs)); 
+    $str .= substr($d,$p+$lrn,$len); 
+     $ofs = $p+$lrn*2+$len; 
+ }while ($d[$ofs]!=='0'); 
+ $d=$str; 
+} 
+if (isset($h['Content-Encoding'])) $d = gzinflate(substr($d,10)); 
+return $d; 
+} 
+
 
 function GetRemoteFile($remote_file, $local_file) {
 	//Coded By Windy_sk 20080402 v1.3
