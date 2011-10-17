@@ -26,7 +26,7 @@ CREATE TABLE `{pre}admin_cat` (
 	`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,					#目录索引
 	`pid` SMALLINT UNSIGNED DEFAULT 0,											#父目录索引
 	`name` Char(40) DEFAULT '' NOT NULL,										#目录名称
-	`file` Char(30) DEFAULT '' NOT NULL,										#管理文件
+	`file` Char(50) DEFAULT '' NOT NULL,										#管理文件
 	`path` Char(100) DEFAULT '' NOT NULL,										#管理文件路径
 	`web_id` TINYINT UNSIGNED DEFAULT 0,										#所属子站
 	`order` TINYINT UNSIGNED DEFAULT 0,											#显示顺序
@@ -85,7 +85,7 @@ CREATE TABLE `{pre}plugin` (
 	`name` Char(40) DEFAULT '' NOT NULL,										#插件名称
 	`idx` Char(20) DEFAULT '' NOT NULL,											#插件索引（目录名）
 	`ver` Char(20) DEFAULT '' NOT NULL,											#插件版本
-	`class` Char(20) DEFAULT '' NOT NULL,										#插件类
+	`class` Char(40) DEFAULT '' NOT NULL,										#插件类
 	`active` BOOL NOT NULL DEFAULT 0,												#是否启用
 	`intro` Char(255) DEFAULT '' NOT NULL,									#插件信息
 	`copyright` Char(255) DEFAULT '' NOT NULL,							#版权信息
