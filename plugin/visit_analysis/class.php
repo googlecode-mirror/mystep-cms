@@ -86,17 +86,30 @@ mystep;
 	public static function referer_analysis() {
 		global $db, $setting, $req;
 		$referer = $req->getServer("HTTP_REFERER");
+		$agent = strtolower($req->getServer('HTTP_USER_AGENT'));
+		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) return;
 		if(!empty($referer)) {
 			$url_info = parse_url($referer);
 			if($url_info['host']==$req->getServer("HTTP_HOST")) return;
-			if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_analysis where domain='".$url_info['host']."'")) {
-				$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP() where domain='".$url_info['host']."'");
+			if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_analysis where host='".$url_info['host']."'")) {
+				$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP() where host='".$url_info['host']."'");
 			} else {
-				$db->Query("insert into ".$setting['db']['pre']."visit_analysis values(0, '".$url_info['host']."', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 1)");
+				$db->Query("insert into ".$setting['db']['pre']."visit_analysis values(0, '".$url_info['host']."', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
 			}
-			//keyword
+			unset($record);
+			if(!empty($url_info['query'])) {
+				parse_str($url_info['query'], $query);
+				if(isset($query['k'])) {
+					$keyword = getSafeCode($query['k'], $setting['gen']['charset']);
+					if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_keyword where keyword='".mysql_real_escape_string($keyword)."'")) {
+						$db->Query("update ".$setting['db']['pre']."visit_keyword set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP() where keyword='".mysql_real_escape_string($keyword)."'");
+					} else {
+						$db->Query("insert into ".$setting['db']['pre']."visit_keyword values(0, '".mysql_real_escape_string($keyword)."', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+					}
+				}
+			}
 		} else {
-			$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP() where domain='None'");
+			$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP() where host='None'");
 		}
 		return;
 	}

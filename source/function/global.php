@@ -240,6 +240,17 @@ function html2js($str){
 	return $result;
 }
 
+function getSafeCode($value, $charset) { 
+	$value_1 = $value; 
+	$value_2 = chg_charset($value_1, "utf-8", $charset); 
+	$value_3 = chg_charset($value_2, $charset, "utf-8"); 
+	if(strlen($value_1) == strlen($value_3)) { 
+		return $value_2; 
+	} else { 
+		return $value_1; 
+	} 
+}
+
 function chg_charset($content, $from="gbk", $to="utf-8") {
 	$result = null;
 	if(is_string($content)){

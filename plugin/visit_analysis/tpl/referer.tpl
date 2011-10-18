@@ -1,5 +1,4 @@
 <div class="title"><!--title--></div>
-<div class="addnew"><a href="?method=add">ฬํผำหัห๗าýวๆ</a></div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">
@@ -12,7 +11,7 @@
 <!--loop:start key="record" time="15"-->
 		<tr class="row">
 			<td align="center"><!--record_id--></td>
-			<td><!--record_domain--></td>
+			<td><!--record_host--></td>
 			<td><!--record_count--></td>
 			<td><!--record_add_date--></td>
 			<td><!--record_chg_date--></td>

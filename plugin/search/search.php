@@ -3,19 +3,8 @@ global $keyword, $condition, $limit, $web_id;
 $mode = $req->getGet("mode");
 $keyword = $req->getGet("k");
 
-function getSafeCode($value) { 
-	$value_1 = $value; 
-	$value_2 = chg_charset($value_1, "utf-8", "gbk"); 
-	$value_3 = chg_charset($value_2, "gbk", "utf-8"); 
-	if(strlen($value_1) == strlen($value_3)) { 
-		return $value_2; 
-	} else { 
-		return $value_1; 
-	} 
-}
-
 if(!empty($keyword)) {
-	$keyword = getSafeCode($keyword);
+	$keyword = getSafeCode($keyword, $setting['gen']['charset']);
 	$keyword = mysql_real_escape_string($keyword);
 	if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."search_keyword where keyword = '{$keyword}'")) {
 		$record['chg_date'] = time();

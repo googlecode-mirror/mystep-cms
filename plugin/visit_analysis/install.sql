@@ -1,14 +1,14 @@
 # 来源网址记录
 CREATE TABLE `{pre}visit_analysis` (
 	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`domain` Char(100) NOT NULL UNIQUE,								#ip地址
+	`host` Char(100) NOT NULL UNIQUE,									#来源主机
+	`count` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,		#来访次数
 	`add_date` Char(15) DEFAULT 0,										#首次来访日期（unixtimestamp）
 	`chg_date` Char(15) DEFAULT 0,										#最近来访日期（unixtimestamp）
-	`count` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL,		#来访次数
-	index (`domain`),
+	index (`host`),
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='来源网址记录';
-INSERT INTO `{pre}visit_analysis` values(0, 'None', UNIX_TIMESTAMP(), UNIX_TIMESTAMP(), 0);
+INSERT INTO `{pre}visit_analysis` values(0, 'None', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP());
 
 # 来访关键字
 CREATE TABLE `{pre}visit_keyword` (
