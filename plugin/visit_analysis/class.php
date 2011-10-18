@@ -99,6 +99,7 @@ mystep;
 			unset($record);
 			if(!empty($url_info['query'])) {
 				parse_str($url_info['query'], $query);
+				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
 				if(isset($query['k'])) {
 					$keyword = getSafeCode($query['k'], $setting['gen']['charset']);
 					if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_keyword where keyword='".mysql_real_escape_string($keyword)."'")) {
