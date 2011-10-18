@@ -8,7 +8,7 @@
 			<td class="cat" width="120">添加时间</a></td>
 			<td class="cat" width="120">更新时间</a></td>
 		</tr>
-<!--loop:start key="record" time="15"-->
+<!--loop:start key="record"-->
 		<tr class="row">
 			<td align="center"><!--record_id--></td>
 			<td><!--record_host--></td>
