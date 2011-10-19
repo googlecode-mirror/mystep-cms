@@ -60,12 +60,13 @@ if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopu
 var newRule = null;
 function importRule() {
 	if(typeof(newRule)=="object" && newRule!=null) {
+		if(newRule.para=="''") newRule.para = "";
 		$("#input_area input[name='name']").val(newRule.name);
 		$("#input_area input[name='url']").val(newRule.url);
 		$("#input_area input[name='notes']").val(newRule.notes);
 		$("#input_area textarea[name='para']").val(newRule.para);
-		$("#input_area textarea[name='rule_snatch']").val(newRule.rule_snatch);
-		$("#input_area textarea[name='rule_import']").val(newRule.rule_import);
+		$("#input_area textarea[name='rule_snatch']").val(newRule.rule_snatch.replace("<pagebreak>", "<-- pagebreak -->").replace("<-- pagebreak", "<!-- pagebreak"));
+		$("#input_area textarea[name='rule_import']").val(newRule.rule_import.replace("<pagebreak>", "<-- pagebreak -->").replace("<-- pagebreak", "<!-- pagebreak"));
 	} else {
 		alert("文件格式错误！");
 	}

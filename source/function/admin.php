@@ -57,8 +57,8 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 	$max_count = count($tmp);
 	for($n=0; $n<$max_count; $n++) {
 		$attach_list = "";
-		preg_match_all("/\<img.+src\=\"(.+?)\"[^>]+?>/i", $tmp[$n], $arr);
-		$img_list = $arr[1];
+		preg_match_all("/<img.+?src=(.?)(http.+?)\\1.*?>/i", $tmp[$n], $arr);
+		$img_list = $arr[2];
 		$max_count2 = count($img_list);
 		for($i=0; $i<$max_count2; $i++) {
 			if(array_search($img_list[$i], $pic_list)===false) {
@@ -122,8 +122,8 @@ function GetPictures(&$content, $db=null, $zoom = 700) {
 	$max_count = count($tmp);
 	$attach_list = "";
 	for($n=0; $n<$max_count; $n++) {
-		preg_match_all("/\<img.+src\=\"(.+?)\"[^>]+?>/i", $tmp[$n], $arr);
-		$img_list = $arr[1];
+		preg_match_all("/<img.+?src=(.?)(http.+?)\\1.*?>/i", $tmp[$n], $arr);
+		$img_list = $arr[2];
 		$max_count2 = count($img_list);
 		for($i=0; $i<$max_count2; $i++) {
 			if(array_search($img_list[$i], $pic_list)===false) {

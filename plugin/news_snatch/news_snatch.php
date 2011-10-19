@@ -224,6 +224,7 @@ $rules = '.var_export($rules, true).';
 					if(parent.parent==null){parent.close();}else{parent.parent.$.closePopupLayer();}
 					
 				";
+				$script = str_replace("<!-- pagebreak -->", "<pagebreak>", $script);
 				unlink($theFile);
 			} else {
 				$script = "

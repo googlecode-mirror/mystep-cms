@@ -82,11 +82,6 @@ function snatchGetList($record, &$info) {
 			$flag = false;
 			if(preg_match("/<\!\-\- 正文 st \-\->[\r\n\s]+<div.+?>(.+?)<\/div>[\r\n\s]+<\!\-\- 正文 end \-\->/is", $content, $matches)) {
 				$record['content'] = $matches[1];
-				if(preg_match("/<img.+?src=(.?)(http.+?)\\1.+?>/is", $record['content'], $matches)) {
-					$record['item_5'] = $matches[2];
-				} else {
-					$record['item_5'] = "";
-				}
 				$record['content'] = preg_replace("/<div class\=\"tagIntg.+?<\/div>/is", "", $record['content']);
 				$record['content'] = preg_replace("/<div class\=\"tagHotg.+?<\/div>/is", "", $record['content']);
 				$record['content'] = preg_replace("/<div class\=\"editer.+?<\/div>/is", "", $record['content']);
@@ -102,10 +97,7 @@ function snatchGetList($record, &$info) {
 				$cur_content[0] = preg_replace("/[\r\n\s]+$/is", "", $cur_content[0]);
 				unset($matches);
 				if(preg_match("/<img id\=\"slide_pic\" src\=\"(.+?)\" alt\=\"(.+?)\".*?>/is", $content, $matches)) {
-					$record['item_5'] = $matches[1];
 					$cur_content[0] = "<p>".$matches[0]."</p>\n".$cur_content[0];
-				} else {
-					$record['item_5'] = "";
 				}
 				unset($matches);
 				if(preg_match("/<span id\=\"pageNum\">1\/(\d+)<\/span>/is", $content, $matches)) {
@@ -132,12 +124,8 @@ function snatchGetList($record, &$info) {
 				}
 				$record['content'] = implode("<!-- pagebreak -->", $cur_content);
 				$flag = true;
-			} elseif(preg_match("/<div id\=\"news_c\".+?>(.+?)<div id\=\"news_s\"/is", $content, $matches)) {				$record['content'] = $matches[1];
-				if(preg_match("/<img.+?src=(.?)(http.+?)\\1.+?>/is", $record['content'], $matches)) {
-					$record['item_5'] = $matches[2];
-				} else {
-					$record['item_5'] = "";
-				}
+			} elseif(preg_match("/<div id\=\"news_c\".+?>(.+?)<div id\=\"news_s\"/is", $content, $matches)) {
+				$record['content'] = $matches[1];
 				unset($matches);
 				$flag = true;
 			} else {
@@ -157,6 +145,12 @@ function snatchGetList($record, &$info) {
 					$record['content'] = str_replace('<div class="line"></div>', "", $record['content']);
 					$record['content'] = preg_replace("/<div class\=\"stockTrends.+?<\/div>/", "", $record['content']);
 					$record['content'] = preg_replace("/[\r\n]+<div class\=\"muLink.+?<\/div>[\r\n]+/", "", $record['content']);
+					$record['content'] = preg_replace("/<DIV class\=\"tvsubject.+$/", "", $record['content']);
+					if(preg_match("/<img.+?src=(.?)(http.+?)\\1.+?>/is", $record['content'], $matches)) {
+						$record['item_5'] = $matches[2];
+					} else {
+						$record['item_5'] = "";
+					}
 					if($record['item_5']=="http://images.sohu.com/ccc.gif" || $record['item_5']=="http://photo.sohu.com/20040809/Img221437781.gif" || $record["item_5"]=="http://photocdn.sohu.com/20090828/dot.gif") $record['item_5']="";
 					snatch_log('<div class="item">'.($info['counter']++).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> 获取<span class="succeed" style="color:green;">成功！</span></div>');
 					$db->Query($db->buildSQL($setting['db']['pre']."news_snatch", $record, "insert"));
