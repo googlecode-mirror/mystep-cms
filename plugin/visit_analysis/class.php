@@ -104,7 +104,7 @@ mystep;
 				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
 				if(!empty($keyword)) {
 					$keyword = getSafeCode($keyword, $setting['gen']['charset']);
-					$url = $req->getServer("REQUEST_URI");
+					$url = "http://".$req->getServer("HTTP_HOST").$req->getServer("REQUEST_URI");
 					if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_keyword where keyword='".mysql_real_escape_string($keyword)."'")) {
 						$db->Query("update ".$setting['db']['pre']."visit_keyword set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP(), `url`='".$url."' where keyword='".mysql_real_escape_string($keyword)."'");
 					} else {
