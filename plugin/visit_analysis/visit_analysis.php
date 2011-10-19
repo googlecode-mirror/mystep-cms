@@ -26,7 +26,7 @@ if($method == "referer") {
 	$page = $req->getGet("page");
 	list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=referer&order={$order}&order_type={$order_type}", $page);
 	$tpl_tmp->Set_Variables($page_arr);
-	$db->Query("select * from ".$setting['db']['pre']."visit_analysis order by ".(empty($order)?"id":"{$order}")." {$order_type}");
+	$db->Query("select * from ".$setting['db']['pre']."visit_analysis order by ".(empty($order)?"id":"{$order}")." {$order_type} limit {$page_start}, {$page_size}");
 	while($record = $db->GetRS()) {
 		$record['add_date'] = date("Y-m-d H:i:s", $record['add_date']);
 		$record['chg_date'] = date("Y-m-d H:i:s", $record['chg_date']);
