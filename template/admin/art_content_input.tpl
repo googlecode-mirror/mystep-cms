@@ -302,7 +302,7 @@ function checkForm_append(theForm) {
 	}
 	var flag = true;
 	var theLen = theForm.describe.value.Tlength();
-	if(theLen>230) {
+	if(theLen>240) {
 		alert(printf("当前描述长度为 %1 字节，请限制在 %2 字节内！", theLen, 230));
 		flag = false;
 	}

@@ -88,13 +88,15 @@ mystep;
 		$referer = $req->getServer("HTTP_REFERER");
 		$agent = strtolower($req->getServer('HTTP_USER_AGENT'));
 		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) return;
-		if(!empty($referer)) {
+		$db->Query("update ".$setting['db']['pre']."visit_analysis set count_month=0 where month(FROM_UNIXTIME(chg_date))!=month(now())");
+		$db->Query("update ".$setting['db']['pre']."visit_analysis set count_year=0 where year(FROM_UNIXTIME(chg_date))!=year(now())");
+		if(strlen($referer)>10) {
 			$url_info = parse_url($referer);
 			if($url_info['host']==$req->getServer("HTTP_HOST")) return;
 			if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_analysis where host='".$url_info['host']."'")) {
-				$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP() where host='".$url_info['host']."'");
+				$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `count_month`=`count_month`+1, `count_year`=`count_year`+1, `chg_date`=UNIX_TIMESTAMP() where host='".$url_info['host']."'");
 			} else {
-				$db->Query("insert into ".$setting['db']['pre']."visit_analysis values(0, '".$url_info['host']."', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+				$db->Query("insert into ".$setting['db']['pre']."visit_analysis values(0, '".$url_info['host']."', 1, 1, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
 			}
 			unset($record);
 			if(!empty($url_info['query'])) {
@@ -102,15 +104,16 @@ mystep;
 				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
 				if(!empty($keyword)) {
 					$keyword = getSafeCode($keyword, $setting['gen']['charset']);
+					$url = $req->getServer("REQUEST_URI");
 					if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_keyword where keyword='".mysql_real_escape_string($keyword)."'")) {
-						$db->Query("update ".$setting['db']['pre']."visit_keyword set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP() where keyword='".mysql_real_escape_string($keyword)."'");
+						$db->Query("update ".$setting['db']['pre']."visit_keyword set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP(), `url`='".$url."' where keyword='".mysql_real_escape_string($keyword)."'");
 					} else {
-						$db->Query("insert into ".$setting['db']['pre']."visit_keyword values(0, '".mysql_real_escape_string($keyword)."', 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+						$db->Query("insert into ".$setting['db']['pre']."visit_keyword values(0, '".mysql_real_escape_string($keyword)."', 1, '".$url."', UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
 					}
 				}
 			}
 		} else {
-			$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP() where host='None'");
+			$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `count_month`=`count_month`+1, `count_year`=`count_year`+1, `chg_date`=UNIX_TIMESTAMP() where host='None'");
 		}
 		return;
 	}
