@@ -103,6 +103,7 @@ mystep;
 				parse_str($url_info['query'], $query);
 				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
 				if(!empty($keyword)) {
+					if(preg_match("/(%[\w]{2})+/", $keyword)) $keyword = urldecode($keyword);
 					$keyword = getSafeCode($keyword, $setting['gen']['charset']);
 					$url = "http://".$req->getServer("HTTP_HOST").$req->getServer("REQUEST_URI");
 					if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_keyword where keyword='".mysql_real_escape_string($keyword)."'")) {

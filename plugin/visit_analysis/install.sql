@@ -15,7 +15,7 @@ INSERT INTO `{pre}visit_analysis` values(0, 'None', 1, UNIX_TIMESTAMP(), UNIX_TI
 # 来访关键字
 CREATE TABLE `{pre}visit_keyword` (
 	`id` MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-	`keyword` Char(80) NOT NULL UNIQUE,				#关键字
+	`keyword` Char(200) NOT NULL UNIQUE,				#关键字
 	`count` SMALLINT DEFAULT 0,								#搜索次数
 	`url` Char(200) DEFAULT "###" NOT NULL,		#访问网址
 	`add_date` Char(15) DEFAULT 0,						#首次检索日期（unixtimestamp）
@@ -29,5 +29,6 @@ CREATE TABLE `{pre}visit_keyword` (
 alter table ms_visit_analysis add `count_year` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL after `count`;
 alter table ms_visit_analysis add `count_month` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL after `count`;
 alter table ms_visit_keyword add `url` Char(200) DEFAULT "###" NOT NULL after `count`;
+alter table ms_visit_keyword modify `keyword` Char(200) NOT NULL UNIQUE;
 update  ms_visit_analysis set `count_month`=`count`, `count_year`=`count`;
 */

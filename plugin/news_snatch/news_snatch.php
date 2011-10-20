@@ -126,7 +126,6 @@ $rules = '.var_export($rules, true).';
 			snatch_log('<div class="page">'.$setting['language']['plugin_news_snatch_info_snatch_error'].'</div>');
 		}
 		snatch_log('<div class="page">'.date("Y-m-d H:i:s").'</div>');
-		debug("000000000000");
 		$goto_url = $setting['info']['self'];
 		break;
 	case "news_import":
