@@ -10,16 +10,8 @@
 *                                                 *
 **************************************************/
 
-//if(this.top.location.href.replace(/^(http:\/\/[^\/]+).*$/i,"$1")!=this.location.href.replace(/^(http:\/\/[^\/]+).*$/i,"$1")) top.location.href = location.href;
-
-function reportError(msg, url, line) {
-	var str = "You have found an error as below: \n\n";
-	str += "Err: " + msg + "on line: " + line;
-	alert(str);
-	return true;
-}
-
-window.onerror = reportError;
+var rlt_path = location.href.replace("http://"+location.hostname+"/", "").replace(/\/[^\/]+$/, "/").replace(/[^\/]+/g, "..");
+if(rlt_path==".." || rlt_path=="") rlt_path = "./";
 
 function $id(id) {
 	return document.getElementById(id);
@@ -303,6 +295,11 @@ function setSlide() {
 	}
 }
 
-var rlt_path = location.href.replace("http://"+location.hostname+"/", "").replace(/\/[^\/]+$/, "/").replace(/[^\/]+/g, "..");
-
-if(rlt_path=="..") rlt_path = "./";
+function reportError(msg, url, line) {
+	var str = "You have found an error as below: \n\n";
+	str += "Err: " + msg + "on line: " + line;
+	if(typeof(ms_setting)!="undefined" && ms_setting.debug) alert(str);
+	return true;
+}
+window.onerror = reportError;
+if(typeof(ms_setting)=="undefined") $.getScript(rlt_path + "script/setting.js.php");

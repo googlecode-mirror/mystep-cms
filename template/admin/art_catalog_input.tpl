@@ -23,7 +23,7 @@
 						<option value="<!--catalog_cat_id-->" webid=<!--catalog_web_id--> <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
 					</select>
-					<span style="display:<!--show_merge-->;"><input type="checkbox" id="merge" class="cbox" name="merge" value="1" /><label for="merge"> 合并到当前所选栏目合并</label></span>
+					<span style="display:<!--show_merge-->;"><input type="checkbox" id="merge" class="cbox" name="merge" value="1" /><label for="merge"> 合并到当前所选栏目</label></span>
 					<span class="comment">（当前栏目的父栏目）</span>
 				</td>
 			</tr>

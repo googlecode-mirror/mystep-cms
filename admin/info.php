@@ -16,7 +16,7 @@ switch($req->getServer("QUERY_STRING")) {
 
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 $tpl_tmp->allow_script = true;
-$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $req, $setting, $pass, $error'));
+$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $req, $setting, $pass, $error, $ms_version'));
 $mystep->show($tpl);
 $mystep->pageEnd(false);
 ?>

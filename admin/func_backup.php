@@ -56,14 +56,14 @@ if(count($_POST)>0) {
 			for($i=0; $i<$max_count; $i++) {
 				$content = "DROP TABLE IF EXISTS `{$tbl_list[$i]}`;\n\n";
 				$content .= $db->GetTabSetting($tbl_list[$i])."\n".$db->GetTabData($tbl_list[$i]);
-				WriteFile($dir.$tbl_list[$i].".sql", $content);
-				$files[] = $dir.$tbl_list[$i].".sql";
+				$files[$i] = $dir.$tbl_list[$i].".sql";
+				WriteFile($files[$i], $content);
 			}
-			zip($files, substr($dir,0,-1).".zip");
+			zip($files, $zipfile, $dir);
 			header("Content-type: application/zip");
 			header("Accept-Ranges: bytes");
 			header("Accept-Length: ".filesize($zipfile));
-			header("Content-Disposition: attachment; filename=".$zipfile);
+			header("Content-Disposition: attachment; filename=".basename($zipfile));
 			$content = GetFile($zipfile);
 			MultiDel($dir);
 			unlink($zipfile);

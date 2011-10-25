@@ -65,8 +65,8 @@ function importRule() {
 		$("#input_area input[name='url']").val(newRule.url);
 		$("#input_area input[name='notes']").val(newRule.notes);
 		$("#input_area textarea[name='para']").val(newRule.para);
-		$("#input_area textarea[name='rule_snatch']").val(newRule.rule_snatch.replace("<pagebreak>", "<-- pagebreak -->").replace("<-- pagebreak", "<!-- pagebreak"));
-		$("#input_area textarea[name='rule_import']").val(newRule.rule_import.replace("<pagebreak>", "<-- pagebreak -->").replace("<-- pagebreak", "<!-- pagebreak"));
+		$("#input_area textarea[name='rule_snatch']").val(newRule.rule_snatch.replace("<pagebreak>", "<"+"!-- pagebreak -->"));
+		$("#input_area textarea[name='rule_import']").val(newRule.rule_import.replace("<pagebreak>", "<"+"!-- pagebreak -->"));
 	} else {
 		alert("文件格式错误！");
 	}

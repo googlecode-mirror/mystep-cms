@@ -3,6 +3,10 @@
 <div>
 	<table width="80%" cellspacing="0" cellpadding="0" align="center" border="0">
 		<tr>
+			<td class="cat" width="250">网站程序版本</td>
+			<td class="row">V<?=$ms_version['ver']?> （<?=$ms_version['language']?>/<?=$ms_version['charset']?>/<?=$ms_version['date']?>）<a href="###" onclick="checkUpdate()">检查升级</a></td>
+		</tr>
+		<tr>
 			<td class="cat" width="250">网站运行时间</td>
 			<td class="row"><?=$db->GetSingleResult("select count(*) from ".$setting['db']['pre']."counter")?> 天</td>
 		</tr>
@@ -56,3 +60,33 @@
 		</tr>
 	</table>
 </div>
+<script language="javascript">
+var cur_ver = <?=toJson($ms_version, $setting['gen']['charset']);?>;
+function checkUpdate() {
+	$.get("update.php", function(ver_info){
+		try {
+			if(ver_info.ver!=cur_ver.ver && ver_info.date>cur_ver.date) {
+				if(confirm("目前更新服务器的最新版本为： v" + ver_info.ver + "(" + ver_info.date + ")\n\n是否更新？")) {
+					applyUpdate();
+				}
+			} else {
+				alert("系统当前版本已为最新，无需更新！");
+			}
+		} catch(e) {
+			alert("获取更新服务器信息失败，请检查相关设置！");
+		}
+	}, "json");
+}
+function applyUpdate() {
+	$.get("update.php?update", function(info){
+		try {
+			alert(info.info);
+			if(info.link.length>2) {
+				window.location.href = info.link;
+			}
+		} catch(e) {
+			alert("更新获取失败，请检查相关设置！");
+		}
+	}, "json");
+}
+</script>

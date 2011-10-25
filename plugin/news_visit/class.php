@@ -82,7 +82,9 @@ mystep;
 	}
 	
 	public static function page_end() {
-		global $db, $setting, $news_id, $cat_id, $subject;
+		global $db, $setting, $news_id, $cat_id, $subject, $req;
+		$agent = strtolower($req->getServer('HTTP_USER_AGENT'));
+		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) return;
 		if($setting['info']['self']!="read.php" || empty($cat_id)) return;
 		$info_count = $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_visit where web_id='".$setting['info']['web']['web_id']."' and news_id='".$news_id."'");
 		$subject = mysql_real_escape_string($subject);

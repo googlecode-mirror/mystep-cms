@@ -31,6 +31,10 @@ $setting['gen']['rewrite'] = false;
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'default';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
+$setting['gen']['update'] = 'http://cccfna.org.cn/update';
+
+$setting['js'] = array();
+$setting['js']['debug'] = false;
 
 $setting['list'] = array();
 $setting['list']['txt'] = 30;
@@ -57,7 +61,6 @@ $setting['path']['cache'] = 'cache/';
 $setting['path']['template'] = 'template/';
 
 $setting['content'] = array();
-$setting['content']['max_length'] = 10000;
 $setting['content']['get_remote_img'] = true;
 
 $setting['watermark'] = array();

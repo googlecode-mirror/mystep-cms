@@ -142,7 +142,6 @@ CREATE TABLE `{pre}news_show` (
 	`add_user` Char(20) NOT NULL,												#录入人
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#录入日期
 	`notice` Char(255) DEFAULT '',											#文章提示
-	`ctype` TINYINT UNSIGNED DEFAULT 1,									#内容类型(ubb, html)
 	INDEX `catalog` (`web_id`, `cat_id`),
 	INDEX `order` (`order`, `news_id`),
 	PRIMARY KEY (`news_id`)

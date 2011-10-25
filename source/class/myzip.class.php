@@ -17,26 +17,26 @@ class MyZip extends ZipArchive {
 	}
 }
 
-function zip($file, $zipfile="") {
+function zip($file, $zipfile="", $basedir="") {
 	$zip = new MyZip;
 	$res = false;
 	if(is_dir($file)) {
 		if(empty($zipfile)) $zipfile = basename(rtrim($file, '/')).".zip";
-		$res = $zip->open($zipfile, true);
+		$res = $zip->open($zipfile, ZIPARCHIVE::CREATE);
 		if($res === TRUE) {
 			$zip->addDir($file);
 			$zip->close();
 		}
 	} elseif(is_file($file)) {
 		if(empty($zipfile)) $zipfile = str_replace(pathinfo($file, PATHINFO_EXTENSION), "zip", basename($file));
-		$res = $zip->open($zipfile, true);
+		$res = $zip->open($zipfile, ZIPARCHIVE::CREATE);
 		if($res === TRUE) {
 			$zip->addFile($file);
 			$zip->close();
 		}
 	} elseif(is_array($file)) {
 		if(empty($zipfile)) $zipfile = tempnam(dirname($_SERVER['PHP_SELF']), "").".zip";
-		$res = $zip->open($zipfile, true);
+		$res = $zip->open($zipfile, ZIPARCHIVE::CREATE);
 		if($res === TRUE) {
 			foreach($file as $theFile) {
 				if(is_dir($theFile)) {
@@ -47,6 +47,15 @@ function zip($file, $zipfile="") {
 			}
 			$zip->close();
 		}
+	}
+	if(empty($basedir)) $basedir = dirname($zipfile)."/";
+	if($res) {
+		$zip->open($zipfile);
+		for($i=0; $i<$zip->numFiles; $i++) {
+			$theName = $zip->getNameIndex($i);
+			$zip->renameName($theName, str_replace($basedir, "", $theName));
+		} 
+		$zip->close();
 	}
 	return $res;
 }

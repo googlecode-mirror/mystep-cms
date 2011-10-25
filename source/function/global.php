@@ -268,7 +268,7 @@ function chg_charset($content, $from="gbk", $to="utf-8") {
 		foreach($content as $key => $value) {
 			$result[$key] = chg_charset($value, $from, $to);
 		}
-	} elseif(is_numeric($content)) {
+	} else {
 		$result = $content;
 	}
 	return $result;
@@ -435,7 +435,7 @@ function GetRemoteFile($remote_file, $local_file) {
 			if($fp_r) fwrite($fp_w, $content);
 		} else {
 			while(!feof($fp_r)) {
-				fwrite($fp_w, fgets($fp_r, 4096));
+				fwrite($fp_w, fread($fp_r, 4096));
 			}
 			fclose($fp_r);
 		}
@@ -448,11 +448,15 @@ function GetRemoteFile($remote_file, $local_file) {
 function GetFile($file, $length=0, $offset=0) {
 	//Coded By Windy2000 20020503 v1.5
 	if(!is_file($file)) return "";
-	if($length==0) return file_get_contents($file);
-	$fp = fopen($file, "rb");
-	fseek($fp, $offset);
-	$data = fgets($fp, $length);
-	fclose($fp);
+	if($length==0) {
+		$data = file_get_contents($file);
+	} else {
+		$fp = fopen($file, "rb");
+		fseek($fp, $offset);
+		$data = fread($fp, $length);
+		fclose($fp);
+	}
+	if(get_magic_quotes_runtime()) $data = stripcslashes($data);
 	return $data;
 }
 

@@ -51,6 +51,7 @@ $setting_comm['gen']['rewrite'] = '静态连接';
 $setting_comm['gen']['cache_ext'] = '静态扩展名';
 $setting_comm['gen']['template'] = '默认模板';
 $setting_comm['gen']['timezone'] = "时区矫正";
+$setting_comm['gen']['update'] = "更新网址";
 $setting_comm['gen_descr']['language'] = '网站显示语种切换';
 $setting_comm['gen_descr']['charset'] = '网站显示编码集';
 $setting_comm['gen_descr']['gzip_level'] = 'GZIP 压缩页面的级别（0-9），0 为关闭压缩';
@@ -59,6 +60,12 @@ $setting_comm['gen_descr']['rewrite'] = '将网站链接转换为静态连接，需服务器开启 
 $setting_comm['gen_descr']['cache_ext'] = '静态连接和缓存文件的扩展名';
 $setting_comm['gen_descr']['template'] = '网站前台显示样式';
 $setting_comm['gen_descr']['timezone'] = "设定网站显示时区";
+$setting_comm['gen_descr']['update'] = "获取内容系统程序更新的网址";
+
+$setting_comm['js'] = array();
+$setting_comm['js_comm'] = 'JavaScript 脚本程序参数设置';
+$setting_comm['js']['debug'] = '显示错误';
+$setting_comm['js_descr']['debug'] = '执行JaveScript出现错误时，显示错误信息提示';
 
 $setting_comm['list'] = array();
 $setting_comm['list_comm'] = '列表显示数量设置';
@@ -66,10 +73,10 @@ $setting_comm['list']['txt'] = '文字列表';
 $setting_comm['list']['img'] = '图片列表';
 $setting_comm['list']['mix'] = '图文列表';
 $setting_comm['list']['rss'] = '聚合列表';
-$setting_comm['list_descr']['txt'] = '文字列表模式下显示新闻的调试';
-$setting_comm['list_descr']['img'] = '图片列表模式下显示新闻的调试';
-$setting_comm['list_descr']['mix'] = '图文混合列表模式下显示新闻的调试';
-$setting_comm['list_descr']['rss'] = 'RSS 聚合显示新闻的调试';
+$setting_comm['list_descr']['txt'] = '文字列表模式下显示新闻的数量';
+$setting_comm['list_descr']['img'] = '图片列表模式下显示新闻的数量';
+$setting_comm['list_descr']['mix'] = '图文混合列表模式下显示新闻的数量';
+$setting_comm['list_descr']['rss'] = 'RSS 聚合显示新闻的数量';
 
 $setting_comm['session'] = array();
 $setting_comm['session_comm'] = 'Session 设置';
@@ -79,7 +86,6 @@ $setting_comm['session']['trans_sid'] = '传递 SID';
 $setting_comm['session']['name'] = '名称设置';
 $setting_comm['session']['mode'] = '处理模式';
 $setting_comm['session_descr']['expire'] = '用户保持在线的最长时间';
-$setting_comm['session_descr']['path'] = '文件存储模式下Session文件保存的路径';
 $setting_comm['session_descr']['gc'] = '定期删除无用的Session信息';
 $setting_comm['session_descr']['trans_sid'] = '通过URL连接传递SID，主要用于用户关闭COOKIE的情况';
 $setting_comm['session_descr']['name'] = '程序用于存储Session索引的名称';
@@ -107,9 +113,7 @@ $setting_comm['path_descr']['template'] = '模板存储的路径';
 
 $setting_comm['content'] = array();
 $setting_comm['content_comm'] = '内容设置';
-$setting_comm['content']['max_length'] = '长度限制';
 $setting_comm['content']['get_remote_img'] = '下载远程图';
-$setting_comm['content_descr']['max_length'] = '单页新闻的最大文字数';
 $setting_comm['content_descr']['get_remote_img'] = '下载新闻中的非本网图片到本地';
 
 $setting_comm['watermark'] = array();
@@ -174,6 +178,10 @@ $setting_type['gen']['rewrite'] = array("radio", array("开启"=>"true", "关闭"=>"
 $setting_type['gen']['cache_ext'] = array("text", "", "10");
 $setting_type['gen']['template'] = array("text", "alpha", "20");
 $setting_type['gen']['timezone'] = array("select", array("GMT-12"=>"Etc/GMT+12", "GMT-11"=>"Etc/GMT+11", "GMT-10"=>"Etc/GMT+10", "GMT-9"=>"Etc/GMT+9", "GMT-8"=>"Etc/GMT+8", "GMT-7"=>"Etc/GMT+7", "GMT-6"=>"Etc/GMT+6", "GMT-5"=>"Etc/GMT+5", "GMT-4"=>"Etc/GMT+4", "GMT-3"=>"Etc/GMT+3", "GMT-2"=>"Etc/GMT+2", "GMT-1"=>"Etc/GMT+1", "GMT"=>"Etc/GMT", "GMT+1"=>"Etc/GMT-1", "GMT+2"=>"Etc/GMT-2", "GMT+3"=>"Etc/GMT-3", "GMT+4"=>"Etc/GMT-4", "GMT+5"=>"Etc/GMT-5", "GMT+6"=>"Etc/GMT-6", "GMT+7"=>"Etc/GMT-7", "GMT+8"=>"Etc/GMT-8", "GMT+9"=>"Etc/GMT-9", "GMT+10"=>"Etc/GMT-10", "GMT+11"=>"Etc/GMT-11", "GMT+12"=>"Etc/GMT-12"));
+$setting_type['gen']['update'] = array("text", "url", "200");
+
+$setting_type['js'] = array();
+$setting_type['js']['debug'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
 
 $setting_type['list'] = array();
 $setting_type['list']['txt'] = array("text", "digital", "2");
@@ -200,7 +208,6 @@ $setting_type['path']['cache'] = array("text", "", "20");
 $setting_type['path']['template'] = array("text", "", "20");
 
 $setting_type['content'] = array();
-$setting_type['content']['max_length'] = array("text", "digital", "8");
 $setting_type['content']['get_remote_img'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
 
 $setting_type['watermark'] = array();

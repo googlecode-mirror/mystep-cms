@@ -372,7 +372,6 @@ function build_page($method) {
 	$tpl_tmp->Set_Variable('check_b', $check_b);
 	$tpl_tmp->Set_Variable('check_i', $check_i);
 	$tpl_tmp->Set_Variable('check_c', $check_c);
-	$tpl_tmp->Set_Variable('news_max_length', $setting['content']['max_length']);
 	$tpl_tmp->Set_Variable('get_remote_file', $setting['content']['get_remote_img']?"checked":"");
 	$tpl_tmp->Set_Variable('method', $method);
 	$tpl_tmp->Set_Variable('web_id', $web_id);

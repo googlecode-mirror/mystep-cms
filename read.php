@@ -70,12 +70,6 @@ $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 
-if($detail['ctype']==0) {
-	$htc = $mystep->getInstance("HTC_Parser", $detail['content']);
-	$htc->Parse();
-	$detail['content'] = $htc->get_result();
-}
-
 //if($setting['watermark']['mode'] & 1) $detail['content'] = txt_watermark($detail['content'], true, $setting['watermark']['credit'], $setting['web']['url']);
 if($setting['watermark']['mode'] & 1) {
 	$script = <<<mystep

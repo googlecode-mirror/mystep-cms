@@ -31,6 +31,10 @@ $setting['gen']['rewrite'] = false;
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'classic';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
+$setting['gen']['update'] = 'http://www.mystep.com/update/';
+
+$setting['js'] = array();
+$setting['js']['debug'] = true;
 
 $setting['list'] = array();
 $setting['list']['txt'] = 30;
@@ -57,7 +61,6 @@ $setting['path']['cache'] = 'cache/';
 $setting['path']['template'] = 'template/';
 
 $setting['content'] = array();
-$setting['content']['max_length'] = 10000;
 $setting['content']['get_remote_img'] = true;
 
 $setting['watermark'] = array();
@@ -78,12 +81,11 @@ $setting['memcache']['threshold'] = 10240;
 $setting['memcache']['min_savings'] = 0.5;
 
 
-
-$expire_list = array(
-	"default" => 60*10,
-	"index" => 60*30,
-	"list" => 60*60,
-	"tag" => 60*60*24,
-	"read" => 60*60*24*7,
+$expire_list = array (
+  'default' => 600,
+  'index' => 1800,
+  'list' => 3600,
+  'tag' => 86400,
+  'read' => 604800,
 );
 ?>
