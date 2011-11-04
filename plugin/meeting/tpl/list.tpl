@@ -21,10 +21,6 @@
 	  </tr>
 <!--loop:end-->
 	</table>
-</center>
-    </td>
-  </tr>
-</table>
 </div>
 <script language="javascript">
 if(parent.setNav!=null) {

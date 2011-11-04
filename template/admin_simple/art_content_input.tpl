@@ -240,9 +240,13 @@ function attach_add(str) {
 }
 
 function attach_remove(aid) {
-	var content;
+	var content, re;
 	content = tinyMCE.get('content').getContent();
-	var re = new RegExp("<a id\\=\"att_"+aid+".+?<\\/a>", "ig");
+	re = new RegExp("<a id\\=\"att_"+aid+".+?<\\/a>", "ig");
+	content = content.replace(re, "");
+	re = new RegExp("(<br \\/>)*<img.+?files\\?"+aid+".+?>(<br \\/>)*", "ig");
+	content = content.replace(re, "");
+	re = new RegExp("<p>[\s\r\n]*<\\/p>", "ig");
 	content = content.replace(re, "");
 	tinyMCE.get('content').setContent(content);
 	return;
@@ -302,7 +306,7 @@ function checkForm_append(theForm) {
 	var flag = true;
 	var theLen = theForm.describe.value.Tlength();
 	if(theLen>240) {
-		alert(printf("当前描述长度为 %1 字节，请限制在 %2 字节内！", theLen, 230));
+		alert(printf("当前描述长度为 %1 字节，请限制在 %2 字节内！", theLen, 240));
 		flag = false;
 	}
 	return flag;

@@ -11,6 +11,25 @@ switch($method) {
 	case "password":
 		build_page($method);
 		break;
+	case "login":
+		$user_name = $req->getPost("user_name");
+		$user_psw =$req->getPost("user_psw");
+		$check_code = $req->getPost("check_code");
+		$ms_info = "";
+		if(strtolower($check_code) == strtolower($req->getCookie("vcode"))) {
+			$ms_info = $mystep->login($user_name, $user_psw);
+		} else {
+			$ms_info = $setting['language']['login_error_vcode'];
+		}
+		$req->setCookie("ms_info");
+		$req->setCookie("vcode");
+		if(empty($ms_info)) {
+			$goto_url = $req->getServer("HTTP_REFERER");
+		} else {
+			$req->setCookie("ms_info", $ms_info, 60*10);
+			$goto_url = "module.php?m=offical&f=login_show";
+		}
+		break;
 	case "logout":
 		$mystep->logout();
 		$goto_url = $req->getServer("HTTP_REFERER");
@@ -22,7 +41,7 @@ $mystep->pageEnd();
 
 function build_page($method) {
 	global $setting, $mystep, $req, $db, $tpl_info;
-	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
+	$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 	if($method=="login_show") {
 		$tpl_info['idx'] = "login";
 		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);

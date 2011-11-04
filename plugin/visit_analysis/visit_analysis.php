@@ -57,7 +57,7 @@ if($order_type=="desc") {
 $tpl_tmp->Set_Variable('order', $order);
 $tpl_tmp->Set_Variable('order_type', $order_type);
 
-$tpl_tmp->Set_Variable('title', $setting['language']['plug_visit_analysis_title_'.$method]);
+$tpl_tmp->Set_Variable('title', $setting['language']['plugin_visit_analysis_title_'.$method]);
 $tpl->Set_Variable('path_admin', $setting['path']['admin']);
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting'));
 unset($tpl_tmp);

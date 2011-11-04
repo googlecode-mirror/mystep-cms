@@ -21,7 +21,9 @@ class MyStep extends class_common {
 		$func_log = array(),
 		$module = array(),
 		$language = array(),
-		$content = array();
+		$content = array(),
+		$css = array(),
+		$js = array();
 	
 	public function getInstance($calledClass = "") {
 		global $setting, $class_list;
@@ -228,7 +230,7 @@ class MyStep extends class_common {
 			}
 		}
 		if(count(ob_list_handlers())==0 && !headers_sent()) ob_start();
-		echo $tpl->Get_Content('$db, $setting');
+		echo $tpl->Get_Content('$db, $setting', $setting['gen']['minify']);
 		unset($tpl);
 	}
 	
@@ -282,7 +284,7 @@ class MyStep extends class_common {
 	
 	public function module($module) {
 		if(isset($this->module[$module])) {
-			global $mystep, $req, $db, $tpl_info, $setting, $goto_url;
+			global $mystep, $req, $db, $tpl_info, $setting, $goto_url, $cache_info;
 			include($this->module[$module]);
 		} else {
 			$GLOBALS['goto_url'] = "/";
@@ -341,6 +343,22 @@ class MyStep extends class_common {
 		} else {
 			return $setting['language']['psw_reset_err'];
 		}
+	}
+	
+	public function addCSS($cssFile) {
+		if(file_exists(ROOT_PATH."/".$cssFile)) $this->css[] = ROOT_PATH."/".$cssFile;
+	}
+	
+	public function getCSS() {
+		return $this->css;
+	}
+	
+	public function addJS($jsFile) {
+		if(file_exists(ROOT_PATH."/".$jsFile)) $this->js[] = ROOT_PATH."/".$jsFile;
+	}
+	
+	public function getJS() {
+		return $this->js;
 	}
 }
 

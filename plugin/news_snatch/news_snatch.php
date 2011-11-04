@@ -211,7 +211,7 @@ $rules = '.var_export($rules, true).';
 			$path_upload = $setting['path']['upload']."/tmp/".date("Ym")."/";
 			$upload = new MyUploader;
 			$upload->init(ROOT_PATH."/".$path_upload, true);
-			$upload->DoIt();
+			$upload->DoIt(false);
 			if($upload->upload_result[0]['error'] == 0) {
 				$theFile = ROOT_PATH."/".$path_upload."/".$upload->upload_result[0]['new_name'];
 				$code = toJson(unserialize(base64_decode(file_get_contents($theFile))), $setting['gen']['charset']);
@@ -231,6 +231,7 @@ $rules = '.var_export($rules, true).';
 					if(parent.parent==null){parent.close();}else{parent.parent.$.closePopupLayer();}
 				";
 			}
+			unset($upload);
 		}
 		build_page("upload");
 		break;
@@ -315,7 +316,6 @@ function build_page($method) {
 			$str_sql.= " order by ".(empty($order)?" ":"{$order} {$order_type}, ")."id {$order_type}";
 			$str_sql.= " limit {$page_start}, {$page_size}";
 			$db->Query($str_sql);
-			$tpl_tmp->para_list['record'] = array();
 			while($record = $db->GetRS()) {
 				HtmlTrans(&$record);
 				$tpl_tmp->Set_Loop('record', $record);

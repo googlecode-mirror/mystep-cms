@@ -13,7 +13,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $setting['language']['plug_search_delete'];
+		$log_info = $setting['language']['plugin_search_delete'];
 		$k = $req->getGet('k');
 		//$k = mysql_real_escape_string($k);
 		$db->Query("delete from ".$setting['db']['pre']."search_keyword where keyword = '{$k}'");
@@ -21,7 +21,7 @@ switch($method) {
 		break;
 	case "update":
 		if(count($_POST) != 0) {
-			$log_info = $setting['language']['plug_search_update'];
+			$log_info = $setting['language']['plugin_search_update'];
 			$se = array();
 			for($i=0, $m=count($_POST['key']);$i<$m;$i++) {
 				if(empty($_POST['key'][$i]) || empty($_POST['value'][$i])) continue;
@@ -62,7 +62,7 @@ function build_page($method) {
 			$record['value'] = $value;
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('title', $setting['language']['plug_search_title']);	
+		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_search_title']);	
 	} elseif($method=="keyword") {
 		$order = $req->getGet("order");
 		$order_type = $req->getGet("order_type");
@@ -80,7 +80,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$db->Free();
-		$tpl_tmp->Set_Variable('title', $setting['language']['plug_search_title_kw']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_search_title_kw']);
 	}
 	$tpl->Set_Variable('path_admin', $setting['path']['admin']);
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting'));

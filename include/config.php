@@ -31,7 +31,9 @@ $setting['gen']['rewrite'] = false;
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'classic';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
-$setting['gen']['update'] = 'http://www.mystep.com/update/';
+$setting['gen']['update'] = 'http://cccfna.org.cn/update/';
+$setting['gen']['minify'] = true;
+$setting['gen']['etag'] = "20111104";
 
 $setting['js'] = array();
 $setting['js']['debug'] = true;

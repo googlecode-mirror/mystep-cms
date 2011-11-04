@@ -15,7 +15,7 @@ if($v!="") {
 			$sql_list = array_merge($sql_list, $value['sql']);
 			$file_list = array_merge($file_list, $value['file']);
 		} else {
-			$flag = ($key==$v);
+			$flag = ($key==$v || $key>$v);
 		}
 	}
 	$file_list = array_unique($file_list);
@@ -33,6 +33,8 @@ if($v!="") {
 		array_shift($version);
 		echo toJson($version, $setting['gen']['charset']);
 	} else {
+		$last_update = array_pop($version);
+		$ms_version['update'] = preg_replace("/[\r\n]+\s+/", "\n", $last_update['info']);
 		echo toJson($ms_version, $setting['gen']['charset']);
 	}
 }

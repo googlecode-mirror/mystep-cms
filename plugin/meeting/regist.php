@@ -62,7 +62,7 @@ if(count($_POST)>0) {
 	}
 }
 
-$tpl = $mystep->getInstance("MyTpl", $tpl_info);
+$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 	
 $tpl_info['idx'] = $mid."_".$module."_".($setting['gen']['language']=="en"?"en":"cn");
 $tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/";

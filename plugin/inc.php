@@ -35,5 +35,4 @@ if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "fil
 		$mystep->pageEnd(false);
 	}
 }
-
 ?>

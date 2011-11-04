@@ -8,16 +8,16 @@
 <meta name="description" content="<!--page_description-->">
 <meta name="resource-type" content="document" />
 <meta name="distribution" content="global" />
-<meta name="author" content="MyStep" />
-<meta name="generator" content="windy2000" />
+<meta name="author" content="windy2000" />
+<meta name="generator" content="MyStep" />
 <meta name="robots" content="index, follow" />
 <meta name="revisit-after" content="1 days" />
 <meta name="rating" content="general" />
 <meta name="copyright" content="Copyright (c) 2011 windy2000. All Rights Reserved." />
-<link rel="stylesheet" type="text/css" href="images/<!--template-->/style.css" />
-<link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 <link rel="Shortcut Icon" href="favicon.ico" />
 <!--page_start-->
+<link rel="stylesheet" type="text/css" href="images/<!--template-->/style.css" />
+<link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 </head>
 <body>
 <div id="bar_loading"><img src="images/loading.gif" alt="<!--lang_ajax_sending-->"><br / ><!--lang_ajax_sending--></div>
@@ -27,9 +27,9 @@
 			<script language="JavaScript" src="script/date.js"></script>
 		</div>
 		<div class="fr">
-			<script language="JavaScript" src="script/language.js"></script> |
-			<a href="###" onClick="this.style.behavior='url(#default#homepage)';this.setHomePage(document.URL);">设为首页</a> |
-			<a href="###" onClick="if(document.all){window.external.addFavorite(document.URL, document.title);}else if(window.sidebar){window.sidebar.addPanel(document.title, document.URL, '');}">加入收藏</a>
+			<script language="JavaScript" src="script/chs2cht.js"></script> |
+			<a href="#" onClick="setHomepage()">设为首页</a> |
+			<a href="#" onClick="addBookmark(this)">加入收藏</a>
 		</div>
 	</div>
 	<div id="page_top" class="after">

@@ -24,7 +24,7 @@ if(!empty($mode)) {
 } else {
 	$page = $req->getGet("page");
 	if(!is_numeric($page) || $page < 1) $page = 1;
-	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
+	$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 	$tpl_info['idx'] = "search";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	$web_id = $setting['info']['web']['web_id'];

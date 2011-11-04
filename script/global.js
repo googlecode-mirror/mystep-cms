@@ -295,6 +295,43 @@ function setSlide() {
 	}
 }
 
+function addBookmark(obj) {
+	if (window.sidebar) {
+		window.sidebar.addPanel(document.title, document.URL, "");
+	} else if(document.all) {
+		window.external.AddFavorite(document.URL, document.title);
+	} else if(window.opera && window.print) {
+		obj = obj || window.event.srcElement || window.event.target;
+		obj.setAttribute('rel','sidebar');
+		obj.setAttribute('href',url);
+		obj.setAttribute('title',title);
+		obj.click();
+		return true;
+	} else {
+		alert("Can't add bookmark to your browser \n\nPress 'Ctrl + D' please!");
+	}
+}
+
+function setHomepage() {
+	var url = document.URL;
+	if(document.all) {
+		document.body.style.behavior='url(#default#homepage)';
+		document.body.setHomePage(url);
+	} else if(window.sidebar) {
+		if(window.netscape){
+			try{
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			}catch (e){
+				alert("Input 'about:config' to addres bar, then press 'Enter', set the option of 'signed.applets.codebase_principal_support' to True.");
+			}
+		}
+		var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
+		prefs.setCharPref('browser.startup.homepage',url);
+	} else {
+		alert("Can't set currnet page to Homepage!");
+	}
+}
+
 function reportError(msg, url, line) {
 	var str = "You have found an error as below: \n\n";
 	str += "Err: " + msg + "on line: " + line;
@@ -302,4 +339,5 @@ function reportError(msg, url, line) {
 	return true;
 }
 window.onerror = reportError;
-if(typeof(ms_setting)=="undefined") $.getScript(rlt_path + "script/setting.js.php");
+$.getScript(rlt_path + "script/setting.js.php");
+$.getScript(rlt_path + "script/language.js.php");

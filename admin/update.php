@@ -1,6 +1,7 @@
 <?php
 require("inc.php");
 if(isset($_GET['update'])) {
+	set_time_limit(0);
 	$result = array();
 	$update_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver']);
 	$update_info = base64_decode($update_info);

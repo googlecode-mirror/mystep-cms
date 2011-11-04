@@ -15,7 +15,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $setting['language']['plug_se_detect_delete'];
+		$log_info = $setting['language']['plugin_se_detect_delete'];
 		$db->Query("delete from ".$setting['db']['pre']."se_detect where idx = '{$idx}'");
 		$db->Query("update ".$setting['db']['pre']."se_count set `".$setting['language']['etc']."` = `".$setting['language']['etc']."` + `{$idx}`");
 		$db->Query("alter table ".$setting['db']['pre']."se_count drop `{$idx}`");
@@ -40,11 +40,11 @@ switch($method) {
 			}
 			$db->Free();
 			if($method=="add_ok") {
-				$log_info = $setting['language']['plug_se_detect_add'];
+				$log_info = $setting['language']['plugin_se_detect_add'];
 				$keys = array_keys($agent);
 				$db->Query("alter table ".$setting['db']['pre']."se_count add `{$idx}` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL after `".$keys[count($keys)-2]."`");
 			} else {
-				$log_info = $setting['language']['plug_se_detect_edit'];
+				$log_info = $setting['language']['plugin_se_detect_edit'];
 				if($_POST['idx_org']!=$_POST['idx']) {
 					$db->Query("delete from ".$setting['db']['pre']."se_detect where idx = '".$_POST['idx_org']."'");
 					$db->Query("alter table ".$setting['db']['pre']."se_count change `".$_POST['idx_org']."` `".$_POST['idx']."` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL");
@@ -94,7 +94,7 @@ function build_page($method) {
 			$record['counter'] = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."se_detect where idx='".$key."'");
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('title', $setting['language']['plug_se_detect_title']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_se_detect_title']);
 	} elseif($method == "view") {
 		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."se_count");
 		$tpl_tmp->Set_If('empty', ($counter==0));
@@ -119,7 +119,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$db->Free();
-		$tpl_tmp->Set_Variable('title', $setting['language']['plug_se_detect_title']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_se_detect_title']);
 	} else {
 		$record = array();
 		$record['idx'] = '';
@@ -139,7 +139,7 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_Variables($record);
 		
-		$tpl_tmp->Set_Variable('title', ($method=='add'?$setting['language']['plug_se_detect_add']:$setting['language']['plug_se_detect_edit']));
+		$tpl_tmp->Set_Variable('title', ($method=='add'?$setting['language']['plugin_se_detect_add']:$setting['language']['plugin_se_detect_edit']));
 		$tpl_tmp->Set_Variable('method', $method);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}

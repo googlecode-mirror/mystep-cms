@@ -7,27 +7,14 @@ if(!is_numeric($id) || empty($id)) {
 	exit();
 }
 
-$expires = 60*60*24*7;
-header("Pragma: public");
-header("Cache-Control: private, max-age=".$expires);
-header("Last-Modified: ".gmdate('D, d M Y H:i:s')." GMT");
-header("Expires: ".gmdate('D, d M Y H:i:s', time()+$expires)." GMT");
-$etag = md5($_SERVER['URL']);
-if ($_SERVER['HTTP_IF_NONE_MATCH'] == $etag){
-	header('Etag:'.$etag, true, 304);
-	exit();
-} else {
-	header('Etag:'.$etag);
-}
-
 define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 include(ROOT_PATH."/include/config.php");
 if($setting['web']['close'] && !isset($_COOKIE['force'])) {
 	header("HTTP/1.0 404 Not Found");
 	exit();
 }
-
 include(ROOT_PATH."/include/parameter.php");
+include(ROOT_PATH."/source/function/etag.php");
 include(ROOT_PATH."/source/function/global.php");
 include(ROOT_PATH."/source/function/web.php");
 include(ROOT_PATH."/source/class/abstract.class.php");

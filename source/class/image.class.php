@@ -823,8 +823,8 @@ class imageCreator extends class_common {
 	$coordinateMaker->setPoint($point)													//取得相对原点坐标的实际位置
 	$coordinateMaker->setScalePoint($point, $trans)										//俺比例取得相对原点坐标的实际位置
 	$coordinateMaker->buileCoordinate($padding)											//绘制坐标系
-	$coordinateMaker->drawZigzag($data_lst, $color_lst, $data_str, $show_value, $sample_point)								//画折线
-	$coordinateMaker->drawBar($data_lst, $color_lst, $data_str, $show_value, $sample_point)									//画柱
+	$coordinateMaker->drawZigzag($data_lst, $color_lst, $data_str, $show_value, $legend_point)								//画折线
+	$coordinateMaker->drawBar($data_lst, $color_lst, $data_str, $show_value, $legend_point)									//画柱
 	$coordinateMaker->drawPie($data, $data_str, $point, $width, $height, $mode, $mask, $ext_value, $distance, $start_angle)	//画饼
 
 --------------------------------------------------------------------------------------------------------------------*/
@@ -969,7 +969,7 @@ class coordinateMaker extends imageCreator {
 		return;
 	}
 
-	public function drawZigzag($data_lst, $color_lst="", $data_str="", $show_value = true, $sample_point = NULL) {
+	public function drawZigzag($data_lst, $color_lst="", $data_str="", $show_value = true, $legend_point = NULL) {
 		if(is_string($color_lst)) {
 			$points_new = array();
 			$points = $data_lst;
@@ -1002,21 +1002,21 @@ class coordinateMaker extends imageCreator {
 				parent::drawZigzag($points_new, $color_lst[$n]);
 			}
 
-			if(is_null($sample_point)) $sample_point = array($this->width - 150, 20);
+			if(is_null($legend_point)) $legend_point = array($this->width - 150, 20);
 			$line_len = 50;
 			$max_count = count($data_str);
 			for($i = 0; $i < $max_count; $i++) {
-				$this->drawLine($sample_point, array($sample_point[0]+$line_len, $sample_point[1]), $color_lst[$i]);
-				$this->drawEllipse(array($sample_point[0]+$line_len/2, $sample_point[1]), 5, 5, $color_lst[$i], true);
+				$this->drawLine($legend_point, array($legend_point[0]+$line_len, $legend_point[1]), $color_lst[$i]);
+				$this->drawEllipse(array($legend_point[0]+$line_len/2, $legend_point[1]), 5, 5, $color_lst[$i], true);
 				$data_str[$i] = $this->transString($data_str[$i]);
-				$this->drawString($data_str[$i], array($sample_point[0]+$line_len+10, $sample_point[1]+5), "black", $this->font);
-				$sample_point[1] += 30;
+				$this->drawString($data_str[$i], array($legend_point[0]+$line_len+10, $legend_point[1]+5), "black", $this->font);
+				$legend_point[1] += 30;
 			}
 		}
 		return;
 	}
 
-	public function drawBar($data_lst, $color_lst="", $data_str="", $show_value = false, $sample_point = NULL) {
+	public function drawBar($data_lst, $color_lst="", $data_str="", $show_value = false, $legend_point = NULL) {
 		$distance = $this->start_x;
 		list($font_width, $font_height) = $this->getFontSize(4, 0);
 		if(is_string($color_lst)) {
@@ -1056,19 +1056,19 @@ class coordinateMaker extends imageCreator {
 				}
 			}
 
-			if(is_null($sample_point)) $sample_point = array($this->width - 150, 20);
+			if(is_null($legend_point)) $legend_point = array($this->width - 150, 20);
 			$max_count = count($data_str);
 			for($i = 0; $i < $max_count; $i++) {
-				$this->drawRectangle($sample_point, 15, 15, "black", $color_lst[$i]);
+				$this->drawRectangle($legend_point, 15, 15, "black", $color_lst[$i]);
 				$data_str[$i] = $this->transString($data_str[$i]);
-				$this->drawString($data_str[$i], array($sample_point[0]+30, $sample_point[1]+14), "black", $this->font);
-				$sample_point[1] += 30;
+				$this->drawString($data_str[$i], array($legend_point[0]+30, $legend_point[1]+14), "black", $this->font);
+				$legend_point[1] += 30;
 			}
 		}
 		return;
 	}
 
-	public function drawPie($data, $data_str, $point, $width, $height, $mode = 1, $mask = 20, $ext_value = 0, $distance = 0, $start_angle = 0) {
+	public function drawPie($data, $data_str, $point, $width, $height, $mode = 1, $legend = 0, $mask = 20, $ext_value = 0, $distance = 0, $start_angle = 0) {
 		parent::drawPie($data, $point, $width, $height, $mask, $ext_value, $distance, $start_angle);
 		$data_sum = array_sum($data) + $ext_value;
 		$angle = array();
@@ -1079,8 +1079,13 @@ class coordinateMaker extends imageCreator {
    		$angle_sum[] = array_sum($angle);
 		}
 		$radius = ($width + $height) / 4 + $distance + 20;
-		$sample_left = $point[0]+$width/2 + 80 + $distance;
-		$sample_top = $point[1]-$height/2;
+		if($legend==1) {
+			$legend_left = $point[0]+$width/2 + 80 + $distance;
+			$legend_top = $point[1]-$height/2;
+		} else {
+			$legend_left = $distance;
+			$legend_top = $point[1] + $height - 60;
+		}
 		
 		$max_count = count($data);
 		for($i=0; $i<$max_count; $i++) {
@@ -1094,15 +1099,17 @@ class coordinateMaker extends imageCreator {
 			$this->drawString($value, array($the_point[0]+1, $the_point[1]+1), "white");
 			$this->drawString($value, $the_point, "black");
 
-			$the_point = array($sample_left, $sample_top);
-			$this->drawRectangle($the_point, 15, 15, "black", "pie_".($i+1));
-			$the_point[0] += 20;
-			$the_point[1] += 14;
-			$data_str[$i] .= " - {$value}";
-			$data_str[$i] = $this->transString($data_str[$i]);
-			$this->drawString($data_str[$i], array($the_point[0]+1, $the_point[1]+1), "white", $this->font);
-			$this->drawString($data_str[$i], $the_point, "black", $this->font);
-			$sample_top += 30;
+			if($legend!=0) {
+				$the_point = array($legend_left, $legend_top);
+				$this->drawRectangle($the_point, 15, 15, "black", "pie_".($i+1));
+				$the_point[0] += 20;
+				$the_point[1] += 14;
+				$data_str[$i] .= " - {$value}";
+				$data_str[$i] = $this->transString($data_str[$i]);
+				$this->drawString($data_str[$i], array($the_point[0]+1, $the_point[1]+1), "white", $this->font);
+				$this->drawString($data_str[$i], $the_point, "black", $this->font);
+				$legend_top += 30;
+			}
 		}
 		return;
 	}

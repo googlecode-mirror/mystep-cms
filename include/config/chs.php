@@ -52,6 +52,8 @@ $setting_comm['gen']['cache_ext'] = '静态扩展名';
 $setting_comm['gen']['template'] = '默认模板';
 $setting_comm['gen']['timezone'] = "时区矫正";
 $setting_comm['gen']['update'] = "更新网址";
+$setting_comm['gen']['minify'] = "超文本压缩";
+$setting_comm['gen']['etag'] = "过期标识";
 $setting_comm['gen_descr']['language'] = '网站显示语种切换';
 $setting_comm['gen_descr']['charset'] = '网站显示编码集';
 $setting_comm['gen_descr']['gzip_level'] = 'GZIP 压缩页面的级别（0-9），0 为关闭压缩';
@@ -61,6 +63,8 @@ $setting_comm['gen_descr']['cache_ext'] = '静态连接和缓存文件的扩展名';
 $setting_comm['gen_descr']['template'] = '网站前台显示样式';
 $setting_comm['gen_descr']['timezone'] = "设定网站显示时区";
 $setting_comm['gen_descr']['update'] = "获取内容系统程序更新的网址";
+$setting_comm['gen_descr']['minify'] = "超文本代码压缩，以减少页面传送时间";
+$setting_comm['gen_descr']['etag'] = "用于 Etag 标识，减少未更改页面的传输";
 
 $setting_comm['js'] = array();
 $setting_comm['js_comm'] = 'JavaScript 脚本程序参数设置';
@@ -179,6 +183,8 @@ $setting_type['gen']['cache_ext'] = array("text", "", "10");
 $setting_type['gen']['template'] = array("text", "alpha", "20");
 $setting_type['gen']['timezone'] = array("select", array("GMT-12"=>"Etc/GMT+12", "GMT-11"=>"Etc/GMT+11", "GMT-10"=>"Etc/GMT+10", "GMT-9"=>"Etc/GMT+9", "GMT-8"=>"Etc/GMT+8", "GMT-7"=>"Etc/GMT+7", "GMT-6"=>"Etc/GMT+6", "GMT-5"=>"Etc/GMT+5", "GMT-4"=>"Etc/GMT+4", "GMT-3"=>"Etc/GMT+3", "GMT-2"=>"Etc/GMT+2", "GMT-1"=>"Etc/GMT+1", "GMT"=>"Etc/GMT", "GMT+1"=>"Etc/GMT-1", "GMT+2"=>"Etc/GMT-2", "GMT+3"=>"Etc/GMT-3", "GMT+4"=>"Etc/GMT-4", "GMT+5"=>"Etc/GMT-5", "GMT+6"=>"Etc/GMT-6", "GMT+7"=>"Etc/GMT-7", "GMT+8"=>"Etc/GMT-8", "GMT+9"=>"Etc/GMT-9", "GMT+10"=>"Etc/GMT-10", "GMT+11"=>"Etc/GMT-11", "GMT+12"=>"Etc/GMT-12"));
 $setting_type['gen']['update'] = array("text", "url", "200");
+$setting_type['gen']['minify'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
+$setting_type['gen']['etag'] = array("text", "", "10");
 
 $setting_type['js'] = array();
 $setting_type['js']['debug'] = array("radio", array("开启"=>"true", "关闭"=>"false"));

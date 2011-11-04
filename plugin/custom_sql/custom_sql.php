@@ -15,7 +15,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $setting['language']['plug_custom_sql_delete'];
+		$log_info = $setting['language']['plugin_custom_sql_delete'];
 		unset($sql_list[$id]);
 		$sql_list = array_values($sql_list);
 		$content = "<?PHP
@@ -30,14 +30,14 @@ switch($method) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			if(!preg_match("/^(select|show).+/i", $_POST['sql']) || preg_match("/ into /i", $_POST['sql'])) {
-				showInfo($setting['language']['plug_custom_sql_error_sql']);
+				showInfo($setting['language']['plugin_custom_sql_error_sql']);
 			} else {
 				unset($_POST['id']);
 				if($method=="add_ok") {
-					$log_info = $setting['language']['plug_custom_sql_add'];
+					$log_info = $setting['language']['plugin_custom_sql_add'];
 					$sql_list[] = $_POST;
 				} else {
-					$log_info = $setting['language']['plug_custom_sql_edit'];
+					$log_info = $setting['language']['plugin_custom_sql_edit'];
 					$sql_list[$id] = $_POST;
 				}
 				$content = "<?PHP
@@ -49,7 +49,7 @@ switch($method) {
 		}
 		break;
 	case "export":
-		$log_info = $setting['language']['plug_custom_sql_export'];
+		$log_info = $setting['language']['plugin_custom_sql_export'];
 		$xls = new MyXls;
 		$xls->init($sql_list[$id]['name'], $sql_list[$id]['name']);
 		$xls->addRow();
@@ -106,7 +106,7 @@ function build_page($method) {
 			}
 			$tpl->Set_Loop('record', $record);
 		}
-		$tpl->Set_Variable('title', $setting['language']['plug_custom_sql_title']);
+		$tpl->Set_Variable('title', $setting['language']['plugin_custom_sql_title']);
 		$tpl->Set_Variable('title_2', $the_sql['name']);
 		$tpl->Set_Variable('id', $id);
 	} elseif($method == "list") {
@@ -116,7 +116,7 @@ function build_page($method) {
 			$sql_list[$i]['no'] = $i+1;
 			$tpl->Set_Loop('record', $sql_list[$i]);
 		}
-		$tpl->Set_Variable('title', $setting['language']['plug_custom_sql_title']);
+		$tpl->Set_Variable('title', $setting['language']['plugin_custom_sql_title']);
 	} else {
 		if($method == "edit") {
 			$record = $sql_list[$id];
@@ -130,7 +130,7 @@ function build_page($method) {
 		}
 		$tpl->Set_Variables($record);
 		
-		$tpl->Set_Variable('title', ($method=='add'?$setting['language']['plug_custom_sql_add']:$setting['language']['plug_custom_sql_edit']));
+		$tpl->Set_Variable('title', ($method=='add'?$setting['language']['plugin_custom_sql_add']:$setting['language']['plugin_custom_sql_edit']));
 		$tpl->Set_Variable('method', $method);
 		$tpl->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}

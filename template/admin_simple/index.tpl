@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" media="all" href="style.css" />
 <script language="JavaScript" src="/script/global.js"></script>
 <script language="JavaScript" src="/script/jquery.js"></script>
+<script language="JavaScript" src="/script/jquery.addon.js"></script>
 <base target="main">
 </head>
 <body style="overflow:hidden;">

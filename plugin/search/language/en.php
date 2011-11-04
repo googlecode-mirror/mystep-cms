@@ -1,11 +1,11 @@
 <?php
 $language = array(
-	"plug_search_update" => "Update Searching Engine",
-	"plug_search_delete" => "Delete Searching keyword",
-	"plug_search_title" => "Web Searching Engine Manager",
-	"plug_search_title_kw" => "Searching Keywords List",
-	"plug_search_local" => "Local",
-	"plug_search_search" => "Search",
-	"plug_search_default" => "Input the keyword please",
+	"plugin_search_update" => "Update Searching Engine",
+	"plugin_search_delete" => "Delete Searching keyword",
+	"plugin_search_title" => "Web Searching Engine Manager",
+	"plugin_search_title_kw" => "Searching Keywords List",
+	"plugin_search_local" => "Local",
+	"plugin_search_search" => "Search",
+	"plugin_search_default" => "Input the keyword please",
 );
 ?>

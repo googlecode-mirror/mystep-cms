@@ -1,15 +1,13 @@
 <?php
 $errType = $_SERVER['QUERY_STRING'];
-if(preg_match("/\d+/", $errType)) $errType = "404";
+if(!preg_match("/\d+/", $errType)) $errType = "404";
 $errUrl = "http://".$_SERVER["HTTP_HOST"].$_SERVER["REQUEST_URI"];
 $errReferer = $_SERVER['HTTP_REFERER'];
 $errTime = date("Y-m-d H:i:s");
 $errIp = $_SERVER["REMOTE_ADDR"];
 $errMethod = $_SERVER["REQUEST_METHOD"];
-$errUser = $_REQUEST["username"];
-$errMsg = "";
+$errAgent = $_SERVER["HTTP_USER_AGENT"];
 $ext = "";
-
 if($errType=="404") {
 	$ext = strtolower(strrchr($errUrl, "."));
 	if(strpos(".jpeg.jpg.bmp.gif.png", $ext)!==false) {
@@ -17,64 +15,53 @@ if($errType=="404") {
 		exit;
 	}
 }
-
-
-$errString = $errUrl.",".$errReferer.",".$errTime.",".$errIp.",".$errMethod.",".$errUser."\n";
-
-function WriteFile($file_name, $content, $mode="ab") {
-	//Coded By Windy200020040410 v1.0
-	$fp = fopen($file_name, $mode);
+$errString = $errType.",".$errUrl.",".$errReferer.",".$errTime.",".$errIp.",".$errMethod.",".$errAgent"\n";
+if($fp = fopen("err.csv", "ab")) {
 	if(flock($fp, LOCK_EX)) {
-		fwrite($fp, $content);
+		fwrite($fp, $errString);
 		flock($fp, LOCK_UN);
-	} else {
-		fwrite($fp, $content);
 	}
 	fclose($fp);
-	return;
 }
 
-WriteFile("err_".$errType.".csv", $errString, "a");
+$error = array(
+	'400' => '请求出错，服务器无法理解此请求',
+	'401' => '登录失败，传输给服务器的证书与登录服务器所需的证书不匹配',
+	'403' => '您所连接目录禁止浏览',
+	'404' => 'Web 服务器找不到您所请求的文件或脚本',
+	'405' => '不允许此方法，对于请求所标识的资源，不允许使用请求行中所指定的方法',
+	'406' => '不可接受，此请求所标识的资源只能生成内容特征为“不可接受”的响应实体',
+	'407' => '需要代理身份验证，请登录到代理服务器，然后重试',
+	'412' => '前提条件失败，部分请求标题字段中所给定的前提条件估计为FALSE。',
+	'414' => 'Request-URL太长，服务器拒绝服务此请求',
+	'500' => '服务器的内部错误',
+	'501' => 'Web 服务器不支持实现此请求所需的功能，请检查URL中的错误',
+	'502' => '网关出错，服务器将从试图实现此请求时所访问的upstream 服务器中接收无效的响应',
+);
 
-
-switch($errType) {
-	case "403":
-		$errMsg = "您所连接目录禁止浏览";
-		break;
-	case "404":
-		$errMsg = "您所请求页面并不存在";
-		break;
-	case "500":
-		$errMsg = "程序执行出错";
-		break;
-	default:
-		$errMsg = "浏览时发生未知错误";
+if(isset($error[$errType])) {
+	$errMsg = $error[$errType];
+} else {
+	$errMsg = "浏览时发生未知错误";
 }
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php
-echo $errMsg
-?></title>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+<title><?=$errMsg?></title>
 </head>
-
 <body>
 <div style="text-align:center;font-size:14px;padding:14px;color:blue;font-weight:blod;font-family:Arial">
-<?php
-echo $errMsg
-?>，请核实链接的合法性！
+<?=$errMsg?>，请核实链接的合法性！
 <br /><br />
 </div>
 <div style="text-align:center;font-size:14px;">
 <script language="javascript" type="text/javascript">
 var url_req = document.location.toString();
 document.writeln("您请求地址是: <a href=\"" + url_req + "\">" + url_req + "</a><br />");
-var url_new = "/";
-url_new = url_req.replace(/^(http(s)?:\/\/[^\/]+)/(.+)$/i, $1);
-document.writeln("系统自动转向: <a href=\"" + url_new + "\">" + url_new + "</a><br />");
+var url_new = "http://<?=$_SERVER['HTTP_HOST']>";
+Document.writeln("系统自动转向: <a href=\"" + url_new + "\">" + url_new + "</a><br />");
 setTimeout("location.href='" + url_new +"'", 2000);
 </script>
 </div>

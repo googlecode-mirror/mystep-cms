@@ -1,6 +1,6 @@
 	<div class="page_bar after">
 		<div class="fl page_list">
-			<div class="box box_list">
+			<div class="box box_list" style="margin-top:0px;">
 				<div class="title">图片新闻</div>
 				<div class="content">
 <!--news show_image="1" limit="4" template="picture"-->
@@ -13,7 +13,7 @@
 				<div class="taglist">
 					<h4>热门标签</h4>
 					<div>
-<!--tag limit="50" order="id desc"-->
+<!--tag limit="50" order="rand()" condition="`count`>10"-->
 					</div>
 				</div>
 				<div class="content after">

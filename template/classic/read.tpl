@@ -12,7 +12,7 @@
 		</div>
 		<div class="fr page_main">
 			<div class="box">
-				<div class="title">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 列表</div>
+				<div class="title">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 正文<input type="hidden" id="news_id" value="<!--record_news_id-->"></div>
 				<div class="page after"><!--prefix_list--></div>
 				<div class="content">
 					<div class="main">

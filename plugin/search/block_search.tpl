@@ -5,7 +5,7 @@
 <!--loop:start-->
 		<option value="<!--search_idx-->"><!--search_idx--></option>
 <!--loop:end-->
-		<option value=""><!--lang_plug_search_local--></option>
+		<option value=""><!--lang_plugin_search_local--></option>
 	</select>
 	<input class="button" type="submit" value="  " />
 </form>

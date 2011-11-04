@@ -10,8 +10,6 @@
 *                                                 *
 **************************************************/
 
-if(typeof(language)=="undefined") $.getScript(rlt_path + "script/language.js.php");
-
 function checkForm(the_form, myChecker){
 	var flag = false;
 	if(typeof(myChecker)=="function") {

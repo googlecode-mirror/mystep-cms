@@ -67,9 +67,9 @@
 			</tr>
 			<tr>
 				<td class="cat" colspan="2" align="center" style="padding:20px">
-				<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
-				<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
-				<input class="btn" type="button" value=" 返 回	" onClick="location.href='<!--back_url-->'">
+					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 返 回	" onClick="location.href='<!--back_url-->'">
 				</td>
 			</tr>
 		</table>

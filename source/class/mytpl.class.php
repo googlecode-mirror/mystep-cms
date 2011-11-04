@@ -184,7 +184,7 @@ class MyTpl extends class_common {
 						}
 					} else {
 						$tpl_para[$this->hash]['loop'][$cur_attrib['key']] = array();
-						$unit = preg_replace("/".preg_quote($this->delimiter_l)."(\w+)_(\w+)".preg_quote($this->delimiter_r)."/U", "{\$tpl_para['{$this->hash}']['loop']['\\1'][\$i]['\\2']}", $unit);
+						$unit = preg_replace("/".preg_quote($this->delimiter_l).preg_quote($cur_attrib['key'])."_(\w+)".preg_quote($this->delimiter_r)."/U", "{\$tpl_para['{$this->hash}']['loop']['".$cur_attrib['key']."'][\$i]['\\1']}", $unit);
 					}
 					$cur_result = <<<mytpl
 <?php
@@ -277,9 +277,12 @@ mytpl;
 		}
 		
 		$tpl_cache = $this->Parse_Tags($tpl_cache);
+		/*
 		foreach($tpl_para[$this->hash]['para'] as $key => $value) {
 			$tpl_cache = str_replace($this->delimiter_l.$key.$this->delimiter_r, "<?=\$tpl_para['{$this->hash}']['para']['{$key}']?>", $tpl_cache);
 		}
+		*/
+		$tpl_cache = preg_replace("/".preg_quote($this->delimiter_l)."(\w+)".preg_quote($this->delimiter_r)."/", "<?=\$tpl_para['{$this->hash}']['para']['\\1']?>", $tpl_cache);
 		$tpl_cache = preg_replace("/[\r\n]+/", "\n", $tpl_cache);
 		$tpl_cache = "<!--".filemtime($this->tpl_info['file'])."-->"."\n".$tpl_cache;
 		$this->WriteFile($cache_file, $tpl_cache, 'wb');
@@ -351,7 +354,7 @@ mytpl;
 		return $content;
 	}
 	
-	public function Get_Content($global_para = "", $charset = "") {
+	public function Get_Content($global_para = "", $minify = false) {
 		global $tpl_para;
 		if(!empty($global_para)) {
 			eval("global ".$global_para.";");
@@ -380,7 +383,12 @@ mytpl;
 					if(count(ob_list_handlers())>0) ob_clean();
 				}
 			}
-			//$content = preg_replace("/[\s\t ]*[\r\n]+[\s\t ]*/", "", $content);
+			if($minify) {
+				$content = preg_replace("/\/\/[\w\s]+([\r\n]+)/", '\1', $content);
+				$content = preg_replace("/\s+/", " ", $content);
+				//$content = str_replace("> <", "><", $content);
+				//$content = preg_replace("/[\s\t ]*[\r\n]+[\s\t ]*/", "", $content);
+			}
 			$content = preg_replace("/^".preg_quote($this->delimiter_l)."\d+".preg_quote($this->delimiter_r)."[\r\n]*/", "", $content);
 			$content = preg_replace("/".preg_quote($this->delimiter_l).".+?".preg_quote($this->delimiter_r)."/", "", $content);
 			if($this->cache['use'] && $this->cache['expire'] > 0) $this->WriteFile($this->cache['file'], $content, 'w');

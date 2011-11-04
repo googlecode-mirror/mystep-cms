@@ -28,12 +28,12 @@ class plugin_offical implements plugin {
 	public static function page_start() {
 		$setting = self::setting();
 		if($setting['cache']) {
-			$expires = getCacheExpire();
+			$etag_expires = getCacheExpire();
 			header("Pragma: public");
-			header("Cache-Control: private, max-age=".$expires);
+			header("Cache-Control: private, max-age=".$etag_expires);
 			header("Last-Modified: ".gmdate('D, d M Y H:i:s')." GMT");
-			header("Expires: ".gmdate('D, d M Y H:i:s', time()+$expires)." GMT");
-			$etag = md5($_SERVER['URL']);
+			header("Expires: ".gmdate('D, d M Y H:i:s', time()+$etag_expires)." GMT");
+			$etag = md5($_SERVER["REQUEST_URI"].implode(",", $GLOBALS['ms_version']).$GLOBALS['setting']['gen']['etag']);
 			if ($_SERVER['HTTP_IF_NONE_MATCH'] == $etag){
 				header('Etag:'.$etag, true, 304);
 				exit();
@@ -41,10 +41,12 @@ class plugin_offical implements plugin {
 				header('Etag:'.$etag);
 			}
 		} else {
-			header("Expires: -1");
-			header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0");
-			header("Cache-Control: private", false);
-			header("Pragma: no-cache");	
+			if(!isset($GLOBALS['etag_expires'])) {
+				header("Expires: -1");
+				header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0");
+				header("Cache-Control: private", false);
+				header("Pragma: no-cache");
+			}
 		}
 	}
 	
@@ -184,10 +186,28 @@ class plugin_offical implements plugin {
 		return $result;
 	}
 	
-	public static function login($member, $password, $vcode) {
-		global $db, $setting;
-		
-		return true;
+	public static function login($user_name, $user_psw) {
+		global $db, $setting, $req;
+		$result = "";
+		$user_info = $db->GetSingleRecord("select user_id, group_id, type_id from ".$setting['db']['pre']."users where username='{$user_name}' and password='".md5($user_psw)."'");
+		if($user_info) {
+			list($uid, $groupid) = array_values($user_info);
+		} elseif($user_name==$setting['web']['s_user'] && md5($user_psw)==$setting['web']['s_pass']) {
+			$uid=0;
+			$groupid=1;
+		}
+		if(isset($uid)) {
+			$req->setCookie("ms_user", $uid."\t".md5($user_psw), 60*60*24);
+		} else {
+			$result = $setting['language']['login_error_psw'];
+		}
+		return $result;
+	}
+	
+	public static function logout() {
+		global $req;
+		$req->setCookie("ms_user");
+		$req->destroySession();
 	}
 	
 	public static function parse_news(MyTPL $tpl, $att_list = array()) {

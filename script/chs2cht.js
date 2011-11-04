@@ -95,3 +95,51 @@ if (StranLink_Obj)
   }
   if(BodyIsFt=="1"){setTimeout("StranBody()",StranIt_Delay)}
 }
+
+/*--Functions 4 Cookie Start--*/
+function getCookieVal (offset) {
+	var endstr = document.cookie.indexOf (";", offset);
+	if (endstr == -1)
+		endstr = document.cookie.length;
+	return unescape(document.cookie.substring(offset, endstr));
+}
+
+function getCookie (name) {
+	var arg = name + "=";
+	var alen = arg.length;
+	var clen = document.cookie.length;
+	var i = 0;
+	while (i < clen) {
+		var j = i + alen;
+		if (document.cookie.substring(i, j) == arg)
+			return getCookieVal (j);
+		i = document.cookie.indexOf(" ", i) + 1;
+		if (i == 0) break;
+	}
+	return null;
+}
+
+function setCookie (name, value) {
+	var argv = setCookie.arguments;
+	var argc = setCookie.arguments.length;
+	var expires = (argc > 2) ? argv[2] : 365;
+	var exp = new Date();
+	exp.setTime(exp.getTime() + (expires*24*60*60*1000));
+	var path = (argc > 3) ? argv[3] : null;
+	var domain = (argc > 4) ? argv[4] : null;
+	var secure = (argc > 5) ? argv[5] : false;
+	var CookieStr = name + "=" + escape (value);
+	CookieStr += "; expires=" + exp.toGMTString() ;
+	CookieStr += ((path == null) ? "" : ("; path=" + path));
+	CookieStr += ((domain == null) ? "" : ("; domain=" + domain));
+	CookieStr += ((secure == true) ? "; secure" : "");
+	document.cookie = CookieStr;
+}
+
+function deleteCookie (name) {
+	var exp = new Date();
+	exp.setTime (exp.getTime() - 1);
+	var cval = getCookie (name);
+	document.cookie = name + "=" + cval + "; expires=" + exp.toGMTString();
+}
+/*--Functions 4 Cookie End--*/

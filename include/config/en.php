@@ -52,6 +52,8 @@ $setting_comm['gen']['cache_ext'] = 'Rewrite Ext.';
 $setting_comm['gen']['template'] = 'Template';
 $setting_comm['gen']['timezone'] = "Timezone";
 $setting_comm['gen']['update'] = "Update URL";
+$setting_comm['gen']['minify'] = "HTML Minify";
+$setting_comm['gen']['etag'] = "Etag Fix";
 $setting_comm['gen_descr']['language'] = 'Change CMS language';
 $setting_comm['gen_descr']['charset'] = 'Charset of CMS';
 $setting_comm['gen_descr']['gzip_level'] = 'GZIP page content (Level 0-9)';
@@ -61,6 +63,8 @@ $setting_comm['gen_descr']['cache_ext'] = 'Extension name of URL Rewrite';
 $setting_comm['gen_descr']['template'] = 'Default Style for website';
 $setting_comm['gen_descr']['timezone'] = "Set the timezone of the website";
 $setting_comm['gen_descr']['update'] = "From the URL your can get the newest update of CMS";
+$setting_comm['gen_descr']['minify'] = "Minify the html code of each page to reduce the internet transfer time";
+$setting_comm['gen_descr']['etag'] = "Append to Etag with which to avoid non-modification HTML pages transfer";
 
 $setting_comm['js'] = array();
 $setting_comm['js_comm'] = 'JavaScript Parameter Set';
@@ -179,6 +183,8 @@ $setting_type['gen']['cache_ext'] = array("text", "", "10");
 $setting_type['gen']['template'] = array("text", "alpha", "20");
 $setting_type['gen']['timezone'] = array("select", array("GMT-12"=>"Etc/GMT+12", "GMT-11"=>"Etc/GMT+11", "GMT-10"=>"Etc/GMT+10", "GMT-9"=>"Etc/GMT+9", "GMT-8"=>"Etc/GMT+8", "GMT-7"=>"Etc/GMT+7", "GMT-6"=>"Etc/GMT+6", "GMT-5"=>"Etc/GMT+5", "GMT-4"=>"Etc/GMT+4", "GMT-3"=>"Etc/GMT+3", "GMT-2"=>"Etc/GMT+2", "GMT-1"=>"Etc/GMT+1", "GMT"=>"Etc/GMT", "GMT+1"=>"Etc/GMT-1", "GMT+2"=>"Etc/GMT-2", "GMT+3"=>"Etc/GMT-3", "GMT+4"=>"Etc/GMT-4", "GMT+5"=>"Etc/GMT-5", "GMT+6"=>"Etc/GMT-6", "GMT+7"=>"Etc/GMT-7", "GMT+8"=>"Etc/GMT-8", "GMT+9"=>"Etc/GMT-9", "GMT+10"=>"Etc/GMT-10", "GMT+11"=>"Etc/GMT-11", "GMT+12"=>"Etc/GMT-12"));
 $setting_type['gen']['update'] = array("text", "url", "200");
+$setting_type['gen']['minify'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['gen']['etag'] = array("text", "", "10");
 
 $setting_type['js'] = array();
 $setting_type['js']['debug'] = array("radio", array("Open"=>"true", "Close"=>"false"));

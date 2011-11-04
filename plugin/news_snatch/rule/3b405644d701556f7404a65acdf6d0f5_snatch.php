@@ -142,10 +142,12 @@ function snatchGetList($record, &$info) {
 					$record['content'] = preg_replace("/—”…Ï‘ƒ∂¡.+$/", "", $record['content']);
 					$record['content'] = preg_replace("/<DIV class\=\"tvsubject.+$/", "", $record['content']);
 					$record['content'] = str_replace("Œ¢≤©Õ∆ºˆ", "", $record['content']);
+					$record['content'] = str_replace("Œ“¿¥æ¿¥Ì", "", $record['content']);
 					$record['content'] = str_replace('<div class="line"></div>', "", $record['content']);
-					$record['content'] = preg_replace("/<div class\=\"stockTrends.+?<\/div>/", "", $record['content']);
+					$record['content'] = preg_replace("/<div class\=\"stockTrends.+?<\/div>/s", "", $record['content']);
+					$record['content'] = preg_replace("/<div class\=\"shareIn.+?<\/div>/s", "", $record['content']);
 					$record['content'] = preg_replace("/[\r\n]+<div class\=\"muLink.+?<\/div>[\r\n]+/", "", $record['content']);
-					$record['content'] = preg_replace("/<DIV class\=\"tvsubject.+$/", "", $record['content']);
+					$record['content'] = preg_replace("/<DIV class\=\"tvsubject.+$/s", "", $record['content']);
 					if(preg_match("/<img.+?src=(.?)(http.+?)\\1.+?>/is", $record['content'], $matches)) {
 						$record['item_5'] = $matches[2];
 					} else {
