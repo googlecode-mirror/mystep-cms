@@ -170,6 +170,15 @@ function arrayMerge($arr_1, $arr_2) {
 				}
 			}
 		}
+		foreach($arr_2 as $key => $value) {
+			if(!isset($arr_1[$key])) {
+				if(is_array($arr_1[$key])) {
+					$arr_1[$key] = arrayMerge($arr_1[$key], $arr_2[$key]);
+				} else {
+					$arr_1[$key] = $arr_2[$key];
+				}
+			}
+		}
 	}
 	return $arr_1;
 }

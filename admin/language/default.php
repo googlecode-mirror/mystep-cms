@@ -7,6 +7,7 @@ $language_info = array (
 );
 
 $language = array (
+  'admin_update_done' => '系统于 '.date('Y-m-d H:i:s').' 进行了升级',
   'admin_update_sql' => '成功执行 %d 条数据库命令',
   'admin_update_file' => '成功更新 %d 个文件',
   'admin_update_error' => '由于权限不足，无法自动完成更新，请下载更新文件，并直接解压至网站根目录',
@@ -68,6 +69,7 @@ $language = array (
   'admin_func_backup_upload_failed_msg1' => '上传文件不存在！',
   'admin_func_backup_export' => '导出数据',
   'admin_func_backup_question' => '请选择需要的操作',
+  'admin_func_backup_repair' => '修复数据表',
   'admin_func_backup_title' => '数据库备份',
   
   'admin_func_link_delete' => '删除链接',

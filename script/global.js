@@ -256,6 +256,43 @@ function watermark(obj, rate, copyright, char_c, jam_tag) {
 	return result;
 }
 
+function addBookmark(obj) {
+	if (window.sidebar) {
+		window.sidebar.addPanel(document.title, document.URL, "");
+	} else if(document.all) {
+		window.external.AddFavorite(document.URL, document.title);
+	} else if(window.opera && window.print) {
+		obj = obj || window.event.srcElement || window.event.target;
+		obj.setAttribute('rel','sidebar');
+		obj.setAttribute('href',url);
+		obj.setAttribute('title',title);
+		obj.click();
+		return true;
+	} else {
+		alert("Can't add bookmark to your browser \n\nPress 'Ctrl + D' please!");
+	}
+}
+
+function setHomepage() {
+	var url = document.URL;
+	if(document.all) {
+		document.body.style.behavior='url(#default#homepage)';
+		document.body.setHomePage(url);
+	} else if(window.sidebar) {
+		if(window.netscape){
+			try{
+				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			}catch (e){
+				alert("Input 'about:config' to addres bar, then press 'Enter', set the option of 'signed.applets.codebase_principal_support' to True.");
+			}
+		}
+		var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
+		prefs.setCharPref('browser.startup.homepage',url);
+	} else {
+		alert("Can't set currnet page to Homepage!");
+	}
+}
+
 function setSlide() {
 	var objs = $(".slide");
 	var items = null;
@@ -295,41 +332,11 @@ function setSlide() {
 	}
 }
 
-function addBookmark(obj) {
-	if (window.sidebar) {
-		window.sidebar.addPanel(document.title, document.URL, "");
-	} else if(document.all) {
-		window.external.AddFavorite(document.URL, document.title);
-	} else if(window.opera && window.print) {
-		obj = obj || window.event.srcElement || window.event.target;
-		obj.setAttribute('rel','sidebar');
-		obj.setAttribute('href',url);
-		obj.setAttribute('title',title);
-		obj.click();
-		return true;
-	} else {
-		alert("Can't add bookmark to your browser \n\nPress 'Ctrl + D' please!");
-	}
-}
-
-function setHomepage() {
-	var url = document.URL;
-	if(document.all) {
-		document.body.style.behavior='url(#default#homepage)';
-		document.body.setHomePage(url);
-	} else if(window.sidebar) {
-		if(window.netscape){
-			try{
-				netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
-			}catch (e){
-				alert("Input 'about:config' to addres bar, then press 'Enter', set the option of 'signed.applets.codebase_principal_support' to True.");
-			}
-		}
-		var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
-		prefs.setCharPref('browser.startup.homepage',url);
-	} else {
-		alert("Can't set currnet page to Homepage!");
-	}
+function loadingShow() {
+	var theTop = ($(window).height() - $("#bar_loading").height())/2 + $(document.body).scrollTop();
+	var theLeft = ($(window).width() - $("#bar_loading").width())/2 + $(document.body).scrollLeft();
+	$("#bar_loading").css({"opacity":"0.7", "top":theTop, "left":theLeft});
+	$("#bar_loading").toggle();
 }
 
 function reportError(msg, url, line) {

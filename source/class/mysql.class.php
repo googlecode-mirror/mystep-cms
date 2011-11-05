@@ -119,7 +119,7 @@ class MySQL extends class_common {
 		if($this->DB_conn == NULL) return false;
 		$this->DB_count++;
 		$this->Free();
-		$ifsel = strstr("|selec|show |descr|expla|", strtolower(substr(trim($sql), 0, 5)));
+		$ifsel = strstr("|selec|show |descr|expla|repai|check", strtolower(substr(trim($sql), 0, 5)));
 		if($this->DB_Qtype) {
 			$this->DB_result = mysql_query($sql, $this->DB_conn);
 		} else {

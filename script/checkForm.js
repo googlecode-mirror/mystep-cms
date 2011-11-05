@@ -166,6 +166,5 @@ function checkForm(the_form, myChecker){
 				break;
 		}
 	}
-	
 	return true;
 }

@@ -60,10 +60,13 @@
 		</tr>
 	</table>
 </div>
+<div id="bar_loading"><img src="../images/loading.gif" alt="<!--lang_ajax_sending-->"><br / ><!--lang_ajax_sending--></div>
 <script language="javascript">
 var cur_ver = <?=toJson($ms_version, $setting['gen']['charset']);?>;
 function checkUpdate() {
+	loadingShow();
 	$.get("update.php", function(ver_info){
+		loadingShow();
 		try {
 			if(ver_info.ver!=cur_ver.ver && ver_info.date>cur_ver.date) {
 				if(confirm("目前更新服务器的最新版本为： v" + ver_info.ver + "(" + ver_info.date + ")\n\n是否更新？\n" + ver_info.update)) {
@@ -78,7 +81,9 @@ function checkUpdate() {
 	}, "json");
 }
 function applyUpdate() {
+	loadingShow();
 	$.get("update.php?update", function(info){
+		loadingShow();
 		try {
 			alert(info.info);
 			if(info.link.length>2) {

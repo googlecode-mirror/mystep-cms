@@ -1,10 +1,21 @@
 <div class="title"><!--title--></div>
 <div align="center">
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
-	<form name="db_bak" method="post" action="?1" ENCTYPE="multipart/form-data" onSubmit="var flag=true;if(document.db_bak.method.value=='import'){flag=confirm('重新导入数据将破坏已有的数据文件！ 是否继续？')};return (flag && checkForm(this))">
+	<form name="db_bak" method="post" ENCTYPE="multipart/form-data" onSubmit="return checkForm(this, checkForm_append)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
 				<td colspan="2" class="cat" style="width:100%; text-align:center; font-weight:bold; padding:5px"><!--result--></td>
+			</tr>
+			<tr>
+				<td class="cat" width="80">所属网站：</td>
+				<td class="row">
+					<select name="web_idx" onchange="location.href='?web_idx='+this.value">
+<!--loop:start key="website"-->
+						<option value="<!--website_idx-->" <!--website_selected-->><!--website_name--></option>
+<!--loop:end-->
+					</select>
+					<span class="comment">（当前内容所属的子网站）</span>
+				</td>
 			</tr>
 			<tr>
 				<td class="cat" width="80">数 据 表：</td>
@@ -13,7 +24,7 @@
 						<option value="">请选择</option>
 						<option value="all">全部数据表</option>
 <!--loop:start key="tbls"-->
-						<option value="<!--tbls_name-->" /><!--tbls_name--></option>
+						<option value="<!--tbls_name-->"><!--tbls_name--></option>
 <!--loop:end-->
 					</select>
 				</td>
@@ -21,10 +32,11 @@
 			<tr>
 				<td class="cat">操作模式：</td>
 				<td class="row">
-					<select name="method" onchange="if(this.value=='export'){document.db_bak.the_file.disabled=true;document.db_bak.table.disabled=false}else if(this.value=='import'){document.db_bak.the_file.disabled=false;document.db_bak.table.disabled=true}else{document.db_bak.the_file.disabled=false;document.db_bak.table.disabled=false}" need="" />
+					<select name="method" onchange="setSelection(this.value)" need="" />
 						<option value="">请选择</option>
 						<option value="import">导入</option>
 						<option value="export">导出</option>
+						<option value="repair">修复</option>
 					</select>
 				</td>
 			</tr>
@@ -47,3 +59,29 @@
 		</table>
 	</form>
 </div>
+<script language="JavaScript">
+function setSelection(mode) {
+	if(mode=='export') {
+		document.db_bak.the_file.outerHTML = document.db_bak.the_file.outerHTML;
+		document.db_bak.the_file.disabled=true;
+		document.db_bak.table.disabled=false;
+	} else if(mode=='import') {
+		document.db_bak.the_file.disabled=false;
+		document.db_bak.table.disabled=true;
+	} else if(mode=='repair') {
+		document.db_bak.the_file.outerHTML = document.db_bak.the_file.outerHTML;
+		document.db_bak.the_file.disabled=true;
+		document.db_bak.table.disabled=false;
+	} else {
+		document.db_bak.the_file.disabled=false;
+		document.db_bak.table.disabled=false;
+	}
+}
+function checkForm_append(theForm) {
+	var flag=true;
+	if(document.db_bak.method.value=='import') {
+		flag=confirm('重新导入数据将破坏已有的数据文件！ 是否继续？');
+	}
+	return flag;
+}
+</script>

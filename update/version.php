@@ -3,7 +3,8 @@ $version = array(
 	'0' => array(
 		'info' => '',
 		'sql' => array(),
-		'file' => array()
+		'file' => array(),
+		'setting' => array(),
 	),
 	'0.98.12' => array(
 		'info' => '
@@ -39,7 +40,8 @@ $version = array(
 				'template/admin/info_main.tpl',
 				'update/index.php',
 				'update/version.php',
-			)
+			),
+		'setting' => array(),
 	),
 	'0.99' => array(
 		'info' => '
@@ -67,8 +69,6 @@ $version = array(
 				'images/default/style.css',
 				'images/style.css',
 				'images/truck.png',
-				'include/config-default.php',
-				'include/config.php',
 				'include/config/chs.php',
 				'include/config/default.php',
 				'include/config/en.php',
@@ -160,7 +160,50 @@ $version = array(
 				'template/default/main.tpl',
 				'update/index.php',
 				'update/version.php'
-			)
+			),
+		'setting' => array(
+				'gen' => array(
+						'minify' => true,
+						'etag' => '20111104',
+					),
+			),
+	),
+	'0.99.1' => array(
+		'info' => '
+				V0.99.1
+				1.Enhance Database backup module, add repair function
+				2.Enhance Update module
+				3.Update jQuery to 1.7
+				4.Fix a bug MySQL Class bug in record return function
+				5.Fix a order bug in admin template
+				6.Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/func_backup.php',
+				'admin/language/chs.php',
+				'admin/language/default.php',
+				'admin/language/en.php',
+				'admin/style.css',
+				'admin/update.php',
+				'include/parameter.php',
+				'plugin/news_snatch/tpl/import.tpl',
+				'plugin/news_snatch/tpl/snatch.tpl',
+				'script/addon.js',
+				'script/checkForm.js',
+				'script/global.js',
+				'script/jquery.addon.js',
+				'script/jquery.js',
+				'source/class/mysql.class.php',
+				'source/function/global.php',
+				'template/admin/func_backup.tpl',
+				'template/admin/info_main.tpl',
+				'template/admin/main.tpl',
+				'template/admin_simple/main.tpl',
+				'update/index.php',
+				'update/version.php'
+			),
+		'setting' => array(),
 	),
 );
 ?>

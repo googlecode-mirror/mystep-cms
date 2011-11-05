@@ -31,6 +31,7 @@ body a:hover {color:#FF0084;}
 .nomargin {margin:0px;}
 
 BODY {text-align:center; font-family:ËÎÌו, Tahoma, Verdana, Arial; padding:0px; margin:auto; cursor:default;}
+#bar_loading{top:0px;left:0px;display:none;color:#333333;font-size:24px;font-weight:bold;line-height:48px;font-family:÷ÚÌו;position:absolute;border:1px #999999 solid;padding:20px 30px 10px 30px;z-index:999;background-color:#eeeeee;z-index:999;}
 
 #page_ole {margin:auto; text-align:left; width:100%; min-width:980px;}
 

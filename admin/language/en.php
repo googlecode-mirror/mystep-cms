@@ -7,6 +7,7 @@ $language_info = array (
 );
 
 $language = array (
+  'admin_update_done' => 'MyStep CMS has been update to new version at '.date('Y-m-d H:i:s'),
   'admin_update_sql' => '%d SQL query has been executed!',
   'admin_update_file' => '%d files has been updated!',
   'admin_update_error' => 'Because of power limit, script file on your server cannot be writen, download the update file and uncompres to the root of your website!',
@@ -67,6 +68,7 @@ $language = array (
   'admin_func_backup_upload_failed' => 'Upload failed: ',
   'admin_func_backup_upload_failed_msg1' => 'Upload file missing!',
   'admin_func_backup_export' => 'Data Export',
+  'admin_func_backup_repair' => 'Repair data table',
   'admin_func_backup_question' => 'Please choose the operation you want',
   'admin_func_backup_title' => 'Database Backup',
   

@@ -6,6 +6,22 @@ if(isset($_GET['update'])) {
 	$update_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver']);
 	$update_info = base64_decode($update_info);
 	$update_info = unserialize($update_info);
+	
+	if(count($update_info['setting'])>0) {
+		require(ROOT_PATH."/include/config.php");
+		$update_info['setting'] = arrayMerge($setting, $update_info['setting']);
+		$expire_list = var_export($expire_list, true);
+		$content = <<<mystep
+<?php
+\$setting = array();
+
+/*--settings--*/
+\$expire_list = {$expire_list};
+?>
+mystep;
+		$content = str_replace("/*--settings--*/", makeVarsCode($update_info['setting'], '$setting'), $content);
+		WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+	}
 
 	$strFind = array("{db_name}", "{pre}", "{charset}");
 	$strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset'], $req->getServer("HTTP_HOST"), $charset_collate["Default collation"]);
@@ -20,6 +36,7 @@ if(isset($_GET['update'])) {
 	
 	$list = array();
 	for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
+		if($update_info['file'][$i]=="include/config.php") continue;
 		if(isWriteable(ROOT_PATH."/".$update_info['file'][$i])) {
 			if(empty($update_info['content'][$i])) {
 				@unlink(ROOT_PATH."/".$update_info['file'][$i]);
@@ -51,6 +68,7 @@ if(isset($_GET['update'])) {
 		$result['info'] .= "\n". sprintf($setting['language']['admin_update_file'], count($update_info['file']));
 	}
 	echo toJson($result, $setting['db']['charset']);
+	write_log($setting['language']['admin_update_done']);
 } else {
 	$check_info = GetRemoteContent($setting['gen']['update']);
 	$check_info = chg_charset($check_info, "utf-8", $setting['gen']['charset']);
