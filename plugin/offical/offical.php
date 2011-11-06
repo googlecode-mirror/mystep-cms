@@ -50,7 +50,7 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('info', $ms_info);
 	} elseif($method=="password") {
 		$tpl_info['idx'] = "password";
-		$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/";
+		$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/";
 		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	}
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content());

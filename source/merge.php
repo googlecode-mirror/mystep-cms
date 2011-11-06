@@ -13,7 +13,7 @@ $mystep = new MyStep();
 $mystep->pageStart(true);
 $type = $req->GetServer("QUERY_STRING");
 $result = "";
-$cache = ROOT_PATH."/".$setting['path']['cache']."cache.".$type;
+$cache = ROOT_PATH."/".$setting['path']['cache']."script/".$setting['info']['web']['idx']."_cache.".$type;
 $header = array(
     'js' => 'Content-Type: application/x-javascript',
     'css' => 'Content-Type: text/css',

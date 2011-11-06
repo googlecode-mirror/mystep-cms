@@ -4,7 +4,7 @@ include("info.php");
 
 $tpl_info = array(
 		"idx" => "news_mark",
-		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
+		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/",
 		"path" => ROOT_PATH."/".$setting['path']['template'],
 		);
 $tpl = $mystep->getInstance("MyTpl", $tpl_info);

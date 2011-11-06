@@ -14,7 +14,6 @@
 						<option value="<!--website_idx-->" <!--website_selected-->><!--website_name--></option>
 <!--loop:end-->
 					</select>
-					<span class="comment">（当前内容所属的子网站）</span>
 				</td>
 			</tr>
 			<tr>

@@ -96,7 +96,7 @@ class plugin_offical implements plugin {
 		$charset_tag = '<?xml version="1.0" encoding="'.$setting['gen']['charset'].'"?>'."\n";
 		$tpl_info = array(
 				"idx" => "rss",
-				"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
+				"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/",
 				"path" => ROOT_PATH."/".$setting['path']['template'],
 				);
 		$tpl = new MyTpl;

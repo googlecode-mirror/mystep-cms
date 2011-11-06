@@ -75,7 +75,7 @@ function build_page($method) {
 
 	$tpl_info = array(
 		"idx" => (($method!="list" && $method!="view")?"input":$method),
-		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
+		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/",
 		"path" => ROOT_PATH."/".$setting['path']['template'],
 	);
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info);

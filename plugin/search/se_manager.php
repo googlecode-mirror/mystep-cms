@@ -15,9 +15,9 @@ switch($method) {
 	case "delete":
 		$log_info = $setting['language']['plugin_search_delete'];
 		$k = $req->getGet('k');
-		//$k = mysql_real_escape_string($k);
+		$k = mysql_real_escape_string($k);
 		$db->Query("delete from ".$setting['db']['pre']."search_keyword where keyword = '{$k}'");
-		$goto_url = $setting['info']['self']."?method=keyword";
+		$goto_url = $req->getServer("HTTP_REFERER");
 		break;
 	case "update":
 		if(count($_POST) != 0) {
@@ -47,7 +47,7 @@ function build_page($method) {
 	global $mystep, $req, $db, $setting, $idx, $se;
 	$tpl_info = array(
 			"idx" => "main",
-			"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
+			"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/",
 			"path" => ROOT_PATH."/".$setting['path']['template'],
 			);
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
@@ -81,6 +81,14 @@ function build_page($method) {
 		}
 		$db->Free();
 		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_search_title_kw']);
+		$tpl_tmp->Set_Variable('order_type_org', $order_type);
+		if($order_type=="desc") {
+			$order_type = "asc";
+		} else {
+			$order_type = "desc";
+		}
+		$tpl_tmp->Set_Variable('order', $order);
+		$tpl_tmp->Set_Variable('order_type', $order_type);
 	}
 	$tpl->Set_Variable('path_admin', $setting['path']['admin']);
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting'));

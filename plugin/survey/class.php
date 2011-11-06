@@ -257,6 +257,8 @@ mytpl;
 			}
 			$mydb->closeTBL();
 			unset($mydb);
+			$img_cache = ROOT_PATH."/".$setting['path']['cache']."/html/survey_{$id}.png";
+			if(file_exists($img_cache)) unlink($img_cache);
 		}
 		return $result;
 	}
