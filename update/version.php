@@ -288,5 +288,30 @@ $version = array(
 					),
 			),
 	),
+	'0.99.3' => array(
+		'info' => '
+				V0.99.3
+				1.Fix a bug in database import function
+				2.Fix a problem in input page with tinyMCE
+				3.Enhance update function
+				4.Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/func_backup.php',
+				'include/parameter.php',
+				'plugin/survey/survey_manager.php',
+				'script/addon.js',
+				'template/admin/art_content_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'update/index.php',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20111107',
+					),
+			),
+	),
 );
 ?>
