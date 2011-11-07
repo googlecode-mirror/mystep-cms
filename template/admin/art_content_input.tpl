@@ -255,13 +255,11 @@ function attach_remove(aid) {
 
 function attach_edit() {
 	showPop('attach','附件管理','url','attachment.php?news_id=<!--news_id-->&method=edit&attach_list='+document.forms[0].attach_list.value, 600, 200);
-	//window.open('attachment.php?news_id=<!--news_id-->&method=edit&attach_list='+document.forms[0].attach_list.value,'','width=600,height=300,scrollbars=1');
 	return;
 }
 
 function attach_mine() {
 	showPop('attach_mine','我的附件','url','attachment.php?method=mine', 600, 200);
-	//window.open('attachment.php?method=mine','','width=600,height=300,scrollbars=1');
 	return;
 }
 

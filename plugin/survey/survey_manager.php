@@ -7,7 +7,6 @@ $id = $req->getReq("id");
 $log_info = "";
 $mydb = $mystep->getInstance("MyDB", "survey", dirname(__FILE__)."/data/");
 
-
 switch($method) {
 	case "add":
 	case "edit":

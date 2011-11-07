@@ -3,10 +3,12 @@ define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 include(ROOT_PATH."/include/config.php");
 include(ROOT_PATH."/include/parameter.php");
 require(ROOT_PATH."/source/function/global.php");
+require(ROOT_PATH."/source/class/abstract.class.php");
+require(ROOT_PATH."/source/class/mydb.class.php");
 require("version.php");
 
 $v = $_GET['v'];
-if($v!="") {
+if($v!="" && !empty($_Server["HTTP_REFERER"])) {
 	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver']);
 	if(file_exists($cache_file)) {
 		$update = GetFile($cache_file);
@@ -36,6 +38,27 @@ if($v!="") {
 		$update = base64_encode(serialize($update_info));
 		WriteFile($cache_file, $update, "wb");
 	}
+	$mydb = new MyDB;
+	$mydb->init("update", ROOT_PATH."/".$setting['path']['cache']."/update/");
+	if(!$mydb->checkTBL()) {
+		$db_setting = array(
+			array("date",10),
+			array("idx",40),
+			array("ver_remote",30),
+			array("ver_local",30),
+			array("remote_site",200)
+		);
+		$mydb->createTBL($db_setting);
+	}
+	$data = array (
+		date("Y-m-d H:i:s"),
+		md5($v.$ms_version['ver']),
+		$v,
+		$ms_version['ver'],
+		$_Server["HTTP_REFERER"]
+	);
+	$mydb->insertDate($data);
+	$mydb->closeTBL();
 	echo $update;
 } else {
 	if(isset($_GET['all'])) {

@@ -205,7 +205,7 @@ $version = array(
 			),
 		'setting' => array(),
 	),
-	'0' => array(
+	'0.99.2' => array(
 		'info' => '
 				V0.99.2
 				1.Fix a bug in multi-web script cache function

@@ -13,7 +13,7 @@
 $(function() {
 	$("img").error(function(){
 		$(this).src="images/dummy.png";
-		$(this).onerror='';
+		$(this).onerror=null;
 	})
 	$("#content img").each(function(i){
 		if($(this).width()>600) $(this).width(600);
