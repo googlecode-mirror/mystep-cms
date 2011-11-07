@@ -41,6 +41,7 @@ switch($method) {
 		$update_info = unserialize($update_info);
 		
 		if(count($update_info['setting'])>0) {
+			$setting_org = $setting;
 			require(ROOT_PATH."/include/config.php");
 			$update_info['setting'] = arrayMerge($setting, $update_info['setting']);
 			$expire_list = var_export($expire_list, true);
@@ -54,6 +55,7 @@ switch($method) {
 mystep;
 			$content = str_replace("/*--settings--*/", makeVarsCode($update_info['setting'], '$setting'), $content);
 			WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+			$setting = $setting_org;
 		}
 	
 		$strFind = array("{db_name}", "{pre}", "{charset}");

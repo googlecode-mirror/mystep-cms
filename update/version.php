@@ -357,5 +357,19 @@ $version = array(
 			),
 		'setting' => array(),
 	),
+	'0' => array(
+		'info' => '
+				V0.99.5.1
+				Fix a language bug in update function
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/language/chs.php',
+				'admin/update.php',
+				'include/parameter.php',
+				'update/version.php',
+			),
+		'setting' => array(),
+	),
 );
 ?>
