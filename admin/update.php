@@ -15,17 +15,21 @@ switch($method) {
 		break;
 	case "export":
 		$mydb = $mystep->getInstance("MyDB", "update", ROOT_PATH."/".$setting['path']['cache']."/update/");
-		$xls = $mystep->getInstance("MyXls", "update_info", "update");
-		$record = $mydb->queryAll();
-		$xls->addRow();
-		$xls->addCells(array("date","idx","ver_remote","ver_local","remote_site"));
-		$max_count = count($record);
-		for($i=0; $i<$max_count; $i++) {
+		if($mydb->checkTBL()) {
+			$xls = $mystep->getInstance("MyXls", "update_info", "update");
+			$record = $mydb->queryAll();
 			$xls->addRow();
-			$xls->addCells($record[$i]);
+			$xls->addCells(array("date","idx","ver_remote","ver_local","remote_site"));
+			$max_count = count($record);
+			for($i=0; $i<$max_count; $i++) {
+				$xls->addRow();
+				$xls->addCells($record[$i]);
+			}
+			$xls->makeFile();
+		} else {
+			echo "<script>window.close();</script>";
 		}
 		$mydb->closeTBL();
-		$xls->makeFile();
 		break;
 	case "update":
 		set_time_limit(0);
