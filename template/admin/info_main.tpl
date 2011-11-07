@@ -73,7 +73,7 @@ function checkUpdate() {
 	$.get("update.php?"+Math.random(), function(ver_info){
 		loadingShow();
 		try {
-			if(ver_info.ver!=cur_ver.ver || ver_info.date>cur_ver.date) {
+			if(ver_info.ver!=cur_ver.ver) {
 				if(confirm("目前更新服务器的最新版本为： v" + ver_info.ver + "(" + ver_info.date + ")\n\n是否更新？\n" + ver_info.update)) {
 					applyUpdate();
 				}
