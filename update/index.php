@@ -8,7 +8,7 @@ require(ROOT_PATH."/source/class/mydb.class.php");
 require("version.php");
 
 $v = $_GET['v'];
-if($v!="" && !empty($_Server["HTTP_REFERER"])) {
+if($v!="") {
 	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver']);
 	if(file_exists($cache_file)) {
 		$update = GetFile($cache_file);
