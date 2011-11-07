@@ -46,7 +46,8 @@ if($v!="" && !empty($_Server["HTTP_REFERER"])) {
 			array("idx",40),
 			array("ver_remote",30),
 			array("ver_local",30),
-			array("remote_site",200)
+			array("remote_ip",50)
+			array("referer",200)
 		);
 		$mydb->createTBL($db_setting);
 	}
@@ -55,6 +56,7 @@ if($v!="" && !empty($_Server["HTTP_REFERER"])) {
 		md5($v.$ms_version['ver']),
 		$v,
 		$ms_version['ver'],
+		GetIp(),
 		$_Server["HTTP_REFERER"]
 	);
 	$mydb->insertDate($data);

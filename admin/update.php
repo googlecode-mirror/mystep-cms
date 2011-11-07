@@ -19,7 +19,7 @@ switch($method) {
 			$xls = $mystep->getInstance("MyXls", "update_info", "update");
 			$record = $mydb->queryAll();
 			$xls->addRow();
-			$xls->addCells(array("date","idx","ver_remote","ver_local","remote_site"));
+			$xls->addCells(array("date","idx","ver_remote","ver_local","remote_ip","referer"));
 			$max_count = count($record);
 			for($i=0; $i<$max_count; $i++) {
 				$xls->addRow();
