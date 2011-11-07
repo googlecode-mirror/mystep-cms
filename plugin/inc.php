@@ -17,6 +17,8 @@ $mystep->getLanguage(dirname(ROOT_PATH.$_SERVER['PHP_SELF'])."/language/");
 $mystep->pageStart(true);
 $db->Reconnect(true, $setting['db']['name']);
 
+$setting['gen']['minify'] = false;
+
 $usergroup = $req->getSession("usergroup");
 if($usergroup===0) {
 	$goto_url = $setting['web']['url'];

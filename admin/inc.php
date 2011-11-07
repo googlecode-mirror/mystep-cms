@@ -17,6 +17,8 @@ $mystep->getLanguage(dirname(__FILE__)."/language/");
 $mystep->pageStart();
 $db->Reconnect(true, $setting['db']['name']);
 
+$setting['gen']['minify'] = false;
+
 $usergroup = $req->getSession("usergroup");
 if($usergroup===0) {
 	$goto_url = "../";

@@ -377,8 +377,16 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	$output .= sprintf("Host:%s\r\n", $host);
 	$output .= "Accept: */*\r\n";
 	$output .= "Accept-Encoding: gzip, deflate\r\n";
-	$output .= "Referer:http://{$host}\r\n";
-	$output .= "User-Agent:Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.204 Safari/534.16\r\n";
+	if(isset($header['Referer'])) {
+		$output .= "Referer:".$header['Referer']."\r\n";
+	} else {
+		$output .= "Referer:http://{$host}\r\n";
+	}
+	if(isset($header['User-Agent'])) {
+		$output .= "User-Agent:".$header['User-Agent']."\r\n";
+	} else {
+		$output .= "User-Agent:Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.204 Safari/534.16\r\n";
+	}
 	if($method=="POST") $output .= "Content-Type:application/x-www-form-urlencoded\r\n";
 	if(is_string($header) && strlen($header)>0) {
 		$output .= $header;

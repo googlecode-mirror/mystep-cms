@@ -34,7 +34,9 @@ switch($method) {
 	case "update":
 		set_time_limit(0);
 		$result = array();
-		$update_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver']);
+		$header = array();
+		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST")."/update/";
+		$update_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver'], $header);
 		$update_info = base64_decode($update_info);
 		$update_info = unserialize($update_info);
 		

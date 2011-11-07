@@ -331,11 +331,29 @@ $version = array(
 				'template/admin/info_main.tpl',
 				'update/version.php',
 			),
-		'setting' => array(
-				'gen' => array(
-						'etag' => '20111107',
-					),
+		'setting' => array(),
+	),
+	'0.99.5' => array(
+		'info' => '
+				V0.99.5
+				1.Disable html code minify in admin panle
+				2.Disable session in merge.php
+				3.Add update referer
+				4.Fix a bug in getRemoteContent function
+				5.Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/inc.php',
+				'admin/update.php',
+				'include/parameter.php',
+				'plugin/inc.php',
+				'source/class/session.class.php',
+				'source/function/global.php',
+				'update/index.php',
+				'update/version.php',
 			),
+		'setting' => array(),
 	),
 );
 ?>
