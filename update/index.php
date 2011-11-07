@@ -46,7 +46,7 @@ if($v!="") {
 			array("idx",40),
 			array("ver_remote",30),
 			array("ver_local",30),
-			array("remote_ip",50)
+			array("remote_ip",50),
 			array("referer",200)
 		);
 		$mydb->createTBL($db_setting);
