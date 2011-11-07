@@ -85,6 +85,7 @@ content;
 		echo "\n";
 	}
 }
+$setting['gen']['minify'] = false;
 ?>
 			<tr align="center">
 				<td class="row" colspan="2"><input id="set_default" name="set_default" class="cbox" type="checkbox" value="1" /><label for="set_default">╤╗н╙д╛хо</label></td>

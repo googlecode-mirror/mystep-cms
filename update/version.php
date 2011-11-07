@@ -350,6 +350,8 @@ $version = array(
 				'plugin/inc.php',
 				'source/class/session.class.php',
 				'source/function/global.php',
+				'template/admin/info_main.tpl',
+				'template/admin/web_setting.tpl',
 				'update/index.php',
 				'update/version.php',
 			),

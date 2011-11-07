@@ -70,7 +70,7 @@
 var cur_ver = <?=toJson($ms_version, $setting['gen']['charset']);?>;
 function checkUpdate() {
 	loadingShow();
-	$.get("update.php", function(ver_info){
+	$.get("update.php?"+Math.random(), function(ver_info){
 		loadingShow();
 		try {
 			if(ver_info.ver!=cur_ver.ver && ver_info.date>cur_ver.date) {
