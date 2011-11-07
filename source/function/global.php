@@ -457,9 +457,10 @@ function GetRemoteFile($remote_file, $local_file) {
 function GetFile($file, $length=0, $offset=0) {
 	//Coded By Windy2000 20020503 v1.5
 	if(!is_file($file)) return "";
-	if($length==0) {
+	if($length==0 && $offset==0) {
 		$data = file_get_contents($file);
 	} else {
+		if($length==0) $length = 8192;
 		$fp = fopen($file, "rb");
 		fseek($fp, $offset);
 		$data = fread($fp, $length);
@@ -527,7 +528,7 @@ function MultiDel($dir){
 		closedir($mydir);
 		rmdir($dir);
 	}else{
-		if(is_file($file)) unlink($file);
+		if(is_file($dir)) unlink($dir);
 	}
 	return;
 }

@@ -313,5 +313,29 @@ $version = array(
 					),
 			),
 	),
+	'0.99.4' => array(
+		'info' => '
+				V0.99.4
+				1.Fix a bug in MultiDel function
+				2.Update information export and empty function add
+				3.Fix a problem in MyDB module
+				4.Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/update.php',
+				'admin/web_cache.php',
+				'include/parameter.php',
+				'source/class/mydb.class.php',
+				'source/function/global.php',
+				'template/admin/info_main.tpl',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20111107',
+					),
+			),
+	),
 );
 ?>

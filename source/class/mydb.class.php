@@ -211,8 +211,8 @@ class MyDB extends class_common {
 		fseek($this->DB_fp, $offset);
 		while (!feof($this->DB_fp) && $setting['mydb_rec_length']>0) {
 			$date = fgets($this->DB_fp, $setting['mydb_rec_length']);
-			//if(strlen(trim($date))<5) continue;
-			if(strlen($date)+1<$setting['mydb_rec_length']) continue;
+			if(strlen(trim($date))<5) continue;
+			//if(strlen($date)+1<$setting['mydb_rec_length']) continue;
 			$date = explode($this->DB_separator, $date);
 			$i = 0;
 			foreach($setting as $key => $value) {

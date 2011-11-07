@@ -38,7 +38,6 @@ mystep;
 	$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
 	if($handle = opendir($cache_path)) {
 		while (false !== ($file = readdir($handle))) {
-			$file = strtolower($file);
 			if($file!="." && $file!="..") {
 				MultiDel($cache_path.$file);
 			}
@@ -48,7 +47,6 @@ mystep;
 	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/para/";
 	if($handle = opendir($cache_path)) {
 		while (false !== ($file = readdir($handle))) {
-			$file = strtolower($file);
 			if($file!="." && $file!="..") {
 				MultiDel($cache_path.$file);
 			}
@@ -58,7 +56,6 @@ mystep;
 	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/session/";
 	if($handle = opendir($cache_path)) {
 		while (false !== ($file = readdir($handle))) {
-			$file = strtolower($file);
 			if($file!="." && $file!=".." && $file!=date("Ymd")) {
 				MultiDel($cache_path.$file);
 			}
@@ -68,7 +65,24 @@ mystep;
 	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/data/";
 	if($handle = opendir($cache_path)) {
 		while (false !== ($file = readdir($handle))) {
-			$file = strtolower($file);
+			if($file!="." && $file!="..") {
+				MultiDel($cache_path.$file);
+			}
+		}
+		closedir($handle);
+	}
+	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/";
+	if($handle = opendir($cache_path)) {
+		while (false !== ($file = readdir($handle))) {
+			if($file!="." && $file!="..") {
+				MultiDel($cache_path.$file);
+			}
+		}
+		closedir($handle);
+	}
+	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/script/";
+	if($handle = opendir($cache_path)) {
+		while (false !== ($file = readdir($handle))) {
 			if($file!="." && $file!="..") {
 				MultiDel($cache_path.$file);
 			}

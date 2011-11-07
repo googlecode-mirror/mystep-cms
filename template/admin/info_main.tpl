@@ -4,7 +4,12 @@
 	<table width="80%" cellspacing="0" cellpadding="0" align="center" border="0">
 		<tr>
 			<td class="cat" width="250">网站程序版本</td>
-			<td class="row">V<?=$ms_version['ver']?> （<?=$ms_version['language']?>/<?=$ms_version['charset']?>/<?=$ms_version['date']?>）<a href="###" onclick="checkUpdate()">检查升级</a></td>
+			<td class="row">
+				V<?=$ms_version['ver']?> （<?=$ms_version['language']?>/<?=$ms_version['charset']?>/<?=$ms_version['date']?>）
+				<a href="###" onclick="checkUpdate()">检查升级</a> | 
+				<a href="###" onclick="emptyUpdate()">清空升级信息</a> | 
+				<a href="###" onclick="exportUpdate()">导出升级信息</a>
+			</td>
 		</tr>
 		<tr>
 			<td class="cat" width="250">网站运行时间</td>
@@ -93,5 +98,18 @@ function applyUpdate() {
 			alert("更新获取失败，请检查相关设置！");
 		}
 	}, "json");
+}
+function emptyUpdate() {
+	$.get("update.php?empty", function(info){
+		if(info.length==0) {
+			alert("更新数据已清空！");
+		} else {
+			alert(info);
+		}
+	});
+}
+
+function exportUpdate() {
+	window.open("update.php?export");
 }
 </script>
