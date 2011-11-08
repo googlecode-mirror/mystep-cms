@@ -369,6 +369,7 @@ $version = array(
 				'include/parameter.php',
 				'plugin/news_mark/class.php',
 				'plugin/search/class.php',
+				'script/addon.js',
 				'template/admin/info_main.tpl',
 				'update/index.php',
 				'update/version.php',
