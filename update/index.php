@@ -57,7 +57,7 @@ if($v!="") {
 		$v,
 		$ms_version['ver'],
 		GetIp(),
-		$_Server["HTTP_REFERER"]
+		$_SERVER["HTTP_REFERER"]
 	);
 	$mydb->insertDate($data);
 	$mydb->closeTBL();

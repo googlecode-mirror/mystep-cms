@@ -93,7 +93,7 @@ mystep;
 	}
 	
 	public static function tag_search(MyTPL $tpl, $att_list = array()) {
-		$cur_content = $tpl->Get_TPL(dirname(__FILE__)."/block_search.tpl");
+		$cur_content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/block_search.tpl");
 		foreach($att_list as $key => $value) {
 			$value = preg_replace("/^(\{.+\})$/", '<?="\1"?>', $value);
 			$cur_content = str_replace($tpl->delimiter_l.$key.$tpl->delimiter_r, $value, $cur_content);
@@ -128,7 +128,7 @@ mytpl;
 	public static function tag_keyword(MyTPL $tpl, $att_list = array()) {
 		if(!isset($att_list['limit'])) $att_list['limit'] = 10;
 		if(!isset($att_list['order'])) $att_list['order'] = "chg_date";
-		$cur_content = $tpl->Get_TPL(dirname(__FILE__)."/block_keyword.tpl");
+		$cur_content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/block_keyword.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
 		$block = $block_all[0];
 		$unit = $block_all[1];

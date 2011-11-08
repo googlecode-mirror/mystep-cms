@@ -357,19 +357,25 @@ $version = array(
 			),
 		'setting' => array(),
 	),
-	'0' => array(
+	'0.99.5.2' => array(
 		'info' => '
-				V0.99.5.1
-				Fix a language bug in update function
+				V0.99.5.2
+				1.Fix a plugin template path bug
+				2.Fix a update referer bug
 			',
 		'sql' => array(),
 		'file' => array(
-				'admin/language/chs.php',
-				'admin/update.php',
 				'include/parameter.php',
+				'plugin/news_mark/class.php',
+				'plugin/search/class.php',
+				'update/index.php',
 				'update/version.php',
 			),
-		'setting' => array(),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20111108',
+					),
+			),
 	),
 );
 ?>

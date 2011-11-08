@@ -89,7 +89,7 @@ mystep;
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = $setting['info']['web']['web_id'];
 		
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$att_list['news_id']."' and web_id='".$att_list['web_id']."'";
-		$content = $tpl->Get_TPL(dirname(__FILE__)."/news_rank.tpl");
+		$content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/news_rank.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $content, $block_all);
 		
 		$block = $block_all[0];
@@ -140,7 +140,7 @@ mytpl;
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = $setting['info']['web']['web_id'];
 		
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$att_list['news_id']."' and web_id='".$att_list['web_id']."'";
-		$content = $tpl->Get_TPL(dirname(__FILE__)."/news_jump.tpl");
+		$content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/news_jump.tpl");
 		
 		foreach($att_list as $key => $value) {
 			$content = str_replace("<!--att_list_".$key."-->", $value, $content);
