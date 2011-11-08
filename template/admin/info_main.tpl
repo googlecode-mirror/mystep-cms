@@ -92,8 +92,9 @@ function applyUpdate() {
 		try {
 			alert(info.info);
 			if(info.link.length>2) {
-				window.location.href = info.link;
+				window.open(info.link);
 			}
+			window.top.location.reload();
 		} catch(e) {
 			alert("更新获取失败，请检查相关设置！");
 		}

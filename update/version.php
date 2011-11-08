@@ -362,12 +362,14 @@ $version = array(
 				V0.99.5.2
 				1.Fix a plugin template path bug
 				2.Fix a update referer bug
+				3.Some other adjusts...
 			',
 		'sql' => array(),
 		'file' => array(
 				'include/parameter.php',
 				'plugin/news_mark/class.php',
 				'plugin/search/class.php',
+				'template/admin/info_main.tpl',
 				'update/index.php',
 				'update/version.php',
 			),
