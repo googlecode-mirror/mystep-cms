@@ -14,7 +14,7 @@ class plugin_meeting implements plugin {
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_meeting", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '会议', 'meeting_manager.php', '../plugin/meeting/', 0, 0, '".$info['intro']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '会议', 'meeting.php', '../plugin/meeting/', 0, 0, '".$info['intro']."')");
 		$new_id = $db->GetInsertId();
 		$err = array();
 		if($db->GetError($err)) {

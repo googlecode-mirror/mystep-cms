@@ -14,7 +14,7 @@ class plugin_survey implements plugin {
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['var'].'", "'.$info['plugin_survey'].'", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'survey_manager.php', '../plugin/survey/', 0, 0, '".$info['cat_desc']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'survey.php', '../plugin/survey/', 0, 0, '".$info['cat_desc']."')");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_install']."
@@ -44,7 +44,7 @@ mystep;
 		$info = self::info();
 		$db->query("truncate table ".$setting['db']['pre']."survey");
 		$db->query("drop table ".$setting['db']['pre']."survey");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'survey_manager.php%'");
+		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'survey.php%'");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
 		$err = array();
 		if($db->GetError($err)) {
@@ -192,12 +192,6 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record['link'] = "module.php?m=survey&id=".\$record['id'];
 	\$record['add_date'] = ("{$att_list['show_date']}"!="") ? date("{$att_list['show_date']}", strtotime(\$record['add_date'])) : "";
 	\$record['catalog'] = "";
-	if("{$att_list['show_catalog']}"!="") {
-		\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
-		if(\$cat_info) {
-			\$record['catalog'] = "<a href=\"".getFileURL(0, \$cat_info['cat_idx'], \$record['web_id'])."\" target=\"_blank\">[".\$cat_info['cat_name']."]</a>";
-		}
-	}
 	echo <<<content
 {$unit}
 content;

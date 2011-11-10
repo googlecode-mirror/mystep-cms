@@ -1,6 +1,6 @@
 <?php
 define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
-include(ROOT_PATH."/include/config.php");
+require(ROOT_PATH."/include/config.php");
 require(ROOT_PATH."/include/parameter.php");
 require(ROOT_PATH."/source/function/global.php");
 require(ROOT_PATH."/source/function/web.php");

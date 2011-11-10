@@ -7,6 +7,7 @@ require(ROOT_PATH."/source/class/abstract.class.php");
 require(ROOT_PATH."/source/class/mydb.class.php");
 require("version.php");
 
+date_default_timezone_set($setting['gen']['timezone']);
 $v = $_GET['v'];
 if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver']);

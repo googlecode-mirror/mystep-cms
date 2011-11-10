@@ -33,6 +33,6 @@ $mystep->setAddedContent("start", '<script language="JavaScript" src="/source/me
 $mystep->addCSS("images/style.css");
 $mystep->setAddedContent("start", '<link rel="stylesheet" type="text/css" media="all" href="/source/merge.php?css" />');
 
-$mystep->regModule("offical", dirname(__FILE__)."/offical.php");
+$mystep->regModule("offical", dirname(__FILE__)."/show.php");
 $mystep->getLanguage(dirname(__FILE__)."/language/");
 ?>

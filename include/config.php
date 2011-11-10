@@ -26,14 +26,14 @@ $setting['gen'] = array();
 $setting['gen']['language'] = 'default';
 $setting['gen']['charset'] = 'gbk';
 $setting['gen']['gzip_level'] = 4;
-$setting['gen']['cache'] = false;
+$setting['gen']['cache'] = true;
 $setting['gen']['rewrite'] = false;
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'classic';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
 $setting['gen']['update'] = 'http://cccfna.org.cn/update/';
 $setting['gen']['minify'] = true;
-$setting['gen']['etag'] = '20111108';
+$setting['gen']['etag'] = '20111111';
 
 $setting['js'] = array();
 $setting['js']['debug'] = true;

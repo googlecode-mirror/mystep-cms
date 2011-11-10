@@ -1,52 +1,99 @@
 <?php
-global $keyword, $condition, $limit, $web_id;
-$mode = $req->getGet("mode");
-$keyword = $req->getGet("k");
+require("../inc.php");
+include("se.php");
 
-if(!empty($keyword)) {
-	$keyword = getSafeCode($keyword, $setting['gen']['charset']);
-	$keyword = mysql_real_escape_string($keyword);
-	if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."search_keyword where keyword = '{$keyword}'")) {
-		$record['chg_date'] = time();
-		$record['count'] += 1;
-	} else {
-		$record['keyword'] = $keyword;
-		$record['count'] = 1;
-		$record['add_date'] = time();
-		$record['chg_date'] = time();
-	}
-	$db->Query($db->buildSQL($setting['db']['pre']."search_keyword", $record, "replace"));
+$method = $req->getGet("method");
+if(empty($method)) $method = "engine";
+
+$idx = $req->getReq("idx");
+$log_info = "";
+switch($method) {
+	case "engine":
+	case "keyword":
+		build_page($method);
+		break;
+	case "delete":
+		$log_info = $setting['language']['plugin_search_delete'];
+		$k = $req->getGet('k');
+		$k = mysql_real_escape_string($k);
+		$db->Query("delete from ".$setting['db']['pre']."search_keyword where keyword = '{$k}'");
+		$goto_url = $req->getServer("HTTP_REFERER");
+		break;
+	case "update":
+		if(count($_POST) != 0) {
+			$log_info = $setting['language']['plugin_search_update'];
+			$se = array();
+			for($i=0, $m=count($_POST['key']);$i<$m;$i++) {
+				if(empty($_POST['key'][$i]) || empty($_POST['value'][$i])) continue;
+				$se[$_POST['key'][$i]] = $_POST['value'][$i];	
+			}
+			$content = "<?PHP
+\$se = ".var_export($se, true).";			
+?>";
+			WriteFile("se.php", $content, "wb");
+		}
+		$goto_url = $setting['info']['self']."?method=engine";
+		break;
+	default:
+		$goto_url = $setting['info']['self'];
 }
-if(!empty($mode)) {
-	include(dirname(__FILE__)."/se.php");
-	$url = $se[$mode];
-	$goto_url = $url.urlencode(chg_charset($keyword, $setting['gen']['charset'], "utf-8")." site:".$setting['info']['web']['host']);
-} else {
-	$page = $req->getGet("page");
-	if(!is_numeric($page) || $page < 1) $page = 1;
-	$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
-	$tpl_info['idx'] = "search";
+
+if(!empty($log_info)) {
+	write_log($log_info, (isset($k)?"k={$k}":""));
+}
+$mystep->pageEnd(false);
+
+function build_page($method) {
+	global $mystep, $req, $db, $setting, $idx, $se;
+	$tpl_info = array(
+			"idx" => "main",
+			"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/",
+			"path" => ROOT_PATH."/".$setting['path']['template'],
+			);
+	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
+	$tpl_info['idx'] = $method;
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-	$web_id = $setting['info']['web']['web_id'];
-	$list_limit = array_values($setting['list']);
-	$page_size = $list_limit[0];
-	$condition = "1=1";
-	if(!empty($keyword)) {
-		$condition = "subject like '%".$keyword."%'";
+	if($method=="engine") {
+		$n = 1;
+		foreach($se as $key => $value) {
+			$record = array();
+			$record['idx'] = $n++;
+			$record['key'] = $key;
+			$record['value'] = $value;
+			$tpl_tmp->Set_Loop('record', $record);
+		}
+		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_search_title']);	
+	} elseif($method=="keyword") {
+		$order = $req->getGet("order");
+		$order_type = $req->getGet("order_type");
+		if(empty($order_type)) $order_type = "desc";
+		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."search_keyword");
+		$page = $req->getGet("page");
+		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=keyword&order=".$order, $page);
+		$tpl_tmp->Set_Variables($page_arr);
+		$str_sql = "select * from ".$setting['db']['pre']."search_keyword order by ".(empty($order)?"chg_date":"{$order}")." {$order_type} limit {$page_start}, {$page_size}";
+		$db->Query($str_sql);
+		while($record = $db->GetRS()) {
+			$record['add_date'] = date("Y-m-d H:i:s", $record['add_date']);
+			$record['chg_date'] = date("Y-m-d H:i:s", $record['chg_date']);
+			$record['encode'] = urlencode($record['keyword']);
+			$tpl_tmp->Set_Loop('record', $record);
+		}
+		$db->Free();
+		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_search_title_kw']);
+		$tpl_tmp->Set_Variable('order_type_org', $order_type);
+		if($order_type=="desc") {
+			$order_type = "asc";
+		} else {
+			$order_type = "desc";
+		}
+		$tpl_tmp->Set_Variable('order', $order);
+		$tpl_tmp->Set_Variable('order_type', $order_type);
 	}
-	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-	$news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".(empty($condition)?"":" and {$condition}"), "result");
-	$tpl_tmp->Set_Variable('title', $setting['web']['title']);
-	$tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
-	$tpl_tmp->Set_Variable('page_list', PageList($page, ceil($news_count/$page_size)));
-	$limit = (($page-1)*$page_size).", ".$page_size;
-	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
+	$tpl->Set_Variable('path_admin', $setting['path']['admin']);
+	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting'));
 	unset($tpl_tmp);
-	if(!empty($keyword)) {
-		$setting['web']['title'] = $keyword."_".$setting['web']['title'];
-		$setting['web']['keyword'] = $keyword;
-	}
 	$mystep->show($tpl);
+	return;
 }
-$mystep->pageEnd();
 ?>

@@ -1,7 +1,7 @@
 <div class="title"><!--title--></div>
 <div align="center">
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
-	<form name="db_bak" method="post" ENCTYPE="multipart/form-data" onSubmit="return checkForm(this, checkForm_append)">
+	<form name="db_bak" method="post" ENCTYPE="multipart/form-data" onSubmit="return (checkForm(this, checkForm_append) && loadingShow())">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
 				<td colspan="2" class="cat" style="width:100%; text-align:center; font-weight:bold; padding:5px"><!--result--></td>
@@ -58,6 +58,7 @@
 		</table>
 	</form>
 </div>
+<div id="bar_loading"><img src="../images/loading.gif" alt="数据库操作" width="400" height="10" /><br / >操作正在进行，请耐心等待！</div>
 <script language="JavaScript">
 function setSelection(mode) {
 	if(mode=='export') {

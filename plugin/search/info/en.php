@@ -6,7 +6,7 @@ $info = array(
 	"cat_desc_1" => "Searching Engine for content search",
 	"cat_name_2" => "Keywords",
 	"cat_desc_2" => "Searching Keywords managerment",
-	"copyright" => "Copyright 2010 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",
+	"copyright" => "Copyright 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",
 	"description" => '
 <b>Allow guest search article content with any keyword, with local script or public searching engine</b>
 

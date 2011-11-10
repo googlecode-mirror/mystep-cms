@@ -48,12 +48,13 @@ echo "</select>";
 				<td class="row" colspan="4" align="center">
 					<input class="btn" type="Submit" value=" 确认修改 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重置数据 " />&nbsp;&nbsp;
-					<input class="btn" type="button" onclick="location.href='?clean'" value="清空缓存" />
+					<input class="btn" type="button" onclick="loadingShow();location.href='?clean'" value="清空缓存" />
 				</td>
 			</tr>
 		</table>
 	</form>
 </div>
+<div id="bar_loading"><img src="../images/loading.gif" alt="清空缓存" width="400" height="10" /><br / >正在清空网站缓存，请耐心等待！</div>
 <script Language="JavaScript">
 function add(obj) {
 	obj = $(obj).parent().parent().clone();

@@ -337,6 +337,7 @@ function loadingShow() {
 	var theLeft = ($(window).width() - $("#bar_loading").width())/2 + $(document.body).scrollLeft();
 	$("#bar_loading").css({"opacity":"0.7", "top":theTop, "left":theLeft});
 	$("#bar_loading").toggle();
+	return true;
 }
 
 function reportError(msg, url, line) {

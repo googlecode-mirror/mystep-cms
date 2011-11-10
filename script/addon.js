@@ -11,10 +11,14 @@
 **************************************************/
 
 $(function() {
-	$("img").error(function(){
-		this.src="images/dummy.png";
-		this.onerror=null;
-	})
+	var err_pic = "images/dummy.png";
+	var img_lst = $tag("img");
+	for(var i=0, m=img_lst.length; i<m; i++) {
+		if(img_lst[i].onerror==null) {
+			img_lst[i].onerror = new Function("this.src='"+err_pic+"';this.onerror=null;");
+			img_lst[i].src = img_lst[i].src;
+		}
+	}
 	$("#content img").each(function(i){
 		if($(this).width()>600) $(this).width(600);
 		if(this.title=="" && this.alt!="") this.title = this.alt;

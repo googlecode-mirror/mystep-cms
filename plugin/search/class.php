@@ -14,8 +14,8 @@ class plugin_search implements plugin {
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_search", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_1']."', 'se_manager.php?method=engine', '../plugin/search/', 0, 0, '".$info['cat_desc_1']."')");
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 5, '".$info['cat_name_2']."', 'se_manager.php?method=keyword', '../plugin/search/', 0, 0, '".$info['cat_desc_2']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_1']."', 'search.php?method=engine', '../plugin/search/', 0, 0, '".$info['cat_desc_1']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 5, '".$info['cat_name_2']."', 'search.php?method=keyword', '../plugin/search/', 0, 0, '".$info['cat_desc_2']."')");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_install']."
@@ -46,7 +46,7 @@ mystep;
 		$db->query("truncate table ".$setting['db']['pre']."search_keyword");
 		$db->query("drop table ".$setting['db']['pre']."search_keyword");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'se_manager.php%'");
+		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'search.php%'");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_uninstall']."

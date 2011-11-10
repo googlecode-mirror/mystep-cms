@@ -3,7 +3,7 @@ define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 $etag_expires = 604800;
 require(ROOT_PATH."/include/config.php");
 require(ROOT_PATH."/include/parameter.php");
-include(ROOT_PATH."/source/function/etag.php");
+require(ROOT_PATH."/source/function/etag.php");
 require(ROOT_PATH."/source/function/global.php");
 require(ROOT_PATH."/source/function/web.php");
 require(ROOT_PATH."/source/class/abstract.class.php");
@@ -13,7 +13,7 @@ $mystep = new MyStep();
 $mystep->pageStart(true);
 $type = $req->GetServer("QUERY_STRING");
 $result = "";
-$cache = ROOT_PATH."/".$setting['path']['cache']."script/".$setting['info']['web']['idx']."_cache.".$type;
+$cache_file = ROOT_PATH."/".$setting['path']['cache']."script/".$setting['info']['web']['idx']."_cache.".$type;
 $header = array(
     'js' => 'Content-Type: application/x-javascript',
     'css' => 'Content-Type: text/css',
@@ -24,8 +24,8 @@ $header = array(
     'swf' => 'Content-Type: application/x-shockwave-flash'
 );
 if(isset($header[$type])) header($header[$type]);
-if(file_exists($cache) && (filemtime($cache)+$etag_expires)<($setting['info']['time_start']/1000)) {
-	$result = GetFile($cache);
+if(file_exists($cache_file) && (filemtime($cache_file)+$etag_expires)<($setting['info']['time_start']/1000)) {
+	$result = GetFile($cache_file);
 } else {
 	switch($type) {
 		case "css":
@@ -43,7 +43,7 @@ if(file_exists($cache) && (filemtime($cache)+$etag_expires)<($setting['info']['t
 		default:
 			break;
 	}
-	if(!empty($result)) WriteFile($cache, $result, "wb");
+	if(!empty($result)) WriteFile($cache_file, $result, "wb");
 }
 header("Accept-Ranges: bytes");
 header("Accept-Length: ".strlen($result));

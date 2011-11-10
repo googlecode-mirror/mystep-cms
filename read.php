@@ -22,6 +22,7 @@ if($cat_info = getParaInfo("news_cat", "cat_id", $cat_id)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
 }
+$db->Query("update ".$setting['db']['pre_sub']."news_show set views = views + 1 where news_id=".$news_id);
 $page = $req->getGet("page");
 if(!is_numeric($page)) $page = 1;
 if($page < 1) $page = 1;
@@ -53,7 +54,6 @@ if($tpl->Is_Cached()) {
 	$mystep->pageEnd();
 }
 
-$db->Query("update ".$setting['db']['pre_sub']."news_show set views = views + 1 where news_id=".$news_id);
 $detail = getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "record", 1200);
 if($detail===false) {
 	$goto_url = "/";

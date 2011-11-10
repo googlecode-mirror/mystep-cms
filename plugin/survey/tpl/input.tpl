@@ -63,58 +63,58 @@
 	</form>
 </div>
 <div style="display:<!--show_item-->">
-<div class="title">调查项目维护</div>
-<div align="center">
-	<form name="add_item" method="post" action="?method=add_item" onsubmit="return checkForm(this)">
+	<div class="title">调查项目维护</div>
+	<div align="center">
+		<form name="add_item" method="post" action="?method=add_item" onsubmit="return checkForm(this)">
+			<table id="input_area" cellspacing="0" cellpadding="0" align="center">
+				<tr>
+					<td class="cat" colspan="2">项目添加<input name="id" type="hidden" value="<!--record_id-->"><input name="vote" type="hidden" value="0"></td>
+				</tr>
+				<tr>
+					<td class="cat" width="80">调查项目：</td>
+					<td class="row"><input name="title" type="text" maxlength="100" need="" value=""> &nbsp; <font>（调查内容，必填）</font></td>
+				</tr>
+				<tr>
+					<td class="cat" width="80">选项分类：</td>
+					<td class="row"><input name="catalog" type="text" maxlength="20" value=""> &nbsp; <font>（选项归类，可选）</font></td>
+				</tr>
+				<tr>
+					<td class="cat" width="80">项目图示：</td>
+					<td class="row"><input name="image" type="text" maxlength="100" value=""> &nbsp; <font>（项目图示，可选）</font></td>
+				</tr>
+				<tr>
+					<td class="cat" width="80">链接地址：</td>
+					<td class="row"><input name="url" type="text" maxlength="100" need="url_" value=""> &nbsp; <font>（相关网址，可选）</font></td>
+				</tr>
+				<tr>
+					<td class="cat" colspan="2" align="center">
+						<input class="btn" type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
+						<input class="btn" type="reset" value=" 重 置 " name="reset">&nbsp;&nbsp;
+					</td>
+				</tr>
+			</table>
+		</form>
+		<form name="batch_import" method="post" action="?method=import" ENCTYPE="multipart/form-data" onSubmit="return checkForm(this)">
+			<table id="input_area" cellspacing="0" cellpadding="0" align="center">
+				<tr>
+					<td class="cat" width="80">批量导入：</td>
+					<td class="row">
+						<input name="id" type="hidden" value="<!--record_id-->">
+						<input type='hidden' name='MAX_FILE_SIZE' value='<!--upload_max_filesize-->'>
+						<input type="file" name="the_file" style="width:500px;" need="">
+						<input class="btn" type="Submit" value=" 确 定 " name="Submit" />
+					</td>
+				</tr>
+			</table>
+		</form>
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
-			<tr>
-				<td class="cat" colspan="2">项目添加<input name="id" type="hidden" value="<!--record_id-->"><input name="vote" type="hidden" value="0"></td>
-			</tr>
-			<tr>
-				<td class="cat" width="80">调查项目：</td>
-				<td class="row"><input name="title" type="text" maxlength="100" need="" value=""> &nbsp; <font>（调查内容，必填）</font></td>
-			</tr>
-			<tr>
-				<td class="cat" width="80">选项分类：</td>
-				<td class="row"><input name="catalog" type="text" maxlength="20" value=""> &nbsp; <font>（选项归类，可选）</font></td>
-			</tr>
-			<tr>
-				<td class="cat" width="80">项目图示：</td>
-				<td class="row"><input name="image" type="text" maxlength="100" value=""> &nbsp; <font>（项目图示，可选）</font></td>
-			</tr>
-			<tr>
-				<td class="cat" width="80">链接地址：</td>
-				<td class="row"><input name="url" type="text" maxlength="100" need="url_" value=""> &nbsp; <font>（相关网址，可选）</font></td>
-			</tr>
-			<tr>
-				<td class="cat" colspan="2" align="center">
-					<input class="btn" type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
-					<input class="btn" type="reset" value=" 重 置 " name="reset">&nbsp;&nbsp;
-				</td>
-			</tr>
-		</table>
-	</form>
-	<form name="batch_import" method="post" action="?method=import" ENCTYPE="multipart/form-data" onSubmit="return checkForm(this)">
-		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
-			<tr>
-				<td class="cat" width="80">批量导入：</td>
-				<td class="row">
-					<input name="id" type="hidden" value="<!--record_id-->">
-					<input type='hidden' name='MAX_FILE_SIZE' value='<!--upload_max_filesize-->'>
-					<input type="file" name="the_file" style="width:500px;" need="">
-					<input class="btn" type="Submit" value=" 确 定 " name="Submit" />
-				</td>
-			</tr>
-		</table>
-	</form>
-	<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 <!--loop:start key="item_list"-->
-		<tr>
-			<td class="cat" width="80">项目 <!--item_list_no-->：</td>
-			<td class="row"><!--item_list_catalog--> <a href="<!--item_list_url-->" target="_blank"><!--item_list_title--></a> （<!--item_list_vote-->票）</td>
-			<td class="row" width="40" align="center"><a href="?method=del_item&id=<!--record_id-->&idx=<!--item_list_idx-->"><b>删除</b></a></td>
-		</tr>
+			<tr>
+				<td class="cat" width="80">项目 <!--item_list_no-->：</td>
+				<td class="row"><!--item_list_catalog--> <a href="<!--item_list_url-->" target="_blank"><!--item_list_title--></a> （<!--item_list_vote-->票）</td>
+				<td class="row" width="40" align="center"><a href="?method=del_item&id=<!--record_id-->&idx=<!--item_list_idx-->"><b>删除</b></a></td>
+			</tr>
 <!--loop:end-->
-	</table>
-</div>
+		</table>
+	</div>
 </div>
