@@ -32,6 +32,12 @@
 				</td>
 			</tr>
 			<tr>
+				<td class="cat" width="80">关 键 字：</td>
+				<td class="row">
+				<input name="topic_keyword" type="text" maxlength="150" need="" value="<!--topic_keyword-->"> <span class="comment">（用于搜索引擎检索的关键字）</span>
+				</td>
+			</tr>
+			<tr>
 				<td class="cat" width="80">专题分类：</td>
 				<td class="row">
 				<input name="topic_cat" type="text" maxlength="120" need="" value="<!--topic_cat-->"> <span class="comment">（用逗号分隔各个分类）</span>

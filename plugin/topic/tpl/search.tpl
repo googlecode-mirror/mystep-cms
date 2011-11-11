@@ -3,7 +3,7 @@
 	td {padding:5px 5px 5px 5px;}
 	#list_area {width:560px;}
 </style>
-<form name="keyword_list" method="post" action="?method=batch_add&topic_id=2">
+<form name="keyword_list" method="post" action="?method=batch_add&topic_id=<!--topic_id-->">
 	<div style="font-weight:bold;text-align:center;padding-bottom:10px;">
 		ËùÊôÍøÕ¾£º
 		<select name="web_id" onchange="location.href='?keyword=<!--keyword-->&web_id='+this.value">

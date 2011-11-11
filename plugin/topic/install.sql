@@ -6,6 +6,7 @@ CREATE TABLE `{pre}topic` (
 	`topic_image` Char(200) DEFAULT '',											#专题图示
 	`topic_link` Char(200) DEFAULT '',											#专题链接
 	`topic_cat` Char(200) DEFAULT '',												#链接分类
+	`topic_keyword` Char(255) DEFAULT '',										#链接关键字
 	`topic_intro` TEXT,																			#专题介绍
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',			#录入日期
 	PRIMARY KEY (`topic_id`)

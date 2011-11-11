@@ -66,8 +66,8 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
-			MultiDel(dirname(__FILE__)."/data/");
-			MakeDir(dirname(__FILE__)."/data/");
+			MultiDel(dirname(__FILE__)."/topic/");
+			MakeDir(dirname(__FILE__)."/topic/");
 			deleteCache("plugin");
 			buildParaList("plugin");
 			showInfo($setting['language']['plugin_uninstall_done']);
@@ -96,7 +96,7 @@ mystep;
 	}
 	
 	public static function topic(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting, $db;
 		$result = "";
 		if(!isset($att_list['id'])) return "";
 		if(!isset($att_list['cat'])) $att_list['cat'] = "";
@@ -109,7 +109,8 @@ mystep;
 		if(!isset($att_list['show_date'])) $att_list['show_date'] = "";
 		if(!empty($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
 		
-		$str_sql = "select id, link_name as subject, link_url, add_date from ".$setting['db']['pre']."topic where 1=1";
+		$style_list = mysql_real_escape_string($db->getSingleResult("select topic_cat from ".$setting['db']['pre']."topic where topic_id='{$att_list['id']}'"));
+		$str_sql = "select id, link_name as subject, link_cat, link_url, add_date from ".$setting['db']['pre']."topic_link where topic_id='{$att_list['id']}'";
 		if(!empty($att_list['cat'])) $str_sql .= " and link_cat=".$att_list['cat'];
 		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
 		$str_sql .= " order by ".$att_list['order'];
@@ -126,6 +127,7 @@ mystep;
 		
 		$result = <<<mytpl
 <?php
+\$style_list = explode(",", "{$style_list}");
 \$result = getData("{$str_sql}", "all", 86400);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
@@ -135,7 +137,7 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record['add_date'] = ("{$att_list['show_date']}"!="") ? date("{$att_list['show_date']}", strtotime(\$record['add_date'])) : "";
 	\$record['catalog'] = "";
 	if("{$att_list['show_catalog']}"!="") {
-		\$record['catalog'] = "[".\$record['link_cat']."]";
+		\$record['catalog'] = "[".\$style_list[\$record['link_cat']]."]";
 	}
 	echo <<<content
 {$unit}
@@ -145,7 +147,7 @@ content;
 }
 unset(\$result);
 for(; \$n<{$att_list['loop']}; \$n++) {
-	\$unit = str_replace("style=\"\"", "style=\(\$n%2?"{$att_list['css1']}":"{$att_list['css2']}")."\"", "{$unit_blank}");
+	\$unit = str_replace("style=\"\"", "style=\"".(\$n%2?"{$att_list['css1']}":"{$att_list['css2']}")."\"", "{$unit_blank}");
 	echo \$unit;
 	echo "\\n";
 }
@@ -166,7 +168,7 @@ mytpl;
 		if(!isset($att_list['show_date'])) $att_list['show_date'] = "";
 		if(!empty($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
 		
-		$str_sql = "select top_id as id, topic_name as subject, topic_idx, add_date from ".$setting['db']['pre']."topic where 1=1";
+		$str_sql = "select topic_id as id, topic_name as subject, topic_idx, add_date from ".$setting['db']['pre']."topic where 1=1";
 		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
 		$str_sql .= " order by ".$att_list['order'];
 		$str_sql .= " limit ".$att_list['limit'];
@@ -198,7 +200,7 @@ content;
 }
 unset(\$result);
 for(; \$n<{$att_list['loop']}; \$n++) {
-	\$unit = str_replace("style=\"\"", "style=\(\$n%2?"{$att_list['css1']}":"{$att_list['css2']}")."\"", "{$unit_blank}");
+	\$unit = str_replace("style=\"\"", "style=\"".(\$n%2?"{$att_list['css1']}":"{$att_list['css2']}")."\"", "{$unit_blank}");
 	echo \$unit;
 	echo "\\n";
 }

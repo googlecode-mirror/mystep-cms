@@ -27,15 +27,15 @@ switch($method) {
 		if($method=="add_ok") {
 			$log_info = $setting['language']['plugin_topic_add'];
 			$_POST['add_date'] = "now()";
-			$str_sql = $db->buildSQL($setting['db']['pre']."topic", $_POST, "insert", "a");
+			$db->Query($db->buildSQL($setting['db']['pre']."topic", $_POST, "insert", "a"));
+			$top_id = $db->GetInsertId();
 		} else {
 			$log_info = $setting['language']['plugin_topic_edit'];
+			$top_id = $_POST['topic_id'];
 			unset($_POST['topic_id']);
-			$str_sql = $db->buildSQL($setting['db']['pre']."topic", $_POST, "update", "topic_id={$topic_id}");
+			$db->Query($db->buildSQL($setting['db']['pre']."topic", $_POST, "update", "topic_id={$topic_id}"));
 		}
-		$db->Query($str_sql);
-		if($method=="add_ok") $_POST['topic_id'] = $db->GetInsertId();
-		WriteFile("topic/".$_POST['topic_id'].".tpl", $tpl_content, "wb");
+		WriteFile("topic/".$top_id.".tpl", $tpl_content, "wb");
 		break;
 	default:
 		break;

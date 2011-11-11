@@ -49,6 +49,7 @@ switch($method) {
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$db->Free();
+		$tpl_tmp->Set_Variable('topic_id', $topic_id);
 		$tpl_tmp->Set_Variable('script', $script);
 		$tpl->Set_Variable('path_admin', $setting['path']['admin']);
 		$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
