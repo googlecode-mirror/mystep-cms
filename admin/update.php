@@ -39,7 +39,7 @@ switch($method) {
 		$update_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver'], $header);
 		$update_info = base64_decode($update_info);
 		$update_info = unserialize($update_info);
-		
+
 		if(count($update_info['setting'])>0) {
 			$setting_org = $setting;
 			require(ROOT_PATH."/include/config.php");
@@ -91,6 +91,7 @@ mystep;
 			$dir = $dir."update/".date("Ymd/");
 			$files = array();
 			for($i=0; $i<$m; $i++) {
+				if($update_info['content'][$list[$i]]==".") continue;
 				$files[$i] = $dir.$update_info['file'][$list[$i]];
 				WriteFile($files[$i], $update_info['content'][$list[$i]], "wb");
 			}

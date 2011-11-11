@@ -30,8 +30,12 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 		$file_list = array_unique($file_list);
 		$update_info = array('sql'=>$sql_list, 'file'=>$file_list, 'content'=>array(), 'setting'=>$setting_list);
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
-			if(file_exists(ROOT_PATH."/".$update_info['file'][$i]) && !is_dir(ROOT_PATH."/".$update_info['file'][$i])) {
-				$update_info['content'][$i] = GetFile(ROOT_PATH."/".$update_info['file'][$i]);
+			if(file_exists(ROOT_PATH."/".$update_info['file'][$i])) {
+				if(is_dir(ROOT_PATH."/".$update_info['file'][$i])) {
+					$update_info['content'][$i] = ".";
+				} else {
+					$update_info['content'][$i] = GetFile(ROOT_PATH."/".$update_info['file'][$i]);
+				}
 			} else {
 				$update_info['content'][$i] = "";
 			}

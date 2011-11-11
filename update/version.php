@@ -499,5 +499,25 @@ $version = array(
 					),
 			),
 	),
+	'0.99.6.1' => array(
+		'info' => '
+				V0.99.6.1
+				1.Fix a bug in language.js.php
+				2.Fix a directory bug in update function
+				3.Fix a custom link bug in topic plugin
+				4.Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/func_backup.php',
+				'admin/update.php',
+				'include/parameter.php',
+				'plugin/topic/class.php',
+				'script/language.js.php',
+				'update/index.php',
+				'update/version.php',
+			),
+		'setting' => array(),
+	),
 );
 ?>

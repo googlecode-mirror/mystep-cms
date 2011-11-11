@@ -168,7 +168,7 @@ mytpl;
 		if(!isset($att_list['show_date'])) $att_list['show_date'] = "";
 		if(!empty($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
 		
-		$str_sql = "select topic_id as id, topic_name as subject, topic_idx, add_date from ".$setting['db']['pre']."topic where 1=1";
+		$str_sql = "select topic_id as id, topic_name as subject, topic_idx, topic_link, add_date from ".$setting['db']['pre']."topic where 1=1";
 		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
 		$str_sql .= " order by ".$att_list['order'];
 		$str_sql .= " limit ".$att_list['limit'];
@@ -189,7 +189,11 @@ mytpl;
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
 	HtmlTrans(&\$record);
-	\$record['link'] = "module.php?m=topic&idx=".\$record['topic_idx'];
+	if(empty(\$record['topic_link'])) {
+		\$record['link'] = "module.php?m=topic&idx=".\$record['topic_idx'];
+	} else {
+		\$record['link'] = \$record['topic_link'];
+	}
 	\$record['add_date'] = ("{$att_list['show_date']}"!="") ? date("{$att_list['show_date']}", strtotime(\$record['add_date'])) : "";
 	\$record['catalog'] = "";
 	echo <<<content

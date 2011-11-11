@@ -4,7 +4,7 @@ require("inc.php");
 $method = $req->getReq("method");
 $table_name = $req->getReq("table");
 $web_idx = $req->getReq("web_idx");
-set_time_limit(300);
+set_time_limit(0);
 ini_set('memory_limit', '128M');
 $log_info = "";
 $import_info = "";
