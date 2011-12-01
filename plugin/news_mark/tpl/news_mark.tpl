@@ -16,6 +16,13 @@
 	<div id="page_main">
 		<div class="title"><!--title--></div>
 		<div class="nav">
+			<select name="web_id" style="text-align:center;" onchange="location.href='?web_id='+this.value">
+<!--loop:start key="website"-->
+				<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
+<!--loop:end-->
+			</select>
+		</div>
+		<div class="nav">
 			共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，&nbsp;
 			<a href="<!--page_first-->">首页</a>&nbsp;
 			<a href="<!--page_prev-->">上页</a>&nbsp;
@@ -29,8 +36,7 @@
 			<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 				<tr align="center">
 					<td class="cat" width="30"><a href="?keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
-					<td class="cat"><a href="?keyword=<!--keyword-->&order=web_id&order_type=<!--order_type-->"><font color="#000000">所属网站</font></a></td>
-					<td class="cat"><a href="?keyword=<!--keyword-->&order=cat_id&order_type=<!--order_type-->"><font color="#000000">所属栏目</font></a></td>
+					<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=cat_id&order_type=<!--order_type-->"><font color="#000000">所属栏目</font></a></td>
 					<td class="cat"><a href="?keyword=<!--keyword-->&order=subject&order_type=<!--order_type-->"><font color="#000000">新闻标题</font></a></td>
 					<td class="cat"><a href="?keyword=<!--keyword-->&order=jump&order_type=<!--order_type-->"><font color="#000000">提升值</font></a></td>
 					<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=jump_time&order_type=<!--order_type-->"><font color="#000000">提升时间</font></a></td>
@@ -41,7 +47,6 @@
 		<!--loop:start key="record" time="20"-->
 				<tr align="center">
 					<td class="row"><!--record_news_id--></td>
-					<td class="row"><!--record_web_id--></td>
 					<td class="row"><!--record_cat_id--></td>
 					<td class="row" align="left"><a href="<!--record_link-->" target="_blank"><!--record_subject--></a></td>
 					<td class="row"><!--record_jump--></td>

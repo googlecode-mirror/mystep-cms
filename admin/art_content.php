@@ -64,7 +64,7 @@ switch($method) {
 			}
 			$db->Free();
 			$db->BatchExec($sql_list);
-			delCacheFile($news_id);
+			delCacheFile($news_id, $setting_sub["info"]['web_id']);
 		}
 		break;
 	case "unlock":
@@ -150,7 +150,8 @@ switch($method) {
 				unset($_POST['news_id']);
 				$db->Query("delete from ".$setting['db']['pre_sub']."news_detail where news_id = '{$news_id}'");
 				$str_sql = $db->buildSQL($setting['db']['pre_sub']."news_show", $_POST, "update", "news_id={$news_id}");
-				delCacheFile($news_id);
+				delCacheFile($news_id, $setting_sub["info"]['web_id']);
+				getData("select cat_id, add_date, pages, subject, view_lvl from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "remove");
 			}
 			$db->Query($str_sql);
 	

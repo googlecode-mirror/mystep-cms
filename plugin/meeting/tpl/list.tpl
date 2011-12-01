@@ -14,7 +14,7 @@
 	  <tr align="center">
 	    <td class="row"><!--record_mid--></td>
 	    <td class="row"><!--record_web_id--></td>
-	    <td class="row"><a href="meeting_manager.php?mid=<!--record_mid-->"><!--record_name--></a></td>
+	    <td class="row"><a href="meeting.php?mid=<!--record_mid-->"><!--record_name--></a></td>
 	    <td class="row"><!--record_notes--></td>
 	    <td class="row"><!--record_add_date--></td>
 	    <td class="row" align="center"><a href="?method=edit&mid=<!--record_mid-->">±à¼­</a> &nbsp;<a href="?method=delete&mid=<!--record_mid-->" onclick="return confirm('È·ÈÏÉ¾³ý£¿£¿')">É¾³ý</a></td>

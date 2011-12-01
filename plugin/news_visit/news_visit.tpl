@@ -16,6 +16,13 @@
 	<div id="page_main">
 		<div class="title"><!--title--></div>
 		<div class="nav">
+			<select name="web_id" style="text-align:center;" onchange="location.href='?web_id='+this.value">
+<!--loop:start key="website"-->
+				<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
+<!--loop:end-->
+			</select>
+		</div>
+		<div class="nav">
 			共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，&nbsp;
 			<a href="<!--page_first-->">首页</a>&nbsp;
 			<a href="<!--page_prev-->">上页</a>&nbsp;

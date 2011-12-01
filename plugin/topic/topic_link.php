@@ -62,10 +62,16 @@ switch($method) {
 		$db->Query("delete from ".$setting['db']['pre']."topic_link where id='{$id}'");
 		$goto_url = $req->getServer("HTTP_REFERER");
 		break;
+	case "empty":
+		$log_info = $setting['language']['plugin_topic_empty_link'];
+		$id = $req->getReq("id");
+		$db->Query("delete from ".$setting['db']['pre']."topic_link where topic_id='{$topic_id}'");
+		$goto_url = $req->getServer("HTTP_REFERER");
+		break;
 	case "add":
 		$log_info = $setting['language']['plugin_topic_add_link'];
 		$_POST['add_date'] = date("Y-m-d H:i:s");
-		$str_sql = $db->buildSQL($setting['db']['pre']."topic_link", $_POST, "insert", "a");
+		$str_sql = $db->buildSQL($setting['db']['pre']."topic_link", $_POST, "replace");
 		$db->Query($str_sql);
 		$goto_url = $req->getServer("HTTP_REFERER");
 		break;
@@ -85,7 +91,7 @@ switch($method) {
 			$record['link_order'] = "0";
 			$record['add_date'] = date("Y-m-d H:i:s");
 			
-			$str_sql = $db->buildSQL($setting['db']['pre']."topic_link", $record, "insert", "a");
+			$str_sql = $db->buildSQL($setting['db']['pre']."topic_link", $record, "replace");
 			$db->Query($str_sql);
 		}
 		echo <<<mystep

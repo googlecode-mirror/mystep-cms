@@ -35,7 +35,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_install_done']);
+			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
 	}
 	
@@ -70,7 +70,7 @@ mystep;
 			MakeDir(dirname(__FILE__)."/topic/");
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_uninstall_done']);
+			echo showInfo($setting['language']['plugin_uninstall_done'], false);
 		}
 	}
 	

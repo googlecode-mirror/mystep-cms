@@ -1,6 +1,8 @@
 <?php
 require("../inc.php");
 include("info.php");
+$web_id = $req->getGet("web_id");
+if(empty($web_id)) $web_id = 1;
 $tpl_info = array(
 		"idx" => "news_visit",
 		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",
@@ -16,13 +18,13 @@ $keyword = $req->getGet("keyword");
 $tpl->Set_Variable('keyword', $keyword);
 
 $page = $req->getGet("page");
-$str_sql = "select count(*) as counter from ".$setting['db']['pre']."news_visit where 1=1";
+$str_sql = "select count(*) as counter from ".$setting['db']['pre']."news_visit where web_id=".$web_id;
 if(!empty($keyword)) $str_sql.= " and subject like '%{$keyword}%'";
 $counter = $db->GetSingleResult($str_sql);
 list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 $tpl->Set_Variables($page_arr);
 	
-$str_sql = "select * from ".$setting['db']['pre']."news_visit where 1=1";
+$str_sql = "select * from ".$setting['db']['pre']."news_visit where web_id=".$web_id;
 if(!empty($keyword)) $str_sql.= " and subject like '%{$keyword}%'";
 $str_sql.= " order by ".(empty($order)?"news_id":"{$order}")." {$order_type}";
 $str_sql.= " limit $page_start, $page_size";
@@ -48,6 +50,12 @@ $tpl->Set_Variable('order', $order);
 $tpl->Set_Variable('order_type', $order_type);
 $tpl->Set_Variable('path_admin', $setting['path']['admin']);
 $tpl->Set_Variable('title', $info['name']);
+
+$max_count = count($GLOBALS['website']);
+for($i=0; $i<$max_count; $i++) {
+	$GLOBALS['website'][$i]['selected'] = $GLOBALS['website'][$i]['web_id']==$web_id?"selected":"";
+	$tpl->Set_Loop("website", $GLOBALS['website'][$i]);
+}
 
 $mystep->show($tpl);
 unset($tpl);

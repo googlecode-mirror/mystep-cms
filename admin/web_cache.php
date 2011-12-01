@@ -62,15 +62,6 @@ mystep;
 		}
 		closedir($handle);
 	}
-	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/data/";
-	if($handle = opendir($cache_path)) {
-		while (false !== ($file = readdir($handle))) {
-			if($file!="." && $file!="..") {
-				MultiDel($cache_path.$file);
-			}
-		}
-		closedir($handle);
-	}
 	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/";
 	if($handle = opendir($cache_path)) {
 		while (false !== ($file = readdir($handle))) {

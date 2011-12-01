@@ -105,7 +105,7 @@ function openDialog(url, width, height, mode) {
 }
 
 function openWindow(url,width,height) {
-	var win = window.open(url, "showIt","height="+height+", width="+width+", top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no, modal=yes");
+	var win = window.open(url, "new_window","height="+height+", width="+width+", top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no, modal=yes");
 	return win;
 }
 
@@ -291,53 +291,6 @@ function setHomepage() {
 	} else {
 		alert("Can't set currnet page to Homepage!");
 	}
-}
-
-function setSlide() {
-	var objs = $(".slide");
-	var items = null;
-	var temp_num = "";
-	for(var i=0; i<objs.length; i++) {
-		items = objs[i].getElementsByTagName("DL");
-		if(items.length>0) {
-			temp_num = "";
-			for(var j=0, m=items.length; j<m; j++){
-				temp_num += "<li>"+(j+1)+"</li>";
-			}
-			temp_num = "<ul>"+temp_num+"</ul>";
-			$("<div/>").addClass("slide-num").html(temp_num).appendTo(objs[i]);
-		}
-		$("<div/>").addClass("slide-show").appendTo(objs[i]);
-		
-		$(".slide li").click(function(){
-			var theObj = $(this).parentsUntil(".slide").parent();
-			clearTimeout(theObj.data("timeout"));
-			theObj = theObj[0];
-			theObj.slide(parseInt(this.innerHTML)-1);
-		});
-		
-		objs[i].slide = function(idx) {
-			var max = $(this).find("dl").length;
-			if(idx>=max) idx = 0;
-			$(this).find("DL").hide();
-			var item = $(this).find("DL").eq(idx);
-			$(this).find(".slide-show").html(item.find("dt").html());
-			$(this).find(".slide-num li").removeClass("selected");
-			$(this).find(".slide-num li").eq(idx).addClass("selected");
-			item.animate({opacity: 'toggle'}, 2000);
-			var self = this;
-			$(this).data("timeout", setTimeout(function(){self.slide(idx+1)}, 5000));
-		}
-		objs[i].slide(0);
-	}
-}
-
-function loadingShow() {
-	var theTop = ($(window).height() - $("#bar_loading").height())/2 + $(document.body).scrollTop();
-	var theLeft = ($(window).width() - $("#bar_loading").width())/2 + $(document.body).scrollLeft();
-	$("#bar_loading").css({"opacity":"0.7", "top":theTop, "left":theLeft});
-	$("#bar_loading").toggle();
-	return true;
 }
 
 function reportError(msg, url, line) {

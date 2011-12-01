@@ -12,13 +12,15 @@
 ********************************************/
 
 /*--------------------------------Website Functions Start-----------------------------------------*/
-function write_log($comment="", $q_str="") {
-	global $db, $setting;
-	$link = "http://".$_SERVER["SERVER_NAME"].$_SERVER["SCRIPT_NAME"]."?".$_SERVER["QUERY_STRING"]."&".$q_str;
-	$link = preg_replace("/&return_url=.+&/iU", "&", $link);
+function write_log($comment="", $q_str_addon="") {
+	global $db, $setting, $req;
+	$link = "http://".$req->getServer("SERVER_NAME").$req->getServer("SCRIPT_NAME")."?".$req->getServer("QUERY_STRING");
+	$q_str = $req->getServer("QUERY_STRING");
+	if(!empty($q_str)) $link .= "?".$q_str;
+	if(!empty($q_str_addon)) $link .= (empty($q_str)?"?":"&").$q_str_addon;
 	$str_sql = "
 		insert into ".$setting['db']['pre']."modify_log (`id`,	`user`,			`group`,		`time`,		`link`, `comment`)
-				values (0,	'".$_SESSION['username']."',	'".$_SESSION['usertype']."',	".$_SERVER['REQUEST_TIME'].",	'{$link}', '{$comment}');
+				values (0,	'".$req->getSession('username')."',	'".$req->getSession('usertype')."',	".$req->getServer('REQUEST_TIME').",	'{$link}', '{$comment}');
 	";
 	$db->Query($str_sql);
 	return;
@@ -45,7 +47,7 @@ function GetPageList($counter, $qry_str="", $page=1, $page_size=20) {
 }
 
 function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
-	global $db, $setting;
+	global $db, $setting, $req;
 	if(is_array($content)) {
 		$tmp = $content;
 	} else {
@@ -91,7 +93,7 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 				}
 				MakeDir("{$the_path}/preview/");
 				img_thumb($the_path.$new_name, $the_width, $the_height, $the_path."/preview/".$new_name);
-				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$_SESSION['username']."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
+				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$req->getSession('username')."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
 				$db->Query($qrl_str);
 				$new_id = $db->GetInsertId();
 				if($new_id != 0) {
@@ -109,7 +111,7 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 }
 
 function GetPictures(&$content, $db=null, $zoom = 700) {
-	global $setting;
+	global $setting, $req;
 	if(is_null($db)) global $db;
 	if(is_array($content)) {
 		$tmp = $content;
@@ -153,7 +155,7 @@ function GetPictures(&$content, $db=null, $zoom = 700) {
 				}
 				MakeDir("{$the_path}/preview/");
 				img_thumb($the_path.$new_name, $the_width, $the_height, $the_path."/preview/".$new_name);
-				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$_SESSION['username']."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
+				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$req->getSession('username')."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
 				$db->Query($qrl_str);
 				$new_id = $db->GetInsertId();
 				if($new_id != 0) {

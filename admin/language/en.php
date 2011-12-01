@@ -7,7 +7,7 @@ $language_info = array (
 );
 
 $language = array (
-  'admin_update_done' => 'MyStep CMS has been update to new version at '.date('Y-m-d H:i:s'),
+  'admin_update_done' => 'Online Update',
   'admin_update_sql' => '%d SQL query has been executed!',
   'admin_update_file' => '%d files has been updated!',
   'admin_update_error' => 'Because of power limit, script file on your server cannot be writen, download the update file and uncompres to the root of your website!',

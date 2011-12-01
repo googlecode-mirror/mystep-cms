@@ -24,7 +24,7 @@ $header = array(
     'swf' => 'Content-Type: application/x-shockwave-flash'
 );
 if(isset($header[$type])) header($header[$type]);
-if(file_exists($cache_file) && (filemtime($cache_file)+$etag_expires)<($setting['info']['time_start']/1000)) {
+if(file_exists($cache_file) && (filemtime($cache_file)+$etag_expires)>($setting['info']['time_start']/1000)) {
 	$result = GetFile($cache_file);
 } else {
 	switch($type) {

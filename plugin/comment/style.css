@@ -1,0 +1,20 @@
+#form_comment {margin:10px 0px 10px 0px;}
+#form_comment .l {float:left; width:630px;}
+#form_comment .r {float:right;text-align:center;}
+#form_comment .r button {padding:5px 10px 5px 10px; width:100px;}
+#form_comment .r img {width:100px;}
+#form_comment .r input {width:100px;color:#aaaaaa;margin:5px 0px 5px 0px;}
+#comment_text {width:100%;height:100px;overflow-y:auto;}
+#comment_tpl {display:none;}
+#comment_quote {display:none;padding:10px;}
+#comment_quote div {margin-bottom:10px;}
+#comment {margin:0px 10px 10px 10px;border-top:1px #999999 solid;}
+#comment .loading {padding:20px;text-align:center;font-weight:bold;}
+#comment .item {padding:10px 5px px 5px; border-bottom:1px #999999 solid;}
+#comment .item .info {text-align:left;margin-top:10px;}
+#comment .item .info span {padding-bottom:5px; border-bottom:1px #dddddd dashed;}
+#comment .item .detail {padding:10px;}
+#comment .item .detail fieldset {border:1px #dddddd solid;margin:5px 0px 10px 0px; padding:0px 0px 5px 0px;}
+#comment .item .detail legend {background-color:#eeeeee;border:1px #dddddd solid;margin-left:10px;padding:2px 0px 0px 24px;line-height:20px; background:url("/plugin/comment/quote.gif") 2px 2px no-repeat;}
+#comment .item .detail div {padding:5px 5px 0px 5px;}
+#comment .item .func {background-color:#fafafa; padding:5px;}

@@ -19,7 +19,7 @@ CREATE TABLE `{pre}topic_link` (
 	`id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,					#链接索引
 	`topic_id` SMALLINT UNSIGNED NOT NULL,									#专题索引
 	`link_name` Char(100) DEFAULT '',												#链接名称
-	`link_url` Char(200) DEFAULT '',												#链接地址
+	`link_url` Char(200) DEFAULT  '' UNIQUE,								#链接地址
 	`link_cat` TINYINT UNSIGNED,														#链接分类
 	`link_order` TINYINT UNSIGNED,													#链接排序
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00',			#添加日期

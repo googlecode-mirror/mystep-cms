@@ -35,7 +35,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_install_done']);
+			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
 	}
 	
@@ -66,7 +66,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_uninstall_done']);
+			echo showInfo($setting['language']['plugin_uninstall_done'], false);
 		}
 	}
 	
@@ -81,11 +81,16 @@ mystep;
 		return "";
 	}
 	
+	public static function setting() {
+		$plugin_setting['news_mark'] = null;
+		if(is_file(dirname(__FILE__)."/config.php")) include(dirname(__FILE__)."/config.php");
+		return $plugin_setting['news_mark'];
+	}
+	
 	public static function news_rank(MyTPL $tpl, $att_list = array()) {
 		global $setting;
 		$result = "";
 		if(!isset($att_list['news_id'])) $att_list['news_id'] = $GLOBALS['news_id'];
-		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = $GLOBALS['cat_id'];
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = $setting['info']['web']['web_id'];
 		
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$att_list['news_id']."' and web_id='".$att_list['web_id']."'";
@@ -106,14 +111,12 @@ global \$plugin_setting;
 \$record = getData(\$str_sql, "record", 3600*24);
 if(\$record===false) {
 	getData(\$str_sql, "remove");
-	\$webInfo = getSubSetting("{$att_list['web_id']}");
-	\$subject = \$db->getSingleResult("select subject from `".\$webInfo['db']['name']."`.`".\$webInfo['db']['pre']."news_show` where news_id='{$att_list['news_id']}'");
-	\$subject = mysql_real_escape_string(\$subject);
-	\$db->query("insert into {$setting['db']['pre']}news_mark values('{$att_list['web_id']}', '{$att_list['news_id']}', '{$att_list['cat_id']}', '".\$subject."', 0, '0', 0, 0, '0')");
-	\$record = getData(\$str_sql, "record", 3600*24);
+	\$record = array();
+	\$record['rank_times']==0;
+	\$record['rank_total']==0;
 }
 \$record['precent'] = \$record['rank_times']==0?0:ceil((\$record['rank_total']/\$record['rank_times']-(\$rank_min)+1)*100/((\$rank_max)-(\$rank_min)+1));
-\$record['average'] = round(\$record['rank_total']/\$record['rank_times'], 2);
+\$record['average'] = \$record['rank_times']==0?0:round(\$record['rank_total']/\$record['rank_times'], 2);
 for(\$i=\$rank_min; \$i<=\$rank_max; \$i++) {
 	\$record['value'] = \$i;
 	echo <<<content
@@ -136,7 +139,6 @@ mytpl;
 		global $setting;
 		$result = "";
 		if(!isset($att_list['news_id'])) $att_list['news_id'] = $GLOBALS['news_id'];
-		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = $GLOBALS['cat_id'];
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = $setting['info']['web']['web_id'];
 		
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$att_list['news_id']."' and web_id='".$att_list['web_id']."'";
@@ -153,11 +155,8 @@ mytpl;
 \$record = getData(\$str_sql, "record", 3600*24);
 if(\$record===false) {
 	getData(\$str_sql, "remove");
-	\$webInfo = getSubSetting("{$att_list['web_id']}");
-	\$subject = \$db->getSingleResult("select subject from `".\$webInfo['db']['name']."`.`".\$webInfo['db']['pre']."news_show` where news_id='{$att_list['news_id']}'");
-	\$subject = mysql_real_escape_string(\$subject);
-	\$db->query("insert into {$setting['db']['pre']}news_mark values('{$att_list['web_id']}', '{$att_list['news_id']}', '{$att_list['cat_id']}', '".\$subject."', 0, '0', 0, 0, '0')");
-	\$record = getData(\$str_sql, "record", 3600*24);
+	\$record = array();
+	\$record['jump'] = 0;
 }
 echo <<<content
 {$content}
@@ -223,7 +222,7 @@ content;
 	unset(\$record);
 }
 unset(\$result);
-for(; \$n<={$att_list['loop']}; \$n++) {
+for(; \$n<{$att_list['loop']}; \$n++) {
 	\$unit = str_replace("style=\"\"", "style=\"".(\$n%2?"{$att_list['css1']}":"{$att_list['css2']}")."\"", "{$unit_blank}");
 	echo \$unit;
 	echo "\\n";
@@ -236,6 +235,16 @@ mytpl;
 	
 	public static function ajax_jump($news_id, $web_id, $type) {
 		global $db, $setting;
+		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
+		$record = getData($str_sql, "record", 3600*24);
+		if($record===false) {
+			$webInfo = getSubSetting($web_id);
+			$newInfo = $db->getSingleRecord("select cat_id, subject from `".$webInfo['db']['name']."`.`".$webInfo['db']['pre']."news_show` where news_id='{$news_id}'");
+			if($newInfo===false) return array();
+			$subject = mysql_real_escape_string($newInfo['subject']);
+			$cat_id = $newInfo['cat_id'];
+			$db->query("insert into {$setting['db']['pre']}news_mark values('{$web_id}', '{$news_id}', '{$cat_id}', '{$subject}', 0, '0', 0, 0, '0')");
+		}
 		$value = $type=="up"?"+1":"-1";
 		$db->query("update ".$setting['db']['pre']."news_mark set jump=jump".$value.", jump_time=UNIX_TIMESTAMP() where web_id='".$web_id."' and news_id='".$news_id."'");
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
@@ -245,6 +254,16 @@ mytpl;
 	
 	public static function ajax_rank($news_id, $web_id, $value) {
 		global $db, $setting;
+		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
+		$record = getData($str_sql, "record", 3600*24);
+		if($record===false) {
+			$webInfo = getSubSetting($web_id);
+			$newInfo = $db->getSingleRecord("select cat_id, subject from `".$webInfo['db']['name']."`.`".$webInfo['db']['pre']."news_show` where news_id='{$news_id}'");
+			if($newInfo===false) return array();
+			$subject = mysql_real_escape_string($newInfo['subject']);
+			$cat_id = $newInfo['cat_id'];
+			$db->query("insert into {$setting['db']['pre']}news_mark values('{$web_id}', '{$news_id}', '{$cat_id}', '{$subject}', 0, '0', 0, 0, '0')");
+		}
 		if(strpos($value, "-")===false) $value = "+".$value;
 		$db->query("update ".$setting['db']['pre']."news_mark set rank_total=rank_total".$value.", rank_times=rank_times+1, rank_time=UNIX_TIMESTAMP() where web_id='".$web_id."' and news_id='".$news_id."'");
 		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";

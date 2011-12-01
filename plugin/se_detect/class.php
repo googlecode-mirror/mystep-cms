@@ -36,7 +36,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_install_done']);
+			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
 	}
 	
@@ -69,7 +69,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_uninstall_done']);
+			echo showInfo($setting['language']['plugin_uninstall_done'], false);
 		}
 	}
 	

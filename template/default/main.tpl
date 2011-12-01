@@ -6,14 +6,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<!--charset-->" />
 <meta name="keywords" content="<!--page_keywords-->">
 <meta name="description" content="<!--page_description-->">
-<meta name="resource-type" content="document" />
-<meta name="distribution" content="global" />
-<meta name="author" content="windy2000" />
-<meta name="generator" content="MyStep" />
-<meta name="robots" content="index, follow" />
-<meta name="revisit-after" content="1 days" />
-<meta name="rating" content="general" />
-<meta name="copyright" content="Copyright (c) 2011 windy2000. All Rights Reserved." />
 <link rel="Shortcut Icon" href="favicon.ico" />
 <!--page_start-->
 <link rel="stylesheet" type="text/css" href="images/<!--template-->/style.css" />
@@ -24,7 +16,7 @@
 <div id="page_ole">
 	<div id="page_top" class="after">
 		<div class="l fl">
-			<img src="images/default/logo.png" width="280" />
+			<img src="images/default/logo.png" width="280" /><a name="top"></a>
 		</div>
 		<div class="r fr">
 			<img src="images/default/title_text_1.png" />
@@ -47,7 +39,7 @@
 	<div id="page_bottom" class="after">
 		<!--info title="copyright"-->
 	</div>
-	<div align="center"><!--lang_page_update_time--> : <!--last_modify--></div>
+	<div align="center"><!--lang_page_update_time--> : <!--last_modify--><a name="bottom"></a></div>
 </div>
 <!--page_end-->
 </body>

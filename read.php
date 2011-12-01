@@ -37,8 +37,8 @@ if($setting['gen']['cache']) {
 } else {
 	$cache_info = false;
 }
-$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 if($view_lvl>$setting['info']['user']['type']['view_lvl']) {
+	$tpl = $mystep->getInstance("MyTpl", $tpl_info, false);
 	$tpl_info['idx'] = "login";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	$ms_info = $req->getCookie("ms_info");
@@ -49,6 +49,8 @@ if($view_lvl>$setting['info']['user']['type']['view_lvl']) {
 	$mystep->show($tpl);
 	$mystep->pageEnd();
 }
+
+$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 if($tpl->Is_Cached()) {
 	echo $tpl->Get_Content();
 	$mystep->pageEnd();

@@ -79,6 +79,11 @@
 .box_s1 .title .highlight{background:url(switch_bar_1.png) 0px 0px repeat-x;color:#fff;}
 .box_s1 .title .more{margin-top:10px;}
 
+.box .describe LI {height:auto; background:url();border-bottom:1px #aaaaaa dashed; padding:3px 0px 3px 0px;}
+.box .describe .c1 {text-align:left;margin-bottom:5px;}
+.box .describe .c2 {text-align:right;font-weight:bold;font-size:12px;line-height:16px;}
+.box .describe .c2 a {white-space:normal;}
+
 .box_s2{width:100%;}
 .box_s2 .title{background-color:#3288c0;color:#fff;background:url(box_bar_2.png) 0px 0px repeat-x;padding:6px 20px 0px 0px;height:30px;}
 .box_s2 .title span{float:left;width:80px;height:24px;margin:0px 10px 0px 10px;text-align:center;padding-top:3px;cursor:pointer;}
@@ -137,7 +142,8 @@
 .page_main .main .bottom{border-top:1px #ddcf7f solid;clear:both;text-align:left;line-height:24px;padding:10px 0px 0px 0px;font-weight:bold;}
 
 .page_main .pic_news{margin:0px 0px 10px 0px;padding:5px 5px 5px 5px;line-height:20px;color:#990000;background-color:#fefefe;border:1px #eeeeee solid;}
-.page_main .pic_news H4{font-weight:bold;font-size:16px;margin-bottom:10px;white-space:pre;word-wrap:break-word;word-break:break-all;}
+.page_main .pic_news H4{font-weight:bold;font-size:16px;margin-bottom:10px;}
+.page_main .pic_news H4 A{white-space:normal;word-wrap:break-word;word-break:break-all;}
 .page_main .pic_news IMG{float:left;width:180px;height:120px;margin:0px 20px 0px 0px;border:1px #ccc solid;}
 .page_main .pic_news .describe{word-wrap:break-word;word-break:break-all;}
 

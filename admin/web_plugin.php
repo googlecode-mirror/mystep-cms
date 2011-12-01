@@ -43,7 +43,7 @@ switch($method) {
 			$goto_url = $setting['info']['self'];
 		}
 		deleteCache("plugin");
-		if($method=="install_ok") {
+		if($method=="install" && isset($_POST['plugin_setting'])) {
 			foreach($_POST['plugin_setting'][$idx] as $key => $value) {
 				if(is_array($value)) {
 					$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
@@ -55,7 +55,7 @@ switch($method) {
 ?>
 mystep;
 			$result = str_replace("/*--settings--*/", makeVarsCode($_POST['plugin_setting'], '$plugin_setting'), $result);
-			WriteFile($plugin_path.$idx."/config.php", $result, "w");
+			WriteFile($plugin_path.$idx."/config.php", $result, "wb");
 		}
 		break;
 	case "setting_ok":

@@ -415,7 +415,6 @@ $version = array(
 				'admin/inc.php',
 				'admin/style.css',
 				'images/style.css',
-				'include/config.php',
 				'include/parameter.php',
 				'plugin/admin_cat/info/en.php',
 				'plugin/admin_cat/tpl/input.tpl',
@@ -518,6 +517,145 @@ $version = array(
 				'update/version.php',
 			),
 		'setting' => array(),
+	),
+	'0.99.7' => array(
+		'info' => '
+				V0.99.7
+				1.Fix a link bug in admin catalog list with multi subweb
+				2.Fix a bug in multi subweb cache delete
+				3.Fix a bug in file cache clear function
+				4.Fix a bug in plugin install function
+				5.Fix a cache page bug in article list page when a prefix exists
+				6.Add subweb selection in list page of news_mark plugin
+				7.Add subweb selection in list page of news_visit plugin
+				8.Visit counter will not make count when a spider visit
+				9.Add delect all link of any topic function in topic plugin
+				10.Add referer item in visit keyword record of visit analysis plugin
+				11.Fix a bug in read page when html cache enable
+				12.Fix a xml format bug in template module
+				13.Session will not work count when a spider visit
+				14.Fix a bug in admin log function
+				15.Fix a bug in getSubSetting function
+				16.Comment management plugin added
+				17.Some javascript adjust...
+				18.Some css adjusts...
+				19.Some language adjusts...
+				20.Some other bug fixes and adjusts...
+		',
+		'sql' => array(
+				'delete from {pre}news_mark where jump=0 and rank_times=0',
+				'alter table {pre}visit_keyword add `referer` Char(200) DEFAULT "" NOT NULL after `url`',
+			),
+		'file' => array(
+				'admin/art_catalog.php',
+				'admin/art_content.php',
+				'admin/language/chs.php',
+				'admin/language/default.php',
+				'admin/language/en.php',
+				'admin/web_cache.php',
+				'admin/web_plugin.php',
+				'images/classic/style.css',
+				'include/config.php',
+				'include/parameter.php',
+				'list.php',
+				'plugin/admin_cat/class.php',
+				'plugin/comment',
+				'plugin/comment/cache',
+				'plugin/comment/class.php',
+				'plugin/comment/comment.js',
+				'plugin/comment/comment.php',
+				'plugin/comment/config',
+				'plugin/comment/config-detail.php',
+				'plugin/comment/config.php',
+				'plugin/comment/config/chs.php',
+				'plugin/comment/config/default.php',
+				'plugin/comment/config/en.php',
+				'plugin/comment/index.php',
+				'plugin/comment/info',
+				'plugin/comment/info.php',
+				'plugin/comment/info/chs.php',
+				'plugin/comment/info/en.php',
+				'plugin/comment/install.sql',
+				'plugin/comment/language',
+				'plugin/comment/language/chs.php',
+				'plugin/comment/language/default.php',
+				'plugin/comment/language/en.php',
+				'plugin/comment/quote.gif',
+				'plugin/comment/style.css',
+				'plugin/comment/tpl',
+				'plugin/comment/tpl/comment.tpl',
+				'plugin/comment/tpl/list.tpl',
+				'plugin/comment/tpl/main.tpl',
+				'plugin/custom_sql/class.php',
+				'plugin/front_code/class.php',
+				'plugin/meeting/class.php',
+				'plugin/meeting/meeting.php',
+				'plugin/meeting/tpl/list.tpl',
+				'plugin/mssql/class.php',
+				'plugin/news_mark/class.php',
+				'plugin/news_mark/index.php',
+				'plugin/news_mark/language/en.php',
+				'plugin/news_mark/news_mark.php',
+				'plugin/news_mark/tpl/news_mark.tpl',
+				'plugin/news_snatch/class.php',
+				'plugin/news_snatch/tpl/import.tpl',
+				'plugin/news_visit/class.php',
+				'plugin/news_visit/news_visit.php',
+				'plugin/news_visit/news_visit.tpl',
+				'plugin/offical/class.php',
+				'plugin/offical/index.php',
+				'plugin/se_detect/class.php',
+				'plugin/search/class.php',
+				'plugin/survey/class.php',
+				'plugin/survey/data',
+				'plugin/topic/class.php',
+				'plugin/topic/install.sql',
+				'plugin/topic/language/chs.php',
+				'plugin/topic/language/default.php',
+				'plugin/topic/language/en.php',
+				'plugin/topic/topic',
+				'plugin/topic/topic_link.php',
+				'plugin/topic/tpl/input.tpl',
+				'plugin/visit_analysis/class.php',
+				'plugin/visit_analysis/install.sql',
+				'plugin/visit_analysis/tpl/keyword.tpl',
+				'read.php',
+				'script/addon.js',
+				'script/global.js',
+				'script/jquery.js',
+				'source/class/mycache.class.php',
+				'source/class/mystep.class.php',
+				'source/class/mytpl.class.php',
+				'source/class/session.class.php',
+				'source/function/admin.php',
+				'source/function/global.php',
+				'source/function/web.php',
+				'source/language/en.php',
+				'source/merge.php',
+				'template/admin/art_catalog_list.tpl',
+				'template/admin/main.tpl',
+				'template/admin/web_plugin_list.tpl',
+				'template/admin_simple/art_catalog_list.tpl',
+				'template/admin_simple/main.tpl',
+				'template/classic/index.tpl',
+				'template/classic/main.tpl',
+				'template/classic/read.tpl',
+				'template/default/block_comment.tpl',
+				'template/default/block_link_img.tpl',
+				'template/default/block_link_txt.tpl',
+				'template/default/block_news_describe.tpl',
+				'template/default/block_news_image.tpl',
+				'template/default/block_news_mix.tpl',
+				'template/default/block_news_picture.tpl',
+				'template/default/block_news_slide.tpl',
+				'template/default/main.tpl',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20111201',
+					),
+			),
 	),
 );
 ?>

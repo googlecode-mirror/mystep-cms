@@ -249,24 +249,25 @@ function html2js($str){
 	return $result;
 }
 
-function getSafeCode($value, $charset) { 
-	$value_1 = $value; 
-	$value_2 = chg_charset($value_1, "utf-8", $charset); 
-	$value_3 = chg_charset($value_2, $charset, "utf-8"); 
-	if(strlen($value_1) == strlen($value_3)) { 
-		return $value_2; 
-	} else { 
-		return $value_1; 
-	} 
+function getSafeCode($value, $charset) {
+	$value_1 = $value;
+	$value_2 = chg_charset($value_1, "utf-8", $charset);
+	$value_3 = chg_charset($value_2, $charset, "utf-8");
+	if(strlen($value_1) == strlen($value_3)) {
+		return $value_2;
+	} else {
+		return $value_1;
+	}
 }
 
 function chg_charset($content, $from="gbk", $to="utf-8") {
+	if(strtolower($from)==strtolower($to)) return $content;
 	$result = null;
 	if(is_string($content)){
 		$result = iconv($from, $to.'//TRANSLIT//IGNORE', $content);
 		if($result===false && function_exists("mb_detect_encoding")) {
 			$encode = mb_detect_encoding($content, array("ASCII","GB2312","GBK","BIG5","UTF-8","EUC-CN","ISO-8859-1"));
-			$content = str_replace(chr(0x0A), chr(0x20), $content); 
+			$content = str_replace(chr(0x0A), chr(0x20), $content);
 			if($encode!="" && strtolower($encode)!=strtolower($to)) {
 				$result = mb_convert_encoding($content, $to, $encode);
 			} else {
@@ -284,7 +285,7 @@ function chg_charset($content, $from="gbk", $to="utf-8") {
 }
 
 function chg_charset_file($file_src, $file_dst, $from="gbk", $to="utf-8") {
-	if(!is_file($file_src) || $from==$to) return;
+	if(!is_file($file_src) || strtolower($from)==strtolower($to)) return;
 	$content = file_get_contents($file_src);
 	$content = iconv($from, $to.'//TRANSLIT//IGNORE',$content);
 	return WriteFile($file_dst, $content, "wb");
@@ -293,6 +294,7 @@ function chg_charset_file($file_src, $file_dst, $from="gbk", $to="utf-8") {
 function json_decode_js($json, $assoc = FALSE){
 	$json = str_replace(array("\n","\r"),"",$json);
 	$json = preg_replace('/([{,])(\s*)([^"]+?)\s*:/','$1"$3":',$json);
+	$json = str_replace("\\\"","&#34;",$json);
 	return json_decode($json, $assoc);
 }
 
@@ -422,22 +424,22 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	return $content;
 }
 
-function decode_gzip($h,$d,$rn="\r\n"){ 
-if (isset($h['Transfer-Encoding'])){ 
- $lrn = strlen($rn); 
- $str = ''; 
- $ofs=0; 
- do{ 
-    $p = strpos($d,$rn,$ofs); 
-    $len = hexdec(substr($d,$ofs,$p-$ofs)); 
-    $str .= substr($d,$p+$lrn,$len); 
-     $ofs = $p+$lrn*2+$len; 
- }while ($d[$ofs]!=='0'); 
- $d=$str; 
-} 
-if (isset($h['Content-Encoding'])) $d = gzinflate(substr($d,10)); 
-return $d; 
-} 
+function decode_gzip($h,$d,$rn="\r\n"){
+if (isset($h['Transfer-Encoding'])){
+ $lrn = strlen($rn);
+ $str = '';
+ $ofs=0;
+ do{
+    $p = strpos($d,$rn,$ofs);
+    $len = hexdec(substr($d,$ofs,$p-$ofs));
+    $str .= substr($d,$p+$lrn,$len);
+     $ofs = $p+$lrn*2+$len;
+ }while ($d[$ofs]!=='0');
+ $d=$str;
+}
+if (isset($h['Content-Encoding'])) $d = gzinflate(substr($d,10));
+return $d;
+}
 
 
 function GetRemoteFile($remote_file, $local_file) {
@@ -542,10 +544,8 @@ function MultiDel($dir){
 }
 
 function isWriteable($file){
-	//will work in despite of Windows ACLs bug
-	//see http://bugs.php.net/bug.php?id=27609
-	//see http://bugs.php.net/bug.php?id=30931
 	if($file{strlen($file)-1}=='/') {
+		if(!file_exists($file)) MakeDir($file);
 		return isWriteable($file.uniqid(mt_rand()).'.tmp');
 	} else if(is_dir($file)) {
 		return isWriteable($file.'/'.uniqid(mt_rand()).'.tmp');

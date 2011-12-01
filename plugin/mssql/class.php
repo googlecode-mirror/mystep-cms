@@ -22,7 +22,7 @@ class plugin_mssql implements plugin {
 		} else {
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_install_done']);
+			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
 	}
 	
@@ -41,7 +41,7 @@ class plugin_mssql implements plugin {
 		} else {
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_uninstall_done']);
+			echo showInfo($setting['language']['plugin_uninstall_done'], false);
 		}
 	}
 	
@@ -64,6 +64,11 @@ class plugin_mssql implements plugin {
 	public static function page_start() {
 		global $mystep, $mssql;
 		$plugin_setting = self::setting();
+		if($plugin_setting['host']=="127.0.0.1" || $plugin_setting['host']=="localhost") {
+			ini_set("mssql.secure_connection", "On");
+		} else {
+			ini_set("mssql.secure_connection", "Off");
+		}
 		$mssql = $mystep->getInstance("MSSQL", $plugin_setting['host'], $plugin_setting['user'], $plugin_setting['pass']);
 		$mssql->Connect($plugin_setting['pconn'], $plugin_setting['name']);
 		return;

@@ -20,11 +20,6 @@ $mystep->regApi("newslist", "plugin_offical::api_newslist");
 
 $mystep->regAjax("login", "plugin_offical::ajax_login");
 
-//$mystep->setAddedContent("start", '<script language="JavaScript" src="/script/jquery.js"></script>');
-//$mystep->setAddedContent("start", '<script language="JavaScript" src="/script/global.js"></script>');
-//$mystep->setAddedContent("end", '<script language="JavaScript" src="/script/addon.js"></script>');
-//$mystep->setAddedContent("start", '<link rel="stylesheet" type="text/css" media="all" href="images/a.css" /> ');
-
 $mystep->addJS("script/jquery.js");
 $mystep->addJS("script/jquery.addon.js");
 $mystep->addJS("script/global.js");
@@ -35,4 +30,18 @@ $mystep->setAddedContent("start", '<link rel="stylesheet" type="text/css" media=
 
 $mystep->regModule("offical", dirname(__FILE__)."/show.php");
 $mystep->getLanguage(dirname(__FILE__)."/language/");
+
+$mystep->setAddedContent("start", '
+<meta name="robots" content="index, follow" />
+<meta name="revisit-after" content="1 days" />
+<meta name="rating" content="general" />
+<meta name="resource-type" content="document" />
+<meta name="distribution" content="global" />
+<meta name="author" content="windy2000" />
+<meta name="generator" content="MyStep" />
+<meta name="copyright" content="Copyright (c) 2011 windy2000. All Rights Reserved." />
+');
+$mystep->setAddedContent("end", '
+<div style="text-align:center;padding:10px;float:none;clear:both;">Powered By <a href="http://www.mysteps.cn" target="_blank">MystepCMS</a></div>
+');
 ?>

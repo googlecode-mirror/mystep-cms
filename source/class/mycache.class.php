@@ -83,7 +83,8 @@ class MyCache_File extends class_common {
 	
 	public function set($key, $value = "", $ttl = 600) {
 		$new_key = substr(md5($key), 0, 8);
-		$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
+		//$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
+		$the_path = $this->thePath.substr($new_key, 0, 2)."/";
 		if(empty($value)) {
 			@unlink($the_path.$new_key);
 		} else {
@@ -98,7 +99,8 @@ class MyCache_File extends class_common {
 	
 	public function get($key) {
 		$new_key = substr(md5($key), 0, 8);
-		$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
+		//$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
+		$the_path = $this->thePath.substr($new_key, 0, 2)."/";
 		if(is_file($the_path.$new_key)) {
 			$result = unserialize($this->GetFile($the_path.$new_key));
 			if($result['expire']>$_SERVER["REQUEST_TIME"]) {
@@ -114,12 +116,13 @@ class MyCache_File extends class_common {
 	
 	public function remove($key) {
 		$new_key = substr(md5($key), 0, 8);
-		$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
+		//$the_path = $this->thePath.implode("/", str_split($new_key, "2"))."/";
+		$the_path = $this->thePath.substr($new_key, 0, 2)."/";
 		@unlink($the_path.$new_key);
 	}
 	
 	public function clean() {
-		if ($handle = opendir($this->thePath)) {
+		if ($handle = opendir($this->thePath."../")) {
 			while (false !== ($file = readdir($handle))) {
 				if($file!="." && $file!=".." && $file!=date("Ymd")) MultiDel($this->thePath.$file);
 			}

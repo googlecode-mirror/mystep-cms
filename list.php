@@ -3,7 +3,7 @@ require("inc.php");
 $page = $req->getGet("page");
 $prefix = $req->getGet("pre");
 if(!is_numeric($page) || $page < 1) $page = 1;
-$cat_idx = strtolower($req->getGet("cat"));
+$cat_idx = $req->getGet("cat");
 
 if(is_numeric($cat_idx)) {
 	if($cat_info = getParaInfo("news_cat_sub", "cat_id", $cat_idx)) {
@@ -12,13 +12,21 @@ if(is_numeric($cat_idx)) {
 		$cat_idx = "";
 	}
 }
+$cat_info = getParaInfo("news_cat_sub", "cat_idx", $cat_idx);
+if($cat_info===false && !empty($cat_idx)) {
+	unset($_SERVER['QUERY_STRING']);
+	$prefix = "";
+	$cat_idx = "";
+}
 
 if($setting['gen']['cache']) {
 	$cache_info = array(
-			'idx' => ($page==1?"index":"index_{$page}"),
+			'idx' => "index",
 			'path' => $cache_path."/".(empty($cat_idx)?"all":$cat_idx)."/",
 			'expire' => getCacheExpire(),
 			);
+	if(!empty($prefix)) $cache_info['idx'] .= "_".$prefix;
+	if($page>1) $cache_info['idx'] .= "_".$page;
 } else {
 	$cache_info = false;
 }
@@ -30,7 +38,12 @@ if($tpl->Is_Cached()) {
 $cat_id = 0;
 $web_id = $setting['info']['web']['web_id'];
 $list_limit = array_values($setting['list']);
-if($cat_info = getParaInfo("news_cat_sub", "cat_idx", $cat_idx)) {
+if($cat_info === false) {
+	$cat_name = $setting['language']['page_update'];
+	$page_size = $list_limit[0];
+	$cat_main = 0;
+	$sub_list = "";
+} else {
 	$cat_id = $cat_info['cat_id'];
 	$cat_name = $cat_info['cat_name'];
 	$cat_keyword = $cat_info['cat_keyword'];
@@ -38,12 +51,6 @@ if($cat_info = getParaInfo("news_cat_sub", "cat_idx", $cat_idx)) {
 	$page_size = $list_limit[$cat_info['cat_type']];
 	$cat_main = $cat_info['cat_main'];
 	$sub_list = $cat_info['cat_sub'];
-} else {
-	$cat_name = $setting['language']['page_update'];
-	$cat_idx = "";
-	$page_size = $list_limit[0];
-	$cat_main = 0;
-	$sub_list = "";
 }
 $menu_cat_id = $cat_id;
 

@@ -36,7 +36,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_install_done']);
+			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
 	}
 	
@@ -69,7 +69,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			showInfo($setting['language']['plugin_uninstall_done']);
+			echo showInfo($setting['language']['plugin_uninstall_done'], false);
 		}
 	}
 	
@@ -102,14 +102,15 @@ mystep;
 			if(!empty($url_info['query'])) {
 				parse_str($url_info['query'], $query);
 				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
+				$referer = mysql_real_escape_string($referer);
 				if(!empty($keyword)) {
 					if(preg_match("/(%[\w]{2})+/", $keyword)) $keyword = urldecode($keyword);
 					$keyword = getSafeCode($keyword, $setting['gen']['charset']);
 					$url = "http://".$req->getServer("HTTP_HOST").$req->getServer("REQUEST_URI");
 					if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_keyword where keyword='".mysql_real_escape_string($keyword)."'")) {
-						$db->Query("update ".$setting['db']['pre']."visit_keyword set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP(), `url`='".$url."' where keyword='".mysql_real_escape_string($keyword)."'");
+						$db->Query("update ".$setting['db']['pre']."visit_keyword set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP(), `url`='".$url."', `referer`='".$referer."' where keyword='".mysql_real_escape_string($keyword)."'");
 					} else {
-						$db->Query("insert into ".$setting['db']['pre']."visit_keyword values(0, '".mysql_real_escape_string($keyword)."', 1, '".$url."', UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+						$db->Query("insert into ".$setting['db']['pre']."visit_keyword values(0, '".mysql_real_escape_string($keyword)."', 1, '".$url."', '".$referer."', UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
 					}
 				}
 			}

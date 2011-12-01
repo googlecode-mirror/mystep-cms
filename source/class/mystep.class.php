@@ -196,7 +196,7 @@ class MyStep extends class_common {
 			call_user_func($this->func_end[$i]);
 		}
 		$setting['info']['query_count'] = $GLOBALS['db']->Close();
-		if(!empty($GLOBALS['goto_url'])) {
+		if(!empty($GLOBALS['goto_url']) && ob_get_length()==0) {
 			header("location: ".$GLOBALS['goto_url']);
 		} else {
 			GzDocOut($setting['gen']['gzip_level'], $show_info);

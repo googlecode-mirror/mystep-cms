@@ -284,7 +284,7 @@ mytpl;
 		*/
 		$tpl_cache = preg_replace("/".preg_quote($this->delimiter_l)."(\w+)".preg_quote($this->delimiter_r)."/", "<?=\$tpl_para['{$this->hash}']['para']['\\1']?>", $tpl_cache);
 		$tpl_cache = preg_replace("/[\r\n]+/", "\n", $tpl_cache);
-		$tpl_cache = "<!--".filemtime($this->tpl_info['file'])."-->"."\n".$tpl_cache;
+		$tpl_cache = "<!--".filemtime($this->tpl_info['file'])."-->".$tpl_cache;
 		$this->WriteFile($cache_file, $tpl_cache, 'wb');
 		return $cache_file;
 	}
@@ -327,6 +327,7 @@ mytpl;
 					$tmp = explode("=", trim($att_list[$j]));
 					$tmp[1] = preg_replace('/\$(\w+)/', '{$GLOBALS[\1]}', $tmp[1]);
 					$tmp[1] = preg_replace('/#(\w+)/', '$GLOBALS["\1"]', $tmp[1]);
+					$tmp[1] = preg_replace('/\&(\w+)/', '<?=$GLOBALS["\1"]?>', $tmp[1]);
 					eval("\$cur_attrib['" . strtolower(trim($tmp[0])) . "'] = {$tmp[1]};");
 				}
 				$cur_result = call_user_func($this->tags[$tag_all[1][$i]], $this, $cur_attrib);
@@ -384,13 +385,11 @@ mytpl;
 				}
 			}
 			if($minify) {
+				$content = preg_replace("/".preg_quote($this->delimiter_l).".+?".preg_quote($this->delimiter_r)."/", "", $content);
 				$content = preg_replace("/\/\/[\w\s]+([\r\n]+)/", '\1', $content);
 				$content = preg_replace("/\s+/", " ", $content);
-				//$content = str_replace("> <", "><", $content);
-				//$content = preg_replace("/[\s\t ]*[\r\n]+[\s\t ]*/", "", $content);
 			}
 			$content = preg_replace("/^".preg_quote($this->delimiter_l)."\d+".preg_quote($this->delimiter_r)."[\r\n]*/", "", $content);
-			$content = preg_replace("/".preg_quote($this->delimiter_l).".+?".preg_quote($this->delimiter_r)."/", "", $content);
 			if($this->cache['use'] && $this->cache['expire'] > 0) $this->WriteFile($this->cache['file'], $content, 'w');
 		}
 		return $content;

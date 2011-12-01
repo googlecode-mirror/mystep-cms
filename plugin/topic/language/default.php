@@ -8,5 +8,6 @@ $language = array(
 	"plugin_topic_add_link" => "添加专题链接",
 	"plugin_topic_add_link_batch" => "批量添加专题链接",
 	"plugin_topic_delete_link" => "删除专题链接",
+	"plugin_topic_empty_link" => "删除所有当前专题链接",
 );
 ?>

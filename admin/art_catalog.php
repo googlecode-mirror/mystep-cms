@@ -171,6 +171,7 @@ function build_page($method) {
 			$web = getParaInfo("website", "web_id", $news_cat[$i]['web_id']);
 			$news_cat[$i]['web_name'] = $web['name'];
 			if(empty($news_cat[$i]['web_name'])) $news_cat[$i]['web_name'] = $setting['language']['admin_art_catalog_public'];
+			$news_cat[$i]['web_url'] = "http://".$web['host'];
 			$tpl_tmp->Set_Loop('record', $news_cat[$i]);
 		}
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_catalog_catalog']);

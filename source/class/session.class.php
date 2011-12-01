@@ -1,9 +1,15 @@
 <?php
 class sess_mystep {
 	public static $cnt;
-	public static function sess_open($sess_path, $sess_name) {}
+	public static $skip;
+	public static function sess_open($sess_path, $sess_name) {
+		self::$skip = false;
+		$agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) self::$skip = true;
+	}
 	
 	public static function sess_close() {
+		if(self::$skip) return true;
 		self::sess_gc();
 	  return;
 	}
@@ -21,10 +27,13 @@ class sess_mystep {
 	}
 	
 	public static function sess_write($sid, $sess_data) {
-		global $setting;
+		if(self::$skip) return true;
+		$file_list = array("ajax.php", "merge.php", "language.js.php", "setting.js.php");
+		$file_this = array_shift(explode('?', basename($url)));
+		if(array_search($file_this, $file_list)!==false) return true;
+		
 		include(ROOT_PATH."/include/config.php");
 		extract(MyReq::sessDecode($sess_data));
-		if(strpos($url, "ajax.php")!==false || strpos($url, "merge.php")!==false) return true;
 		$reflash = $_SERVER["REQUEST_TIME"];
 		if(empty($username)) $username = "Guest";
 		if(empty($usertype)) $usertype = 1;
@@ -36,12 +45,14 @@ class sess_mystep {
 	}
 	
 	public static function sess_destroy($sid) {
+		if(self::$skip) return true;
 		global $setting;
 		return mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE sid='".$sid."'");
 	}
 	
 	public static function sess_gc() {
-		global $setting;
+		if(self::$skip) return true;
+		include(ROOT_PATH."/include/config.php");
 		if(is_resource(self::$cnt)) {
 			mysql_query("DELETE FROM ".$setting['db']['pre']."user_online WHERE reflash < " . ($_SERVER["REQUEST_TIME"] - $setting['session']['expire'] * 60), self::$cnt);
 			mysql_close(self::$cnt);

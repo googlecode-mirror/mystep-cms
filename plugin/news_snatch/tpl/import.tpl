@@ -10,7 +10,7 @@ $(function(){
 	var id = "<!--id-->";
 	var idx = "<!--idx-->";
 	var show = "<!--show-->";
-	var refresh = parseInt("<!--refresh-->");
+	var refresh = parseInt("<!--refresh-->") * 2;
 	var info_file = "<!--info_file-->";
 	if(show.length>0) {
 		$("#info_show").css({"font-size":"18px", "font-weight":"bold", "text-align":"center"});

@@ -51,6 +51,8 @@ class plugin_offical implements plugin {
 	}
 	
 	public static function page_end() {
+		$agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) return;
 		$setting = self::setting();
 		if(!$setting['counter']) return;
 		global $db, $req;
@@ -175,6 +177,9 @@ class plugin_offical implements plugin {
 		$result['username'] = $req->getSession("username");
 		$result['usergroup'] = $req->getSession("usergroup");
 		$result['usertype'] = $req->getSession("usertype");
+		if(is_null($result['username'])) $result['username'] = "Guest";
+		if(is_null($result['usergroup'])) $result['usergroup'] = 0;
+		if(is_null($result['usertype'])) $result['usertype'] = 1;
 		if($result['usertype']>1) {
 			if($group = getParaInfo("user_group", "group_id", $result['usergroup'])) {
 				$result['group_name'] = $group['group_name'];

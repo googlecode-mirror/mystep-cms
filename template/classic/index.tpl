@@ -159,17 +159,6 @@
 
 <script language="JavaScript">
 $(function(){
-	//Menu List
-	$(".catList li:has(ul)").bind('click', function(e){
-		if(e.target.tagName.toLowerCase()!="li") return true;
-		$(this).children().filter("ul").slideToggle(500);
-		if(e && e.preventDefault) {
-			e.preventDefault();
-		} else {
-			window.event.returnValue = false;
-		}
-		return false;
-	});
 	//News Picture
 	var stop_news_image = false;
 	$("#news_image").parent().css({'height':'200px','overflow':'hidden','margin-top':'0px'});
@@ -230,21 +219,6 @@ $(function(){
 			}
 		}, 5000);
 	}
-	//Switch Tag
-	$(".box .title span").mouseover(function(){
-		if(this.className=="highlight") return;
-		var theParent = $(this).parent().parent();
-		var theObjs = theParent.find(".title span");
-		theObjs.removeClass("highlight");
-		$(this).addClass("highlight");
-		theParent.find(".content").hide();
-		for(var i=theObjs.length-1; i>=0; i--) {
-			if(theObjs.eq(i).hasClass("highlight")) {
-				theParent.find(".content").eq(i).show();
-				break;
-			}
-		}
-	});
 	//login
 	$.get("ajax.php?func=login&return=json", function(data){
 		if(data.usertype==1) return;
@@ -259,5 +233,8 @@ $(function(){
 			$("#login").find("div").eq(3).html('<a href="admin/" target="_blank">№ЬАн</a> | ' + $("#login").find("div").eq(3).html());
 		}
 	}, "json");
+	//Misc
+	setSwitch();
+	setList()
 });
 </script> 

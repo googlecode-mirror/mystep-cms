@@ -24,7 +24,7 @@
 			<td><!--record_count--></td>
 			<td><!--record_add_date--></td>
 			<td><!--record_chg_date--></td>
-			<td><a href="?method=del_keyword&id=<!--record_id-->">É¾³ý</a></td>
+			<td><a href="?method=del_keyword&id=<!--record_id-->">É¾³ý</a> &nbsp; <a href="<!--record_referer-->" target="_blank">À´Ô´</a></td>
 		</tr>
 <!--loop:end-->
 	</table>

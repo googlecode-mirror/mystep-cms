@@ -108,6 +108,7 @@
 					<td class="cat" colspan="2" align="center">
 						<input class="btn" type="Submit" value=" 确 定 " name="Submit" />&nbsp;&nbsp;
 						<input class="btn" type="reset" value=" 重 置 " name="reset" />&nbsp;&nbsp;
+						<input class="btn" type="button" value=" 清 空 " name="empty" onclick="location.href='topic_link.php?method=empty&topic_id=<!--topic_id-->'" />
 					</td>
 				</tr>
 			</table>
@@ -126,7 +127,7 @@
 			<tr>
 				<td class="cat" width="90" align="right">专题链接 <!--link_list_idx-->：</td>
 				<td class="row">[<!--link_list_link_cat-->] <a href="<!--link_list_link_url-->" target="_blank"><!--link_list_link_name--></td>
-				<td class="row" width="150" align="center"><a href="topic_link.php?method=delete&id=<!--link_list_id-->"><b>删除链接</b></a></td>
+				<td class="row" width="150" align="center"><a href="topic_link.php?method=delete&id=<!--link_list_id-->&topic_id=<!--link_list_topic_id-->"><b>删除链接</b></a></td>
 			</tr>
 <!--loop:end-->
 		</table>

@@ -91,23 +91,24 @@ function includeCache($idx, $show_error = true) {
 	}
 }
 
-function getSubSetting($web_id) {
+function getSubSetting($web_id=1) {
 	$setting_sub = null;
-	if($theWeb = getParaInfo("website", "web_id", $web_id)) {
-		$setting_file = ROOT_PATH."/include/config_".$theWeb['idx'].".php";
-		if(is_file($setting_file)) {
-			include($setting_file);
-			$setting_sub['info'] = $theWeb;
-		}
+	$theWeb = getParaInfo("website", "web_id", $web_id);
+	if($theWeb === false) {
+		$theWeb = getParaInfo("website", "web_id", 1);
 	}
-	if(is_null($setting_sub)) {
+	$setting_file = ROOT_PATH."/include/config_".$theWeb['idx'].".php";
+	if(is_file($setting_file)) {
+		include($setting_file);
+	} else {
 		global $setting;
 		$setting_sub = array();
 		$setting_sub['web'] = $setting['web'];
 		$setting_sub['db'] = $setting['db'];
-		$setting_sub['gen'] = $setting_sub['gen'];
+		$setting_sub['gen'] = $setting['gen'];
 		$setting_sub['cookie'] = $setting['cookie'];
 	}
+	$setting_sub['info'] = $theWeb;
 	return $setting_sub;
 }
 
@@ -320,6 +321,13 @@ function getFileURL($news_id=0, $cat_idx="", $web_id=1, $page=1) {
 	$webInfo = getParaInfo("website", "web_id", $web_id);
 	$url = $webInfo['host'];
 	if($setting['gen']['rewrite']) {
+		if(is_numeric($cat_idx)) {
+			if($cat_info = getParaInfo("news_cat_sub", "cat_id", $cat_idx)) {
+				$cat_idx = $cat_info['cat_idx'];
+			} else {
+				$cat_idx = "";
+			}
+		}
 		$url = "http://".str_replace("//", "/", $url);
 		if($news_id==0) {
 			if(!empty($cat_idx)) {
@@ -348,12 +356,14 @@ function getFileURL($news_id=0, $cat_idx="", $web_id=1, $page=1) {
 	return $url;
 }
 
-function delCacheFile($news_id) {
+function delCacheFile($news_id, $web_id=0) {
 	global $db, $setting;
 	if(!$setting['gen']['cache']) return false;
-	list($cat_idx, $add_date, $page_count)=array_values($db->GetSingleRecord("select b.cat_idx, a.add_date, a.pages from ".$setting['db']['pre']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where a.news_id='{$news_id}'"));
+	if($web_id==0) $web_id=$setting['info']['web']['web_id'];
+	$setting_sub = getSubSetting($web_id);
+	$db_pre = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
+	list($cat_idx, $add_date, $page_count)=array_values($db->GetSingleRecord("select b.cat_idx, a.add_date, a.pages from ".$db_pre."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where a.news_id='{$news_id}'"));
 	if(is_null($cat_idx) || is_null($add_date)) return false;
-
 	$file_idx = ROOT_PATH."/".$setting['path']['cache']."/".$cat_idx."/".date("Ym",strtotime($add_date))."/".$news_id;
 	unlink($file_idx.$setting['gen']['cache_ext']);
 	for($i=2; $i<=$page_count; $i++) {
@@ -458,7 +468,9 @@ function PageList($page, $page_count, $show=6) {
 
 function gotoPage($page) {
 	global $req, $setting;
-	$the_url = "http://".$req->getServer("SERVER_NAME").$req->getServer("REQUEST_URI");
+	$the_url = "http://".$req->getServer("SERVER_NAME").$req->getServer("SCRIPT_NAME");
+	$qry_str = $req->getServer("QUERY_STRING");
+	if(!empty($qry_str)) $the_url .= "?".$qry_str;
 	if($setting['gen']['rewrite']) {
 		if(substr($the_url, -1, 1)=="/") {
 			$the_url .= "index_{$page}{$setting['gen']['cache_ext']}";
@@ -466,7 +478,6 @@ function gotoPage($page) {
 			$the_url = preg_replace("/(_\d+)?{$setting['gen']['cache_ext']}$/", ($page==1?"{$setting['gen']['cache_ext']}":"_{$page}{$setting['gen']['cache_ext']}"), $the_url);
 		}
 	} else {
-		$qry_str = $req->getServer("QUERY_STRING");
 		if(empty($qry_str)) {
 			$the_url .= "?page={$page}";
 		} else {

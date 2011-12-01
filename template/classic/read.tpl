@@ -42,6 +42,9 @@
 						</div>
 					</div>
 				</div>
+				<div>
+					<!--comment news_id='&news_id'-->
+				</div>
 			</div>
 		</div>
 	</div>

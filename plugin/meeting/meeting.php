@@ -63,6 +63,7 @@ switch($method) {
 		$goto_url = $setting['info']['self']."?mid={$mid}";
 		break;
 	case "add_ok":
+		require("config.php");
 		$log_info = "Ìí¼Ó»áÒé";
 		$sql_item = array();
 		$sql_item['mid'] = 0;
@@ -74,8 +75,7 @@ switch($method) {
 		$str_sql = $db->buildSQL($setting['db']['pre']."meeting", $sql_item, "insert", "");
 		$db->Query($str_sql);
 		$mid = $db->getInsertID();
-		include("config.php");
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, {$catid}, '".mysql_real_escape_string($sql_item['name'])."', 'meeting_manager.php?mid={$mid}', '../plugin/meeting/', {$sql_item['web_id']}, 0, '".$info['intro']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, {$catid}, '".mysql_real_escape_string($sql_item['name'])."', 'meeting.php?mid={$mid}', '../plugin/meeting/', {$sql_item['web_id']}, 0, '".$info['intro']."')");
 		if(empty($_POST["tpl_reg_cn"])) $_POST["tpl_reg_cn"] = GetFile("tpl/default_regist_cn.tpl");
 		if(empty($_POST["tpl_reg_en"])) $_POST["tpl_reg_en"] = GetFile("tpl/default_regist_en.tpl");
 		if(empty($_POST["tpl_reglist_cn"])) $_POST["tpl_reglist_cn"] = GetFile("tpl/default_reglist_cn.tpl");
@@ -155,7 +155,7 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		$str_sql = $db->buildSQL($setting['db']['pre']."meeting", $sql_item, "update", "mid={$mid}");
 		$db->Query($str_sql);
 		include("config.php");
-		$db->query("update ".$setting['db']['pre']."admin_cat set name='".mysql_real_escape_string($sql_item['name'])."' where file='meeting_manager.php?mid={$mid}' and pid={$catid}");
+		$db->query("update ".$setting['db']['pre']."admin_cat set name='".mysql_real_escape_string($sql_item['name'])."' where file='meeting.php?mid={$mid}' and pid={$catid}");
 		if(empty($_POST["tpl_reg_cn"])) $_POST["tpl_reg_cn"] = GetFile("tpl/default_regist_cn.tpl");
 		if(empty($_POST["tpl_reg_en"])) $_POST["tpl_reg_en"] = GetFile("tpl/default_regist_en.tpl");
 		if(empty($_POST["tpl_reglist_cn"])) $_POST["tpl_reglist_cn"] = GetFile("tpl/default_reglist_cn.tpl");
@@ -254,7 +254,7 @@ $para = '.var_export($para, true).';
 			$db->query("truncate table ".$setting['db']['pre']."meeting_".$mid);
 			$db->query("drop table ".$setting['db']['pre']."meeting_".$mid);
 			$db->Query("delete from ".$setting['db']['pre']."meeting where mid = '{$mid}'");
-			$db->query("delete from ".$setting['db']['pre']."admin_cat where file='meeting_manager.php?mid={$mid}' and pid={$catid}");
+			$db->query("delete from ".$setting['db']['pre']."admin_cat where file='meeting.php?mid={$mid}' and pid={$catid}");
 			unlink("tpl/{$mid}_regist_cn.tpl");
 			unlink("tpl/{$mid}_regist_en.tpl");
 			unlink("tpl/{$mid}_reglist_cn.tpl");

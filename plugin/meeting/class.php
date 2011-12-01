@@ -25,6 +25,9 @@ class plugin_meeting implements plugin {
 			</pre>
 			");
 		} else {
+			WriteFile(dirname(__FILE__)."/config.php", "<?php
+\$catid = {$new_id};
+?>", "wb");
 			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
@@ -36,10 +39,7 @@ parent.setNav();
 mystep;
 			deleteCache("plugin");
 			buildParaList("plugin");
-			WriteFile(dirname(__FILE__)."/config.php", '<?php
-$catid = '.$new_id.';
-?>', "wb");
-			showInfo($setting['language']['plugin_install_done']);
+			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
 	}
 	
@@ -63,7 +63,7 @@ $catid = '.$new_id.';
 		$db->Free();
 		$db->BatchExec($sql_list);
 		include("config.php");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where pid='".$catid."'");
+		if(isset($catid) && $catid!=0)	$db->query("delete from ".$setting['db']['pre']."admin_cat where pid='".$catid."'");
 		$db->query("truncate table ".$setting['db']['pre']."meeting");
 		$db->query("drop table ".$setting['db']['pre']."meeting");
 		$db->query("delete from ".$setting['db']['pre']."admin_cat where name='ª·“È'");
@@ -91,7 +91,7 @@ mystep;
 			WriteFile(dirname(__FILE__)."/config.php", '<?php
 $catid = 0;
 ?>', "wb");
-			showInfo($setting['language']['plugin_uninstall_done']);
+			echo showInfo($setting['language']['plugin_uninstall_done'], false);
 		}
 	}
 	
