@@ -38,7 +38,7 @@ $tpl->Set_Variable('charset_tag', $charset_tag);
 $tpl->Set_Variable('cat_txt', $cat_txt);
 $tpl->Set_Variable('now', date("r"));
 
-$db->Query("select a.*, b.cat_name from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".(empty($cat_idx)?"":" and a.cat_id='$cat_info[cat_id]'")." order by news_id desc limit ".$setting['list']['rss']);
+$db->Query("select a.*, b.cat_name from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".(empty($cat_idx)?"":" and (a.cat_id='$cat_info[cat_id]' or a.cat_main='$cat_info[cat_id]')")." order by a.news_id desc limit ".$setting['list']['rss']);
 
 while($record = $db->GetRS()) {
 	$record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['web_id']);
