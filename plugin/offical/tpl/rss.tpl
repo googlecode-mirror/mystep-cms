@@ -18,7 +18,7 @@
 		<title><![CDATA[<!--record_subject-->]]></title>
 		<description><![CDATA[<!--record_describe--> ]]></description>
 		<link><![CDATA[<!--record_link-->]]></link>
-		<author><![CDATA[<!--record_add_user-->]]></author>
+		<author><![CDATA[<!--record_original-->]]></author>
 		<category><![CDATA[<!--record_cat_name-->]]></category>
 		<pubdate><![CDATA[<!--record_add_date-->]]></pubdate>
 	</item>

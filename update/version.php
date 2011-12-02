@@ -604,6 +604,7 @@ $version = array(
 				'plugin/news_visit/news_visit.tpl',
 				'plugin/offical/class.php',
 				'plugin/offical/index.php',
+				'plugin/offical/tpl/rss.tpl',
 				'plugin/se_detect/class.php',
 				'plugin/search/class.php',
 				'plugin/survey/class.php',
@@ -650,6 +651,7 @@ $version = array(
 				'template/default/block_news_picture.tpl',
 				'template/default/block_news_slide.tpl',
 				'template/default/main.tpl',
+				'template/default/rss.tpl',
 				'update/version.php',
 			),
 		'setting' => array(
