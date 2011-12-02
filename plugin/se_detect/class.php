@@ -107,6 +107,7 @@ mystep;
 		include(dirname(__FILE__)."/agent.php");
 		$agent_cur = strtolower($_SERVER['HTTP_USER_AGENT']);
 		$ip = getIp();
+		if(strpos($ip,",")>0) $ip = substr($ip, 0, strrpos($ip, ","));
 		$ip2 = substr($ip, 0, strrpos($ip, ".")).".*";
 		$GLOBALS['se_bot'] = "";
 		foreach($agent as $key => $value) {
