@@ -103,6 +103,7 @@ mystep;
 				parse_str($url_info['query'], $query);
 				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
 				$referer = mysql_real_escape_string($referer);
+				if(strlen($referer)>250) $referer = substrPro($referer, 0, 250);
 				if(!empty($keyword)) {
 					if(preg_match("/(%[\w]{2})+/", $keyword)) $keyword = urldecode($keyword);
 					$keyword = getSafeCode($keyword, $setting['gen']['charset']);

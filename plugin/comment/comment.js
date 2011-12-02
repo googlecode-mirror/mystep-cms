@@ -17,7 +17,7 @@ function commentQuery(page) {
 			commentShow(page);
 		},
 		complete: function(XMLHttpRequest, textStatus){
-			$("#comment .loading").hide();
+			if(textStatus!="error") $("#comment .loading").hide();
 		},
 		error: function(){
 			$("#comment .loading").html(language.plugin_comment_empty);

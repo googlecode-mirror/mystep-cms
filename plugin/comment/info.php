@@ -9,7 +9,8 @@ $info_default = array(
 	"cat_name" => "新闻评论",
 	"cat_desc" => "新闻评论管理",
 	"description" => "<b>本插件可使系统支持如下模板标签：</b>
-<b>comment: </b>用于在相关文章中显示评论，可控属性包括 news_id, web_id 等"
+<b>comment: </b>用于在相关文章中显示评论，可控属性包括 news_id, web_id 等
+<b>news_comment: </b>用于显示相关评论内容，可控属性包括 web_id, news_id, order, limit, loop, template, count 等",
 );
 
 if(isset($setting['gen']['language'])) {

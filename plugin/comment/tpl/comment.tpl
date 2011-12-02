@@ -21,7 +21,7 @@
 	</div>
 	<div class="page after">以下网友留言只代表个人观点，不代表本网站。</div>
 	<div id="comment">
-		<div class="loading"><img src="images/loading.gif" alt="<!--lang_ajax_sending-->"><br / >正在读取当前文章评论！</div>
+		<div class="loading"><img src="images/loading.gif" alt="正在读取当前文章评论！"><br / >正在读取当前文章评论！</div>
 	</div>
 	<div class="page after" id="comment_page_list"></div>
 	<div id="comment_tpl">

@@ -18,7 +18,7 @@ CREATE TABLE `{pre}visit_keyword` (
 	`keyword` Char(200) NOT NULL UNIQUE,									#关键字
 	`count` SMALLINT DEFAULT 0,														#搜索次数
 	`url` Char(200) DEFAULT "###" NOT NULL,								#访问网址
-	`referer` Char(200) DEFAULT "" NOT NULL,							#最近来源网址
+	`referer` Char(255) DEFAULT "" NOT NULL,							#最近来源网址
 	`add_date` Char(15) DEFAULT 0,												#首次检索日期（unixtimestamp）
 	`chg_date` Char(15) DEFAULT 0,												#最近检索日期（unixtimestamp）
 	INDEX (`keyword`),

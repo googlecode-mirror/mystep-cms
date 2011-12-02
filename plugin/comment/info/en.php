@@ -6,6 +6,7 @@ $info = array(
 	"cat_name" => "Comment",
 	"cat_desc" => "Post comment for news",
 	"description" => "<b>With this plugin, the function template tags you can use list as below£º</b>
-<b>comment: </b>Show comment function at news page. Attribute include: news_id, web_id"
+<b>comment: </b>Show comment function at news page. Attribute include: news_id, web_id
+<b>news_comment: </b>Show the comment list. Attribute include: web_id, news_id, order, limit, loop, template, count",
 );
 ?>
