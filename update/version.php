@@ -620,6 +620,7 @@ $version = array(
 				'plugin/visit_analysis/install.sql',
 				'plugin/visit_analysis/tpl/keyword.tpl',
 				'read.php',
+				'rss.php',
 				'script/addon.js',
 				'script/global.js',
 				'script/jquery.js',
