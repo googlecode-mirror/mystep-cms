@@ -28,12 +28,13 @@ class sess_mystep {
 	
 	public static function sess_write($sid, $sess_data) {
 		if(self::$skip) return true;
+		
+		extract(MyReq::sessDecode($sess_data));
 		$file_list = array("ajax.php", "merge.php", "language.js.php", "setting.js.php");
 		$file_this = array_shift(explode('?', basename($url)));
 		if(array_search($file_this, $file_list)!==false) return true;
 		
 		include(ROOT_PATH."/include/config.php");
-		extract(MyReq::sessDecode($sess_data));
 		$reflash = $_SERVER["REQUEST_TIME"];
 		if(empty($username)) $username = "Guest";
 		if(empty($usertype)) $usertype = 1;

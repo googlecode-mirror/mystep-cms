@@ -101,6 +101,7 @@ mystep;
 			unset($record);
 			if(!empty($url_info['query'])) {
 				parse_str($url_info['query'], $query);
+				if(is_numeric($query['w'])) $query['w']="";
 				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
 				$referer = mysql_real_escape_string($referer);
 				if(strlen($referer)>250) $referer = substrPro($referer, 0, 250);
