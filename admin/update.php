@@ -105,6 +105,34 @@ mystep;
 		}
 		write_log($setting['language']['admin_update_done']);
 		echo toJson($result, $setting['db']['charset']);
+		
+		$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
+			}
+			closedir($handle);
+		}
+		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/para/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
+			}
+			closedir($handle);
+		}
+		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/script/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
+			}
+			closedir($handle);
+		}
 		break;
 	default:
 		$check_info = GetRemoteContent($setting['gen']['update']);

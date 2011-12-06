@@ -552,6 +552,7 @@ $version = array(
 				'admin/language/chs.php',
 				'admin/language/default.php',
 				'admin/language/en.php',
+				'admin/update.php',
 				'admin/web_cache.php',
 				'admin/web_plugin.php',
 				'images/classic/style.css',

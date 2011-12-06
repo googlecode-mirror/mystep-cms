@@ -53,6 +53,15 @@ mystep;
 		}
 		closedir($handle);
 	}
+	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/script/";
+	if($handle = opendir($cache_path)) {
+		while (false !== ($file = readdir($handle))) {
+			if($file!="." && $file!="..") {
+				MultiDel($cache_path.$file);
+			}
+		}
+		closedir($handle);
+	}
 	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/session/";
 	if($handle = opendir($cache_path)) {
 		while (false !== ($file = readdir($handle))) {
@@ -63,15 +72,6 @@ mystep;
 		closedir($handle);
 	}
 	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/";
-	if($handle = opendir($cache_path)) {
-		while (false !== ($file = readdir($handle))) {
-			if($file!="." && $file!="..") {
-				MultiDel($cache_path.$file);
-			}
-		}
-		closedir($handle);
-	}
-	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/script/";
 	if($handle = opendir($cache_path)) {
 		while (false !== ($file = readdir($handle))) {
 			if($file!="." && $file!="..") {
