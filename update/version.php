@@ -583,7 +583,7 @@ $version = array(
 				'plugin/comment/quote.gif',
 				'plugin/comment/style.css',
 				'plugin/comment/tpl',
-				'plugin/comment/tpl/comment.tpl',
+				'plugin/comment/tpl/comment_classic.tpl',
 				'plugin/comment/tpl/list.tpl',
 				'plugin/comment/tpl/main.tpl',
 				'plugin/custom_sql/class.php',

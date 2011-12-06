@@ -168,7 +168,8 @@ mytpl;
 	}
 	
 	public static function comment(MyTPL $tpl, $att_list = array()) {
-		$content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/comment.tpl");
+		if(!isset($att_list['template'])) $att_list['template'] = "classic";
+		$content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/comment_{$att_list['template']}.tpl");
 		if(isset($att_list['news_id'])) {
 			$content = str_replace("<!--news_id-->", $att_list['news_id'], $content);
 		} else {
