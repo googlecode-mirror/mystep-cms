@@ -625,6 +625,7 @@ $version = array(
 				'script/addon.js',
 				'script/global.js',
 				'script/jquery.js',
+				'script/language.js.php',
 				'source/class/mycache.class.php',
 				'source/class/mystep.class.php',
 				'source/class/mytpl.class.php',

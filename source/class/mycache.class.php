@@ -122,9 +122,10 @@ class MyCache_File extends class_common {
 	}
 	
 	public function clean() {
-		if ($handle = opendir($this->thePath."../")) {
+		$thePath = array_shift(pathinfo($this->thePath))."/";
+		if ($handle = opendir($thePath)) {
 			while (false !== ($file = readdir($handle))) {
-				if($file!="." && $file!=".." && $file!=date("Ymd")) MultiDel($this->thePath.$file);
+				if($file!="." && $file!=".." && $file!=date("Ymd")) MultiDel($thePath.$file);
 			}
 			closedir($handle);
 			return true;
