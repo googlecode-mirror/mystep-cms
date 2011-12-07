@@ -51,13 +51,13 @@ mystep;
 		while($record = $db->GetRS()) {
 			$sql_list[] = "truncate table ".$setting['db']['pre']."meeting_".$record['mid'];
 			$sql_list[] = "drop table ".$setting['db']['pre']."meeting_".$record['mid'];
-			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_regist_cn.tpl");
-			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_regist_en.tpl");
-			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_reglist_cn.tpl");
-			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_reglist_en.tpl");
-			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_mail_cn.tpl");
-			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_mail_en.tpl");
-			unlink(dirname(__FILE__)."/tpl/{$record['mid']}_edit_reg.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_regist_cn.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_regist_en.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_reglist_cn.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_reglist_en.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_mail_cn.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_mail_en.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_edit_reg.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}.php");
 		}
 		$db->Free();
@@ -105,7 +105,6 @@ $catid = 0;
 		$result = "";
 		$theList = array(
 			"/",
-			"/tpl/",
 			"/setting/",
 		);
 		foreach($theList as $cur) {

@@ -59,7 +59,7 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 	$max_count = count($tmp);
 	for($n=0; $n<$max_count; $n++) {
 		$attach_list = "";
-		preg_match_all("/<img.+?src=(.?)(http.+?)\\1.*?>/i", $tmp[$n], $arr);
+		preg_match_all("/<img.+?src=(.?)(http.+?)\\1.*?>/is", $tmp[$n], $arr);
 		$img_list = $arr[2];
 		$max_count2 = count($img_list);
 		for($i=0; $i<$max_count2; $i++) {
@@ -75,7 +75,7 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 			$ext = preg_replace("/\?.*$/", "", $ext);
 			$old_name = preg_replace("/\?.*$/", "", $old_name);
 			//if(strpos("*.jpg.bmp.gif.png",$ext)===false) continue;
-			if(empty($ext)) {
+			if($ext==".") {
 				$ext = ".jpg";
 				$old_name .= $ext;
 			}
@@ -124,7 +124,7 @@ function GetPictures(&$content, $db=null, $zoom = 700) {
 	$max_count = count($tmp);
 	$attach_list = "";
 	for($n=0; $n<$max_count; $n++) {
-		preg_match_all("/<img.+?src=(.?)(http.+?)\\1.*?>/i", $tmp[$n], $arr);
+		preg_match_all("/<img.+?src=(.?)(http.+?)\\1.*?>/is", $tmp[$n], $arr);
 		$img_list = $arr[2];
 		$max_count2 = count($img_list);
 		for($i=0; $i<$max_count2; $i++) {
@@ -137,7 +137,7 @@ function GetPictures(&$content, $db=null, $zoom = 700) {
 			$the_time = GetMicrotime();
 			$old_name = strtolower(basename($img_list[$i]));
 			$ext = ".".GetFileExt($img_list[$i]);
-			if(empty($ext)) {
+			if($ext==".") {
 				$ext = ".jpg";
 				$old_name .= $ext;
 			}

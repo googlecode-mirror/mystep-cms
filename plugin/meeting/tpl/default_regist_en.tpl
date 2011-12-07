@@ -69,7 +69,7 @@ mystep;
 mystep;
 }
 ?>
-		<TR CLASS="tdlight">
+		<TR CLASS="row">
 			<TD colspan="2" style="text-align:center;padding:20px;">
 				<input type="submit" value=" Submit "> &nbsp; &nbsp; &nbsp; <input type="reset" value=" Reset ">
 			</TD>

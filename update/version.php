@@ -662,5 +662,33 @@ $version = array(
 					),
 			),
 	),
+	'0.99.7.1' => array(
+		'info' => '
+				V0.99.7.1
+				1.Fix a bug in update function
+				2.Fix a bug in get remote picture function
+				3.Some adjust in meeting plugin
+				4.Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/update.php',
+				'include/parameter.php',
+				'plugin/meeting/class.php',
+				'plugin/meeting/index.php',
+				'plugin/meeting/meeting.php',
+				'plugin/meeting/regist.php',
+				'plugin/meeting/style.css',
+				'plugin/meeting/tpl/default_regist_cn.tpl',
+				'plugin/meeting/tpl/default_regist_en.tpl',
+				'source/function/admin.php',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20111207',
+					),
+			),
+	),
 );
 ?>

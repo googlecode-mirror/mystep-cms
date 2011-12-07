@@ -70,7 +70,7 @@ mystep;
 mystep;
 }
 ?>
-		<TR CLASS="tdlight">
+		<TR CLASS="row">
 			<TD colspan="2"><center><input type="submit" value=" Ìá ½» "> &nbsp; <input type="reset" value=" ¸´ Î» "></center></TD>
 		</TR>
 	</table>

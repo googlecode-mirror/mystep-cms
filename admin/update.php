@@ -75,6 +75,8 @@ mystep;
 			if(isWriteable(ROOT_PATH."/".$update_info['file'][$i])) {
 				if(empty($update_info['content'][$i])) {
 					@unlink(ROOT_PATH."/".$update_info['file'][$i]);
+				} elseif($update_info['content'][$i]==".") {
+					MakeDir(ROOT_PATH."/".$update_info['file'][$i]);
 				} else {
 					WriteFile(ROOT_PATH."/".$update_info['file'][$i], $update_info['content'][$i], "wb");
 				}
