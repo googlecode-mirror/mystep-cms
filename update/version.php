@@ -681,6 +681,7 @@ $version = array(
 				'plugin/meeting/style.css',
 				'plugin/meeting/tpl/default_regist_cn.tpl',
 				'plugin/meeting/tpl/default_regist_en.tpl',
+				'source/class/mycache.class.php',
 				'source/function/admin.php',
 				'update/version.php',
 			),
