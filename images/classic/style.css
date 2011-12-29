@@ -152,5 +152,7 @@
 .page_main #content .title_img{float:right;padding:10px 10px 10px 10px;width:120px;display:none;}
 .page_main #content .notice{color:#ff0000;text-align:center;font-weight:bold;}
 .page_main #content UL, .page_main #content OL{padding-left:24px;}
+.page_main #content a{text-decoration:none;color:#000000;}
+.page_main #content a:hover{text-decoration:none;color:#ff0000;}
 
 #page_bottom{line-height:20px;text-align:center;margin:10px auto 10px auto;padding-top:10px;width:100%;border-top:1px solid #CBCBCB;}

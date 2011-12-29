@@ -138,6 +138,8 @@ for($i=0; $i<$max_count; $i++) {
 		$tpl_tmp->Set_Loop('tag_list', array("link"=>"tag.php?tag=".urlencode($tag[$i]), "tag"=>$tag[$i]));
 	}
 }
+unset($tag);
+$tag = $detail['tag'];
 
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_tmp);

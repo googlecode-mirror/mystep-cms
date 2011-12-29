@@ -588,18 +588,7 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 	if(!empty($img_dst)) $dst_type = GetFileExt($img_dst);
 
 	if(file_exists($watermark)) {
-		if($img->width>1024) {
-			$new_watermark = dirname($watermark)."/4_".basename($watermark);
-		} elseif($img->width>600) {
-			$new_watermark = dirname($watermark)."/3_".basename($watermark);
-		} elseif($img->width>400) {
-			$new_watermark = dirname($watermark)."/2_".basename($watermark);
-		} elseif($img->width>200) {
-			$new_watermark = dirname($watermark)."/1_".basename($watermark);
-		} else {
-			$new_watermark = $watermark;
-		}
-		if(!file_exists($new_watermark)) $new_watermark = $watermark;
+		$new_watermark = $watermark;
 		$img_wm = new imageCreator_file;
 		$img_wm->init($new_watermark);
 		list($wm_width, $wm_height) = $img_wm->getSize();
@@ -607,14 +596,12 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 		list($alpha, $rate) = $para;
 		if(is_null($alpha)) $alpha = 60;
 		if(is_null($rate)) $rate = 10;
-		if($new_watermark==$watermark) {
-			if($rate!=1) {
-				$wm_rate = max($img->width/$rate/$wm_width, $img->height/$rate/$wm_height);
-				$wm_width *= $wm_rate;
-				$wm_height *= $wm_rate;
-				$img_wm->resizeImage($wm_rate);
-				$img_wm->setTransparent(array(0,0));
-			}
+		if($rate!=1) {
+			$wm_rate = min($img->width/$rate/$wm_width, $img->height/$rate/$wm_height);
+			$wm_width *= $wm_rate;
+			$wm_height *= $wm_rate;
+			$img_wm->resizeImage($wm_rate);
+			$img_wm->setTransparent(array(0,0));
 		}
 		switch($position) {
 			case 1:

@@ -38,9 +38,10 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-					<table width="100%" id="reg_list">
+					<table width="100%">
 						<tr><td class="cat" colspan="4">注册项目 &nbsp; [<a href="###" onclick="addItem()">添加</a>]</td></tr>
-						<tr align="center"><td class="cat" width="100">索引</td><td class="cat" width="100">名称</td><td class="cat">说明</td><td class="cat" width="100">操作</td></tr>
+						<tr align="center"><td class="cat" width="100">索引</td><td class="cat" width="100">名称</td><td class="cat">说明</td><td class="cat" width="200">操作</td></tr>
+						<tbody id="reg_list"></tbody>
 					</table>
 					<input type="hidden" id="itemlist" name="itemlist" value="" />
 				</td>
@@ -193,14 +194,18 @@ if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopu
 });
 var reg_item=<!--reg_item-->;
 $(function(){
+	refreshItem();
+});
+function refreshItem() {
 	var ole = $("#reg_list");
 	var curItem = null;
+	ole.empty();
 	for(item in reg_item) {
-		curItem = $('<tr id="item_'+item+'"><td class="cat">'+item+'</td><td class="row">'+(reg_item[item].title.length>0?reg_item[item].title:reg_item[item].title_en)+'</td><td class="row">'+(reg_item[item].comment.length>0?reg_item[item].comment:reg_item[item].comment_en)+'</td><td class="row" align="center"><a href="###" onclick="editItem(\''+item+'\')">编辑</a> &nbsp; <a href="###" onclick="removeItem(\''+item+'\')">删除</a></td></tr>');
+		curItem = $('<tr id="item_'+item+'"><td class="cat">'+item+'</td><td class="row">'+(reg_item[item].title.length>0?reg_item[item].title:reg_item[item].title_en)+'</td><td class="row">'+(reg_item[item].comment.length>0?reg_item[item].comment:reg_item[item].comment_en)+'</td><td class="row" align="center"><a href="###" onclick="orderItem(\''+item+'\', 1)">提升</a> &nbsp; <a href="###" onclick="orderItem(\''+item+'\', 0)">下降</a> &nbsp; <a href="###" onclick="editItem(\''+item+'\')">编辑</a> &nbsp; <a href="###" onclick="removeItem(\''+item+'\')">删除</a></td></tr>');
 		curItem.appendTo(ole);
 		curItem = null;
 	}
-});
+}
 function addItem() {
 	showPop('addItem','添加注册项目','id','item_edit',500);
 	$("#popupLayer_addItem input[name='item']").val("add");
@@ -248,7 +253,33 @@ function removeItem(item) {
 			break;
 	}
 	$("#item_"+item).remove();
-	$id("itemlist").value = JSON.stringify(reg_item);
+	$id("itemlist").value = $.toJSON(reg_item);
+	return;
+}
+function orderItem(item, mode) {
+	var pre_item = null;
+	var nxt_item = null;
+	var new_order = new Object();
+	for(var i in reg_item) {
+		new_order[i] = reg_item[i];
+		if(nxt_item!=null) {
+			new_order[nxt_item] = reg_item[nxt_item];
+			nxt_item = null;
+		}
+		if(i==item) {
+			if(mode==1 && pre_item!=null) {
+				delete new_order[pre_item];
+				new_order[pre_item] = reg_item[pre_item];
+			} else {
+				delete new_order[i];
+				nxt_item = i;
+			}
+		}
+		pre_item = i;
+	}
+	reg_item = new_order;
+	$id("itemlist").value = $.toJSON(reg_item);
+	refreshItem();
 	return;
 }
 function confirmItem(mode) {
@@ -263,18 +294,23 @@ function confirmItem(mode) {
 						idx = objs[i].value;
 						break;
 					case "format":
-						if($("#popupLayer_addItem input[name='needed']")[0].checked===false) {
-							new_item['format'] = objs[i].value+"_";
+						new_item['format'] = objs[i].value;
+						if($("#popupLayer_editItem input[name='needed']")[0].checked===false) {
+							new_item['format'] += "_";
 						}
-						if(new_item['format']=="_") new_item[objs[i].name] = ".";
+						if(new_item['format']=="_") new_item['format'] = ".";
 						break;
 					case "value_cn":
-						objs[i].value = objs[i].value.replace(/\r/g, "");
+						objs[i].value = objs[i].value.replace(/[\r\n]+/g, "\n");
+						objs[i].value = objs[i].value.replace(/^[\r\n\s]*/, "");
+						objs[i].value = objs[i].value.replace(/[\r\n\s]*$/, "");
 						new_item["value"] = new Object();
 						new_item["value"].cn = objs[i].value.split("\n");
 						break;
 					case "value_en":
-						objs[i].value = objs[i].value.replace(/\r/g, "");
+						objs[i].value = objs[i].value.replace(/[\r\n]+/g, "\n");
+						objs[i].value = objs[i].value.replace(/^[\r\n\s]*/, "");
+						objs[i].value = objs[i].value.replace(/[\r\n\s]*$/, "");
 						new_item["value"].en = objs[i].value.split("\n");
 						break;
 					default:
@@ -299,18 +335,23 @@ function confirmItem(mode) {
 						idx = objs[i].value;
 						break;
 					case "format":
+						new_item['format'] = objs[i].value;
 						if($("#popupLayer_editItem input[name='needed']")[0].checked===false) {
-							new_item['format'] = objs[i].value+"_";
+							new_item['format'] += "_";
 						}
-						if(new_item['format']=="_") new_item[objs[i].name] = ".";
+						if(new_item['format']=="_") new_item['format'] = ".";
 						break;
 					case "value_cn":
-						objs[i].value = objs[i].value.replace(/\r/g, "");
+						objs[i].value = objs[i].value.replace(/[\r\n]+/g, "\n");
+						objs[i].value = objs[i].value.replace(/^[\r\n\s]*/, "");
+						objs[i].value = objs[i].value.replace(/[\r\n\s]*$/, "");
 						new_item["value"] = new Object();
 						new_item["value"].cn = objs[i].value.split("\n");
 						break;
 					case "value_en":
-						objs[i].value = objs[i].value.replace(/\r/g, "");
+						objs[i].value = objs[i].value.replace(/[\r\n]+/g, "\n");
+						objs[i].value = objs[i].value.replace(/^[\r\n\s]*/, "");
+						objs[i].value = objs[i].value.replace(/[\r\n\s]*$/, "");
 						new_item["value"].en = objs[i].value.split("\n");
 						break;
 					default:
@@ -347,7 +388,8 @@ function confirmItem(mode) {
 			return;
 	}
 	$.closePopupLayer();
-	$id("itemlist").value = JSON.stringify(reg_item);
+	$id("itemlist").value = $.toJSON(reg_item);
+	refreshItem();
 	return;
 }
 for(var i=0; i<$id("webList").options.length; i++) {

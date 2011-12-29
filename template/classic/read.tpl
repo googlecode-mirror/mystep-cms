@@ -6,7 +6,7 @@
 			<div class="box box_list">
 				<div class="title">最新更新</div>
 				<div class="content">
-<!--news limit="12" loop="12"-->
+<!--news limit="12" loop="12" tag='$tag' xid='$news_id'-->
 				</div>
 			</div>
 		</div>

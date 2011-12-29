@@ -7,7 +7,6 @@ class sess_mystep {
 		$agent = strtolower($_SERVER['HTTP_USER_AGENT']);
 		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) self::$skip = true;
 	}
-	
 	public static function sess_close() {
 		if(self::$skip) return true;
 		self::sess_gc();
@@ -15,6 +14,7 @@ class sess_mystep {
 	}
 	
 	public static function sess_read($sid) {
+		if(self::$skip) return "";
 		global $setting;
 		if($result = mysql_query("SELECT * FROM ".$setting['db']['pre']."user_online WHERE sid = '{$sid}' AND reflash > ".($_SERVER["REQUEST_TIME"]-($setting['session']['expire']*60)))) {
 			if (mysql_num_rows($result)) {
@@ -28,7 +28,6 @@ class sess_mystep {
 	
 	public static function sess_write($sid, $sess_data) {
 		if(self::$skip) return true;
-		
 		extract(MyReq::sessDecode($sess_data));
 		$file_list = array("ajax.php", "merge.php", "language.js.php", "setting.js.php");
 		$file_this = array_shift(explode('?', basename($url)));

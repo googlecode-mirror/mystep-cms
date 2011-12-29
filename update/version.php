@@ -692,5 +692,40 @@ $version = array(
 					),
 			),
 	),
+	'0.99.7.2' => array(
+		'info' => '
+				V0.99.7.2
+				1.Enhance meeting plugin
+				2.Fix a bug in news_visit plugin
+				3.Fix a bug in news_parse tag when it has a variant value in tag attribute
+				4.Fix a bug in picture watermark function
+				5.Fix a bug in news_visit plugin
+				6.Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'error.php',
+				'read.php',
+				'include/parameter.php',
+				'images/classic/style.css',
+				'plugin/meeting/meeting.php',
+				'plugin/meeting/tpl/add.tpl',
+				'plugin/meeting/tpl/edit.tpl',
+				'plugin/news_visit/info/chs.php',
+				'plugin/news_visit/info/en.php',
+				'plugin/offical/class.php',
+				'plugin/visit_analysis/class.php',
+				'source/class/session.class.php',
+				'source/function/global.php',
+				'template/classic/list_0.tpl',
+				'template/classic/read.tpl',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20111229',
+					),
+			),
+	),
 );
 ?>

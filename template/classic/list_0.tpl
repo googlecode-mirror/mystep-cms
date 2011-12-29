@@ -4,9 +4,9 @@
 <!--menu web_id='$web_id' cat_id='$menu_cat_id' deep="2" class="catList" all="yes"-->
 			</div>
 			<div class="box box_list">
-				<div class="title">最新更新</div>
+				<div class="title">热门文章</div>
 				<div class="content">
-<!--news limit="10" loop="10"-->
+<!--news_week cat_id='$cat_id' limit="10" loop="10"-->
 				</div>
 			</div>
 		</div>
@@ -26,7 +26,7 @@
 			<div class="box box_list" style="margin-top:0px;">
 				<div class="title">图片新闻</div>
 				<div class="content">
-<!--news show_image="1" limit="5" template="picture"-->
+<!--news cat_id='$cat_id' show_image="1" limit="5" template="picture"-->
 				</div>
 			</div>
 		</div>

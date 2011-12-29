@@ -247,11 +247,15 @@ class plugin_offical implements plugin {
 		if(!isset($att_list['show_date'])) $att_list['show_date'] = "";
 		if(!empty($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
 		if(!isset($att_list['tag'])) $att_list['tag'] = "";
-		$att_list['tag'] = str_replace("£¬", ",", $att_list['tag']);
-		$att_list['tag'] = str_replace(" ", ",", $att_list['tag']);
-		$att_list['tag'] = preg_replace("/,+/", ",", $att_list['tag']);
-		$att_list['tag'] = trim($att_list['tag'],",");
-		if(!empty($att_list['tag'])) $att_list['tag'] = "a.tag like '%".str_replace(",", "%' or a.tag like '%", $att_list['tag'])."%'";
+		$tag = "";
+		if(!empty($att_list['tag'])) {
+			if(strpos($att_list['tag'], '$GLOBALS')===false) {
+				$att_list['tag'] = "a.tag like '%".str_replace(",", "%' or a.tag like '%", $att_list['tag'])."%'";
+			} else {
+				$tag = $att_list['tag'];
+				$att_list['tag'] = "a.tag like '%[tag]%'";
+			}
+		}
 		if(!empty($att_list['cat_id'])) {
 			if($cat_info=getParaInfo("news_cat", "cat_id", $att_list['cat_id'])) $att_list['web_id'] = $cat_info['web_id'];
 		} else {
@@ -287,6 +291,16 @@ global \$plugin_setting;
 \$n = 0;
 \$str_sql = str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}");
 \$str_sql = str_replace(" and (a.cat_id ='0' || b.cat_main='0')", "", \$str_sql);
+\$tag = "{$tag}";
+if(!empty(\$tag)) {
+	\$tag = str_replace("'", "", \$tag);
+	\$tag = str_replace("£¬", ",", \$tag);
+	\$tag = str_replace(" ", ",", \$tag);
+	\$tag = preg_replace("/,+/", ",", \$tag);
+	\$tag = trim(\$tag, ",");
+	\$tag = str_replace(",", "%' or a.tag like '%", \$tag);
+	\$str_sql = str_replace("[tag]", \$tag, \$str_sql);
+}
 \$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {

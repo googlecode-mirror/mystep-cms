@@ -261,6 +261,7 @@ $para = '.var_export($para, true).';
 			unlink("setting/{$mid}_reglist_en.tpl");
 			unlink("setting/{$mid}_mail_cn.tpl");
 			unlink("setting/{$mid}_mail_en.tpl");
+			unlink("setting/{$mid}_edit_reg.tpl");
 			unlink("setting/{$mid}.php");
 			deleteCache("admin_cat");
 		}
