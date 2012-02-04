@@ -20,7 +20,7 @@
   	
   That's all...
 
-	External Method : $Upload_Manager->MakeDir, $Upload_Manager->GetMicrotime
+	External Method : $Upload_Manager->MakeDir, $Upload_Manager->GetMicrotime, $Upload_Manager->GetFileSize
 --------------------------------------------------------------------------------------------------------------------*/
 
 class MyUploader extends class_common {
@@ -135,19 +135,6 @@ class MyUploader extends class_common {
 		}
 		echo "</table>";
 		return;
-	}
-
-	private function GetFileSize($filesize) {
-		if($filesize < 1024){
-			$filesize = (string)$filesize . " Bytes";
-		}else if($filesize < (1024 * 1024)){
-			$filesize = number_format((double)($filesize / 1024), 1) . " KB";
-		}else if($filesize < (1024 * 1024 * 1024)){
-			$filesize = number_format((double)($filesize / (1024 * 1024)), 1) . " MB";
-		}else{
-			$filesize = number_format((double)($filesize / (1024 * 1024 * 1024)), 1) . " GB";
-		}
-		return $filesize;
 	}
 }
 ?>

@@ -155,7 +155,7 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		$str_sql = $db->buildSQL($setting['db']['pre']."meeting", $sql_item, "update", "mid={$mid}");
 		$db->Query($str_sql);
 		include("config.php");
-		$db->query("update ".$setting['db']['pre']."admin_cat set name='".mysql_real_escape_string($sql_item['name'])."' where file='meeting.php?mid={$mid}' and pid={$catid}");
+		$db->query("update ".$setting['db']['pre']."admin_cat set name='".mysql_real_escape_string($sql_item['name'])."', web_id='".$sql_item['web_id']."' where file='meeting.php?mid={$mid}' and pid={$catid}");
 		if(empty($_POST["tpl_reg_cn"])) $_POST["tpl_reg_cn"] = GetFile("tpl/default_regist_cn.tpl");
 		if(empty($_POST["tpl_reg_en"])) $_POST["tpl_reg_en"] = GetFile("tpl/default_regist_en.tpl");
 		if(empty($_POST["tpl_reglist_cn"])) $_POST["tpl_reglist_cn"] = GetFile("tpl/default_reglist_cn.tpl");
@@ -297,7 +297,6 @@ function build_page($method) {
 		$tpl_info['idx'] = $method;
 	}
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-
 	if($method=="confirm") {
 		global $para, $record;
 		$record = $db->getSingleRecord("select * from ".$setting['db']['pre']."meeting_{$mid} where id=".$id);
@@ -309,12 +308,12 @@ function build_page($method) {
 		$db->Query("update ".$setting['db']['pre']."meeting_{$mid} set mailed=1 where id='".$record['id']."'");
 		include("setting/".$mid.".php");
 		$tpl_info['idx'] = "{$mid}_mail_".(empty($record['name'])?"en":"cn");
+		$tpl_tmp->ClearError();
 		$tpl_tmp->init($tpl_info);
 		if(empty($record['name'])) $record['name'] = $record['name_en'];
 		$tpl_tmp->Set_Variables($record, 'record');
 		$meeting = $db->GetSingleRecord("select * from ".$setting['db']['pre']."meeting where mid='{$mid}'");
 		$tpl_tmp->Set_Variables($meeting);
-		include("setting/{$mid}.php");
 		$tpl_tmp->allow_script = true;
 	} elseif($method == "list_reg") {
 		$page = $req->getGet("page");
@@ -380,7 +379,7 @@ function build_page($method) {
 			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('title', '»áÒéä¯ÀÀä¯ÀÀ');
+		$tpl_tmp->Set_Variable('title', '»áÒéä¯ÀÀ');
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);
 		$order_type = $order_type=="asc"?"desc":"asc";
 		$tpl_tmp->Set_Variable('order_type', $order_type);
@@ -428,7 +427,6 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("tpl/default_mail_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("tpl/edit_reg.tpl")));
 	}
-	
 	$tpl_tmp->Set_Variable('mid', $mid);
 	$tpl->Set_Variable('path_admin', $setting['path']['admin']);
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting, $para'));

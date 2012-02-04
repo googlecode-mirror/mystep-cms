@@ -14,26 +14,28 @@
 /*--------------------------------------------------------------------------------------------------------------------
 
   How To Use:
-	$mypack = new MyTpl($pack_dir, $pack_file)	// Set the Class
+	$mypack = new MyPack($pack_dir, $pack_file)	// Set the Class
 	$mypack->AddIgnore()												// add files which will not be packed
-	$mypack->DoIt($type = "pack", $encry_key = "", $compress_type = 1, $separator="|") // pack or unpack file(s)
+	$mypack->DoIt($type = "pack", $encry_key = "", $separator="|") // pack or unpack file(s)
+	
+	External Method : $mypack->GetFile, $mypack->GetFileSize, $mypack->WriteFile
 	
 --------------------------------------------------------------------------------------------------------------------*/
 
-class myPack {
+class myPack extends class_common {
 	protected
 		$file_count		= 0,
 		$file_ignore	= array(),		// ignore these files when packing
+		$file_list	= array(),		// only files in the list will be pack
 		$pack_file		= "pack.bin",		// the file name of packed file
 		$pack_dir		= "./",			// the directory of pack or unpack to
 		$pack_fp		= null,
-		$pack_result	= null,
-		$include_path	= "";
+		$pack_result	= array();
 
-	public function __construct($pack_dir = "./", $pack_file = "pack.bin") {
-		$this->pack_dir		= $pack_dir;
+	public function init($pack_dir = "./", $pack_file = "mypack.pkg") {
+		$this->pack_dir		= str_replace("//", "/", $pack_dir);
 		$this->pack_file	= $pack_file;
-		$this->AddIgnore($pack_file, basename(__FILE__), basename($_SERVER["PHP_SELF"]));
+		$this->AddIgnore($pack_file);
 		return;
 	}
 
@@ -43,54 +45,26 @@ class myPack {
 		return;
 	}
 
-	private function GetFile($file) {
-		return is_file($file) ? file_get_contents($file) : "";
-	}
-
-	private function GetFileSize($filesize) {
-		if($filesize <1024){
-			$filesize = (string)$filesize . " Bytes";
-		}else if($filesize <(1024 * 1024)){
-			$filesize = number_format((double)($filesize / 1024), 1) . " KB";
-		}else if($filesize <(1024 * 1024 * 1024)){
-			$filesize = number_format((double)($filesize / (1024 * 1024)), 1) . " MB";
-		}else{
-			$filesize = number_format((double)($filesize / (1024 * 1024 * 1024)), 1) . " GB";
-		}
-		return $filesize;
-	}
-
-	private function FileCompress($compress_type) {
-		switch($compress_type) {
-			case 1:
-				if(function_exists('zip')) {
-					zip($this->pack_file, $this->pack_file.".zip");
-				}
-				break;
-			case 2:
-				if (function_exists('gzencode')) {
-					$fp = fopen($this->pack_file.".gz", "wb");
-					fwrite($fp, gzencode($this->GetFile($this->pack_file)));
-					fclose($fp);
-				}
-				break;
-			case 3:
-				if (function_exists('bzcompress')) {
-					$fp = fopen($this->pack_file.".bz2", "wb");
-					fwrite($fp, bzcompress($this->GetFile($this->pack_file)));
-					fclose($fp);
-				}
-				break;
-		}
-		fclose($fp);
-		unlink($this->pack_file);
+	public function AddFile() {
+		$args_list = func_get_args();
+		$this->file_list += $args_list;
 		return;
 	}
 
-	public function PackFile($dir=".", $separator="|") {
+	protected function PackFileList($separator="|") {
+		for($i=0, $m=count($this->file_list); $i<$m; $i++) {
+			$this->PackFile($file_list[$i], $separator);
+		}
+		return;
+	}
+
+	protected function PackFile($dir=".", $separator="|", $no_folder=true) {
+		$main_dir = $this->pack_dir;
+		if($no_folder) $main_dir = dirname($this->pack_dir)."/";
 		$dir = str_replace("//", "/", $dir);
+		if(stristr("|".join("|",$this->file_ignore)."|", "|".basename($dir)."|")) return;
 		if(is_dir($dir)) {
-			$content = "dir".$separator.$dir.$separator.filemtime($dir)."\n";
+			$content = "dir".$separator.str_replace($main_dir, "", $dir).$separator.filemtime($dir)."\n";
 			fwrite($this->pack_fp, $content);
 			$mydir = opendir($dir);
 			while($file = readdir($mydir)){
@@ -98,72 +72,84 @@ class myPack {
 			}
 			closedir($mydir);
 		}elseif(file_exists($dir)) {
-			if(stristr("|".join("|",$this->file_ignore)."|", "|".basename($dir)."|")) return;
-			$content  =  "file".$separator.$dir.$separator.filesize($dir).$separator.filemtime($dir)."\n";
+			$content  =  "file".$separator.str_replace($main_dir, "", $dir).$separator.filesize($dir).$separator.filemtime($dir)."\n";
 			$content .= $this->GetFile($dir);
 			fwrite($this->pack_fp, $content);
 			$this->file_count++;
-			array_push($this->pack_result, "Packing File <font color='red'>$dir</font>, size: ".$this->GetFileSize(filesize($dir)));
+			array_push($this->pack_result, "<b>Packing File</b> <font color='blue'>$dir</font> (".$this->GetFileSize($dir).")");
 		}
 		return;
 	}
 
-	public function UnpackFile($outdir=".", $separator="|") {
+	protected function UnpackFile($outdir=".", $separator="|") {
 		if(!is_dir($outdir)) mkdir($outdir, 0777);
+		$n = 0;
 		while(!feof($this->pack_fp)) {
 			$data = explode($separator, fgets($this->pack_fp, 1024));
+			$n++;
 			if($data[0]=="dir") {
 				if(trim($data[1], ".") != "") {
 					$flag = mkdir($outdir."/".$data[1],0777);
-					array_push($this->pack_result, "Build Directory <font color='red'>$outdir/$data[1]</font> ".($flag?"Successfully!":"failed!"));
+					array_push($this->pack_result, "<b>Build Directory</b> $outdir/$data[1] ".($flag?"<font color='green'>Successfully!</font>":"<font color='red'>failed!</font>"));
 				}
 			}elseif($data[0]=="file") {
 				$fp_w = fopen($outdir."/".$data[1],"wb");
-				$flag = fwrite($fp_w, fread($this->pack_fp,$data[2]));
+				$flag = false;
+				if($data[2]>0) $flag = fwrite($fp_w, fread($this->pack_fp,$data[2]));
 				$this->file_count++;
-				array_push($this->pack_result, "Unpacking File <font color='red'>$outdir/$data[1]</font> ".($flag?"Successfully! size: ".$this->GetFileSize(filesize("$data[1]")):"failed!"));
+				array_push($this->pack_result, "<b>Unpacking File</b> $outdir/$data[1] ".($flag?"<font color='green'>Successfully!</font>(".$this->GetFileSize($this->pack_dir."/".$data[1]).")":"<font color='red'>failed!</font>"));
+			} else {
+				$n--;
 			}
 		}
-		return;
+		return $n;
 	}
 
 	public function GetResult() {
 		return join("<br />\n", $this->pack_result);
 	}
 
-	public function DoIt($type = "pack", $encry_key = "", $compress_type = 1, $separator="|") {
+	public function DoIt($type = "pack", $encry_key = "", $separator="|") {
 		$this->pack_result = array();
-		if(is_numeric($compress_type)) {
-			if($compress_type > 3 || $compress_type < 0) $compress_type = 0;
-		}else {
-			$compress_type = 0;
-		}
 		if($type == "pack") {
 			$this->pack_fp	= fopen($this->pack_file, "wb");
-			if(!$this->pack_fp) die("Error Occurs In Creating Output File !");
+			if(!$this->pack_fp) {
+				$this->Error("Error Occurs In Creating Output File !");
+				return false;
+			}
 			$time = $_SERVER['REQUEST_TIME'];
-			$this->PackFile($this->pack_dir, $separator);
+			if(count($this->file_list)>0) {
+				$this->PackFileList($separator);
+			} else {
+				$this->PackFile($this->pack_dir, $separator);
+			}
 			fclose($this->pack_fp);
 			if($_SERVER['REQUEST_TIME']-$time <= 1) sleep(1);
+			$this->WriteFile($this->pack_file, gzcompress($this->GetFile($this->pack_file), 9));
 			if(!empty($encry_key)) encry::enc_file($this->pack_file, $encry_key);
-			if(preg_match("/[1-3]/",$compress_type)) $this->FileCompress($compress_type);
 		}else {
 			if(!empty($encry_key)) encry::dec_file($this->pack_file, $encry_key);
+			$this->WriteFile($this->pack_file, gzuncompress($this->GetFile($this->pack_file)));
 			$this->pack_fp	= fopen($this->pack_file, "rb");
-			if(!$this->pack_fp) die("Error Occurs In Reading Pack File !");
-			$this->UnpackFile($this->pack_dir, $separator);
+			if(!$this->pack_fp) {
+				$this->Error("Error Occurs In Reading Pack File !");
+				return false;
+			}
+			$n = $this->UnpackFile($this->pack_dir, $separator);
 			fclose($this->pack_fp);
+			unlink($this->pack_file);
+			if($n<=0) return false;
 		}
-		$extend_type	= array("", ".zip", ".gz", ".bz2");
-		$filename	= $this->pack_file.($type=="pack"?$extend_type[$compress_type]:"");
-		$filesize	= $this->GetFileSize(filesize($filename));
-		array_push($this->pack_result,"<br />File Count: {$this->file_count}Files");
-		array_push($this->pack_result,"Pack Size:  {$filesize}");
-		if($type == "pack") array_push($this->pack_result,"Packed File:  <a href='{$filename}'>".basename($filename)."</a> <br />");
+		$filename	= $this->pack_file;
+		$filesize	= $this->GetFileSize($filename);
+		array_push($this->pack_result,"<br />File Count: {$this->file_count} File(s)");
+		if($type == "pack") {
+			array_push($this->pack_result,"Pack Size: {$filesize}");
+			array_push($this->pack_result,"Packed File: <a href='{$filename}'>".basename($filename)."</a> <br />");
+		}
 		return $filename;
 	}
 }
-
 
 class encry {
 	public static function keyED($txt, $encrypt_key) {
@@ -245,26 +231,6 @@ class encry {
 		unlink($file);
 		rename("dec_$file", $file);
 		return;
-	}
-}
-
-/*--------------------------------------------------------------------------------------------------------------------------------------*/
-
-class MyZip extends ZipArchive {
- public function addDir($path) {
-		$this->addEmptyDir($path);
-		$nodes = glob($path . '/*');
-		foreach($nodes as $node) {
-			if(is_dir($node)) {
-				$this->addDir($node);
-			} else if(is_file($node))  {
-				$this->addFile($node);
-			}
-		}
-	}
-	
-	public function open($file) {
-		return parent::open($file, ZIPARCHIVE::OVERWRITE);
 	}
 }
 ?>

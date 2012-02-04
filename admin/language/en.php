@@ -138,6 +138,10 @@ $language = array (
   'admin_web_plugin_title' => 'Plugin Management',
   'admin_web_plugin_err' => 'There is no setting option for the current Plugin.',
   'admin_web_plugin_check_ok' => 'Plugin tested pass!',
+  'admin_web_plugin_upload' => 'Upload plugin',
+  'admin_web_plugin_upload_done' => 'Plugin uploaded!',
+  'admin_web_plugin_upload_failed' => 'Bad plugin pack file!',
+  'admin_web_plugin_delete' => 'Delete Plugin',
   
   'admin_web_setting_update' => 'Update Setting',
   'admin_web_setting_restore' => 'Resort Setting',

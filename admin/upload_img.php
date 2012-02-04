@@ -34,18 +34,7 @@ $tpl_tmp->Set_Variable('parent_element', $parent_element);
 $tpl_tmp->Set_Variable('self', $setting['info']['self']);
 $Max_size = ini_get('upload_max_filesize');
 $tpl_tmp->Set_Variable('Max_size', $Max_size);
-switch(strtoupper(substr($Max_size,-1))){
-	case "M":
-		$Max_size = ((int)str_replace("M","",$Max_size)) * 1024 * 1024;
-		break;
-	case "K":
-		$Max_size = ((int)str_replace("K","",$Max_size)) * 1024;
-		break;
-	default:
-		$Max_size = 1024 * 1024;
-		break;
-}
-$tpl_tmp->Set_Variable('MaxSize', $Max_size);
+$tpl_tmp->Set_Variable('MaxSize', GetFileSize($Max_size));
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_tmp);
 $db->Free();

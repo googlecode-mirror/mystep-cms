@@ -27,3 +27,8 @@
 			<input type="button" onclick="location.href='<?=$setting['web']['url']?>'" value="Íê ³É">
 		</div>
 	</div>
+
+<?php
+MultiDel(ROOT_PATH."/error.log");
+MultiDel(ROOT_PATH."/".$setting['path']['cache']);
+?>

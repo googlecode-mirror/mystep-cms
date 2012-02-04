@@ -102,18 +102,39 @@ class MyStep extends class_common {
 	
 	public function setPlugin() {
 		includeCache("plugin");
-		global $plugin_setting;
+		global $plugin_setting, $setting;
+		$web_id = $setting['info']['web']['web_id'];
+		$plugin_idx = ROOT_PATH."/cache/plugin/".$setting['info']['web']['idx'].".php";
+		$plugins = array();
+		if(file_exists($plugin_idx)) {
+			include($plugin_idx);
+		} else {
+			$max_count = count($GLOBALS['plugin']);
+			for($i=0; $i<$max_count; $i++) {
+				if($GLOBALS['plugin'][$i]['subweb']=="" || strpos($GLOBALS['plugin'][$i]['subweb'], ",".$web_id.",")!==false) {
+					$plugins[] = $GLOBALS['plugin'][$i];
+				}
+			}
+			$result = var_export($plugins, true);
+			$result = <<<mystep
+<?php
+\$plugins = {$result};
+?>
+mystep;
+			WriteFile($plugin_idx, $result, "w");
+		}
 		$mystep = $this;
 		$plugin_setting = array();
-		$max_count = count($GLOBALS['plugin']);
+		$max_count = count($plugins);
 		for($i=0; $i<$max_count; $i++) {
-			if($GLOBALS['plugin'][$i]['active']=='1') {
-				$curPlugin = ROOT_PATH."/plugin/".$GLOBALS['plugin'][$i]['idx']."/index.php";
+			if($plugins[$i]['active']=='1') {
+				$curPlugin = ROOT_PATH."/plugin/".$plugins[$i]['idx']."/index.php";
 				if(is_file($curPlugin)) include($curPlugin);
-				$curPlugin = ROOT_PATH."/plugin/".$GLOBALS['plugin'][$i]['idx']."/config.php";
+				$curPlugin = ROOT_PATH."/plugin/".$plugins[$i]['idx']."/config.php";
 				if(is_file($curPlugin)) include($curPlugin);
 			}
 		}
+		return;
 	}
 	
 	public function pageStart($setPlugin = false) {

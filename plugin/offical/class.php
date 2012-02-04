@@ -361,6 +361,7 @@ mytpl;
 			$str_sql = "";
 		}
 		if(!empty($str_sql)) {
+			$str_sql .= " and (web_id=".$setting['info']['web']['web_id']." or web_id=0)";
 			$result = <<<mytpl
 <?php
 global \$plugin_setting;

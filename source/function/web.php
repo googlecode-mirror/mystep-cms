@@ -135,7 +135,7 @@ function buildParaList($idx) {
 			if(empty($max_layer)) break;
 			for($i=1; $i<=$max_layer; $i++) {
 				$GLOBALS["catalog_{$i}"] = array();
-				$db->Query("select * from ".$setting['db']['pre']."news_cat where cat_layer={$i} order by cat_order asc");
+				$db->Query("select * from ".$setting['db']['pre']."news_cat where cat_layer={$i} order by web_id asc, cat_order asc");
 				while($record = $db->GetRS()) {
 					HtmlTrans(&$record);
 					$GLOBALS["catalog_{$i}"][] = $record;

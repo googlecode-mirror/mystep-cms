@@ -11,7 +11,7 @@
 			<td class="cat">版权信息</td>
 			<td class="cat" width="90">相关操作</td>
 		</tr>
-<!--loop:start key="plugin_list" time="15"-->
+<!--loop:start key="plugin_list"-->
 		<tr class="row" align="center">
 			<td>
 				<input type="hidden" name="idx[]" value="<!--plugin_list_idx-->" size="2" />
@@ -28,19 +28,27 @@
 				<a style="display:<!--plugin_list_uninstall-->" href="?method=uninstall&idx=<!--plugin_list_idx-->" onclick="return confirm('是否确认删除该插件？ 请按确定继续。')">卸载</a>
 				<a style="display:<!--plugin_list_uninstall-->" href="?method=active&idx=<!--plugin_list_idx-->"><!--plugin_list_active--></a>
 				<a style="display:<!--plugin_list_uninstall-->" href="?method=setting&idx=<!--plugin_list_idx-->">设置</a> 
+				<a style="display:<!--plugin_list_install-->" href="?method=delete&idx=<!--plugin_list_idx-->" onclick="return confirm('是否确认删除当前插件？')">删除</a> 
 			</td>
 		</tr>
 <!--loop:end-->
 		<tr>
 			<td colspan="8" align="center" class="cat">
 				<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
-				<input class="btn" type="reset" value=" 重 置 " />
+				<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
+				<input class="btn" type="button" value=" 导 入 " onclick="showPop('upload','导入插件','url','web_plugin.php?method=upload',420, 100)" />
 			</td>
 		</tr>
 	</table>
 	</form>
 </div>
 <script language="JavaScript">
+if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopups.js", function(){
+	$.setupJMPopups({
+		screenLockerBackground: "#000",
+		screenLockerOpacity: "0.4"
+	});
+});
 var dp_list = "<!--dp_list-->";
 if(dp_list.length>1) {
 	alert("发现如下插件文件存在管理文件名重复，这将影响网站权限的分配，请确认并修正：\n\n" + dp_list);

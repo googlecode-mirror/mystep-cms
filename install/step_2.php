@@ -72,7 +72,7 @@ $cookie_domain = ".".implode(".", array_slice(explode(".", $req->getServer("SERV
 				</tr>
 				<tr>
 					<th class="tbopt">数据库密码：</th>
-					<td><input type="text" name="setting[db][pass]" value="<?=$setting['db']['pass']?>" size="35" class="txt" need=""></td>
+					<td><input type="text" name="setting[db][pass]" value="" size="35" class="txt" need=""></td>
 					<td>对应数据库用户的密码</td>
 				</tr>
 				<tr>

@@ -1,21 +1,18 @@
 <?php
 $ms_version = array(
-	'ver' => '0.99.7.2',
-	'date' => '2011-12-01',
+	'ver' => '0.99.8.1',
+	'date' => '2012-02-01',
 	'charset' => 'GBK',
 	'language' => 'CHS',
 );
 
 $class_list = array(
-	"MyStep" => "mystep.class.php",
 	"class_common" => "abstract.class.php",
-	"imageCreator" => "image.class.php",
-	"imageCreator_file" => "image.class.php",
-	"coordinateMaker" => "image.class.php",
-	"MagickWand" => "magickwand.class.php",
+	"MyStep" => "mystep.class.php",
 	"MyApi" => "myapi.class.php",
 	"MyAjax" => "myajax.class.php",
 	"MyCache" => "mycache.class.php",
+	"MyEmail" => "myemail.class.php",
 	"MyFSO" => "myfso.class.php",
 	"MSSQL" => "mssql.class.php",
 	"MyDB" => "mydb.class.php",
@@ -26,7 +23,11 @@ $class_list = array(
 	"MyPack" => "mypack.class.php",
 	"MyXls" => "myxls.class.php",
 	"MyZip" => "myzip.class.php",
+	"MagickWand" => "magickwand.class.php",
 	"MemoryCache" => "memcache.class.php",
+	"imageCreator" => "image.class.php",
+	"imageCreator_file" => "image.class.php",
+	"coordinateMaker" => "image.class.php",
 	"eAccelerator" => "eaccelerator.class.php",
 	"xCache" => "xcache.class.php",
 	"sess_mystep" => "session.class.php",

@@ -198,7 +198,7 @@ abstract class class_common {
 	}
 
 	protected function Error($msg="", $exit=false) {
-		$err_msg  = "MyStep Error\n";
+		$err_msg  = "MyStep Error: \n";
 		$err_msg .= "Time: ".gmdate("Y-n-j G:i:s", $_SERVER['REQUEST_TIME'] + 8 * 3600)."\n";
 		$err_msg .= "File: ".$_SERVER["PHP_SELF"]."\n";
 		if(!empty($msg)) $err_msg .= "Info.: {$msg}\n";
@@ -217,6 +217,11 @@ abstract class class_common {
 		$GLOBALS['errMsg'] = $err_msg;
 		if($exit) die(str_replace("\n","<br />\n",$err_msg));
 		return true;
+	}
+	
+	public function ClearError() {
+		$this->err_msg = "";
+		unset($GLOBALS['errMsg']);
 	}
 }
 ?>

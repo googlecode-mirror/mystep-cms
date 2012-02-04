@@ -13,7 +13,7 @@ class plugin_comment implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_comment", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_comment", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 4, '".$info['cat_name']."', 'comment.php', '../plugin/comment/', 0, 0, '".$info['cat_desc']."')");
 		$err = array();
 		if($db->GetError($err)) {

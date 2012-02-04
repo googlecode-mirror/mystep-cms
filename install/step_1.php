@@ -63,7 +63,7 @@
 		<td class="padleft">10M</td>
 		<td class="padleft">²»ÏÞÖÆ</td>
 <?php
-$dir = split("/", str_replace("\\", "/", dirname(__FILE__)));
+$dir = explode("/", str_replace("\\", "/", dirname(__FILE__)));
 if(empty($dir[0])) $dir[0] = "/";
 $free = ceil(disk_free_space($dir[0])/1024/1024);
 $sign = $free>10 ? "w" : "nw";

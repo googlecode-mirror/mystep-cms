@@ -13,7 +13,7 @@ class plugin_meeting implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_meeting", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_meeting", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '»áÒé', 'meeting.php', '../plugin/meeting/', 0, 0, '".$info['intro']."')");
 		$new_id = $db->GetInsertId();
 		$err = array();
@@ -145,6 +145,10 @@ $catid = 0;
 \$db->Query("{$str_sql}");
 while(\$record=\$db->getRS()) {
 	HtmlTrans(&\$record);
+	if("{$att_list['lng']}"=="cn" && \$record['company']=="") {
+		\$record['company'] = \$record['company_en'];
+		\$record['name'] = \$record['name_en'];
+	}
 	echo <<<content
 {$unit}
 content;

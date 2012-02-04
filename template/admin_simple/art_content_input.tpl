@@ -21,7 +21,7 @@
 			<tr>
 				<td class="cat" width="80">文章标题：<span>*</span></td>
 				<td class="row">
-					<input name="subject" type="text" id="title" value="<!--record_subject-->" maxlength="100" need="" len="10-70" /> &nbsp; 
+					<input name="subject" type="text" id="title" value="<!--record_subject-->" maxlength="100" need="" len="4-70" /> &nbsp; 
 					<select id="profix" onchange="title_change()" style="width:80px"></select> &nbsp; 
 					<input type="checkbox" class="cbox" name="style[]" id="style_b" value="b" <!--check_b--> /><label for="style_b">粗体</label> &nbsp; 
 					<input type="checkbox" class="cbox" name="style[]" id="style_i" value="i" <!--check_i--> /><label for="style_i">斜体</label> &nbsp; 

@@ -20,25 +20,25 @@
 		<div class="fr page_r">
 			<div class="box box_s1">
 				<div class="title">
-					<span class="highlight">最新消息</span>
-					<span>科学探索</span>
-					<span>视点观察</span>
+					<span class="highlight">新闻栏目一</span>
+					<span>新闻栏目二</span>
+					<span>新闻栏目三</span>
 					<div class="more"><a href="list.php"><img src="images/classic/more.png" /></a></div>
 				</div>
 				<div class="content">
-<!--news cat_id="9" limit="6" loop="6" show_date="Y-m-d"-->
+<!--news cat_id="1" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 				<div class="content" style="display:none;">
-<!--news cat_id="15" limit="6" loop="6" show_date="Y-m-d"-->
+<!--news cat_id="2" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 				<div class="content" style="display:none;">
-<!--news cat_id="7" limit="6" loop="6" show_date="Y-m-d"-->
+<!--news cat_id="3" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 			</div>
 			<div class="box box_r">
-				<div class="title"><a href="list.php?cat=83">危机警告</a></div>
+				<div class="title"><a href="list.php?cat=83">右侧栏目一</a></div>
 				<div class="content">
-<!--news cat_id="83" limit="6" loop="6"-->
+<!--news cat_id="4" limit="6" loop="6"-->
 				</div>
 			</div>
 		</div>
@@ -46,57 +46,19 @@
 		<div class="fr page_r">
 			<div class="box box_s1">
 				<div class="title">
-					<span class="highlight">Apple</span>
-					<span>iPhone</span>
-					<span>iPad</span>
-					<span>iTune</span>
+					<span class="highlight">新闻栏目一</span>
+					<span>新闻栏目二</span>
 					<div class="more"><a href="list.php"><img src="images/classic/more.png" /></a></div>
 				</div>
 				<div class="content">
-<!--news cat_id="53" limit="6" loop="6" show_date="Y-m-d"-->
+<!--news cat_id="1" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 				<div class="content" style="display:none;">
-<!--news cat_id="16" limit="6" loop="6" show_date="Y-m-d"-->
-				</div>
-				<div class="content" style="display:none;">
-<!--news cat_id="86" limit="6" loop="6" show_date="Y-m-d"-->
-				</div>
-				<div class="content" style="display:none;">
-<!--news cat_id="107" limit="6" loop="6" show_date="Y-m-d"-->
+<!--news cat_id="2" limit="6" loop="6" show_date="Y-m-d"-->
 				</div>
 			</div>
 			<div class="box box_r">
-				<div class="title"><a href="list.php?cat=89">软件新闻</a></div>
-				<div class="content">
-<!--news cat_id="89" limit="6" loop="6"-->
-				</div>
-			</div>
-		</div>
-
-		<div class="fr page_r">
-			<div class="box box_s1">
-				<div class="title">
-					<span class="highlight">Google</span>
-					<span>Android</span>
-					<span>Gmail</span>
-					<span>Chrome</span>
-					<div class="more"><a href="list.php"><img src="images/classic/more.png" /></a></div>
-				</div>
-				<div class="content">
-<!--news cat_id="10" limit="6" loop="6" show_date="Y-m-d"-->
-				</div>
-				<div class="content" style="display:none;">
-<!--news cat_id="36" limit="6" loop="6" show_date="Y-m-d"-->
-				</div>
-				<div class="content" style="display:none;">
-<!--news cat_id="52" limit="6" loop="6" show_date="Y-m-d"-->
-				</div>
-				<div class="content" style="display:none;">
-<!--news cat_id="118" limit="6" loop="6" show_date="Y-m-d"-->
-				</div>
-			</div>
-			<div class="box box_r">
-				<div class="title"><a href="list.php?cat=5">硬件新闻</a></div>
+				<div class="title"><a href="list.php?cat=5">右侧栏目二</a></div>
 				<div class="content">
 <!--news cat_id="5" limit="6" loop="6"-->
 				</div>
@@ -104,23 +66,14 @@
 		</div>
 
 		<div class="fr page_r">
-			<div class="box box_s1">
-				<div class="title">
-					<span class="highlight">网络公司</span>
-					<span>科技企业</span>
-					<span>硬件厂商</span>
-					<div class="more"><a href="list.php"><img src="images/classic/more.png" /></a></div>
-				</div>
-				<div class="content">
-<!--news cat_id="94" limit="6" loop="6" show_date="Y-m-d"-->
-				</div>
-				<div class="content" style="display:none;">
-<!--news cat_id="39" limit="6" loop="6" show_date="Y-m-d"-->
-				</div>
-				<div class="content" style="display:none;">
-<!--news cat_id="111" limit="6" loop="6" show_date="Y-m-d"-->
-				</div>
-			</div>
+      <div class="box box_m">
+        <div class="title">新闻栏目三
+          <div class="more"><a href="list.php?cat=3"><img src="images/cfna_new/more.png" /></a></div>
+        </div>
+        <div class="content">
+<!--news cat_id="3" limit="6" loop="6" show_date="Y-m-d"-->
+        </div>
+      </div>
 			<div class="box box_r">
 				<div class="title"><a href="read.html">联系办法</a></div>
 				<div class="content" style="height:144px; overflow:hidden;">

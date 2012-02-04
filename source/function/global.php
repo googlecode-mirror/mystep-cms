@@ -485,7 +485,29 @@ function GetFileExt($file) {
 	//return strtolower(str_replace(".", "", strrchr($file, ".")));
 }
 
-function WriteFile($file_name, $content, $mode="ab") {
+function GetFileSize($file) {
+	if(is_file($file)) {
+		$filesize = filesize($file);
+	} else {
+		if(is_numeric($file)) {
+			$filesize = $file;
+		} else {
+			return 0;
+		}
+	}
+	if($filesize <1024){
+		$filesize = (string)$filesize . " Bytes";
+	}else if($filesize <(1024 * 1024)){
+		$filesize = number_format((double)($filesize / 1024), 1) . " KB";
+	}else if($filesize <(1024 * 1024 * 1024)){
+		$filesize = number_format((double)($filesize / (1024 * 1024)), 1) . " MB";
+	}else{
+		$filesize = number_format((double)($filesize / (1024 * 1024 * 1024)), 1) . " GB";
+	}
+	return $filesize;
+}
+
+function WriteFile($file_name, $content, $mode="wb") {
 	//Coded By Windy2000 20040410 v1.0
 	MakeDir(dirname($file_name));
 	if($fp = fopen($file_name, $mode)) {

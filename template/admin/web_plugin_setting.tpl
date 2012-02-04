@@ -92,10 +92,22 @@ content;
 }
 ?>
 			<tr> 
+				<td class="cat" align="right">子站赋权</td>
+				<td class="row">
+					<div id="subweb" style="width:500px;">
+						<input type="checkbox" onclick="checkAll('subweb');" id="subweb_all" class="cbox" name="subweb[]" value="all" /><label for="subweb_all"> 全部权限</label><br />
+<!--loop:start key="subweb"-->
+						<input type="checkbox" onclick="checkStatus('subweb');" id="subweb_<!--subweb_web_id-->" class="cbox" name="subweb[]" value="<!--subweb_web_id-->" <!--subweb_checked--> /><label for="subweb_<!--subweb_web_id-->" /> <!--subweb_name--></label> <br />
+<!--loop:end-->
+					</div>
+				</td>
+			</tr>
+			<tr> 
 				<td align="center" colspan=2" class="cat">
 					<input type="hidden" value="<!--idx-->" name="idx" />
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 打 包 " onClick="location.href='?method=pack&idx=<!--idx-->'" />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
 			</tr>
@@ -115,4 +127,35 @@ function checkPass() {
 	theObjs.remove();
 	return true;
 }
+function checkAll(checkSet, sign) {
+	var objs = document.getElementsByName(checkSet + "[]");
+	var flag = $id(checkSet+"_all").checked;
+	if(typeof(sign)!=="undefined") flag = sign;
+	for(var i=0; i<objs.length; i++) {
+		objs[i].checked = flag;
+	}
+}
+function checkStatus(checkSet) {
+	var objs = document.getElementsByName(checkSet + "[]");
+	if(objs.length<2) return;
+	var curStatus = objs[1].checked;
+	var flag = curStatus?1:0;
+	for(var i=1; i<objs.length; i++) {
+		if(objs[i].checked==curStatus) continue;
+		flag = 2;
+		break;
+	}
+	var obj = $id(checkSet+"_all");
+	if(flag==2) {
+		$id(checkSet+"_all").checked = false;
+		$id(checkSet+"_all").indeterminate = true;
+	} else {
+		$id(checkSet+"_all").checked = (flag==1);
+		$id(checkSet+"_all").indeterminate = false;
+	}
+}
+$(function(){
+	if("<!--subweb-->"=="") checkAll('subweb', true);
+	checkStatus('subweb');
+});
 </script>

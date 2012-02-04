@@ -11,11 +11,66 @@ $plugin_path = ROOT_PATH."/plugin/";
 switch($method) {
 	case "view":
 	case "list":
+	case "upload":
 	case "setting":
 		if($method=="view" && ($plugin_info = getParaInfo("plugin", "idx", $idx))) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			build_page($method);
+		}
+		break;
+	case "unpack":
+		$log_info = $setting['language']['admin_web_plugin_upload'];
+		$script = "";
+		if(count($_POST) > 0){
+			$path_upload = $setting['path']['upload']."/tmp/".date("Ym")."/";
+			$upload = new MyUploader;
+			$upload->init(ROOT_PATH."/".$path_upload, true);
+			$upload->DoIt(false);
+			if($upload->upload_result[0]['error'] == 0) {
+				$theFile = ROOT_PATH."/".$path_upload."/".$upload->upload_result[0]['new_name'];
+				$mypack = $mystep->getInstance("MyPack", ROOT_PATH."/plugin/", $theFile);
+				if($result = $mypack->DoIt("unpack")) {
+					$result = $setting['language']['admin_web_plugin_upload_done'];
+				} else {
+					$result = $setting['language']['admin_web_plugin_upload_failed'];
+				}
+				unset($mypack);
+				unlink($theFile);
+				$script = "
+					var theOLE = null;
+					theOLE = parent.parent || parent.dialogArguments || parent.opener;
+					alert('".$result."');
+					theOLE.location.reload();
+				";
+			} else {
+				$script = "
+					alert('".$upload->upload_result[0]['message']."');
+					if(parent.parent==null){parent.close();}else{parent.parent.$.closePopupLayer();}
+				";
+			}
+			unset($upload);
+		}
+		build_page("upload");
+		break;
+	case "pack":
+		$pack_file = ROOT_PATH."/cache/plugin/".$idx.".plugin";
+		$mypack = $mystep->getInstance("MyPack", $plugin_path.$idx, $pack_file);
+		$mypack->DoIt();
+		//echo $mypack->GetResult();
+		header("Content-type: application/octet-stream");
+		header("Accept-Ranges: bytes");
+		header("Accept-Length: ".filesize($pack_file));
+		header("Content-Disposition: attachment; filename=".$idx.".plugin");
+		echo GetFile($pack_file);
+		$mystep->pageEnd(false);
+		break;
+	case "delete":
+		if($record = $db->getSingleRecord("select idx from ".$setting['db']['pre']."plugin where `idx`='".$idx."'")) {
+			build_page("list");
+		} else {
+			$log_info = $setting['language']['admin_web_plugin_delete'];
+			MultiDel(ROOT_PATH."/plugin/".$idx);
 		}
 		break;
 	case "active":
@@ -63,6 +118,16 @@ mystep;
 			$goto_url = $setting['info']['self'];
 		} else {
 			$log_info = $setting['language']['admin_web_plugin_setup'];
+			
+			if($_POST['subweb'][0]=="all") {
+				$subweb = "";
+			} else {
+				$subweb = ",".join($_POST['subweb'], ",").",";
+			}
+			$db->Query('update '.$setting['db']['pre'].'plugin set subweb="'.$subweb.'" where idx="'.$idx.'"');
+			MultiDel(ROOT_PATH."/cache/plugin/");
+			deleteCache("plugin");
+			
 			foreach($_POST['plugin_setting'][$idx] as $key => $value) {
 				if(is_array($value)) {
 					$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
@@ -89,7 +154,7 @@ $mystep->pageEnd(false);
 
 
 function build_page($method) {
-	global $mystep, $req, $tpl, $tpl_info, $plugin, $setting, $idx, $plugin_path;
+	global $mystep, $req, $tpl, $tpl_info, $plugin, $setting, $idx, $plugin_path, $website;
 
 	$tpl_info['idx'] = "web_plugin_".$method;
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -135,11 +200,23 @@ function build_page($method) {
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
+		$max_count = count($website);
+		for($i=0; $i<$max_count; $i++) {
+			$tpl_tmp->Set_Loop('subweb', array("web_id"=>$website[$i]['web_id'], "name"=>$website[$i]['name'], "checked"=>strpos($plugin_info['subweb'], ",".$website[$i]['web_id'].",")!==false?"checked":""));
+		}
 		$info['description'] = nl2br($info['description']);
 		$tpl_tmp->Set_Variable('idx', $plugin_info['idx']);
 		$tpl_tmp->Set_Variable('name', $plugin_info['name']);
+		$tpl_tmp->Set_Variable('subweb', $plugin_info['subweb']);
 		$tpl_tmp->Set_Variable('description', $info['description']);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
+	} elseif($method=="upload") {
+		global $script;
+		$tpl_tmp->Set_Variable('script', $script);
+		$tpl_tmp->Set_Variable('self', $setting['info']['self']);
+		$Max_size = ini_get('upload_max_filesize');
+		$tpl_tmp->Set_Variable('Max_size', $Max_size);
+		$tpl_tmp->Set_Variable('MaxSize', GetFileSize($Max_size));
 	} else {
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_install']);
 		include($plugin_path.$idx."/info.php");

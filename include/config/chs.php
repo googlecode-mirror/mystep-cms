@@ -66,8 +66,21 @@ $setting_comm['gen_descr']['update'] = "获取内容系统程序更新的网址";
 $setting_comm['gen_descr']['minify'] = "超文本代码压缩，以减少页面传送时间";
 $setting_comm['gen_descr']['etag'] = "用于 Etag 标识，减少未更改页面的传输";
 
+$setting_comm['email'] = array();
+$setting_comm['email_comm'] = '发送Email参数设置';
+$setting_comm['email']['mode'] = '发送模式';
+$setting_comm['email']['smtp'] = '服务器地址';
+$setting_comm['email']['port'] = '服务器端口';
+$setting_comm['email']['user'] = '服务器账户';
+$setting_comm['email']['password'] = '服务器密码';
+$setting_comm['email_descr']['mode'] = '选择发送邮件及服务器认证的方式';
+$setting_comm['email_descr']['smtp'] = '发送邮件所用SMTP服务器';
+$setting_comm['email_descr']['port'] = 'SMTP服务器端口';
+$setting_comm['email_descr']['user'] = '服务器所分配的邮件账户';
+$setting_comm['email_descr']['password'] = '对应邮件账户的密码';
+
 $setting_comm['js'] = array();
-$setting_comm['js_comm'] = 'JavaScript 脚本程序参数设置';
+$setting_comm['js_comm'] = 'JS参数设置';
 $setting_comm['js']['debug'] = '显示错误';
 $setting_comm['js_descr']['debug'] = '执行JaveScript出现错误时，显示错误信息提示';
 
@@ -185,6 +198,13 @@ $setting_type['gen']['timezone'] = array("select", array("GMT-12"=>"Etc/GMT+12",
 $setting_type['gen']['update'] = array("text", "url", "200");
 $setting_type['gen']['minify'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
 $setting_type['gen']['etag'] = array("text", "", "10");
+
+$setting_type['email'] = array();
+$setting_type['email']['mode'] = array("select", array("内置函数"=>"", "普通验证"=>"smtp", "SSL 验证"=>"ssl", "TLS 验证"=>"tls", "SSL/TLS 混合验证"=>"ssl/tls"));
+$setting_type['email']['smtp'] = array("text", "", "30");
+$setting_type['email']['port'] = array("text", "digital", "5");
+$setting_type['email']['user'] = array("text", "", "30");
+$setting_type['email']['password'] = array("text", "", "40");
 
 $setting_type['js'] = array();
 $setting_type['js']['debug'] = array("radio", array("开启"=>"true", "关闭"=>"false"));

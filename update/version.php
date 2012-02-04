@@ -727,5 +727,118 @@ $version = array(
 					),
 			),
 	),
+	'0.99.8.1' => array(
+		'info' => '
+				V0.99.9
+				1.Pack all file into one php installation file
+				2.Enhance catalog reorder function
+				3.Enhance cache clear function
+				4.Add export function for plugin module
+				5.Add email group sending function (html/text with attchment)
+				6.Fix a bug in install function
+				7.Add sub-website assign function for plugin module
+				8.Enhance meeting plugin, and fix some bug
+				9.Limit tags can only show current sub-website content in offical plugin
+				10.And clearError function in base class
+				11.Enhance file pack class
+				Some other adjusts...
+			',
+		'sql' => array(
+				'alter table {pre}news_cat modify `cat_order` SMALLINT UNSIGNED DEFAULT 1',
+				'alter table {pre}plugin add `subweb` Char(255) DEFAULT "" NOT NULL',
+				'alter table {pre}website modify `name` Char(200) DEFAULT "" NOT NULL',
+			),
+		'file' => array(
+				'admin/art_catalog.php',
+				'admin/attachment.php',
+				'admin/language/chs.php',
+				'admin/language/default.php',
+				'admin/language/en.php',
+				'admin/upload_img.php',
+				'admin/web_cache.php',
+				'admin/web_plugin.php',
+				'files/index.php',
+				'include/config.php',
+				'include/config/chs.php',
+				'include/config/default.php',
+				'include/config/en.php',
+				'include/parameter.php',
+				'install/index.php',
+				'install/install.sql',
+				'install/step_1.php',
+				'install/step_2.php',
+				'install/step_3.php',
+				'install/step_4.php',
+				'plugin/admin_cat/class.php',
+				'plugin/comment/class.php',
+				'plugin/custom_sql/class.php',
+				'plugin/front_code/class.php',
+				'plugin/meeting/class.php',
+				'plugin/meeting/index.php',
+				'plugin/meeting/language',
+				'plugin/meeting/language/chs.php',
+				'plugin/meeting/language/default.php',
+				'plugin/meeting/language/en.php',
+				'plugin/meeting/meeting.php',
+				'plugin/meeting/regist.php',
+				'plugin/meeting/setting/default.php',
+				'plugin/meeting/setting/main.tpl',
+				'plugin/meeting/tpl/add.tpl',
+				'plugin/meeting/tpl/default_regist_cn.tpl',
+				'plugin/meeting/tpl/default_regist_en.tpl',
+				'plugin/meeting/tpl/default_reglist_cn.tpl',
+				'plugin/meeting/tpl/default_reglist_en.tpl',
+				'plugin/meeting/tpl/edit.tpl',
+				'plugin/meeting/tpl/list.tpl',
+				'plugin/mssql/class.php',
+				'plugin/news_mark/class.php',
+				'plugin/news_snatch/class.php',
+				'plugin/news_snatch/news_snatch.php',
+				'plugin/news_visit/class.php',
+				'plugin/offical/class.php',
+				'plugin/se_detect/class.php',
+				'plugin/search/class.php',
+				'plugin/survey/class.php',
+				'plugin/topic/class.php',
+				'plugin/visit_analysis/class.php',
+				'script/checkForm.js',
+				'source/class/abstract.class.php',
+				'source/class/class.smtp.php',
+				'source/class/myemail.class.php',
+				'source/class/mypack.class.php',
+				'source/class/mystep.class.php',
+				'source/class/myuploader.class.php',
+				'source/class/myzip.class.php',
+				'source/function/global.php',
+				'source/function/web.php',
+				'source/language/chs.php',
+				'source/language/en.php',
+				'template/admin/art_catalog_list.tpl',
+				'template/admin/web_cache.tpl',
+				'template/admin/web_plugin_list.tpl',
+				'template/admin/web_plugin_setting.tpl',
+				'template/admin/web_plugin_upload.tpl',
+				'template/admin/web_subweb_input.tpl',
+				'template/admin_simple/art_catalog_list.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/admin_simple/art_info_list.tpl',
+				'template/admin_simple/func_link_list.tpl',
+				'template/admin_simple/web_subweb_input.tpl',
+				'template/classic/index.tpl',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120201',
+					),
+				'email' => array(
+						'mode' => '',
+						'smtp' => '',
+						'port' => 25,
+						'user' => '',
+						'password' => '',
+					),
+			),
+	),
 );
 ?>

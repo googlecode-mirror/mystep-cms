@@ -12,13 +12,13 @@ use {db_name};
 # 网站列表
 CREATE TABLE `{pre}website` (
 	`web_id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,			#网站索引
-	`name` Char(40) DEFAULT '' NOT NULL,										#网站名称
+	`name` Char(200) DEFAULT '' NOT NULL,										#网站名称
 	`idx` Char(20) DEFAULT '' NOT NULL,											#字符索引（二级域名或目录）
 	`host` Char(30) DEFAULT '' NOT NULL,										#网站主机
 	PRIMARY KEY (`web_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='网站列表';
 
-INSERT INTO `{pre}website` VALUES (1, 'MyStep', 'main', '{host}');
+INSERT INTO `{pre}website` VALUES (1, '{web_name}', 'main', '{host}');
 # ---------------------------------------------------------------------------------------------------------------
 
 # 管理目录
@@ -57,7 +57,7 @@ INSERT INTO `{pre}admin_cat` VALUES
 		(0, 2, '用户权限', 'user_power.php', '', 0, 0, '用户权限维护'),
 		
 		(0, 3, '附件管理', 'func_attach.php', '', 0, 0, '附件管理'),
-		(0, 3, '友情链接', 'func_link.php', '', 0, 0, '友情链接管理'),
+		(0, 3, '友情链接', 'func_link.php', '', 255, 0, '友情链接管理'),
 		(0, 3, '子站管理', 'web_subweb.php', '', 255, 0, '子站管理'),
 		(0, 3, '数据备份', 'func_backup.php', '', 0, 0, '数据备份'),
 		
@@ -90,11 +90,12 @@ CREATE TABLE `{pre}plugin` (
 	`intro` Char(255) DEFAULT '' NOT NULL,									#插件信息
 	`copyright` Char(255) DEFAULT '' NOT NULL,							#版权信息
 	`order` TINYINT UNSIGNED,																#执行顺序
+	`subweb` Char(255) DEFAULT '' NOT NULL,									#子站权限
 	INDEX `order` (`order`),
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='网站插件';
 
-INSERT INTO `{pre}plugin` VALUES (0, "官方插件", "offical", "1.0", "plugin_offical", 1, "Offical Plugin Show, you may treat it as an example.", "Copyright 2010 Windy2000", 1);
+INSERT INTO `{pre}plugin` VALUES (0, "官方插件", "offical", "1.0", "plugin_offical", 1, "Offical Plugin Show, you may treat it as an example.", "Copyright 2010 Windy2000", 1, '');
 
 # ---------------------------------------------------------------------------------------------------------------
 
@@ -109,7 +110,7 @@ CREATE TABLE `{pre}news_cat` (
 	`cat_idx` Char(20) DEFAULT '',													#分类索引（用于目录名等）
 	`cat_image` Char(200) DEFAULT '',												#分类图示
 	`cat_sub` Char(240) DEFAULT '',													#前缀列表（半角逗号间隔）
-	`cat_order` TINYINT UNSIGNED DEFAULT 1,									#分类排序
+	`cat_order` SMALLINT UNSIGNED DEFAULT 1,									#分类排序
 	`cat_type` TINYINT UNSIGNED NOT NULL DEFAULT 0,					#分类显示模式（0 标题列表，1 图片简介，2 图片展示）
 	`cat_link` Char(200) DEFAULT '',												#分类链接
 	`cat_layer` TINYINT UNSIGNED NOT NULL DEFAULT 0,				#分类层级

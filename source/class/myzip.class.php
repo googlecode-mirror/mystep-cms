@@ -1,6 +1,6 @@
 <?php
 class MyZip extends ZipArchive {
- public function addDir($path) {
+	public function addDir($path) {
 		$this->addEmptyDir($path);
 		$nodes = glob($path . '/*');
 		foreach($nodes as $node) {

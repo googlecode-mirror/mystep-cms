@@ -61,7 +61,7 @@ function checkForm(the_form, myChecker){
 		tag_name = the_obj.tagName.toLowerCase();
 		switch(the_need){
 			case "email":
-				if(!/^[\w\-]+@([\w\-]+\.)+[a-z]{2,4}$/i.test(the_value)) {
+				if(!/^[\w\-\.]+@([\w\-]+\.)+[a-z]{2,4}$/i.test(the_value)) {
 					alert(language.checkform_err_email);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;

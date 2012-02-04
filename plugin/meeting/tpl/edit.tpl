@@ -107,7 +107,7 @@
 </div>
 <style type="text/css">
 .item_edit td {padding:0px 5px 10px 5px;}
-.item_edit input {width:400px;}
+.item_edit input {width:390px;}
 .item_edit select {width:200px;}
 </style>
 <div id="item_edit" class="popshow">
@@ -139,6 +139,10 @@
 		<tr>
 			<td>默认值：</td>
 			<td><input class="item" name="default" type="text" value="" /></td>
+		</tr>
+		<tr>
+			<td>默认英文：</td>
+			<td><input class="item" name="default_en" type="text" value="" /></td>
 		</tr>
 		<tr>
 			<td>数据格式：</td>
@@ -200,7 +204,7 @@ function refreshItem() {
 	var ole = $("#reg_list");
 	var curItem = null;
 	ole.empty();
-	for(item in reg_item) {
+	for(var item in reg_item) {
 		curItem = $('<tr id="item_'+item+'"><td class="cat">'+item+'</td><td class="row">'+(reg_item[item].title.length>0?reg_item[item].title:reg_item[item].title_en)+'</td><td class="row">'+(reg_item[item].comment.length>0?reg_item[item].comment:reg_item[item].comment_en)+'</td><td class="row" align="center"><a href="###" onclick="orderItem(\''+item+'\', 1)">提升</a> &nbsp; <a href="###" onclick="orderItem(\''+item+'\', 0)">下降</a> &nbsp; <a href="###" onclick="editItem(\''+item+'\')">编辑</a> &nbsp; <a href="###" onclick="removeItem(\''+item+'\')">删除</a></td></tr>');
 		curItem.appendTo(ole);
 		curItem = null;
@@ -220,6 +224,7 @@ function editItem(item) {
 	if(typeof(reg_item[item]['value'].cn)!="undefined") $("#popupLayer_editItem textarea[name='value_cn']").val(reg_item[item]['value'].cn.join("\n"));
 	if(typeof(reg_item[item]['value'].en)!="undefined") $("#popupLayer_editItem textarea[name='value_en']").val(reg_item[item]['value'].en.join("\n"));
 	$("#popupLayer_editItem input[name='default']").val(reg_item[item]['default']);
+	$("#popupLayer_editItem input[name='default_en']").val(reg_item[item]['default_en']);
 	if(reg_item[item]['format']==".") {
 		$("#popupLayer_editItem select[name='format']").val("");
 	} else if(reg_item[item]['format']=="") {
@@ -295,7 +300,7 @@ function confirmItem(mode) {
 						break;
 					case "format":
 						new_item['format'] = objs[i].value;
-						if($("#popupLayer_editItem input[name='needed']")[0].checked===false) {
+						if($("#popupLayer_addItem input[name='needed']")[0].checked===false) {
 							new_item['format'] += "_";
 						}
 						if(new_item['format']=="_") new_item['format'] = ".";

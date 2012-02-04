@@ -45,10 +45,24 @@ echo "</select>";
 				</td> 
 			</tr> 
 			<tr>
+				<td class="row" colspan="4">
+					缓存清理：
+					<input type="checkbox" class="cbox" id="ccache_1" name="ccache[]" value="1" checked /><label for="ccache_1">模板缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_2" name="ccache[]" value="2" checked /><label for="ccache_2">变量缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_3" name="ccache[]" value="3" checked /><label for="ccache_3">脚本缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_4" name="ccache[]" value="4" checked /><label for="ccache_4">插件缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_5" name="ccache[]" value="5" checked /><label for="ccache_5">会话缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_6" name="ccache[]" value="6" checked /><label for="ccache_6">页面缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_7" name="ccache[]" value="7" checked /><label for="ccache_7">数据缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_8" name="ccache[]" value="8" checked /><label for="ccache_8">今日缓存</label>
+					&nbsp; <input class="btn" type="button" onclick="cclean()" value="清理" /><br />
+					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">清理缓存所占用的磁盘空间，也可以使相关更改立即生效</span> 
+				</td>
+			</tr>
+			<tr>
 				<td class="row" colspan="4" align="center">
 					<input class="btn" type="Submit" value=" 确认修改 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重置数据 " />&nbsp;&nbsp;
-					<input class="btn" type="button" onclick="loadingShow();location.href='?clean'" value="清空缓存" />
 				</td>
 			</tr>
 		</table>
@@ -66,5 +80,12 @@ function add(obj) {
 function del(obj) {
 	obj = $(obj).parent().parent();
 	if(obj.find("input")[0].defaultValue.toLowerCase()!="default") obj.remove();
+}
+
+function cclean() {
+	loadingShow();
+	var theForm = $("form").get(0);
+	theForm.action = "?clean";
+	theForm.submit();
 }
 </script>

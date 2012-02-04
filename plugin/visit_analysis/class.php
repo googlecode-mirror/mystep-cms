@@ -13,7 +13,7 @@ class plugin_visit_analysis implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_visit_analysis", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_visit_analysis", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_1']."', 'visit_analysis.php?method=referer', '../plugin/visit_analysis/', 0, 0, '".$info['cat_desc_1']."')");
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_2']."', 'visit_analysis.php?method=keyword', '../plugin/visit_analysis/', 0, 0, '".$info['cat_desc_2']."')");
 		$err = array();
@@ -104,6 +104,7 @@ mystep;
 				if(is_numeric($query['w'])) $query['w']="";
 				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
 				if(strpos($url_info['host'],"google")>0) $referer = "http://".$url_info['host']."/search?q=".urlencode($query['q']);
+				if(strpos($url_info['host'],"baidu")>0) $referer = "http://".$url_info['host']."/s?wd=".urlencode($query['wd']);
 				$referer = mysql_real_escape_string($referer);
 				$referer = getSafeCode($referer, $setting['gen']['charset']);
 				if(strlen($referer)>250) $referer = substrPro($referer, 0, 250);

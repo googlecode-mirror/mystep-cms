@@ -66,8 +66,21 @@ $setting_comm['gen_descr']['update'] = "From the URL your can get the newest upd
 $setting_comm['gen_descr']['minify'] = "Minify the html code of each page to reduce the internet transfer time";
 $setting_comm['gen_descr']['etag'] = "Append to Etag with which to avoid non-modification HTML pages transfer";
 
+$setting_comm['email'] = array();
+$setting_comm['email_comm'] = 'SMTP Parameter Set';
+$setting_comm['email']['mode'] = 'Mode';
+$setting_comm['email']['smtp'] = 'Server';
+$setting_comm['email']['port'] = 'Port';
+$setting_comm['email']['user'] = 'User';
+$setting_comm['email']['password'] = 'Password';
+$setting_comm['email_descr']['mode'] = 'Authority mode of SMTP Server';
+$setting_comm['email_descr']['smtp'] = 'Address of SMTP server';
+$setting_comm['email_descr']['port'] = 'Port of SMTP server';
+$setting_comm['email_descr']['user'] = 'Account of SMTP server';
+$setting_comm['email_descr']['password'] = 'Password of SMTP server';
+
 $setting_comm['js'] = array();
-$setting_comm['js_comm'] = 'JavaScript Parameter Set';
+$setting_comm['js_comm'] = 'JS Parameter Set';
 $setting_comm['js']['debug'] = 'Debug Info';
 $setting_comm['js_descr']['debug'] = 'Show JaveScript Error Messege';
 
@@ -185,6 +198,13 @@ $setting_type['gen']['timezone'] = array("select", array("GMT-12"=>"Etc/GMT+12",
 $setting_type['gen']['update'] = array("text", "url", "200");
 $setting_type['gen']['minify'] = array("radio", array("Open"=>"true", "Close"=>"false"));
 $setting_type['gen']['etag'] = array("text", "", "10");
+
+$setting_type['email'] = array();
+$setting_type['email']['mode'] = array("select", array("PHP mail()"=>"", "Normal SMTP"=>"smtp", "SSL SMTP"=>"ssl", "TLS SMTP"=>"tls", "SSL/TLS Mix"=>"ssl/tls"));
+$setting_type['email']['smtp'] = array("text", "", "30");
+$setting_type['email']['port'] = array("text", "digital", "5");
+$setting_type['email']['user'] = array("text", "", "30");
+$setting_type['email']['password'] = array("text", "", "40");
 
 $setting_type['js'] = array();
 $setting_type['js']['debug'] = array("radio", array("Open"=>"true", "Close"=>"false"));

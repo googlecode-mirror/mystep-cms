@@ -15,9 +15,9 @@ header("Pragma: no-cache");
 header("Content-Type: text/html;charset=".$setting['gen']['charset']);
 
 date_default_timezone_set("PRC");
-set_magic_quotes_runtime(0);
 set_time_limit(30);
 ini_set('memory_limit', '32M');
+ini_set('magic_quotes_runtime', 0);
 error_reporting(E_ALL ^ E_NOTICE);
 
 $mystep = new MyStep();
@@ -50,13 +50,13 @@ switch($step) {
 ?>
 mystep;
 		$result = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $result);
+		WriteFile(ROOT_PATH."/include/config.php", $result, "wb");
+		WriteFile(ROOT_PATH."/include/config-default.php", $result, "wb");
 		$link = @mysql_connect($setting['db']['host'], $setting['db']['user'], $setting['db']['pass']);
 		if(!$link) {
 			$step = 21;
 		} else {
 			mysql_close($link);
-			WriteFile(ROOT_PATH."/include/config.php", $result, "w");
-			WriteFile(ROOT_PATH."/include/config-default.php", $result, "w");
 		}
 		break;
 	case 4:

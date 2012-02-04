@@ -10,7 +10,7 @@ class plugin_mssql implements plugin {
 			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
 		global $db, $setting, $admin_cat;
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_mssql", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_mssql", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_install']."

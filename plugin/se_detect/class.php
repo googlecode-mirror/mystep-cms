@@ -13,7 +13,7 @@ class plugin_se_detect implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_se_detect", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1)');
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_se_detect", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_1']."', 'se_detect.php', '../plugin/se_detect/', 0, 0, '".$info['cat_desc_1']."')");
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 5, '".$info['cat_name_2']."', 'se_detect.php?method=view', '../plugin/se_detect/', 0, 0, '".$info['cat_desc_2']."')");
 		$err = array();

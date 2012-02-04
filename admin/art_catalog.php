@@ -41,34 +41,36 @@ switch($method) {
 		multiDelData($cat_id);
 		deleteCache("news_cat");
 		break;
+	case "order":
+		$log_info = $setting['language']['admin_art_catalog_change'];
+		for($i=0,$m=count($_POST['cat_id']);$i<$m;$i++) {
+			$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".$_POST['cat_order'][$i]." where cat_id='".$_POST['cat_id'][$i]."'");
+		}
+		deleteCache("news_cat");
+		break;
 	case "up":
 	case "down":
-		function setPosition($cat_id, $mode) {
-			global $db, $setting;
-			list($cat_main, $cat_layer)=array_values($db->GetSingleRecord("select cat_main, cat_layer from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'"));
-			$db->Query("select cat_id, cat_order from ".$setting['db']['pre']."news_cat where cat_layer='{$cat_layer}' and cat_main='{$cat_main}' order by cat_order");
-			while($record[] = $db->GetRS()) {}
-			$db->Free();
-			$max_count = count($record)-1;
-			for($i=0; $i<$max_count; $i++) {
-				if($record[$i]['cat_id']!=$cat_id) continue;
-				if($mode=="up") {
-					if($i>0) {
-						$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".$record[$i-1]['cat_order']." where cat_id='{$cat_id}'");
-						$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".$record[$i]['cat_order']." where cat_id='".$record[$i-1]['cat_id']."'");
-					}
-				} elseif($mode=="down") {
-					if($i<count($record)-2) {
-						$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".$record[$i+1]['cat_order']." where cat_id='{$cat_id}'");
-						$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".$record[$i]['cat_order']." where cat_id='".$record[$i+1]['cat_id']."'");
-					}
-				}
-				break;
-			}
-			return;
-		}
 		$log_info = $setting['language']['admin_art_catalog_change'];
-		setPosition($cat_id, $method);
+		list($cat_main, $cat_layer, $web_id)=array_values($db->GetSingleRecord("select cat_main, cat_layer, web_id from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'"));
+		$db->Query("select cat_id, cat_order, web_id from ".$setting['db']['pre']."news_cat where cat_layer='{$cat_layer}' and cat_main='{$cat_main}' and web_id='{$web_id}' order by cat_order");
+		while($record[] = $db->GetRS()) {}
+		$db->Free();
+		$max_count = count($record)-1;
+		for($i=0; $i<$max_count; $i++) {
+			if($record[$i]['cat_id']!=$cat_id) continue;
+			if($method=="up") {
+				if($i>0) {
+					$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".$record[$i-1]['cat_order']." where cat_id='{$cat_id}'");
+					$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".$record[$i]['cat_order']." where cat_id='".$record[$i-1]['cat_id']."'");
+				}
+			} elseif($method=="down") {
+				if($i<count($record)-2) {
+					$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".$record[$i+1]['cat_order']." where cat_id='{$cat_id}'");
+					$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".$record[$i]['cat_order']." where cat_id='".$record[$i+1]['cat_id']."'");
+				}
+			}
+			break;
+		}
 		deleteCache("news_cat");
 		break;
 	case "add_ok":

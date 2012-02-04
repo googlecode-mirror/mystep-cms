@@ -1,9 +1,12 @@
 <div class="title"><!--title--></div>
 <div class="addnew"><a href="?method=add">添加分类</a></div>
 <div align="center">
+	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<form method="post" action="?method=order" onsubmit="return checkForm(this)">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center"> 
-			<td class="cat" width="60">编号</td>
+			<td class="cat" width="40">排序</td>
+			<td class="cat" width="40">编号</td>
 			<td class="cat" width="80">所属网站</td>
 			<td class="cat">栏目名称</td>
 			<td class="cat" width="40">升位</td>
@@ -13,6 +16,7 @@
 		</tr>
 <!--loop:start key="record"-->
 		<tr class="row" align="center">
+			<td align="center"><input name="cat_id[]" type="hidden" value="<!--record_cat_id-->" /><input name="cat_order[]" type="text" value="<!--record_cat_order-->" size="2" need="digital" /></td>
 			<td align="center"><!--record_cat_id--></td>
 			<td align="center"><!--record_web_name--></td>
 			<td align="left"><a href="<!--record_web_url-->/list.php?cat=<!--record_cat_id-->" title="<!--record_cat_comment-->" target="_blank"><!--record_cat_name--></a></td>
@@ -22,7 +26,14 @@
 			<td align="center"><a href="art_content.php?method=add&cat_id=<!--record_cat_id-->&web_id=<!--record_web_id-->">添加</a></td>
 		</tr>
 <!--loop:end-->
+		<tr>
+			<td class="row" colspan="8" align="center">
+				<input class="btn" type="Submit" value=" 确 认 " />&nbsp;&nbsp;
+				<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
+			</td>
+		</tr>
 	</table>
+	</form>
 </div>
 <script language="javascript">
 if(parent.showCat!=null) {

@@ -138,6 +138,10 @@ $language = array (
   'admin_web_plugin_title' => '插件管理',
   'admin_web_plugin_err' => '当前插件无可用设置信息！',
   'admin_web_plugin_check_ok' => '插件测试通过',
+  'admin_web_plugin_upload' => '上传插件',
+  'admin_web_plugin_upload_done' => '插件成功上传！',
+  'admin_web_plugin_upload_failed' => '插件文件格式有误！',
+  'admin_web_plugin_delete' => '删除插件',
   
   'admin_web_setting_update' => '更新设置',
   'admin_web_setting_restore' => '恢复设置',

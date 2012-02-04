@@ -50,7 +50,7 @@ if($record=getData("select * from ".$setting['db']['pre']."attachment where id =
 	header("Accept-Length: ".$record['file_size']);
 	header("Content-Disposition: attachment; filename=".$record['file_name']);
 	if(strpos($record['file_type'],"image")===0 && ($setting['watermark']['mode'] & 2)==2 && $record['watermark']==1) {
-		img_watermark($the_file, ROOT_PATH."/".$setting['watermark']['img'], dirname($the_file)."/cache/".basename($the_file));
+		img_watermark($the_file, ROOT_PATH."/".$setting['watermark']['img'], dirname($the_file)."/cache/".basename($the_file), 3, array('rate'=>4, 'alpha'=>50));
 	} else {
 		readfile($the_file);
 	}

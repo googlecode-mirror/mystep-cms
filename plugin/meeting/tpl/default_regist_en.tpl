@@ -4,17 +4,17 @@
 <hr />
 <br />
 <script src="script/checkForm.js" Language="JavaScript1.2"></script>
-<form name="regist" method="post" ACTION="?" ENCTYPE="multipart/form-data" onsubmit="return checkForm(this)">
+<form name="regist" method="post" ACTION="?m=regist" ENCTYPE="multipart/form-data" onsubmit="return checkForm(this)">
 	<input name="id" type="hidden" value="0" />
 	<input name="mid" type="hidden" value="<!--mid-->" />
-	<table width="700" border="0" id="tbl_reg" align="center" cellpadding="2" cellspacing="1">
+	<table width="780" border="0" id="tbl_reg" align="center" cellpadding="2" cellspacing="1">
 <?php
 foreach($para as $key => $value) {
 	if(empty($value['title_en'])) continue;
 	if(empty($value['comment_en'])) $value['comment_en'] = "No Comment";
 	echo <<<mystep
         <tr>
-          <td class="cat" width="80">{$value['title_cn']}</td>
+          <td class="cat" width="80">{$value['title_en']}</td>
           <td class="row">
 mystep;
 	switch($value['type']) {
@@ -24,38 +24,41 @@ mystep;
 			$length = "";
 			if($value['length']!="") $length = ' len="'.$value['length'].'"';
 			echo <<<mystep
-          	<input name="{$key}" type="text" value="" size="50"{$length}{$format} />
+          	<input name="{$key}" type="text" value="{$value['default_en']}" size="50"{$length}{$format} />
 mystep;
 			break;
 		case "radio":
 			for($i=0; $i<count($value['value']['en']); $i++) {
-				$selected = ($value['value']['en'][$i]==$value['default']?" checked":"");
+				$selected = ($value['value']['en'][$i]==$value['default_en']?" checked":"");
+				$the_value = $i+1;
 				echo <<<mystep
-          	<input name="{$key}" id="i_{$key}_{$i}" type="radio" value="{$value['value']['en'][$i]}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['en'][$i]}</label>
+          	<input name="{$key}" id="i_{$key}_{$i}" type="radio" value="{$the_value}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['en'][$i]}</label>
 mystep;
 			}
 			break;
 		case "select":
 			echo "<select name=\"{$key}\">";
 			for($i=0; $i<count($value['value']['en']); $i++) {
-				$selected = ($value['value']['en'][$i]==$value['default']?" selected":"");
+				$selected = ($value['value']['en'][$i]==$value['default_en']?" selected":"");
+				$the_value = $i+1;
 				echo <<<mystep
-          	<option value="{$value['value']['en'][$i]}"{$selected}>{$value['value']['en'][$i]}</option>
+          	<option value="{$the_value}"{$selected}>{$value['value']['en'][$i]}</option>
 mystep;
 			}
 			echo "</select>";
 			break;
 		case "checkbox":
 			for($i=0; $i<count($value['value']['en']); $i++) {
-				$selected = (strpos($value['default'], $value['value']['en'][$i])!==false?" checked":"");
+				$selected = (strpos($value['default_en'], $value['value']['en'][$i])!==false?" checked":"");
+				$the_value = pow(2, $i);
 				echo <<<mystep
-          	<input name="{$key}[]" id="i_{$key}_{$i}" type="checkbox" value="{$value['value']['en'][$i]}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['en'][$i]}</label><br />
+          	<input name="{$key}[]" id="i_{$key}_{$i}" type="checkbox" value="{$the_value}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['en'][$i]}</label><br />
 mystep;
 			}
 			break;
 		case "textarea":
 			echo <<<mystep
-          	<textarea name="{$key}" style="width:100%;height:50px;"></textarea><br />
+          	<textarea name="{$key}" style="width:100%;height:50px;">{$value['default_en']}</textarea><br />
 mystep;
 			break;
 		default:
@@ -63,7 +66,7 @@ mystep;
 			break;
 	}
 	echo <<<mystep
-          	<span class="comment">£¨{$value['comment_en']}£©</span>
+          	<span class="comment">({$value['comment_en']})</span>
           </td>
         </tr>
 mystep;

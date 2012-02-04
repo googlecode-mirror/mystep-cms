@@ -35,52 +35,88 @@ mystep;
 } elseif($method=="clean") {
 	set_time_limit(0);
 	$log_info = $setting['language']['admin_web_cache_clean'];
-	$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
-	if($handle = opendir($cache_path)) {
-		while (false !== ($file = readdir($handle))) {
-			if($file!="." && $file!="..") {
-				MultiDel($cache_path.$file);
+	$ccList = ",".implode(",", $_POST['ccache']).",";
+	
+	if(strpos($ccList, ",1,")!==false) {
+		$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
 			}
+			closedir($handle);
 		}
-		closedir($handle);
 	}
-	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/para/";
-	if($handle = opendir($cache_path)) {
-		while (false !== ($file = readdir($handle))) {
-			if($file!="." && $file!="..") {
-				MultiDel($cache_path.$file);
+	if(strpos($ccList, ",2,")!==false) {
+		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/para/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
 			}
+			closedir($handle);
 		}
-		closedir($handle);
 	}
-	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/script/";
-	if($handle = opendir($cache_path)) {
-		while (false !== ($file = readdir($handle))) {
-			if($file!="." && $file!="..") {
-				MultiDel($cache_path.$file);
+	if(strpos($ccList, ",3,")!==false) {
+		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/script/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
 			}
+			closedir($handle);
 		}
-		closedir($handle);
 	}
-	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/session/";
-	if($handle = opendir($cache_path)) {
-		while (false !== ($file = readdir($handle))) {
-			if($file!="." && $file!=".." && $file!=date("Ymd")) {
-				MultiDel($cache_path.$file);
+	if(strpos($ccList, ",4,")!==false) {
+		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/plugin/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
 			}
+			closedir($handle);
 		}
-		closedir($handle);
 	}
-	$cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/";
-	if($handle = opendir($cache_path)) {
-		while (false !== ($file = readdir($handle))) {
-			if($file!="." && $file!="..") {
-				MultiDel($cache_path.$file);
+	if(strpos($ccList, ",5,")!==false) {
+		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/session/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
 			}
+			closedir($handle);
 		}
-		closedir($handle);
 	}
-	$cache->clean();
+	if(strpos($ccList, ",6,")!==false) {
+		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
+			}
+			closedir($handle);
+		}
+	}
+	if(strpos($ccList, ",7,")!==false) {
+		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/data/".date("Ymd")."/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
+			}
+			closedir($handle);
+		}
+	}
+	if(strpos($ccList, ",8,")!==false) {
+		$cache->clean();
+	}
 	$goto_url = $setting['info']['self'];
 } else {
 	$tpl_info['idx'] = "web_cache";

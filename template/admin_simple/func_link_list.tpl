@@ -11,7 +11,6 @@
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">
-			<td class="cat" width="40"><a href="?order_type=<!--order_type-->&idx=<!--idx-->"><font color="#000000">编号</font></a></td>
 			<td class="cat"><a href="?order_type=<!--order_type-->&order=idx&idx=<!--idx-->"><font color="#000000">链接索引</font></a></td>
 			<td class="cat"><a href="?order_type=<!--order_type-->&order=link_name&idx=<!--idx-->"><font color="#000000">链接名称</font></a></td>
 			<td class="cat" width="200"><a href="?order_type=<!--order_type-->&order=image&idx=<!--idx-->"><font color="#000000">链接图形</font></a></td>
@@ -20,7 +19,6 @@
 		</tr>
 <!--loop:start key="record" time="20"-->
 		<tr class="row" align="center">
-			<td><!--record_id--></td>
 			<td><!--record_idx--></td>
 			<td align="left"><a href="<!--record_link_url-->" target="_blank"><!--record_link_name--></a></td>
 			<td><!--record_image--></td>

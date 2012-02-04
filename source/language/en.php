@@ -3,7 +3,7 @@ $language_info = array (
   'author' => 'Windy2000',
   'email' => 'windy2006@gmail.com',
   'update' => '2010-12-28',
-  'for' => '0.85',
+  'for' => '1.0',
 );
 
 $language = array (
@@ -52,9 +52,9 @@ $language = array (
   'db_insert_done' => 'in table %s, %d lines have been added',
   'db_update_done' => 'in table %s, %d lines have been updated',
   'db_operate_done' => 'in table %s, operation of %s done!',
-  'checkform_lenth_limit1' => 'Keep the input charactors within %1 !',
-  'checkform_lenth_limit2' => '%1 charactors are needed!',
-  'checkform_lenth_limit3' => 'Keep the input charactors within %1 !',
+  'checkform_lenth_limit1' => 'Keep the input characters within %1 !',
+  'checkform_lenth_limit2' => '%1 characters are needed!',
+  'checkform_lenth_limit3' => 'Keep the input characters within %1 !',
   'checkform_noempty' => 'Some item must be filled!',
   'checkform_err_email' => 'Wrong email format !',
   'checkform_err_url' => 'Wrong website address format !',
