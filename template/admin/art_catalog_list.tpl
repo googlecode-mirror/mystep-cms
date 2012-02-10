@@ -7,7 +7,7 @@
 		<tr align="center"> 
 			<td class="cat" width="40">排序</td>
 			<td class="cat" width="40">编号</td>
-			<td class="cat" width="80">所属网站</td>
+			<td class="cat">所属网站</td>
 			<td class="cat">栏目名称</td>
 			<td class="cat" width="40">升位</td>
 			<td class="cat" width="40">降位</td>

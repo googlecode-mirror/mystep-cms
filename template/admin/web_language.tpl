@@ -14,7 +14,7 @@
 						<option value="<!--lng_name-->" <!--lng_selected-->><!--lng_name--></option>
 <!--loop:end-->
 					</select>
-					作者：<a href="mailto:<!--lng_info_email-->" /><!--lng_info_author--></a>（<!--lng_info_update--> For <!--lng_info_for-->）
+					作者：<a href="mailto:<!--lng_info_email-->"><!--lng_info_author--></a>（<!--lng_info_update--> For <!--lng_info_for-->）
 				</td>
 			</tr>
 			<tr align="center"> 

@@ -81,7 +81,7 @@
 			<tr>
 				<td class="cat" width="80">ÎÄÕÂÃèÊö£º<span>*</span><br /><br />£¨ÏŞ120×Ö£©</td>
 				<td class="row">
-					<textarea name="describe" style="width:100%;height:54px;" need="" /><!--record_describe--></textarea>
+					<textarea name="describe" style="width:100%;height:54px;" need=""><!--record_describe--></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -199,8 +199,8 @@ tinyMCE.init({
 	},
 	
 	template_replace_values : {
-		username : "A9VG",
-		staffid : "20121222"
+		username : "mystep",
+		staffid : "31415926"
 	}
 });
 

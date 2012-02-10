@@ -80,10 +80,28 @@ function setList() {
 }
 
 function loadingShow() {
-	var theTop = ($(window).height() - $("#bar_loading").height())/2 + $(document.body).scrollTop();
-	var theLeft = ($(window).width() - $("#bar_loading").width())/2 + $(document.body).scrollLeft();
-	$("#bar_loading").css({"opacity":"0.7", "top":theTop, "left":theLeft});
-	$("#bar_loading").toggle();
+	if($("#screenLocker").length) {
+		$("#screenLocker").remove();
+		$("#bar_loading").hide();
+	} else {
+		$("<div id='screenLocker'><!-- --></div>").css({
+					position: "absolute",
+					background: "#333333",
+					left: "0",
+					top: "0",
+					opacity: "0.8",
+					display: "none"
+				}).appendTo("body");
+		
+		$('#screenLocker').height($(document).height() + "px");
+		$('#screenLocker').width($(document.body).outerWidth(true) + "px");
+		$('#screenLocker').fadeIn();
+		
+		var theTop = ($(window).height() - $("#bar_loading").height())/2 + $(document.body).scrollTop();
+		var theLeft = ($(window).width() - $("#bar_loading").width())/2 + $(document.body).scrollLeft();
+		$("#bar_loading").css({"opacity":"0.7", "top":theTop, "left":theLeft});
+		$("#bar_loading").show();
+	}
 	return true;
 }
 

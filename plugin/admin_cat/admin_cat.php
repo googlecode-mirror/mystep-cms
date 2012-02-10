@@ -107,7 +107,6 @@ function build_page($method) {
 				$tpl->Set_Loop('record', $GLOBALS['admin_cat'][$i]['sub'][$j]);
 			}
 		}
-		$tpl->Set_Variable('admin_path', $setting['path']['admin']);
 		$tpl->Set_Variable('title', $setting['language']['plugin_admin_cat_title']);
 	} else {
 		if($method == "edit") {

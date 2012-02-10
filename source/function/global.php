@@ -485,15 +485,29 @@ function GetFileExt($file) {
 	//return strtolower(str_replace(".", "", strrchr($file, ".")));
 }
 
-function GetFileSize($file) {
-	if(is_file($file)) {
-		$filesize = filesize($file);
+function GetFileSize($para) {
+	if(is_file($para)) {
+		$filesize = filesize($para);
+	} elseif(is_numeric($para)) {
+		$filesize = $para;
 	} else {
-		if(is_numeric($file)) {
-			$filesize = $file;
-		} else {
-			return 0;
+		$para = strtoupper($para);
+		$para = str_replace(" ","",$para);
+		switch(substr($para,-1)){
+			case "G":
+				$filesize = ((int)str_replace("G","",$para)) * 1024 * 1024 * 1024;
+				break;
+			case "M":
+				$filesize = ((int)str_replace("M","",$para)) * 1024 * 1024;		
+				break;
+			case "K":
+				$filesize = ((int)str_replace("K","",$para)) * 1024;
+				break;
+			default:
+				$filesize = 0;
+				break;
 		}
+		return $filesize;
 	}
 	if($filesize <1024){
 		$filesize = (string)$filesize . " Bytes";

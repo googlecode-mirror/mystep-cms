@@ -36,11 +36,11 @@ $setting['gen']['minify'] = false;
 $setting['gen']['etag'] = 20111111;
 
 $setting['email'] = array();
-$setting['email']['mode'] = "";
-$setting['email']['smtp'] = "";
+$setting['email']['mode'] = '';
+$setting['email']['host'] = '';
 $setting['email']['port'] = 25;
-$setting['email']['user'] = "";
-$setting['email']['password'] = "";
+$setting['email']['user'] = '';
+$setting['email']['password'] = '';
 
 $setting['js'] = array();
 $setting['js']['debug'] = true;

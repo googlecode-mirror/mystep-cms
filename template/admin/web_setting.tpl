@@ -1,7 +1,7 @@
 <div class="title"><!--title--></div>
 <div class="nav">|&nbsp;
 <!--loop:start key="anchor"-->
-<a href="#<!--anchor_pos-->" /><!--anchor_name--></a> |&nbsp;
+<a href="#<!--anchor_pos-->"><!--anchor_name--></a> |&nbsp;
 <!--loop:end-->
 </div>
 <div align="center">
@@ -88,12 +88,12 @@ content;
 $setting['gen']['minify'] = false;
 ?>
 			<tr align="center">
-				<td class="row" colspan="2"><input id="set_default" name="set_default" class="cbox" type="checkbox" value="1" /><label for="set_default">定为默认</label></td>
+				<td colspan="2"><input id="set_default" name="set_default" class="cbox" type="checkbox" value="1" /><label for="set_default">定为默认</label></td>
 			</tr>
 			<tr>
-				<td class="cat" colspan="2" align="center" style="padding:20px">
+				<td class="cat" colspan="2" align="center">
 					<input class="btn" type="Submit" value=" 确认修改 " />&nbsp;&nbsp;
-					<input class="btn" type="button" value=" 恢复默认 " onclick="location.href='?restore'">&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 恢复默认 " onclick="location.href='?restore'" />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重置数据 " />&nbsp;&nbsp;
 				</td>
 			</tr>

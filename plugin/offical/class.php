@@ -300,6 +300,8 @@ if(!empty(\$tag)) {
 	\$tag = trim(\$tag, ",");
 	\$tag = str_replace(",", "%' or a.tag like '%", \$tag);
 	\$str_sql = str_replace("[tag]", \$tag, \$str_sql);
+} else {
+	\$str_sql = str_replace("and (a.tag like '%[tag]%')", "", \$str_sql);
 }
 \$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
 \$max_count = count(\$result);

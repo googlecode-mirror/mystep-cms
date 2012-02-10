@@ -117,8 +117,8 @@ tinyMCE.init({
 	handle_event_callback : "myHandleEvent",
 
 	template_replace_values : {
-		username : "Windy2000",
-		staffid : "19781226"
+		username : "mystep",
+		staffid : "31415926"
 	}
 });
 

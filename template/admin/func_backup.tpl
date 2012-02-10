@@ -31,7 +31,7 @@
 			<tr>
 				<td class="cat">操作模式：</td>
 				<td class="row">
-					<select name="method" onchange="setSelection(this.value)" need="" />
+					<select name="method" onchange="setSelection(this.value)" need="">
 						<option value="">请选择</option>
 						<option value="import">导入</option>
 						<option value="export">导出</option>

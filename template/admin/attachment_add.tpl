@@ -54,7 +54,7 @@ $(function(){
 						<option value="200"> 200 像素 </option>
 						<option value="100"> 100 像素 </option>
 					</select> &nbsp;
-					<input type="checkbox" id="watermark" name="watermark" value="1" <!--watermark_use--> /> <label for="watermark">添加图片水印</label> &nbsp;  (上传限度：<font color='red'><!--Max_size--></font>) &nbsp;  &nbsp; 
+					<input type="checkbox" id="watermark" name="watermark" value="1" <!--watermark_use--> /> <label for="watermark">添加图片水印</label> &nbsp;  (文件大小限制：<font color='red'><!--Max_size--></font>) &nbsp;  &nbsp; 
 					<input type="button" name="Submit" value=" 上传文件 " onclick="check()" />
 				</div>
 			</td>

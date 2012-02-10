@@ -12,15 +12,16 @@
 ********************************************/
 
 /*
-For Example:
+How to use:
 	$mail = new MyEmail();
-	$mail->init();
+	$mail->init($from, $charset, $log_file);
 	$mail->setFrom("from@mailserver.com", "name");
 	$mail->setSubject("mail subject");
-	$mail->setContent("mail content", "UTF-8", true);
+	$mail->setContent("mail content", true);
 	$mail->addEmail("anymail@server.com", "recipient name", "to");
 	$mail->addEmail("anymail1@server.com", "recipient name", "cc");
 	$mail->addFile($file_at_server, $filename, $filetype, $embed);
+	$mail->addHeader("Disposition-Notification-To", "anymail@server.com");
 	$mail->send(array("mode"=>"smtp", "host"=>"mailserver", "port"=>25, "user"=>"username", "password"=>"pswd"), true);
 	  or
 	$mail->send(array("mode"=>"ssl", "host"=>"smtp.gmail.com", "port"=>465, "user"=>"username@gmail.com", "password"=>"password"));
@@ -28,20 +29,26 @@ For Example:
 
 Class MyEmail extends class_common {
 	private
-		$from = "",						// 发信人
-		$to = array(), 				// 收信人
-		$reply = array(),			// 回复地址
-		$cc = array(),				// 抄送
-		$bcc = array(),				// 暗送
-		$headers = "",				// 头信息
-		$subject = "",				// 主题
-		$body = "",						// 内容
-		$files = array(),			// 附件
-		$file_count = 0,			// 文件数目
-		$boundary = array();	// 分隔符
+		$isHtml = true,
+		$charset = "UTF-8",
+		$from = "",
+		$to = array(),
+		$reply = array(),
+		$cc = array(),
+		$bcc = array(),
+		$headers = "",
+		$subject = "",
+		$body = "",
+		$content = "",
+		$files = array(),
+		$file_count = 0,
+		$boundary = array(),
+		$log_fp = null;
 	
-	public function init($from="") {
+	public function init($from="", $charset="UTF-8", $log_file="") {
 		if(!empty($from)) $this->setFrom($from);
+		if(!empty($charset)) $this->charset = $charset;
+		if(!empty($log_file)) $this->log_fp = @fopen($log_file, "wb");
 		$boundary_str = "mystep_".Chop("b".md5(uniqid(time())))."_mystep";
 		$this->boundary["body"] = "===Body_".$boundary_str."===";
 		$this->boundary["attach"] = "===Attach_".$boundary_str."===";
@@ -52,7 +59,7 @@ Class MyEmail extends class_common {
 		$subject = str_replace("\r", '', $subject);
 		$subject = str_replace("\n", '', $subject);
 		$subject = trim($subject);
-		$this->subject = $subject;
+		$this->subject = "=?".$this->charset."?b?".base64_encode($subject)."?=";
 		return;
 	}
 	
@@ -63,6 +70,7 @@ Class MyEmail extends class_common {
 		if (empty($name)) {
 			$this->from = $email;
 		} else {
+			$name = "=?".$this->charset."?b?".base64_encode($name)."?=";
 			$this->from = $name . " <" . $email . ">";
 		}
 		ini_set('sendmail_from', $email);
@@ -72,30 +80,34 @@ Class MyEmail extends class_common {
 		return true;
 	}
 	
-	public function setContent($content, $charset="UTF-8", $isHtml=true, $body_alt="") {
+	public function setContent($content, $isHtml=true, $body_alt="") {
 		$this->body = "";
 		$boundary = $this->boundary["body"];
+		$this->isHtml = $isHtml;
 		if($isHtml) {
 			$this->body = "
 --{$boundary}
-Content-Type: text/plain; charset=\"{$charset}\"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=\"".$this->charset."\"
+Content-Transfer-Encoding: base64
 
 ";
-			if(empty($body_alt)) $body_alt = html_entity_decode(trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s', '', $content))));
+			if(empty($body_alt)) $body_alt = chunk_split(base64_encode(trim(strip_tags(preg_replace('/<(head|title|style|script)[^>]*>.*?<\/\\1>/s', '', str_replace("&#160;", "  ", str_replace("&nbsp;", " ", $content)))))));
+			if(trim($body_alt)=="") $body_alt = chunk_split(base64_encode("This mail is created by MyEmail(windy2006@gmail.com). \n\nTo view this email message, open it in a program that understands HTML!"));
 			$this->body .= $body_alt."\n";
+			$this->content = $content;
 			$this->body .= "
 --{$boundary}
-Content-Type: text/html; charset=\"{$charset}\"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/html; charset=\"".$this->charset."\"
+Content-Transfer-Encoding: base64
 
-{$content}
+<!--content-->
 ";
 		} else {
+			$content = chunk_split(base64_encode($content));
 			$this->body = "
 --{$boundary}
-Content-Type: text/plain; charset=\"{$charset}\"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=\"".$this->charset."\"
+Content-Transfer-Encoding: base64
 
 {$content}
 ";
@@ -110,6 +122,7 @@ Content-Transfer-Encoding: 7bit
 		$email = trim($email);
 		$name = trim(preg_replace('/[\r\n]+/', '', $name));
 		if(!preg_match('/^[\w\-\.]+@(([\w\-]+)[.])+[a-z]{2,4}$/i', $email)) return false;
+		$name = "=?".$this->charset."?b?".base64_encode($name)."?=";
 		array_push($this->$type, array($email, $name));
 		return true;
 	}
@@ -152,7 +165,7 @@ Content-Transfer-Encoding: 7bit
 		$this->addAttachment($filecontent, $filename, $filetype, $embed);
 	}
 
-	public function send($para=array(), $single=false) {
+	public function send($para=array(), $single=false, $priority=3, $extHeader = "") {
 		if($this->from=='') $this->from = ini_get('sendmail_from');
 		$this->addHeader("Return-Path", $this->from);
 		$mail_list = array_merge($this->to, $this->cc, $this->bcc);
@@ -165,43 +178,52 @@ Content-Transfer-Encoding: 7bit
 		if(count($this->reply)>0) $this->addHeader("Reply-To", implode(', ', $this->formatEmail($this->reply)));
 		$this->addHeader("Subject", $this->subject);
 		$this->addHeader("Message-ID",  sprintf("<%s@%s>", md5(uniqid(time())), $_SERVER["HTTP_HOST"]));
-		$this->addHeader("X-Priority", "1");
+		if(!preg_match("/[1-5]/", $priority)) $priority = 3;
+		$this->addHeader("X-Priority", $priority);
 		$this->addHeader("X-Mailer", "MyStep_CMS");
 		$this->addHeader("MIME-Version", "1.0");
 		
 		$mail_content = implode("\r\n", $this->headers)."\r\n";
+		if(!empty($extHeader)) $mail_content .= $extHeader."\r\n";
 		$mail_content .= $this->buildMail();
-		$bad_email = array();
+		$info = "";
 
 		if(!empty($para['mode'])) {
 			require_once("class.smtp.php");
 			$smtp = new SMTP();
-			
 			if(!$smtp->Connect((($para['mode']=="ssl" || $para['mode']=="ssl/tls")?"ssl://":"").$para['host'], $para['port'], 10)) {
 				$this->Error("Cannot connect to the mail server!");
+				return false;
 			}
 			if(!$smtp->Hello($_SERVER["HTTP_HOST"])) {
 				$this->Error("Cannot send messege to the mail server!");
+				return false;
 			}
 			if($para['mode']=="tls" || $para['mode']=="ssl/tls") {
 				if(!$smtp->StartTLS()) {
 					$this->Error("TLS error!");
+					return false;
 				}
 				$smtp->Hello($_SERVER["HTTP_HOST"]);
 			}
 			if(isset($para['user'])) {
 				if(!$smtp->Authenticate($para['user'], $para['password'])) {
 					$this->Error("Authenticate Failed!");
+					return false;
 				}
 			}
 	    if(!$smtp->Mail(ini_get('sendmail_from'))) {
 	      $this->Error("Bad sender email");
+				return false;
 	    }
 
 			for($i=0,$m=count($mail_list); $i<$m; $i++) {
-				if(!$smtp->Recipient($mail_list[$i][0])) {
-					$bad_email[] = $mail_list[$i][0];
+				if($smtp->Recipient($mail_list[$i][0])) {
+					$info = " sended!";
+				} else {
+					$info = " error!";
 				}
+				if($this->log_fp) fwrite($this->log_fp, $mail_list[$i][0].$info."\n");
 			}
 			if(!$smtp->Data($mail_content)) {
 				$this->Error("Mail send Failed!");
@@ -212,19 +234,17 @@ Content-Transfer-Encoding: 7bit
 				$smtp->Close();
 			}
 		} else {
-			if($single==true) {
-				for($i=0,$m=count($mail_list); $i<$m; $i++) {
-					if(!@mail(formatEmail($mail_list[$i]), $this->subject, "", $mail_content)) {
-						$bad_email[] = $mail_list[$i][0];
-					}
+			for($i=0,$m=count($mail_list); $i<$m; $i++) {
+				if(!@mail(formatEmail($mail_list[$i]), $this->subject, "", $mail_content)) {
+					$info = " sended!";
+				} else {
+					$info = " error!";
 				}
-			} else {
-				$mail_list = formatEmail($mail_list);
-				@mail(implode(", ", $mail_list[$i]), $this->subject, "", $mail_content);
+				if($this->log_fp) fwrite($this->log_fp, $mail_list[$i][0].$info."\n");
 			}
 		}
-		echo "<pre>".$mail_content."</pre>";
-		return $bad_email;
+		if($this->log_fp) fclose($this->log_fp);
+		return;
 	}
 
 	public function setFile($file, $embed = false) {
@@ -236,7 +256,7 @@ Content-Transfer-Encoding: 7bit
 		if($embed){
 			$cid="__".$file["name"]."@mystep__";
 			$return .= "Content-ID: <$cid>\n\n";
-			$this->body=str_replace($file["name"], "cid:".$cid, $this->body);
+			$this->content=str_replace($file["name"], "cid:".$cid, $this->content);
 		}else{
 			$return .= "Content-Disposition: attachment;\n filename=\"".$file["name"]."\"\n\n";
 		}
@@ -261,6 +281,10 @@ Content-Type: multipart/alternative;
 
 
 		";
+		if(!$this->isHtml) {
+			$this->files["attach"] += $this->files["embed"];
+			$this->files["embed"] = array();
+		}
 		$attachmentCount = count($this->files["attach"]);
 		$attachmentContent = "";
 		$embedCount = count($this->files["embed"]);
@@ -279,7 +303,7 @@ Content-Type: multipart/alternative;
 			}
 			$embedContent .= "\n--".$this->boundary["embed"]."--\n";
 		}
-		
+		$this->body = str_replace("<!--content-->", chunk_split(base64_encode($this->content)), $this->body);
 		$multipart.= $this->body;
 		$multipart.= $embedContent;
 		$multipart.= $attachmentContent;
@@ -293,7 +317,7 @@ Content-Type: multipart/alternative;
 			if(empty($email_list[1])) {
 				$result = $email_list[0];
 			} else {
-				$result = $email_list[1] . " <" . $email_list[0] . ">";
+				$result = '"' . $email_list[1] . '" <'. $email_list[0] . '>';
 			}
 		} else {
 			$result = array();
@@ -301,7 +325,7 @@ Content-Type: multipart/alternative;
 				if (empty($email[1])) {
 					$result[] = $email[0];
 				} else {
-					$result[] = $email[1] . " <" . $email[0] . ">";
+					$result[] = '"' . $email[1] . '" <' . $email[0] . '>';
 				}
 			}
 		}

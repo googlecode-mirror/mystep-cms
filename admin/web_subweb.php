@@ -29,10 +29,7 @@ switch($method) {
 			} elseif($setting['db']['pre']!=$setting_sub['db']['pre']) {
 				$db->Query("drop table ".$setting_sub['db']['pre']."news_show");
 				$db->Query("drop table ".$setting_sub['db']['pre']."news_detail");
-				$db->Query("drop table ".$setting_sub['db']['pre']."info_show");
 				$db->Query("drop table ".$setting_sub['db']['pre']."news_tag");
-				$db->Query("drop table ".$setting_sub['db']['pre']."attachment");
-				$db->Query("drop table ".$setting_sub['db']['pre']."links");
 			} else {
 				$db->Query("update ".$setting['db']['pre']."news_cat set web_id=1 where web_id='{$web_id}'");
 				$db->Query("update ".$setting['db']['pre']."news_show set web_id=1 where web_id='{$web_id}'");

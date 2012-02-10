@@ -4,6 +4,7 @@
 <hr />
 <br />
 <script src="script/checkForm.js" Language="JavaScript1.2"></script>
+<script src="script/jquery.date_input.js" Language="JavaScript1.2"></script>
 <form name="regist" method="post" ACTION="?m=regist" ENCTYPE="multipart/form-data" onsubmit="return checkForm(this)">
 	<input name="id" type="hidden" value="0" />
 	<input name="mid" type="hidden" value="<!--mid-->" />

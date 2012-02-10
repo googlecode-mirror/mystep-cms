@@ -10,7 +10,7 @@ class plugin_admin_cat implements plugin {
 			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
 		global $db, $setting, $admin_cat;
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_admin_cat", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_admin_cat", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, ",")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'admin_cat.php', '../plugin/admin_cat/', 0, 0, '".$info['cat_desc']."')");
 		$err = array();
 		if($db->GetError($err)) {

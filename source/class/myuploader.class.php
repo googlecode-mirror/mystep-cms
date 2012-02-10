@@ -77,7 +77,7 @@ class MyUploader extends class_common {
 			case 0:
 				$file_ext = strtolower(strrchr($this->upload_result[$this->upload_counter]['name'],"."));
 				if(strpos($this->upload_banlst, str_replace(".", "", $file_ext))!==false) $file_ext .= ".upload";
-				$this->upload_result[$this->upload_counter]['new_name'] = $this->upload_rename?($this->GetMicrotime().$file_ext):$this->upload_result[$this->upload_counter]['name'];
+				$this->upload_result[$this->upload_counter]['new_name'] = $this->upload_rename?($this->GetMicrotime().rand().$file_ext):$this->upload_result[$this->upload_counter]['name'];
 				if(file_exists($this->upload_path.$this->upload_result[$this->upload_counter]['new_name'])) {
 					$this->upload_result[$this->upload_counter]['message']	= "The Same-name-file Has Existed In The Upload Path !";
 					$this->upload_result[$this->upload_counter]['error'] = 4;

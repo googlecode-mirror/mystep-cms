@@ -49,6 +49,7 @@ if(!is_file($err_file)) {
 			$err_lst[$i] = str_replace("\n", "\n<br />\n", $err_lst[$i]);
 			$err_lst[$i] = preg_replace("/^([\w \.]+:)/m", '<b>\1</b>', $err_lst[$i]);
 			$class = $i%2 ? "cat" : "row";
+			$class = "row";
 			$tpl_tmp->Set_Loop('err', array("content"=>$err_lst[$i], "class"=>$class));
 		}
 	}

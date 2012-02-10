@@ -80,6 +80,7 @@ $rules = '.var_export($rules, true).';
 		break;
 	case "news_snatch":
 		set_time_limit(0);
+		ignore_user_abort(true);
 		//$log_info = $setting['language']['plugin_news_snatch_snatch'];
 		$idx = $rules[$id]['idx'];
 		require_once("rule/".$idx."_snatch.php");
@@ -130,6 +131,7 @@ $rules = '.var_export($rules, true).';
 		break;
 	case "news_import":
 		set_time_limit(0);
+		ignore_user_abort(true);
 		//$log_info = $setting['language']['plugin_news_snatch_import'];
 		$news_show = array();
 		$news_show['news_id'] = 0;

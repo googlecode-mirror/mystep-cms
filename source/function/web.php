@@ -227,7 +227,14 @@ function buildParaList($idx) {
 			$cache_para[$idx] = $theList;
 			break;
 		default:
-			return false;
+			$theList = array();
+			$db->Query("select * from ".$idx." order by id");
+			if(isset($GLOBALS['errMsg'])) return false;
+			while($record=$db->GetRS()) {
+				HtmlTrans(&$record);
+				$theList[] = $record;
+			}
+			$cache_para[$idx] = $theList;
 	}
 	$db->Free();
 	if($cache_para) buildCache($idx, $cache_para);
