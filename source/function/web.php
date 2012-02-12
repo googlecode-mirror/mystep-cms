@@ -268,7 +268,7 @@ function getParaInfo($idx, $col, $value) {
 function checkUser() {
 	global $req, $db, $setting;
 	$ms_user = $req->getCookie('ms_user');
-	if(!is_null($ms_user)) {
+	if(!empty($ms_user)) {
 		list($user_id, $user_pwd)=explode("\t",$ms_user);
 		if($userinfo = $db->GetSingleRecord("SELECT username, group_id, type_id from ".$setting['db']['pre']."users where user_id='{$user_id}' and password='".mysql_real_escape_string($user_pwd)."'")) {
 			$req->setSession("username", $userinfo['username']);
@@ -279,7 +279,12 @@ function checkUser() {
 			$req->setSession("usergroup", 1);
 			$req->setSession("usertype", 3);
 		}
+	} elseif(!empty($GLOBALS['authority']) && md5($req->getReq($GLOBALS['authority']))==$setting['web']['s_pass']) {
+		$req->setSession("username", $setting['web']['s_user']);
+		$req->setSession("usergroup", 1);
+		$req->setSession("usertype", 3);
 	}
+	return;
 }
 
 function getData($query, $mode="all", $ttl = 600) {

@@ -119,65 +119,17 @@
 					</select> 时
 					<select name="schedule[]" style="width:40px;" onchange="showSchedule()">
 						<option value="0"></option>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
 						<option>5</option>
-						<option>6</option>
-						<option>7</option>
-						<option>8</option>
-						<option>9</option>
 						<option>10</option>
-						<option>11</option>
-						<option>12</option>
-						<option>13</option>
-						<option>14</option>
 						<option>15</option>
-						<option>16</option>
-						<option>17</option>
-						<option>18</option>
-						<option>19</option>
 						<option>20</option>
-						<option>21</option>
-						<option>22</option>
-						<option>23</option>
-						<option>24</option>
 						<option>25</option>
-						<option>26</option>
-						<option>27</option>
-						<option>28</option>
-						<option>29</option>
 						<option>30</option>
-						<option>31</option>
-						<option>32</option>
-						<option>33</option>
-						<option>34</option>
 						<option>35</option>
-						<option>36</option>
-						<option>37</option>
-						<option>38</option>
-						<option>39</option>
 						<option>40</option>
-						<option>41</option>
-						<option>42</option>
-						<option>43</option>
-						<option>44</option>
 						<option>45</option>
-						<option>46</option>
-						<option>47</option>
-						<option>48</option>
-						<option>49</option>
 						<option>50</option>
-						<option>51</option>
-						<option>52</option>
-						<option>53</option>
-						<option>54</option>
 						<option>55</option>
-						<option>56</option>
-						<option>57</option>
-						<option>58</option>
-						<option>59</option>
 						<option>60</option>
 					</select> 分
 					（周
@@ -246,11 +198,15 @@ function showSchedule() {
 		} else {
 			result += "每周"+schedule[4].value+"，";
 		}
-		if(schedule[2].value!=0) {
+		if(schedule[2].value==0) {
+			result += "每小时，";
+		} else {
 			result += schedule[2].value+"点，";
 		}
-		if(schedule[3].value!=0) {
-			result += schedule[2].value+"分，";
+		if(schedule[3].value==0) {
+			result += "0分";
+		} else {
+			result += schedule[3].value+"分，";
 		}
 	} else {
 		result = "每隔 ";
@@ -284,6 +240,8 @@ $(function(){
 	for(var i=0; i<schedule_obj.length; i++) {
 		$(schedule_obj[i]).val(schedule[i]);
 	}
+	$("select[name=mode]").val("<!--mode-->");
+	if($("input[name=expire]").val()=="0000-00-00") $("input[name=expire]").val("");
 	showSchedule();
 });
 </script>

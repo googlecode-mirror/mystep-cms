@@ -115,8 +115,8 @@ function build_page($method) {
 
 function send_mail($id) {
 	global $mystep, $req, $db, $setting, $id;
+	ignore_user_abort("on");
 	set_time_limit(0);
-	ignore_user_abort(true);
 	$db->Query("select * from ".$setting['db']['pre']."email where id='{$id}'");
 	$record  = $db->GetRS();
 	$db->Free();

@@ -24,12 +24,12 @@
 				<tr align="center">
 					<td class="cat" width="30">编号</td>
 					<td class="cat">名称</td>
-					<td class="cat">计划描述</td>
-					<td class="cat">执行次数</td>
-					<td class="cat">上次执行时间</td>
-					<td class="cat">下次执行时间</td>
-					<td class="cat">过期日期</td>
-					<td class="cat">操作</td>
+					<td class="cat">描述</td>
+					<td class="cat" width="30">次数</td>
+					<td class="cat" width="120">上次时间</td>
+					<td class="cat" width="120">下次时间</td>
+					<td class="cat" width="60">过期日期</td>
+					<td class="cat" width="60">操作</td>
 				</tr>
 		<!--loop:start key="record" time="20"-->
 				<tr>
@@ -44,8 +44,15 @@
 				</tr>
 		<!--loop:end-->
 			</table>
+			<iframe scrolling="no" name="start" src="about:blank" MARGINHEIGHT="0" MARGINWIDTH="0" style="display:none;"></iframe>
 		</div>
 	</div>
 </div>
 </body>
+<script language="JavaScript">
+function crontab_start() {
+	$("iframe[name=start]").attr("src", "run.php");
+	setTimeout("location.reload()",2000)
+}
+</script>
 </html>

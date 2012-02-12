@@ -48,4 +48,5 @@ $sess_handle = array(
 );
 
 $setting['cookie']['prefix'] .= substr(md5($_SERVER["USERNAME"].$_SERVER["COMPUTERNAME"].$_SERVER["OS"]), 0, 4)."_";
+$authority = "";
 ?>

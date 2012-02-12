@@ -24,13 +24,21 @@ switch($method) {
 			$_POST['schedule'] = implode(",", $_POST['schedule']);
 			if($method=="add_ok") {
 				$log_info = $setting['language']['plugin_crontab_add'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."crontab", $_POST, "insert");
+				$str_sql = $db->buildSQL($setting['db']['pre']."crontab", $_POST, "insert", "a");
 			} else {
+				if(empty($_POST['expire'])) unset($_POST['expire']);
 				$log_info = $setting['language']['plugin_crontab_edit'];
 				$str_sql = $db->buildSQL($setting['db']['pre']."crontab", $_POST, "update", "id={$id}");
 			}
 			$db->Query($str_sql);
 		}
+		break;
+	case "start":
+		file_put_contents("status.txt", "run");
+		if($fp = @fopen("http://".$_SERVER["HTTP_HOST"].dirname($_SERVER["SCRIPT_NAME"])."/run.php", "r")) {
+			fclose($fp);
+		}
+		$goto_url = $setting['info']['self'];
 		break;
 	case "stop":
 		file_put_contents("status.txt", "");
@@ -64,7 +72,8 @@ function build_page($method) {
 			$tpl->Set_Variable('status_txt', $setting['language']['plugin_crontab_status_stop']);
 		} else {
 			$tpl->Set_Variable('status_info', $setting['language']['plugin_crontab_status_stop']);
-			$tpl->Set_Variable('status_link', 'run.php" target="_blank" onclick="location.reload()');
+			//$tpl->Set_Variable('status_link', "?method=start");
+			$tpl->Set_Variable('status_link', 'javascript:crontab_start()');
 			$tpl->Set_Variable('status_txt', $setting['language']['plugin_crontab_status_run']);
 		}
 		$str_sql = "select * from ".$setting['db']['pre']."crontab order by id desc";

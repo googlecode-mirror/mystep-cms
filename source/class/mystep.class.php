@@ -193,7 +193,7 @@ mystep;
 
 		$req->SessionStart($GLOBALS['sess_handle']);
 		$username = $req->getSession("username");
-		if((empty($username) || $username=="Guest") && $req->getCookie('ms_user')!="") checkUser();
+		if((empty($username) || $username=="Guest")) checkUser();
 		$req->setSession("url", "http://".$req->getServer("HTTP_HOST").$req->getServer("URL"));
 		$req->setSession("ip", GetIp());
 		$setting['info']['user'] = array();

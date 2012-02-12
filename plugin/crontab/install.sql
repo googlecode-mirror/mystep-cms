@@ -11,7 +11,8 @@ CREATE TABLE `{pre}crontab` (
 	`next_date` DATETIME DEFAULT '0000-00-00 00:00:00',	#下次执行日期
 	`expire` DATE DEFAULT '0000-00-00',									#过期日期
 	`code` TEXT,																				#执行代码
-	PRIMARY KEY (`id`)
+	INDEX `next_date` (`next_date`),
+	PRIMARY KEY (`id`),
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='计划任务';
 
 # ---------------------------------------------------------------------------------------------------------------
