@@ -946,6 +946,7 @@ $version = array(
 				'script/setting.js.php',
 				'sitemap.php',
 				'source/class/myemail.class.php',
+				'source/class/mystep.class.php',
 				'source/class/myuploader.class.php',
 				'source/function/global.php',
 				'source/function/web.php',
