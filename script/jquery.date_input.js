@@ -64,7 +64,7 @@ DateInput = (function($) {
 			$(".prev", yearNav).click(this.bindToObj(function() { this.moveMonthBy(-12); }));
 			$(".next", yearNav).click(this.bindToObj(function() { this.moveMonthBy(12); }));
 			
-			var nav = $('<div class="nav"></div>').append(monthNav, yearNav);
+			var nav = $('<div class="main_nav"></div>').append(monthNav, yearNav);
 			
 			var tableShell = "<table><thead><tr>";
 			$(this.adjustDays(this.short_day_names)).each(function() {

@@ -65,7 +65,7 @@
 		</tr>
 	</table>
 </div>
-<div id="bar_loading"><img src="../images/loading.gif" alt="<!--lang_ajax_sending-->"><br / ><!--lang_ajax_sending--></div>
+<div id="bar_loading"><img src="../images/loading.gif" alt="系统更新"><br / >本系统正在更新，请稍候！</div>
 <script language="javascript">
 var cur_ver = <?=toJson($ms_version, $setting['gen']['charset']);?>;
 function checkUpdate() {

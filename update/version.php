@@ -925,6 +925,7 @@ $version = array(
 				'plugin/front_code/tpl/main.tpl',
 				'plugin/meeting/setting/main.tpl',
 				'plugin/meeting/tpl/main.tpl',
+				'plugin/meeting/tpl/list.tpl',
 				'plugin/meeting/tpl/default_regist_cn.tpl',
 				'plugin/meeting/tpl/default_regist_en.tpl',
 				'plugin/news_mark/tpl/news_mark.tpl',
@@ -971,6 +972,32 @@ $version = array(
 		'setting' => array(
 				'gen' => array(
 						'etag' => '20120210',
+					),
+			),
+	),
+	'0.99.8.3' => array(
+		'info' => '
+				V0.99.8.3
+				1.Fix a bug in plugin install
+				2.Add authority mode for advance user (Check detail from checkUser() function, authority varaint can be set in parameter.php)
+				3.Fix date_input script
+				4.Fix setting.js.php for more extend setting
+				Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/web_plugin.php',
+				'include/parameter.php',
+				'script/date_input.css',
+				'script/jquery.date_input.js',
+				'script/language.js.php',
+				'script/setting.js.php',
+				'template/admin/info_main.tpl',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120213',
 					),
 			),
 	),

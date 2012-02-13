@@ -11,12 +11,12 @@ require(ROOT_PATH."/source/class/mystep.class.php");
 
 $mystep = new MyStep();
 $mystep->pageStart(true);
-$result = "";
 header('Content-Type: application/x-javascript');
 $cache_file = ROOT_PATH."/".$setting['path']['cache']."script/".$setting['info']['web']['idx']."_language.js";
 if(file_exists($cache_file) && (filemtime($cache_file)+$etag_expires)>($setting['info']['time_start']/1000)) {
 	$result = GetFile($cache_file);
 } else {
+	$result = "";
 	foreach($setting['language'] as $key => $value) {
 		$setting['language'][$key] = chg_charset($value, $setting['gen']['charset'], "utf-8");
 	}

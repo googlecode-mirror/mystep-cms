@@ -98,6 +98,8 @@ switch($method) {
 			$goto_url = $setting['info']['self'];
 		}
 		deleteCache("plugin");
+		MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
+		
 		if($method=="install" && isset($_POST['plugin_setting'])) {
 			foreach($_POST['plugin_setting'][$idx] as $key => $value) {
 				if(is_array($value)) {
