@@ -20,13 +20,13 @@ while(true) {
 	if(file_get_contents("status.txt")!="run") break;
 	$db->Query("select * from ".$setting['db']['pre']."crontab where next_date<now() and (expire='0000-00-00' || expire>now()) order by next_date asc");
 	while($record = $db->GetRS()) {
+		if(!empty($record['code'])) {
+			eval($record['code']);
+		}
 		if(!empty($record['url'])) {
 			if($fp = @fopen($record['url'], "r")) {
 				fclose($fp);
 			}
-		}
-		if(!empty($record['code'])) {
-			eval($record['code']);
 		}
 		$next_date = getNextTime($record['mode'], $record['schedule']);
 		WriteFile("log.txt", $record['name']." - ".date("Y-m-d H:i:s")." / ".$next_date."\n", "ab");
