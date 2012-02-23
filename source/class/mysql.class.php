@@ -71,6 +71,7 @@ class MySQL extends class_common {
 		$this->DB_host = $host;
 		$this->DB_user = $user;
 		$this->DB_pass = $pass;
+		if(strtolower($charset)=="utf-8") $charset = "utf8";
 		$this->DB_charset = $charset;
 		return;
 	}

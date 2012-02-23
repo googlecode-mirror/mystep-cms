@@ -19,7 +19,7 @@
 		<tr>
 			<th>项目</th>
 			<th class="padleft">MyStep 所需配置</th>
-			<th class="padleft">MyStep 最佳</th>
+			<th class="padleft">MyStep 最佳配置</th>
 			<th class="padleft">当前服务器</th>
 		</tr>
 		<tr>

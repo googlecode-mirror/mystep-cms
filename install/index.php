@@ -31,6 +31,7 @@ switch($step) {
 		break;
 	case 3:
 		$setting['cookie']['prefix'] = "ms_";
+		if(strtolower($_POST['setting']['db']['charset'])=="utf-8") $_POST['setting']['db']['charset'] = "utf8";
 		$setting = arrayMerge($setting, $_POST['setting']);
 		$setting['web']['s_pass'] = md5($setting['web']['s_pass']);
 		unset($_POST);
@@ -92,7 +93,7 @@ if(is_file("./step_{$step}.php")) {
 }
 
 echo <<<mystep
-	<DIV class=footer>&copy;2010 - 2011 <A href="mailto:windy2006@gmail.com">Windy2000</A></DIV>
+	<DIV class=footer>&copy;2010 - 2012 <A href="mailto:windy2006@gmail.com">Windy2000</A></DIV>
 </DIV>
 </BODY>
 </HTML>

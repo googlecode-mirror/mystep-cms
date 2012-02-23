@@ -1,4 +1,4 @@
-function CalConv() {
+ï»¿function CalConv() {
 	var FIRSTYEAR = 1998;
 	var LASTYEAR = 2031;
 	var today = new Date();
@@ -42,7 +42,7 @@ function CalConv() {
 		new tagLunarCal( 32, 0, 1, 31, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0 ),
 		new tagLunarCal( 22, 3, 2, 36, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0 )
 	];
-	/* Ãñ¹úÄêÔÂÈÕ Codes by / */
+	/* æ°‘å›½å¹´æœˆæ—¥ Codes by / */
 	SolarCal = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
 	SolarDays = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365, 396, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366, 397 ];
 	
@@ -91,15 +91,15 @@ function CalConv() {
 	this.length=initArray.arguments.length
 	for(var i=0;i<this.length;i++)
 	this[i+1]=initArray.arguments[i] }
-	var d=new initArray("ĞÇÆÚÈÕ","ĞÇÆÚÒ»","ĞÇÆÚ¶ş","ĞÇÆÚÈı","ĞÇÆÚËÄ","ĞÇÆÚÎå","ĞÇÆÚÁù");
-	document.write("", SolarYear,"Äê",today.getMonth()+1,"ÔÂ",today.getDate(),"ÈÕ&nbsp;",d[today.getDay()+1],"");
-	months = ["Ò»","¶ş","Èı","ËÄ","Îå","Áù","Æß","°Ë","¾Å","Ê®","Ê®Ò»","Ê®¶ş"];
-	days = ["³õÒ»","³õ¶ş","³õÈı","³õËÄ","³õÎå","³õÁù","³õÆß","³õ°Ë","³õ¾Å","³õÊ®","Ê®Ò»","Ê®¶ş","Ê®Èı","Ê®ËÄ","Ê®Îå","Ê®Áù","Ê®Æß","Ê®°Ë","Ê®¾Å","¶şÊ®","Ø¥Ò»","Ø¥¶ş","Ø¥Èı","Ø¥ËÄ","Ø¥Îå","Ø¥Áù","Ø¥Æß","Ø¥°Ë","Ø¥¾Å","ÈıÊ®"];
-	document.write( "&nbsp;Å©Àú"+CnEra(SolarYear-1864)+"Äê"+months[LunarMonth-1]+"ÔÂ" + days[LunarDate-1] + " £¨"+SolarTerm(today)+"£©");
+	var d=new initArray("æ˜ŸæœŸæ—¥","æ˜ŸæœŸä¸€","æ˜ŸæœŸäºŒ","æ˜ŸæœŸä¸‰","æ˜ŸæœŸå››","æ˜ŸæœŸäº”","æ˜ŸæœŸå…­");
+	document.write("", SolarYear,"å¹´",today.getMonth()+1,"æœˆ",today.getDate(),"æ—¥&nbsp;",d[today.getDay()+1],"");
+	months = ["ä¸€","äºŒ","ä¸‰","å››","äº”","å…­","ä¸ƒ","å…«","ä¹","å","åä¸€","åäºŒ"];
+	days = ["åˆä¸€","åˆäºŒ","åˆä¸‰","åˆå››","åˆäº”","åˆå…­","åˆä¸ƒ","åˆå…«","åˆä¹","åˆå","åä¸€","åäºŒ","åä¸‰","åå››","åäº”","åå…­","åä¸ƒ","åå…«","åä¹","äºŒå","å»¿ä¸€","å»¿äºŒ","å»¿ä¸‰","å»¿å››","å»¿äº”","å»¿å…­","å»¿ä¸ƒ","å»¿å…«","å»¿ä¹","ä¸‰å"];
+	document.write( "&nbsp;å†œå†"+CnEra(SolarYear-1864)+"å¹´"+months[LunarMonth-1]+"æœˆ" + days[LunarDate-1] + " ï¼ˆ"+SolarTerm(today)+"ï¼‰");
 	return 0; 
 }
 function GetLeap( year ) {
-	/* ÊÇ·ñÓĞÈòÄê, 0 Æ½Äê, 1 ÈòÄê */
+	/* æ˜¯å¦æœ‰é—°å¹´, 0 å¹³å¹´, 1 é—°å¹´ */
 	if ( year % 400 == 0 )	return 1;
 	else if ( year % 100 == 0 )	return 0;
 	else if ( year % 4 == 0 )	return 1;
@@ -107,24 +107,24 @@ function GetLeap( year ) {
 }
 function tagLunarCal( d, i, w, k, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13) {
 	this.BaseDays = d; 
-	this.Intercalation = i; /* 0´ú±í´ËÄê›]ÓĞÈòÔÂ */
-	this.BaseWeekday = w; /* Ãñ¹ú1ÔÂ1ÈÕĞÇÆÚœp 1 */
-	this.BaseKanChih = k; /* Ãñ¹ú1ÔÂ1ÈÕ¸ÉÖ§ĞòºÅ¼õ 1 */
-	this.MonthDays = [ m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13 ]; /* ´ËŞr•ÑÄêÃ¿ÔÂÖ®´óĞ¡, 0==Ğ¡ÔÂ(29ÈÕ), 1==´óÔÂ(30ÈÕ) */
+	this.Intercalation = i; /* 0ä»£è¡¨æ­¤å¹´æ²’æœ‰é—°æœˆ */
+	this.BaseWeekday = w; /* æ°‘å›½1æœˆ1æ—¥æ˜ŸæœŸæ¸› 1 */
+	this.BaseKanChih = k; /* æ°‘å›½1æœˆ1æ—¥å¹²æ”¯åºå·å‡ 1 */
+	this.MonthDays = [ m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13 ]; /* æ­¤è¾²æ›†å¹´æ¯æœˆä¹‹å¤§å°, 0==å°æœˆ(29æ—¥), 1==å¤§æœˆ(30æ—¥) */
 }
 function CnEra(YYYY){
-	var Tiangan=new Array("¼×","ÒÒ","±û","¶¡","Îì","¼º","¸ı","ĞÁ","ÈÉ","¹ï");
-	//var Dizhi=new Array("×Ó(Êó)","³ó(Å£)","Òú(»¢)","Ã®(ÍÃ)","³½(Áú)","ËÈ(Éß)",
-	                    //"Îç(Âí)","Î´(Ñò)","Éê(ºï)","ÓÏ(¼¦)","Ğç(¹·)","º¥(Öí)");
-	var Dizhi=new Array("×Ó","³ó","Òú","Ã®","³½","ËÈ","Îç","Î´","Éê","ÓÏ","Ğç","º¥");
+	var Tiangan=new Array("ç”²","ä¹™","ä¸™","ä¸","æˆŠ","å·±","åºš","è¾›","å£¬","ç™¸");
+	//var Dizhi=new Array("å­(é¼ )","ä¸‘(ç‰›)","å¯…(è™)","å¯(å…”)","è¾°(é¾™)","å·³(è›‡)",
+	                    //"åˆ(é©¬)","æœª(ç¾Š)","ç”³(çŒ´)","é…‰(é¸¡)","æˆŒ(ç‹—)","äº¥(çŒª)");
+	var Dizhi=new Array("å­","ä¸‘","å¯…","å¯","è¾°","å·³","åˆ","æœª","ç”³","é…‰","æˆŒ","äº¥");
 	return Tiangan[YYYY%10]+Dizhi[YYYY%12];
 }
 function SolarTerm(DateGL){
 	var SolarTermStr=new Array(
-				"Ğ¡º®","´óº®","Á¢´º","ÓêË®","¾ªÕİ","´º·Ö",
-				"ÇåÃ÷","¹ÈÓê","Á¢ÏÄ","Ğ¡Âú","Ã¢ÖÖ","ÏÄÖÁ",
-				"Ğ¡Êî","´óÊî","Á¢Çï","´¦Êî","°×Â¶","Çï·Ö",
-				"º®Â¶","Ëª½µ","Á¢¶¬","Ğ¡Ñ©","´óÑ©","¶¬ÖÁ");
+				"å°å¯’","å¤§å¯’","ç«‹æ˜¥","é›¨æ°´","æƒŠè›°","æ˜¥åˆ†",
+				"æ¸…æ˜","è°·é›¨","ç«‹å¤","å°æ»¡","èŠ’ç§","å¤è‡³",
+				"å°æš‘","å¤§æš‘","ç«‹ç§‹","å¤„æš‘","ç™½éœ²","ç§‹åˆ†",
+				"å¯’éœ²","éœœé™","ç«‹å†¬","å°é›ª","å¤§é›ª","å†¬è‡³");
 	var DifferenceInMonth=new Array(
 				1272060,1275495,1281180,1289445,1299225,1310355,
 				1321560,1333035,1342770,1350855,1356420,1359045,
@@ -152,19 +152,19 @@ function SolarTerm(DateGL){
 	}
 	var JQ;
 	if(DateGL.getDate()==BeginTime.getDate()){
-		JQ="½ñÌìÊÇ<b>"+SolarTermStr[M] + "</b>";
+		JQ="ä»Šå¤©æ˜¯<b>"+SolarTermStr[M] + "</b>";
 	}else if(DateGL.getDate()==BeginTime.getDate()-1){
-		JQ="Ã÷ÌìÊÇ<b>"+SolarTermStr[M] + "</b>";
+		JQ="æ˜å¤©æ˜¯<b>"+SolarTermStr[M] + "</b>";
 	}else if(DateGL.getDate()==BeginTime.getDate()-2){
-		JQ="ºóÌìÊÇ<b>"+SolarTermStr[M] + "</b>";
+		JQ="åå¤©æ˜¯<b>"+SolarTermStr[M] + "</b>";
 	}else{
 		JQ=""
 		if(DateGL.getMonth()==BeginTime.getMonth()){
-				JQ+="±¾ÔÂ";
+				JQ+="æœ¬æœˆ";
 		}else{
-			JQ+="ÏÂÔÂ";
+			JQ+="ä¸‹æœˆ";
 		}
-		JQ+=BeginTime.getDate()+"ÈÕ"+"<b>"+SolarTermStr[M]+"</b>";
+		JQ+=BeginTime.getDate()+"æ—¥"+"<b>"+SolarTermStr[M]+"</b>";
 	}
 	return JQ;
 }
