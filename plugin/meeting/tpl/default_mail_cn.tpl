@@ -7,9 +7,9 @@
 			<BR />
 			<TEXTAREA COLS="110" ROWS="40" ID="emailcontent">
 尊敬的 <!--record_name-->：
- 
+
 欢迎您参加“<!--name-->”！
- 
+
 您报名信息已经收到。请确认下列注册信息正确无误：
 <?php
 global $record;
@@ -18,17 +18,17 @@ foreach($para as $key => $value) {
 	echo $value['title']."：".$record[$key]."\n";
 }
 ?>
- 
+
 住宿费用请到会当日与酒店前台接洽。
- 
+
 请将您的会议费 <!--record_total--> 元汇至以下地址：
 收款单位： 中国食品土畜进出口商会
 开户行：交通银行东单支行
 帐号： 110060194018010001190
 汇入地点：北京
- 
+
 <!--name-->
- 
+
 Tel: +86-10-87109800
 Fax: +86-10-87109800
 Email: cccfna@cccfna.org.cn

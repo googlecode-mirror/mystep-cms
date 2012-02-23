@@ -18,6 +18,9 @@ $(function(){
 			$(window).scroll(function() {
 				new_title.css("top", $(document.body).scrollTop());
 			});
+			$(window).resize(function() {
+				new_title.css("top", $(document.body).scrollTop());
+			});
 		}
 	}
 });

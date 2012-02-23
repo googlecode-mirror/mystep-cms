@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__)."/class.php");
+require(dirname(__FILE__)."/class.php");
 
 $mystep->regTag("survey", "plugin_survey::survey");
 $mystep->regTag("survey_list", "plugin_survey::survey_list");

@@ -10,7 +10,7 @@
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
-		<tr align="center"> 
+		<tr align="center">
 			<td class="cat" width="30"><a href="?keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
 			<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=user&order_type=<!--order_type-->"><font color="#000000">管理员</font></a></td>
 			<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=group&order_type=<!--order_type-->"><font color="#000000">级别</font></a></td>
@@ -31,7 +31,7 @@
 			<td class="row" align="left"><!--record_link--></td>
 			<td><!--record_comment--></a></td>
 			<td><!--record_time--></td>
-		 </tr>
+		</tr>
 <!--loop:end-->
 	</table>
 </div>

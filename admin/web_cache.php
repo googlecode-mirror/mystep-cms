@@ -33,9 +33,12 @@ mystep;
 	unset($setting);
 	$setting = $cur_setting;
 } elseif($method=="clean") {
+	ignore_user_abort("on");
 	set_time_limit(0);
 	$log_info = $setting['language']['admin_web_cache_clean'];
-	$ccList = ",".implode(",", $_POST['ccache']).",";
+	$ccList = $req->getReq("list");
+	if(empty($ccList)) $ccList = implode(",", $req->getPost('ccache'));
+	$ccList = ",".$ccList.",";
 	
 	if(strpos($ccList, ",1,")!==false) {
 		$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";

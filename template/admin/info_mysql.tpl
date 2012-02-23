@@ -7,10 +7,10 @@ $mysql_stat = $db->GetStat();
 foreach($mysql_stat as $key => $value) {
 	$value = str_replace("\n", "<br />", $value);
 	echo <<<mystep
-	 <tr>
-		 <td class="cat" width="250">{$key}</td>
-		 <td class="row">{$value}</td>
-	 </tr>
+	<tr>
+		<td class="cat" width="250">{$key}</td>
+		<td class="row">{$value}</td>
+	</tr>
 mystep;
 }
 ?>

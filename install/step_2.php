@@ -15,7 +15,8 @@
 	</div>
 <?php
 $web_url = "http://".$req->getServer("SERVER_NAME").str_replace("\\", "/", dirname(dirname($req->getServer("SCRIPT_NAME"))));
-$cookie_domain = ".".implode(".", array_slice(explode(".", $req->getServer("SERVER_NAME")), -2));
+//$cookie_domain = ".".implode(".", array_slice(explode(".", $req->getServer("SERVER_NAME")), 1));
+$cookie_domain = $req->getServer("SERVER_NAME");
 ?>
 	<div class="main">
 		<form method="post" action="index.php" onsubmit="return checkForm(this)">

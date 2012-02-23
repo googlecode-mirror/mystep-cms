@@ -5,7 +5,7 @@
 * Author  : Windy2000                       *
 * Time    : 2010-12-16                      *
 * Email   : windy2006@gmail.com             *
-* HomePage: None (Maybe Soon)               *
+* HomePage: www.mysteps.cn                  *
 * Notice  : U Can Use & Modify it freely,   *
 *           BUT HOLD THIS ITEM PLEASE.      *
 *                                           *
@@ -29,7 +29,7 @@ class MyStep extends class_common {
 		global $setting, $class_list;
 		if(!class_exists($calledClass)) {
 			if(isset($class_list[$calledClass]) && defined('ROOT_PATH')) {
-				include_once(ROOT_PATH."/source/class/".$class_list[$calledClass]);
+				include(ROOT_PATH."/source/class/".$class_list[$calledClass]);
 			}
 			if (!class_exists($calledClass)) {
 				trigger_error("Unable to load class: ".$calledClass, E_USER_WARNING);
@@ -155,7 +155,8 @@ mystep;
 		
 		ob_start();
 		ob_implicit_flush(false);
-
+		
+		$setting['cookie']['prefix'] .= substr(md5($_SERVER["USERNAME"].$_SERVER["COMPUTERNAME"].$_SERVER["OS"]), 0, 4)."_";
 		if($setting['session']['mode']=="sess_file") $setting['session']['path'] = ROOT_PATH."/".$setting['path']['cache']."/session/".date("Ymd")."/";
 		$req = $this->getInstance("MyReq", $setting['cookie'], $setting['session']);
 		$db = $this->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);

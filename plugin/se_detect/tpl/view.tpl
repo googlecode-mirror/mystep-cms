@@ -1,7 +1,7 @@
 <div class="title"><!--title--></div>
 <div class="nav">
 	<a href="agent.txt" target="_blank">查看未登记搜索引擎记录</a>
- | 
+ |
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，&nbsp;
 	<a href="<!--page_first-->">首页</a>&nbsp;
 	<a href="<!--page_prev-->">上页</a>&nbsp;
@@ -32,7 +32,7 @@
 </div>
 <div class="nav">
 	<a href="agent.txt" target="_blank">查看未登记搜索引擎记录</a>
- | 
+ |
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，&nbsp;
 	<a href="<!--page_first-->">首页</a>&nbsp;
 	<a href="<!--page_prev-->">上页</a>&nbsp;

@@ -32,6 +32,7 @@ switch($method) {
 		$mydb->closeTBL();
 		break;
 	case "update":
+		ignore_user_abort("on");
 		set_time_limit(0);
 		$result = array();
 		$header = array();

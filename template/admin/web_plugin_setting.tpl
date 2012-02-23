@@ -3,10 +3,10 @@
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form id="setting" method="post" action="?method=setting_ok" onsubmit="return checkForm(this, checkPass)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
-			<tr> 
+			<tr>
 				<td align="center" colspan=2" class="cat">“<!--name-->”参数设置</td>
 			</tr>
-			<tr> 
+			<tr>
 				<td colspan=2" class="row" style="line-height:18px;"><!--description--></td>
 			</tr>
 <?PHP
@@ -16,7 +16,7 @@ include(ROOT_PATH."/plugin/".$idx."/config-detail.php");
 
 if(!isset($setting_type)) {
 	echo <<<content
-			<tr> 
+			<tr>
 				<td colspan="2" align="center" class="row" style="font-size:24px;font-weight:bold;">{$setting['language']['admin_web_plugin_err']}</td>
 			</tr>
 content;
@@ -91,7 +91,7 @@ content;
 	}
 }
 ?>
-			<tr> 
+			<tr>
 				<td class="cat" align="right">子站赋权</td>
 				<td class="row">
 					<div id="subweb" style="width:500px;">
@@ -102,7 +102,7 @@ content;
 					</div>
 				</td>
 			</tr>
-			<tr> 
+			<tr>
 				<td align="center" colspan=2" class="cat">
 					<input type="hidden" value="<!--idx-->" name="idx" />
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;

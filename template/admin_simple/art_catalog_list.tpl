@@ -4,7 +4,7 @@
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=order" onsubmit="return checkForm(this)">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
-		<tr align="center"> 
+		<tr align="center">
 			<td class="cat" width="40">電會</td>
 			<td class="cat">侭奉利嫋</td>
 			<td class="cat">生朕兆各</td>

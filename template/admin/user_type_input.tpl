@@ -3,7 +3,7 @@
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
-			<tr> 
+			<tr>
 				<td class="cat" width="120">分类名称：<span>*</span></td>
 				<td class="row">
 					<input name="type_id" type="hidden" value="<!--type_id-->" />
@@ -11,7 +11,7 @@
 				</td>
 			</tr>
 <!--loop:start key="user_power"-->
-			<tr> 
+			<tr>
 				<td class="cat" width="120"><!--user_power_name-->：<span>*</span></td>
 				<td class="row">
 					<input name="<!--user_power_idx-->" type="text" maxlength="100" value="<!--user_power_value-->" need="<!--user_power_format-->" />
@@ -19,8 +19,8 @@
 				</td>
 			</tr>
 <!--loop:end-->
-			<tr>
-				<td align="center" colspan="2" class="cat"> 
+			<tr class="row">
+				<td align="center" colspan="2">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />

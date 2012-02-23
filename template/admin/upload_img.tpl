@@ -1,7 +1,7 @@
 <br />
 <form name="upload" method="post" ACTION="<!--self-->?<!--parent_element-->" target="upload_file" ENCTYPE="multipart/form-data" >
 	<table border="0" cellspacing="0" width="400">
-		<tr id=load>
+		<tr id="load">
 			<td align="center">
 				<input type="hidden" name="MAX_FILE_SIZE" value="<!--MaxSize-->" />
 				上传图像：
@@ -11,7 +11,7 @@
 				<input type="button" name="Close" value=" 关 闭 " onclick="if(parent==null){self.close();}else{parent.$.closePopupLayer();}" />
 			</td>
 		</tr>
-		<tr id=wait style="display:none">
+		<tr id="wait" style="display:none">
 			<td align="center">
 				正在上传，请稍侯......
 			</td>
@@ -47,8 +47,8 @@ function check(){
 		document.getElementById("wait").style.display = "";
 		document.upload.submit();
 	}else{
- 	alert("只能上传图形文件！");
- 	document.upload.the_file.outerHTML = document.upload.the_file.outerHTML;
+	alert("只能上传图形文件！");
+	document.upload.the_file.outerHTML = document.upload.the_file.outerHTML;
 	document.upload.the_file.focus();
 	}
 }

@@ -3,7 +3,7 @@ require("inc.php");
 $method	= $req->getGet("method");
 $path_upload = ROOT_PATH."/".$setting['path']['upload'];
 $script = "";
-set_time_limit(0); 
+set_time_limit(0);
 switch($method) {
 	case "add_ok":
 		$comment = $req->getPost('comment');
@@ -16,12 +16,11 @@ switch($method) {
 		$max_count = count($upload->upload_result);
 		for($i=0; $i<$max_count; $i++) {
 			if($upload->upload_result[$i]['error'] == 0) {
-				$upload->upload_result[$i]['name'] = strtolower($upload->upload_result[$i]['name']);
 				$ext = strrchr($upload->upload_result[$i]['name'], ".");
 				$name = str_replace($ext, "", $upload->upload_result[$i]['name']);
 				$upload->upload_result[$i]['name'] = substrPro($name, 0, 80).$ext;
 				$upload->upload_result[$i]['new_name'] = str_replace(".upload", "", $upload->upload_result[$i]['new_name']);
-				$str_sql = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$upload->upload_result[$i]['name']."', '".$upload->upload_result[$i]['type']."', '".$upload->upload_result[$i]['size']."', '{$comment}', '".str_replace(strrchr($upload->upload_result[$i]['new_name'],"."),"",$upload->upload_result[$i]['new_name'])."', 0, '', '".$req->getSession('username')."', {$watermark})";
+				$str_sql = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$upload->upload_result[$i]['name']."', '".$upload->upload_result[$i]['type']."', '".$upload->upload_result[$i]['size']."', '{$comment}', '".substr($upload->upload_result[$i]['new_name'],0,13)."', 0, '', '".$req->getSession('username')."', {$watermark})";
 				$db->Query($str_sql);
 				$new_id = $db->GetInsertId();
 				if($new_id != 0) {
@@ -81,9 +80,11 @@ mystep;
 			$max_count = count($del_att);
 			for($i=0; $i<$max_count; $i++) {
 				$the_file = explode("::", $del_att[$i]);
-				$time = substr(str_replace(strrchr($the_file[1], "."), "", $the_file[1]), 0, 10);
+				$time = substr($the_file[1], 0, 10);
 				unlink($path_upload.date("/Y/m/d/", $time).$the_file[1]);
 				unlink($path_upload.date("/Y/m/d/", $time)."preview/".$the_file[1]);
+				unlink($path_upload.date("/Y/m/d/", $time)."cache/".$the_file[1]);
+				unlink($path_upload.date("/Y/m/d/", $time)."preview/cache/".$the_file[1]);
 				$db->Query("delete from ".$setting['db']['pre']."attachment where id = ".$the_file[0]);
 				$script .= <<<mystep
 						var theOLE = parent || opener;
@@ -129,6 +130,7 @@ mystep;
 		while($record = $db->GetRS()) {
 			$att_more = false;
 			$record['check'] = $record['watermark'] ? "checked" : "";
+			$record['file_name_new'] = $record['file_time'].substr(md5($record['file_size']),0,5);
 			$record['file_ext'] = strrchr($record['file_name'], ".");
 			$tpl_tmp->Set_Loop("record", $record);
 		}

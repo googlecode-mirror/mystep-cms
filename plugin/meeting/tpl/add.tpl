@@ -160,7 +160,7 @@
 					<option value="time">合法时间</option>
 					<option value="tel">电话号码</option>
 					<option value="fax">传真号码</option>
-				</select> &nbsp; 
+				</select> &nbsp;
 				<input name="needed" type="checkbox" style="width:20px;" />必填项
 			</td>
 		</tr>
@@ -252,16 +252,35 @@ function orderItem(item, mode) {
 	var pre_item = null;
 	var nxt_item = null;
 	var new_order = new Object();
+	var tmp = null
 	for(var i in reg_item) {
 		new_order[i] = reg_item[i];
 		if(nxt_item!=null) {
-			new_order[nxt_item] = reg_item[nxt_item];
+			if($.browser.msie) {
+				//For a IE BUG
+				tmp = copyObj(new_order);
+				tmp[nxt_item] = reg_item[nxt_item];
+				delete new_order;
+				new_order = copyObj(tmp);
+				delete tmp;
+			} else {
+				new_order[nxt_item] = reg_item[nxt_item];
+			}
 			nxt_item = null;
 		}
 		if(i==item) {
 			if(mode==1 && pre_item!=null) {
 				delete new_order[pre_item];
-				new_order[pre_item] = reg_item[pre_item];
+				if($.browser.msie) {
+					//For a IE BUG
+					tmp = copyObj(new_order);
+					tmp[pre_item] = reg_item[pre_item];
+					delete new_order;
+					new_order = copyObj(tmp);
+					delete tmp;
+				} else {
+					new_order[pre_item] = reg_item[pre_item];
+				}
 			} else {
 				delete new_order[i];
 				nxt_item = i;
@@ -273,6 +292,13 @@ function orderItem(item, mode) {
 	$id("itemlist").value = $.toJSON(reg_item);
 	refreshItem();
 	return;
+}
+function copyObj(obj) {
+	var new_obj = new Object();
+	for(var i in obj) {
+		new_obj[i] = obj[i];
+	}
+	return new_obj;
 }
 function confirmItem(mode) {
 	switch(mode) {

@@ -2,7 +2,7 @@
 <div class="addnew"><a href="?method=add">添加规则</a></div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
-		<tr align="center"> 
+		<tr align="center">
 			<td class="cat" width="120">编号</td>
 			<td class="cat" width="120">相关页面</td>
 			<td class="cat">功能描述</td>

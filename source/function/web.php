@@ -5,7 +5,7 @@
 * Author  : Windy2000                       *
 * Time    : 2006-05-03                      *
 * Email   : windy2006@gmail.com             *
-* HomePage: None (Maybe Soon)               *
+* HomePage: www.mysteps.cn                  *
 * Notice  : U Can Use & Modify it freely,   *
 *           BUT HOLD THIS ITEM PLEASE.      *
 *                                           *
@@ -127,6 +127,12 @@ function getList($layer = 1, $cat_main = 0) {
 
 function buildParaList($idx) {
 	global $db, $setting;
+	if(empty($db)) {
+		$db = new MySQL;
+		$db->init($setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
+		$db->Connect($setting['db']['pconnect'], $setting['db']['name']);
+		$new_db = true;
+	}
 	$cache_para = array();
 	switch($idx) {
 		case "news_cat":
@@ -238,6 +244,10 @@ function buildParaList($idx) {
 	}
 	$db->Free();
 	if($cache_para) buildCache($idx, $cache_para);
+	if(isset($new_db)) {
+		$db->close();
+		unset($db);
+	}
 	return $cache_para ? true : false;
 }
 
@@ -376,7 +386,7 @@ function delCacheFile($news_id, $web_id=0) {
 	$db_pre = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
 	list($cat_idx, $add_date, $page_count)=array_values($db->GetSingleRecord("select b.cat_idx, a.add_date, a.pages from ".$db_pre."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where a.news_id='{$news_id}'"));
 	if(is_null($cat_idx) || is_null($add_date)) return false;
-	$file_idx = ROOT_PATH."/".$setting['path']['cache']."/".$cat_idx."/".date("Ym",strtotime($add_date))."/".$news_id;
+	$file_idx = ROOT_PATH."/".$setting['path']['cache']."/html/".$setting_sub['info']['idx']."/".date("Y/md",strtotime($add_date))."/".$news_id;
 	unlink($file_idx.$setting['gen']['cache_ext']);
 	for($i=2; $i<=$page_count; $i++) {
 		unlink($file_idx."_{$i}".$setting['gen']['cache_ext']);
@@ -439,16 +449,16 @@ function PageList($page, $page_count, $show=6) {
 		} else if($page<$show) {
 			$page_start = 2;
 			$page_end = $show + 1;
-			$page_more_end = 'бнбн ';
+			$page_more_end = '&#8230;&#8230; ';
 		} else if($page+$show>$page_count) {
 			$page_start = $page_count - $show;
 			$page_end = $page_count;
-			$page_more_start = 'бнбн ';
+			$page_more_start = '&#8230;&#8230; ';
 		} else {
 			$page_start = $page - $show/2;
 			$page_end = $page + $show/2 + 1;
-			$page_more_start = 'бнбн ';
-			$page_more_end = 'бнбн ';
+			$page_more_start = '&#8230;&#8230; ';
+			$page_more_end = '&#8230;&#8230; ';
 		}
 
 		if($page==1) {
@@ -561,7 +571,7 @@ function __autoload($class_name) {
 	if($class_name=="parent") return;
 	global $class_list;
 	if(isset($class_list[$class_name]) && defined('ROOT_PATH')) {
-		include_once(ROOT_PATH."/source/class/".$class_list[$class_name]);
+		include(ROOT_PATH."/source/class/".$class_list[$class_name]);
 	}
 	if (!class_exists($class_name, false)) {
 		trigger_error("Unable to load class: {$class_name}", E_USER_WARNING);

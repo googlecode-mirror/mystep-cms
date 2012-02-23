@@ -20,7 +20,7 @@ foreach($setting as $key1 => $value1) {
 		$cur_comment = $setting_comm[$key1."_comm"];
 		$cur_section = $key1;
 		echo <<<content
-			<tr> 
+			<tr>
 				<td class="cat" colspan="2"><a name="{$key1}">{$cur_comment}</a></td>
 			</tr>
 content;

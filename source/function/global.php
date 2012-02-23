@@ -5,7 +5,7 @@
 * Author  : Windy2000                       *
 * Time    : 2003-05-03                      *
 * Email   : windy2006@gmail.com             *
-* HomePage: None (Maybe Soon)               *
+* HomePage: www.mysteps.cn                  *
 * Notice  : U Can Use & Modify it freely,   *
 *           BUT HOLD THIS ITEM PLEASE.      *
 *                                           *
@@ -163,20 +163,24 @@ function arrayMerge($arr_1, $arr_2) {
 	} else {
 		foreach($arr_1 as $key => $value) {
 			if(isset($arr_2[$key])) {
-				if(is_array($arr_2[$key])) {
-					$arr_1[$key] = arrayMerge($arr_1[$key], $arr_2[$key]);
+				if(is_array($arr_1[$key])) {
+					if(is_array($arr_2[$key])) {
+						$arr_1[$key] = arrayMerge($arr_1[$key], $arr_2[$key]);
+					} else {
+						$arr_1[$key][] = $arr_2[$key];
+					}
 				} else {
-					$arr_1[$key] = $arr_2[$key];
+					if(is_array($arr_2[$key])) {
+						$arr_1[$key] = arrayMerge(array($arr_1[$key]), $arr_2[$key]);
+					} else {
+						$arr_1[$key] = $arr_2[$key];
+					}
 				}
 			}
 		}
 		foreach($arr_2 as $key => $value) {
 			if(!isset($arr_1[$key])) {
-				if(is_array($arr_1[$key])) {
-					$arr_1[$key] = arrayMerge($arr_1[$key], $arr_2[$key]);
-				} else {
-					$arr_1[$key] = $arr_2[$key];
-				}
+				$arr_1[$key] = $arr_2[$key];
 			}
 		}
 	}
@@ -351,19 +355,34 @@ function toString($var) {
 	}
 	return $result;
 }
+
+function strToHex($string) {
+	$hex='';
+	for ($i=0, $m=strlen($string); $i<$m; $i++) {
+		$hex .= dechex(ord($string[$i]));
+	}
+	return $hex;
+}
+function hexToStr($hex) {
+	$string='';
+	for ($i=0, $m=strlen($hex)-1; $i<$m; $i+=2) {
+		$string .= chr(hexdec($hex[$i].$hex[$i+1]));
+	}
+	return $string;
+}
 /*---------------------------------------String Functions End-------------------------------------*/
 
 
 /*---------------------------------------Functions 4 File Start---------------------------------------*/
 function RemoveHeader($content) {
-	//Coded By Windy_sk 20070420 v1.1
+	//Coded By Windy2000 20070420 v1.1
 	$content = preg_replace("/^.+?\r\n\r\n/s", "", $content);
 	$content = preg_replace("/^\w+[\r\n]+/", "", $content);
 	return $content;
 }
 
 function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $timeout=10) {
-	//Coded By Windy_sk 20080320 v1.4
+	//Coded By Windy2000 20080320 v1.4
 	$errno = "";
 	$errmsg = "";
 	extract(parse_url($url), EXTR_SKIP);
@@ -443,7 +462,7 @@ return $d;
 
 
 function GetRemoteFile($remote_file, $local_file) {
-	//Coded By Windy_sk 20080402 v1.3
+	//Coded By Windy2000 20080402 v1.3
 	MakeDir(dirname($local_file));
 	$fp_r = @fopen($remote_file, "rb");
 	$fp_w = @fopen($local_file, "wb");
@@ -568,11 +587,11 @@ function MultiDel($dir){
 		while(($file = readdir($mydir)) !== false) {
 			if($file!="." && $file!="..") {
 				$the_name = $dir."/".$file;
-				is_dir($the_name) ? MultiDel($the_name) : unlink($the_name);
+				is_dir($the_name) ? MultiDel($the_name) : @unlink($the_name);
 			}
 		}
 		closedir($mydir);
-		rmdir($dir);
+		@rmdir($dir);
 	}else{
 		if(is_file($dir)) unlink($dir);
 	}
@@ -629,9 +648,9 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 		$img_wm->init($new_watermark);
 		list($wm_width, $wm_height) = $img_wm->getSize();
 		
-		list($alpha, $rate) = $para;
+		list($alpha, $rate) = array_values($para);
 		if(is_null($alpha)) $alpha = 60;
-		if(is_null($rate)) $rate = 10;
+		if(is_null($rate)) $rate = 4;
 		if($rate!=1) {
 			$wm_rate = min($img->width/$rate/$wm_width, $img->height/$rate/$wm_height);
 			$wm_width *= $wm_rate;
@@ -852,5 +871,5 @@ function debug() {
 	echo "</pre>";
 	exit;
 }
-/*---------------------------------------Misc Functions Endt------------------------------------------*/
+/*---------------------------------------Misc Functions End------------------------------------------*/
 ?>

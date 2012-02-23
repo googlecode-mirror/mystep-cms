@@ -65,6 +65,8 @@ switch($method) {
 			$db->Free();
 			$db->BatchExec($sql_list);
 			delCacheFile($news_id, $setting_sub["info"]['web_id']);
+			getData("select cat_id, add_date, pages, subject, view_lvl from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "remove");
+			getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "remove");
 		}
 		break;
 	case "unlock":
@@ -152,6 +154,7 @@ switch($method) {
 				$str_sql = $db->buildSQL($setting['db']['pre_sub']."news_show", $_POST, "update", "news_id={$news_id}");
 				delCacheFile($news_id, $setting_sub["info"]['web_id']);
 				getData("select cat_id, add_date, pages, subject, view_lvl from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "remove");
+				getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "remove");
 			}
 			$db->Query($str_sql);
 	
@@ -203,7 +206,7 @@ switch($method) {
 
 if(!empty($log_info)) {
 	write_log($log_info, "news_id={$news_id}");
-	$goto_url = $setting['info']['self']."?web_id=".$web_id."&cat_id=".$cat_id;
+	$goto_url = ($method=="unlock" ||$method=="delete") ? $req->getServer("HTTP_REFERER") : ($setting['info']['self']."?web_id=".$web_id."&cat_id=".$cat_id);
 }
 $mystep->pageEnd(false);
 

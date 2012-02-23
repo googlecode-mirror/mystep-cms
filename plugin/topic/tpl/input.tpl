@@ -59,8 +59,8 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td class="cat" colspan="2" align="center" style="padding:20px">
+			<tr class="row">
+				<td colspan="2" align="center">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="history.go(-1)" />
@@ -104,8 +104,8 @@
 					<td class="cat">链接排序：</td>
 					<td class="row"><input name="link_order" type="text" maxlength="3" value="0" need="digital" /><span class="comment">（链接排序，序号越大越靠前）</span></td>
 				</tr>
-				<tr>
-					<td class="cat" colspan="2" align="center">
+				<tr class="row">
+					<td colspan="2" align="center">
 						<input class="btn" type="Submit" value=" 确 定 " name="Submit" />&nbsp;&nbsp;
 						<input class="btn" type="reset" value=" 重 置 " name="reset" />&nbsp;&nbsp;
 						<input class="btn" type="button" value=" 清 空 " name="empty" onclick="location.href='topic_link.php?method=empty&topic_id=<!--topic_id-->'" />

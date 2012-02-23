@@ -6,8 +6,8 @@
 			<td class="cat" width="250">网站程序版本</td>
 			<td class="row">
 				V<?=$ms_version['ver']?> （<?=$ms_version['language']?>/<?=$ms_version['charset']?>/<?=$ms_version['date']?>）
-				<a href="###" onclick="checkUpdate()">检查升级</a> | 
-				<a href="###" onclick="emptyUpdate()">清空升级信息</a> | 
+				<a href="###" onclick="checkUpdate()">检查升级</a> |
+				<a href="###" onclick="emptyUpdate()">清空升级信息</a> |
 				<a href="###" onclick="exportUpdate()">导出升级信息</a>
 			</td>
 		</tr>

@@ -5,7 +5,7 @@
 * Author  : Windy2000                       *
 * Time    : 2003-05-10                      *
 * Email   : windy2006@gmail.com             *
-* HomePage: None (Maybe Soon)               *
+* HomePage: www.mysteps.cn                  *
 * Notice  : U Can Use & Modify it freely,   *
 *           BUT HOLD THIS ITEM PLEASE.      *
 *                                           *
@@ -77,7 +77,7 @@ class MyUploader extends class_common {
 			case 0:
 				$file_ext = strtolower(strrchr($this->upload_result[$this->upload_counter]['name'],"."));
 				if(strpos($this->upload_banlst, str_replace(".", "", $file_ext))!==false) $file_ext .= ".upload";
-				$this->upload_result[$this->upload_counter]['new_name'] = $this->upload_rename?($this->GetMicrotime().rand().$file_ext):$this->upload_result[$this->upload_counter]['name'];
+				$this->upload_result[$this->upload_counter]['new_name'] = $this->upload_rename?($this->GetMicrotime().substr(md5($this->upload_result[$this->upload_counter]['size']),0,5).$file_ext):$this->upload_result[$this->upload_counter]['name'];
 				if(file_exists($this->upload_path.$this->upload_result[$this->upload_counter]['new_name'])) {
 					$this->upload_result[$this->upload_counter]['message']	= "The Same-name-file Has Existed In The Upload Path !";
 					$this->upload_result[$this->upload_counter]['error'] = 4;
@@ -86,7 +86,6 @@ class MyUploader extends class_common {
 					if(filesize($this->upload_result[$this->upload_counter]['tmp_name'])==0) {
 						$this->upload_result[$this->upload_counter]['message'] = "Upload File Is Zero-length !";
 						$this->upload_result[$this->upload_counter]['error'] = 6;
-
 					} else {
 						if(move_uploaded_file($this->upload_result[$this->upload_counter]['tmp_name'], $this->upload_path.$this->upload_result[$this->upload_counter]['new_name'])) {
 							$this->upload_result[$this->upload_counter]['message'] = "Upload Succeeded !";

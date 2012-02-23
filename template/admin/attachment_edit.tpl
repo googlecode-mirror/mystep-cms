@@ -11,7 +11,7 @@
 	</tr>
 <!--loop:start key="record"-->
 	<tr class='row'>
-		<td align='center'><input type='checkbox' name='del_att[]' value='<!--record_id-->::<!--record_file_time--><!--record_file_ext-->' /></td>
+		<td align='center'><input type='checkbox' name='del_att[]' value='<!--record_id-->::<!--record_file_name_new--><!--record_file_ext-->' /></td>
 		<td><a href="javascript:" onclick="attach_add('<!--record_id-->', '<!--record_news_id-->', '<!--record_file_name-->', '<!--record_file_type-->')"><!--record_file_name--></a></td>
 		<td><!--record_file_type--></td>
 		<td align='right'><!--record_file_size--></td>

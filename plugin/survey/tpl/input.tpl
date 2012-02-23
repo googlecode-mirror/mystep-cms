@@ -30,7 +30,7 @@
 				<font>（用户投票需要达到的等级）</font>
 				</td>
 			</tr>
-			<tr> 
+			<tr>
 				<td class="cat">有效时间：</td>
 				<td class="row">
 				<select name="expire">
@@ -50,13 +50,13 @@
 				</select>
 				</td>
 			</tr>
-			<tr>
-				<td class="cat" colspan="2" align="center">
-				<input class="btn" type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
-				<input class="btn" type="reset" value=" 重 置 " name="reset">&nbsp;&nbsp;
-				<input class="btn" type="button" value=" 清 空 " name="empty" onClick="location.href='?method=empty&id=<!--record_id-->'">&nbsp;&nbsp;
-				<input class="btn" type="button" value=" 导 出 " name="export" onClick="location.href='?method=export&id=<!--record_id-->'">&nbsp;&nbsp;
-				<input class="btn" type="button" value=" 返 回 " name="return" onClick="history.go(-1)">
+			<tr class="row">
+				<td colspan="2" align="center">
+					<input class="btn" type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
+					<input class="btn" type="reset" value=" 重 置 " name="reset">&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 清 空 " name="empty" onClick="location.href='?method=empty&id=<!--record_id-->'">&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 导 出 " name="export" onClick="location.href='?method=export&id=<!--record_id-->'">&nbsp;&nbsp;
+					<input class="btn" type="button" value=" 返 回 " name="return" onClick="history.go(-1)">
 				</td>
 			</tr>
 		</table>
@@ -86,8 +86,8 @@
 					<td class="cat" width="80">链接地址：</td>
 					<td class="row"><input name="url" type="text" maxlength="100" need="url_" value=""> &nbsp; <font>（相关网址，可选）</font></td>
 				</tr>
-				<tr>
-					<td class="cat" colspan="2" align="center">
+				<tr class="row">
+					<td colspan="2" align="center">
 						<input class="btn" type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
 						<input class="btn" type="reset" value=" 重 置 " name="reset">&nbsp;&nbsp;
 					</td>

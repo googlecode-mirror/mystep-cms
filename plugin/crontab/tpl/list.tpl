@@ -18,7 +18,7 @@
 	<div id="page_main">
 		<div class="title"><!--title--></div>
 		<div class="addnew"><a href="?method=add">新建计划任务</a></div>
-		<div class="nav">运行状态：<!--status_info--> （<a href="<!--status_link-->"><!--status_txt--></a>） <a href="log.txt" target="_blank">查看运行状态</a></div>
+		<div class="nav">运行状态：<!--status_info--> （<a href="<!--status_link-->">点击<!--status_txt--></a>） <a href="log.txt" target="_blank">查看运行状态</a></div>
 		<div align="center">
 			<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 				<tr align="center">

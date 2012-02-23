@@ -13,7 +13,7 @@
 </div>
 <div align="center">
 			<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
-				<tr align="center"> 
+				<tr align="center">
 					<td class="cat" width="40"><a href="?keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
 					<td class="cat" width="55"><a href="?keyword=<!--keyword-->&order_type=<!--order_type-->&order=news_id"><font color="#000000">新闻索引</font></a></td>
 					<td class="cat"><a href="?keyword=<!--keyword-->&order_type=<!--order_type-->&order=file_name"><font color="#000000">附件名称</font></a></td>

@@ -10,7 +10,7 @@
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
-		<tr align="center"> 
+		<tr align="center">
 			<td class="cat" width="40">编号</td>
 			<td class="cat" width="60">所属网站</td>
 			<td class="cat">展示标题</td>

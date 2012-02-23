@@ -1,7 +1,7 @@
 <div class="title"><!--title--></div>
 <div class="nav">
 	<a href="?method=news_truncate">清空已抓取文章</a>
- | 
+ |
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，
 	<a href="<!--page_first-->">首页</a>&nbsp;
 	<a href="<!--page_prev-->">上页</a>&nbsp;
@@ -13,7 +13,7 @@
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
-		<tr align="center"> 
+		<tr align="center">
 			<td class="cat" width="30"><a href="?method=news&keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
 			<td class="cat"><a href="?method=news&keyword=<!--keyword-->&order=original&order_type=<!--order_type-->"><font color="#000000">来源网站</font></a></td>
 			<td class="cat"><a href="?method=news&keyword=<!--keyword-->&order=subject&order_type=<!--order_type-->"><font color="#000000">新闻标题</font></a></td>
@@ -35,7 +35,7 @@
 </div>
 <div class="nav">
 	<a href="?method=news_truncate">清空已抓取文章</a>
- | 
+ |
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，
 	<a href="<!--page_first-->">首页</a>&nbsp;
 	<a href="<!--page_prev-->">上页</a>&nbsp;

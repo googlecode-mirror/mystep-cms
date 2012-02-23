@@ -121,7 +121,7 @@ function showCat(theOle, theObjs, renew) {
 				if(e && e.preventDefault) {
 					e.preventDefault();
 				} else {
-					window.event.returnValue = false; 
+					window.event.returnValue = false;
 				}
 				return false;
 			});

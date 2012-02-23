@@ -4,7 +4,7 @@
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=order" onsubmit="return checkForm(this)">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
-		<tr align="center"> 
+		<tr align="center">
 			<td class="cat" width="40">ลละ๒</td>
 			<td class="cat" width="40">ฑเบล</td>
 			<td class="cat">ห๙ส๔อ๘ีพ</td>

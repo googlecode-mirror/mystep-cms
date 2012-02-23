@@ -5,7 +5,7 @@
 * Author  : Windy2000                       *
 * Time    : 2010-12-12                      *
 * Email   : windy2006@gmail.com             *
-* HomePage: None (Maybe Soon)               *
+* HomePage: www.mysteps.cn                  *
 * Notice  : U Can Use & Modify it freely,   *
 *           BUT HOLD THIS ITEM PLEASE.      *
 *                                           *
@@ -325,9 +325,9 @@ mytpl;
 				for($j=0; $j<$max_count1; $j++) {
 					if(empty($att_list[$j])) continue;
 					$tmp = explode("=", trim($att_list[$j]));
-					$tmp[1] = preg_replace('/\$(\w+)/', '{$GLOBALS[\1]}', $tmp[1]);
-					$tmp[1] = preg_replace('/#(\w+)/', '$GLOBALS["\1"]', $tmp[1]);
-					$tmp[1] = preg_replace('/\&(\w+)/', '<?=$GLOBALS["\1"]?>', $tmp[1]);
+					$tmp[1] = preg_replace('/^(.)\$(\w+)/', '\1{$GLOBALS[\2]}', $tmp[1]);
+					$tmp[1] = preg_replace('/^(.)#(\w+)/', '\1$GLOBALS["\2"]', $tmp[1]);
+					$tmp[1] = preg_replace('/^(.)\&(\w+)/', '\1<?=$GLOBALS["\2"]?>', $tmp[1]);
 					eval("\$cur_attrib['" . strtolower(trim($tmp[0])) . "'] = {$tmp[1]};");
 				}
 				$cur_result = call_user_func($this->tags[$tag_all[1][$i]], $this, $cur_attrib);

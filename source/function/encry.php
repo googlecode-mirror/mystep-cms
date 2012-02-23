@@ -4,8 +4,8 @@
 * Name    : Functions 4 Encrypt & Decrypt         *
 * Modifier: Windy2000                             *
 * Time    : 2003-05-03                            *
-* Email   : windy2006@gmail.com                    *
-* HomePage: None (Maybe Soon)                     *
+* Email   : windy2006@gmail.com                   *
+* HomePage: www.mysteps.cn                        *
 * Notice  : U Can Use & Modify it freely,         *
 *           BUT HOLD THIS ITEM PLEASE.            *
 *                                                 *

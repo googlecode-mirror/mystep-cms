@@ -5,7 +5,7 @@
 * Author  : Windy2000                       *
 * Time    : 2003-05-10                      *
 * Email   : windy2006@gmail.com             *
-* HomePage: None (Maybe Soon)               *
+* HomePage: www.mysteps.cn                  *
 * Notice  : U Can Use & Modify it freely,   *
 *           BUT HOLD THIS ITEM PLEASE.      *
 *                                           *
@@ -316,57 +316,21 @@ class MySQL extends class_common {
 		$result .= $tblInfo[1].";\n";
 		return $result;
 	}
-/*
-	public function GetTabSetting($the_tab) {
-		$this->Free();
-		$this->DB_qstr	 = "SHOW FIELDS FROM {$the_tab}";
-		$this->DB_result = mysql_query($this->DB_qstr);
-		if ($this->CheckError()) $this->Error("Could not List Table's Setting");
-		$result = "CREATE TABLE `$the_tab` (\n";
-		$P_key	= "";
-		while($row = mysql_fetch_assoc($this->DB_result)) {
-			$string = "	`".$row["Field"]."` ".$row["Type"]." ";
-			if($row["Null"] == "")		$string .= "NOT NULL ";
-			if($row["Default"] != "")	$string .= "Default \"".$row["Default"]."\" ";
-			if($row["Key"] == "PRI")	$P_key	.= "	PRIMARY KEY (`".$row["Field"]."`) ,\n";
-			if($row["Key"] == "UNI")	$P_key	.= "	UNIQUE KEY (`".$row["Field"]."`) ,\n";
-			//elseif($row["Key"] == "MUL")	$P_key	.= "	KEY `".$row["Field"]."` (`".$row["Field"]."`) ,\n";
-			$string .= $row["Extra"].",\n";
-			$result .= $string;
-		}
-		$result .= $P_key;
-		$idxes   = $this->GetIdx($the_tab);
-		$max_count = count($idxes);
-		for($i=0; $i<$max_count; $i++) {
-			$the_idx = preg_replace("/INDEX `([^`]+)` \(.*\)/", "\\1", $idxes[$i]);
-			if(strpos($P_key, $the_idx)===false) $result .= "	".$idxes[$i]." ,\n";
-		}
-		$result .= ")";
-		$result = str_replace(" ,\n)", "\n)", $result);
-		$this->Free();
-		$this->DB_qstr	 = "SHOW TABLE STATUS FROM `{$this->DB_db}` LIKE '{$the_tab}'";
-		$this->DB_result = mysql_query($this->DB_qstr);
-		if ($this->CheckError()) $this->Error("Could not List Table's Setting");
-		$row = mysql_fetch_assoc($this->DB_result);
-		$result .= " TYPE=".$row["Engine"];
-		if($row["Auto_increment"] != NULL) $result .= " AUTO_INCREMENT=".$row["Auto_increment"];
-		if($row["Comment"] != NULL) $result .= " COMMENT='".$row["Comment"]."'";
-		$result .= ";\n";
-		$result = "#Table Name: ".$row["Name"]."\n# Create Time: ".$row["Create_time"]."\n# Update Time: ".$row["Update_time"]."\n".$result;
-		$this->Free();
-		return $result;
-	}
-*/
+	
 	public function GetTabData($the_tab) {
 		$this->Free();
-		$this->DB_qstr	 = "SELECT * FROM $the_tab";
+		$the_tab = str_replace(".", "`.`", $the_tab);
+		$the_tab = "`".str_replace("``", "`", $the_tab)."`";
+		$this->DB_qstr	 = "SELECT * FROM ".$the_tab;
 		$this->DB_result = mysql_query($this->DB_qstr);
 		if ($this->CheckError()) $this->Error("Could not List Table's Setting");
 		$result = "";
 		while($row = mysql_fetch_row($this->DB_result)) {
-			$result .= "INSERT INTO `$the_tab` VALUES (";
+			$result .= "INSERT INTO {$the_tab} VALUES (";
 			$max_count = count($row);
 			for($i=0; $i<$max_count; $i++) {
+				//if(!is_numeric($row[$i])) $row[$i] = "0x".strToHex($row[$i]);
+				//$result .= $row[$i].", ";
 				$row[$i] = str_replace("\\", "\\\\", $row[$i]);
 				$row[$i] = str_replace("\r", "\\r", $row[$i]);
 				$row[$i] = str_replace("\n", "\\n", $row[$i]);
@@ -375,6 +339,7 @@ class MySQL extends class_common {
 			}
 			$result .= ");\n";
 		}
+		//$result = str_replace(", );",");",$result);
 		$result = str_replace("', );","');",$result);
 		return $result;
 	}

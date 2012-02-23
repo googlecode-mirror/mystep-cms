@@ -10,19 +10,19 @@
 					<input type="text" name="name" value="<!--name-->" need="" />
 				</td>
 			</tr>
-			<tr> 
+			<tr>
 				<td class="cat">网站索引：<span>*</span></td>
 				<td class="row">
 					<input type="text" name="idx" value="<!--idx-->" need="" />
 				</td>
 			</tr>
-			<tr> 
+			<tr>
 				<td class="cat">网站域名：<span>*</span></td>
 				<td class="row">
 					<input type="text" name="host" value="<!--host-->" need="" />
 				</td>
 			</tr>
-			<tr> 
+			<tr>
 				<td class="cat" colspan="2">子站参数设置：</td>
 			</tr>
 <?PHP
@@ -112,7 +112,7 @@ foreach($setting as $key1 => $value1) {
 		$cur_comment = $setting_comm[$key1."_comm"];
 		$cur_section = $key1;
 		echo <<<content
-			<tr style="display:none;"> 
+			<tr style="display:none;">
 				<td class="cat" colspan="2">{$cur_comment}</td>
 			</tr>
 content;
@@ -179,8 +179,8 @@ content;
 	}
 }
 ?>
-			<tr> 
-				<td align="center" colspan=2" class="cat"> 
+			<tr class="row">
+				<td align="center" colspan=2">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />

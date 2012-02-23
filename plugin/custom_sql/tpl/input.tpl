@@ -40,8 +40,8 @@
 					<textarea name="sql" rows="5" cols="100"><!--sql--></textarea>
 				</td>
 			</tr>
-			<tr>
-				<td colspan="2" align="center" class="row">
+			<tr class="row">
+				<td colspan="2" align="center">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />

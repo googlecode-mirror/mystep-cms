@@ -2,10 +2,10 @@
 /********************************************
 *                                           *
 * Name    : Excel Builder                   *
-* Author  : Windy_sk                        *
+* Author  : Windy2000                        *
 * Time    : 2004-08-08                      *
 * Email   : windy2006@gmail.com             *
-* HomePage: None (Maybe Soon)               *
+* HomePage: www.mysteps.cn                  *
 * Notice  : U Can Use & Modify it freely,   *
 *           BUT PLEASE HOLD THIS ITEM.      *
 *                                           *

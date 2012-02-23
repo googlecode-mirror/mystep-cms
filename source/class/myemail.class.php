@@ -2,10 +2,10 @@
 /********************************************
 *                                           *
 * Name    : MyEmail                         *
-* Modifier: Windy_sk                        *
+* Modifier: Windy2000                        *
 * Time    : 2011-12-26                      *
-* Email   : windy_sk@126.com                *
-* HomePage: None (Maybe Soon)               *
+* Email   : windy2006@gmail.com             *
+* HomePage: www.mysteps.cn                  *
 * Notice  : U Can Use & Modify it freely,   *
 *           BUT PLEASE HOLD THIS ITEM.      *
 *                                           *
@@ -189,7 +189,7 @@ Content-Transfer-Encoding: base64
 		$info = "";
 
 		if(!empty($para['mode'])) {
-			require_once("class.smtp.php");
+			require("class.smtp.php");
 			$smtp = new SMTP();
 			if(!$smtp->Connect((($para['mode']=="ssl" || $para['mode']=="ssl/tls")?"ssl://":"").$para['host'], $para['port'], 10)) {
 				$this->Error("Cannot connect to the mail server!");

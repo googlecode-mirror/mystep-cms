@@ -6,8 +6,8 @@
 * Author  : Windy2000                             *
 * Create  : 2003-09-03                            *
 * Modified: 2004-01-15                            *
-* Email   : windy_sk@126.com                      *
-* HomePage: None (Maybe Soon)                     *
+* Email   : Windy2000@126.com                     *
+* HomePage: www.mysteps.cn                        *
 * Notice  : U Can Use & Modify it freely,         *
 *           BUT HOLD THIS ITEM PLEASE.            *
 *                                                 *

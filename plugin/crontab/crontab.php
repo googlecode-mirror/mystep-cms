@@ -19,7 +19,6 @@ switch($method) {
 		if(count($_POST) == 0) {
 			$goto_url = $setting['info']['self'];
 		} else {
-			$log_info = $setting['language']['plugin_crontab_send'];
 			$_POST['next_date'] = date("Y-m-d H:i:s");
 			$_POST['schedule'] = implode(",", $_POST['schedule']);
 			if($method=="add_ok") {

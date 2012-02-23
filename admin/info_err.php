@@ -45,6 +45,7 @@ if(!is_file($err_file)) {
 		array_pop($err_lst);
 		$err_msg = sprintf($setting['language']['admin_info_err_info'], count($err_lst));
 		for($i=count($err_lst)-1; $i>=0; $i--) {
+			$err_lst[$i] = htmlspecialchars($err_lst[$i]);
 			$err_lst[$i] = preg_replace("/\n+/", "\n", $err_lst[$i]);
 			$err_lst[$i] = str_replace("\n", "\n<br />\n", $err_lst[$i]);
 			$err_lst[$i] = preg_replace("/^([\w \.]+:)/m", '<b>\1</b>', $err_lst[$i]);

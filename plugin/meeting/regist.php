@@ -44,34 +44,40 @@ if(count($_POST)>0) {
 	}
 }
 
-$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
+if(!empty($mid) && is_numeric($mid)) {
+	$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
+		
+	$tpl_info['idx'] = $mid."_".$module."_".($setting['gen']['language']=="en"?"en":"cn");
+	$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/setting/";
+	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
-$tpl_info['idx'] = $mid."_".$module."_".($setting['gen']['language']=="en"?"en":"cn");
-$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/setting/";
-$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-
-if($module=="regist") {
-	$tpl_tmp->allow_script = true;
-	global $para;
-	include("setting/{$mid}.php");
-} elseif($module=="reglist") {
-	global $limit;
-	$page = $req->getGet("page");
-	if(!is_numeric($page) || $page < 1) $page = 1;
-	$page_size = $setting['list']['txt'];
-	$count = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."meeting_".$mid);
-	$tpl_tmp->Set_Variable('meeting_count', $count);
-	$tpl_tmp->Set_Variable('page_list', PageList($page, ceil($count/$page_size)));
-	$tpl_tmp->Set_Variable('title', $setting['web']['title']);
-	$limit = (($page-1)*$page_size).", ".$page_size;
-	$GLOBALS['mid'] = $mid;
+	if($module=="regist") {
+		$tpl_tmp->allow_script = true;
+		global $para;
+		include("setting/{$mid}.php");
+	} elseif($module=="reglist") {
+		global $limit;
+		$page = $req->getGet("page");
+		if(!is_numeric($page) || $page < 1) $page = 1;
+		$page_size = $setting['list']['txt'];
+		$count = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."meeting_".$mid);
+		$tpl_tmp->Set_Variable('meeting_count', $count);
+		$tpl_tmp->Set_Variable('page_list', PageList($page, ceil($count/$page_size)));
+		$tpl_tmp->Set_Variable('title', $setting['web']['title']);
+		$limit = (($page-1)*$page_size).", ".$page_size;
+		$GLOBALS['mid'] = $mid;
+	}
+	
+	$GLOBALS['web_id'] = $setting['info']['web']['web_id'];
+	$tpl_tmp->Set_Variable('mid', $mid);
+	$tpl_tmp->Set_Variable('meeting_name', $db->GetSingleResult("select name".($setting['gen']['language']=="en"?"_en":"")." from ".$setting['db']['pre']."meeting where mid=".$mid));
+	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting,$db,$para'));
+	unset($tpl_tmp);
+	
+	$mystep->show($tpl);
+} else {
+	$goto_url = "/";
 }
 
-$tpl_tmp->Set_Variable('mid', $mid);
-$tpl_tmp->Set_Variable('meeting_name', $db->GetSingleResult("select name".($setting['gen']['language']=="en"?"_en":"")." from ".$setting['db']['pre']."meeting where mid=".$mid));
-$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting,$db,$para'));
-unset($tpl_tmp);
-
-$mystep->show($tpl);
 $mystep->pageEnd();
 ?>

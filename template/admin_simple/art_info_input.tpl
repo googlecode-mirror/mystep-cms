@@ -22,8 +22,8 @@
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td colspan="2" align="center" class="row">
+			<tr class="row">
+				<td colspan="2" align="center">
 					<input class="btn" name="attach_list" type="hidden" value="<!--attach_list-->">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
@@ -67,8 +67,8 @@ tinyMCE.init({
 			title : 'upload',
 			image : 'images/file.gif',
 			onclick : function() {
-		     showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
-		  }
+				showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
+			}
 		});
 		ed.addButton('change', {
 			title : 'Div Mode',
@@ -81,7 +81,7 @@ tinyMCE.init({
 					content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
 				}
 				tinyMCE.get('content').setContent(content);
-		  }
+			}
 		});
 	},
 

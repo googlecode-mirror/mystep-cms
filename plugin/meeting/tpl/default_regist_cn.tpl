@@ -15,9 +15,9 @@ foreach($para as $key => $value) {
 	if(empty($value['title'])) continue;
 	if(empty($value['comment'])) $value['comment'] = "ÎÞ×¢ÊÍ";
 	echo <<<mystep
-        <tr>
-          <td class="cat" width="80">{$value['title']}</td>
-          <td class="row">
+				<tr>
+					<td class="cat" width="80">{$value['title']}</td>
+					<td class="row">
 mystep;
 	switch($value['type']) {
 		case "text":
@@ -26,7 +26,7 @@ mystep;
 			$length = "";
 			if($value['length']!="") $length = ' len="'.$value['length'].'"';
 			echo <<<mystep
-          	<input name="{$key}" type="text" value="{$value['default']}" size="50"{$length}{$format} />
+						<input name="{$key}" type="text" value="{$value['default']}" size="50"{$length}{$format} />
 mystep;
 			break;
 		case "radio":
@@ -34,7 +34,7 @@ mystep;
 				$selected = ($value['value']['cn'][$i]==$value['default']?" checked":"");
 				$the_value = $i+1;
 				echo <<<mystep
-          	<input name="{$key}" id="i_{$key}_{$i}" type="radio" value="{$the_value}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['cn'][$i]}</label>
+						<input name="{$key}" id="i_{$key}_{$i}" type="radio" value="{$the_value}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['cn'][$i]}</label>
 mystep;
 			}
 			break;
@@ -44,7 +44,7 @@ mystep;
 				$selected = ($value['value']['cn'][$i]==$value['default']?" selected":"");
 				$the_value = $i+1;
 				echo <<<mystep
-          	<option value="{$the_value}"{$selected}>{$value['value']['cn'][$i]}</option>
+						<option value="{$the_value}"{$selected}>{$value['value']['cn'][$i]}</option>
 mystep;
 			}
 			echo "</select>";
@@ -54,13 +54,13 @@ mystep;
 				$selected = (strpos($value['default'], $value['value']['cn'][$i])!==false?" checked":"");
 				$the_value = pow(2, $i);
 				echo <<<mystep
-          	<input name="{$key}[]" id="i_{$key}_{$i}" type="checkbox" value="{$the_value}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['cn'][$i]}</label><br />
+						<input name="{$key}[]" id="i_{$key}_{$i}" type="checkbox" value="{$the_value}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['cn'][$i]}</label><br />
 mystep;
 			}
 			break;
 		case "textarea":
 			echo <<<mystep
-          	<textarea name="{$key}" style="width:100%;height:50px;">{$value['default']}</textarea><br />
+						<textarea name="{$key}" style="width:100%;height:50px;">{$value['default']}</textarea><br />
 mystep;
 			break;
 		default:
@@ -68,9 +68,9 @@ mystep;
 			break;
 	}
 	echo <<<mystep
-          	<span class="comment">£¨{$value['comment']}£©</span>
-          </td>
-        </tr>
+						<span class="comment">£¨{$value['comment']}£©</span>
+					</td>
+				</tr>
 mystep;
 }
 ?>

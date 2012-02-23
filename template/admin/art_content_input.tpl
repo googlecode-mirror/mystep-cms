@@ -14,23 +14,23 @@
 <!--loop:start key="catalog"-->
 						<option value="<!--catalog_cat_id-->" web_id="<!--catalog_web_id-->" view_lvl="<!--catalog_view_lvl-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
-					</select> &nbsp; 
+					</select> &nbsp;
 					<input style="width:80px" class="btn" type="button" onClick="showPop('newsCatalog','多栏目同时发布','id','newsCatalog',200);setMultiCata();" value="其他栏目" /> <span class="comment">（请选择当前文章所属的类别）</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat" width="80">文章标题：<span>*</span></td>
 				<td class="row">
-					<input name="subject" type="text" id="title" value="<!--record_subject-->" maxlength="100" need="" /> &nbsp; 
-					<select id="profix" onchange="title_change()" style="width:80px"></select> &nbsp; 
-					<input type="checkbox" class="cbox" name="style[]" id="style_b" value="b" <!--check_b--> /><label for="style_b">粗体</label> &nbsp; 
-					<input type="checkbox" class="cbox" name="style[]" id="style_i" value="i" <!--check_i--> /><label for="style_i">斜体</label> &nbsp; 
+					<input name="subject" type="text" id="title" value="<!--record_subject-->" maxlength="100" need="" /> &nbsp;
+					<select id="profix" onchange="title_change()" style="width:80px"></select> &nbsp;
+					<input type="checkbox" class="cbox" name="style[]" id="style_b" value="b" <!--check_b--> /><label for="style_b">粗体</label> &nbsp;
+					<input type="checkbox" class="cbox" name="style[]" id="style_i" value="i" <!--check_i--> /><label for="style_i">斜体</label> &nbsp;
 					<select id="color_list_title" name="style[]" style="width:60px"></select>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat" width="80">关 键 字：<span>*</span></td>
-				<td class="row"><input id="keyword" name="tag" type="text" value="<!--record_tag-->" maxlength="100" need="" /> 
+				<td class="row"><input id="keyword" name="tag" type="text" value="<!--record_tag-->" maxlength="100" need="" />
 				<span class="comment">（用于搜索相关资讯，多个关键字用逗号分隔）</span></td>
 			</tr>
 			<tr>
@@ -44,7 +44,7 @@
 			<tr>
 				<td class="cat">文章图示：</td>
 				<td class="row">
-					<input id="image" name="image" type="text" maxlength="150" value="<!--record_image-->" /> &nbsp; 
+					<input id="image" name="image" type="text" maxlength="150" value="<!--record_image-->" /> &nbsp;
 					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','新闻图示上传','url','upload_img.php?image',420, 100)" value="上传" />
 					<input style="width:60px" class="btn" type="button" onClick="showPop('newsImage','常用新闻图示选择','id','newsImage',570)" value="选择" />
 					<span class="comment">（文章标题图形显示）</span>
@@ -99,8 +99,8 @@
 					</div>
 				<td>
 			</tr>
-			<tr>
-				<td colspan="2" align="center" class="row">
+			<tr class="row">
+				<td colspan="2" align="center">
 					<input class="btn" name="attach_list" type="hidden" value="|">
 					<input class="btn" name="multi_cata" type="hidden" value="">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
@@ -116,7 +116,7 @@
 <div id="newsImage" class="popshow">
 <!--loop:start key="news_image"-->
 	<dl>
-		<dt><img src="<!--news_image_image-->" title="<!--news_image_keyword-->"  onclick="putImage(this)" /></dt>
+		<dt><img src="<!--news_image_image-->" title="<!--news_image_keyword-->"	onclick="putImage(this)" /></dt>
 		<dd><!--news_image_name--></dd>
 	</dl>
 <!--loop:end-->
@@ -170,8 +170,8 @@ tinyMCE.init({
 			title : 'upload',
 			image : 'images/file.gif',
 			onclick : function() {
-		     showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
-		  }
+				showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
+			}
 		});
 		ed.addButton('change', {
 			title : 'Div/P 模式切换',
@@ -184,7 +184,7 @@ tinyMCE.init({
 					content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
 				}
 				tinyMCE.get('content').setContent(content);
-		  }
+			}
 		});
 		ed.addButton('format', {
 			title : '文本格式化',
@@ -195,7 +195,7 @@ tinyMCE.init({
 				content = content.replace(/[\r\n]*<br(.*?)>[\r\n]*/ig, "</p>\n<p>");
 				content = content.replace(/<p>[\s　]+/ig, "<p>");
 				tinyMCE.get('content').setContent(content);
-		  }
+			}
 		});
 	},
 	

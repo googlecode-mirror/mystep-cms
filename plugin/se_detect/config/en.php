@@ -6,5 +6,5 @@ $setting_descr = array();
 $setting_descr['ban'] = "Forbid Visit of Specified SE, separate with comma.";
 
 $setting_type = array();
-$setting_type['ban'] = array("text", "", "200");
+$setting_type['ban'] = array("text", false, "200");
 ?>

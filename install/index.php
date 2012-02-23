@@ -4,10 +4,10 @@ if(is_file("../include/install.lock")) {
 	exit();
 }
 define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
-require_once(ROOT_PATH."/include/config.php");
-require_once(ROOT_PATH."/include/parameter.php");
-require_once(ROOT_PATH."/source/function/global.php");
-require_once(ROOT_PATH."/source/function/web.php");
+require(ROOT_PATH."/include/config.php");
+require(ROOT_PATH."/include/parameter.php");
+require(ROOT_PATH."/source/function/global.php");
+require(ROOT_PATH."/source/function/web.php");
 
 header("Expires: Tue, 1 Jan 1980 00:00:00 GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");

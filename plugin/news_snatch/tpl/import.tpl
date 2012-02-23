@@ -20,10 +20,10 @@ $(function(){
 		$("#info_show").html("开始导入文章，请稍候。。。");
 		setInterval(function() {
 			$.get(info_file, {rand:Math.random()}, function(data){
-			  if(data.length>0 && $("#info_show").html()!=data) {
-			  	$("#info_show").html(data);
-			  	window.scrollTo(0,document.body.scrollHeight);
-			  }
+				if(data.length>0 && $("#info_show").html()!=data) {
+					$("#info_show").html(data);
+					window.scrollTo(0,document.body.scrollHeight);
+				}
 			});
 		}, 10000);
 	}

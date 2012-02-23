@@ -47,7 +47,7 @@
 			<tr>
 				<td class="cat">发件地址：</td>
 				<td class="row">
-					<input name="from" type="text" value="<!--from-->" maxlength="80" need="" /> &nbsp; 
+					<input name="from" type="text" value="<!--from-->" maxlength="80" need="" /> &nbsp;
 					<input name="notification" id="notification" type="checkbox" class="cbox" value="checked" <!--notification--> /><label for="notification">阅读收条</label>
 				</td>
 			</tr>
@@ -108,8 +108,8 @@
 					</div>
 				<td>
 			</tr>
-			<tr>
-				<td colspan="2" align="center" class="row">
+			<tr class="row">
+				<td colspan="2" align="center">
 					<input class="btn" type="Submit" onclick="loadingShow()" value=" 发 送 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />

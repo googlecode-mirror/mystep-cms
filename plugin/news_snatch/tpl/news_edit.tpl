@@ -114,7 +114,7 @@ tinyMCE.init({
 					content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
 				}
 				tinyMCE.get('content').setContent(content);
-		  }
+			}
 		});
 		ed.addButton('format', {
 			title : '文本格式化',
@@ -125,7 +125,7 @@ tinyMCE.init({
 				content = content.replace(/[\r\n]*<br(.*?)>[\r\n]*/ig, "</p>\n<p>");
 				content = content.replace(/<p>[\s　]+/ig, "<p>");
 				tinyMCE.get('content').setContent(content);
-		  }
+			}
 		});
 	},
 	

@@ -27,7 +27,7 @@ $(function(){
 	upload_add_file();
 });
 </script>
-<form name="upload" method="post" ACTION="?method=add_ok" ENCTYPE="multipart/form-data">
+<form name="upload" method="post" ACTION="?method=add_ok" ENCTYPE="multipart/form-data" onsubmit="return false">
 	<table border="0" cellspacing="0">
 		<tr id="load">
 			<td style="padding:10px 10px 10px 10px;">
@@ -54,7 +54,7 @@ $(function(){
 						<option value="200"> 200 像素 </option>
 						<option value="100"> 100 像素 </option>
 					</select> &nbsp;
-					<input type="checkbox" id="watermark" name="watermark" value="1" <!--watermark_use--> /> <label for="watermark">添加图片水印</label> &nbsp;  (文件大小限制：<font color='red'><!--Max_size--></font>) &nbsp;  &nbsp; 
+					<input type="checkbox" id="watermark" name="watermark" value="1" <!--watermark_use--> /> <label for="watermark">添加图片水印</label> &nbsp;	(文件大小限制：<font color='red'><!--Max_size--></font>) &nbsp;	&nbsp;
 					<input type="button" name="Submit" value=" 上传文件 " onclick="check()" />
 				</div>
 			</td>

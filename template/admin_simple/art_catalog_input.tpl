@@ -63,8 +63,8 @@
 			<tr>
 				<td class="cat">阅读权限：<span>*</span></td>
 				<td class="row">
-					<input name="view_lvl_org" type="hidden" value="<!--view_lvl-->" /> 
-					<input name="view_lvl" type="text" maxlength="2" value="<!--view_lvl-->" need="digital" /> 
+					<input name="view_lvl_org" type="hidden" value="<!--view_lvl-->" />
+					<input name="view_lvl" type="text" maxlength="2" value="<!--view_lvl-->" need="digital" />
 					<span class="comment">（浏览当前分类文章需要达到的级别）</span></td>
 			</tr>
 			<tr>
@@ -102,8 +102,8 @@
 					<span class="comment">（显示于当前分类所有文章的提示文字）</span></td>
 				</td>
 			</tr>
-			<tr>
-				<td colspan="2" align="center" class="row">
+			<tr class="row">
+				<td colspan="2" align="center">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />

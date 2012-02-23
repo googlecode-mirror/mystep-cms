@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__)."/class.php");
+require(dirname(__FILE__)."/class.php");
 $mystep->regTag("comment", "plugin_comment::comment");
 $mystep->regTag("news_comment", "plugin_comment::news_comment");
 $mystep->regAjax("comment_post", "plugin_comment::ajax_post");

@@ -21,8 +21,8 @@ function check(){
 		document.getElementById("wait").style.display = "";
 		document.upload.submit();
 	}else{
- 	alert("只能上传图形文件！");
- 	document.upload.the_file.outerHTML = document.upload.the_file.outerHTML;
+	alert("只能上传图形文件！");
+	document.upload.the_file.outerHTML = document.upload.the_file.outerHTML;
 	document.upload.the_file.focus();
 	}
 }

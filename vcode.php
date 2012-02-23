@@ -1,5 +1,5 @@
 <?php
-define(ROOT_PATH, str_replace("\\", "/", dirname(__file__)));
+define('ROOT_PATH', str_replace("\\", "/", dirname(__file__)));
 include(ROOT_PATH."/include/config.php");
 include(ROOT_PATH."/include/parameter.php");
 include(ROOT_PATH."/source/function/global.php");

@@ -7,5 +7,5 @@
 <!--loop:end-->
 		<option value=""><!--lang_plugin_search_local--></option>
 	</select>
-	<input class="button" type="submit" value="  " />
+	<input class="button" type="submit" value="	" />
 </form>

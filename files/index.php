@@ -27,7 +27,7 @@ $cache = $mystep->getInstance("MyCache", $setting['web']['cache_mode']);
 if($record=getData("select * from ".$setting['db']['pre']."attachment where id = ".$id, "record", 1800)) {
 	$the_ext = ".".GetFileExt($record['file_name']);
 	$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d", substr($record['file_time'],0, 10));
-	$the_file = $record['file_time'];
+	$the_file = $record['file_time'].substr(md5($record['file_size']),0,5);
 	if($show_thumb && file_exists($the_path."/preview/".$the_file.$the_ext)) {
 		$the_file = $the_path."/preview/".$the_file;
 	} else {
@@ -35,8 +35,8 @@ if($record=getData("select * from ".$setting['db']['pre']."attachment where id =
 	}
 	if(file_exists($the_file.$the_ext)) {
 		$the_file .= $the_ext;
-	} elseif(file_exists($the_file.strtoupper($the_ext))) {
-		$the_file .= strtoupper($the_ext);
+	} elseif(file_exists(substr($the_file,0,-5).$the_ext)) {
+		$the_file = substr($the_file,0,-5).$the_ext;
 	} else {
 		header("HTTP/1.0 404 Not Found");
 		$db->close();
@@ -48,7 +48,7 @@ if($record=getData("select * from ".$setting['db']['pre']."attachment where id =
 	header("Content-type: ".$record['file_type']);
 	header("Accept-Ranges: bytes");
 	header("Accept-Length: ".$record['file_size']);
-	header("Content-Disposition: attachment; filename=".$record['file_name']);
+	header("Content-Disposition: attachment; filename=".chg_charset($record['file_name'], $setting['gen']['charset'],"utf-8"));
 	if(strpos($record['file_type'],"image")===0 && ($setting['watermark']['mode'] & 2)==2 && $record['watermark']==1) {
 		img_watermark($the_file, ROOT_PATH."/".$setting['watermark']['img'], dirname($the_file)."/cache/".basename($the_file), 3, array('rate'=>4, 'alpha'=>50));
 	} else {

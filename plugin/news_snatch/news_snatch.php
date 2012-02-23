@@ -83,7 +83,7 @@ $rules = '.var_export($rules, true).';
 		set_time_limit(0);
 		//$log_info = $setting['language']['plugin_news_snatch_snatch'];
 		$idx = $rules[$id]['idx'];
-		require_once("rule/".$idx."_snatch.php");
+		require("rule/".$idx."_snatch.php");
 		if($info = snatchGetInfo($rules[$id]['url'], $rules[$id]['para'])) {
 			$record = array();
 			$record['id'] = 0;
@@ -176,7 +176,7 @@ $rules = '.var_export($rules, true).';
 			include(ROOT_PATH."/include/config_main.php");
 		}
 		$setting_sub['db']['pre'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
-		require_once("rule/".$idx."_import.php");
+		require("rule/".$idx."_import.php");
 		if(!empty($id)) {
 			if($record=$db->getSingleRecord("select * from ".$setting['db']['pre']."news_snatch where id=".$id)) {
 				importData($record, $para);
@@ -340,7 +340,7 @@ function build_page($method) {
 	} elseif($method=="snatch") {
 		$refresh = 600;
 		if(isset($rules[$id]['para']['refresh'])) $refresh = $rules[$id]['para']['refresh'];
-		if(file_exists($info_snatch) && (time()-filemtime($info_snatch))<$refresh && $req->getReq("f")=="") {
+		if(false && file_exists($info_snatch) && (time()-filemtime($info_snatch))<$refresh && $req->getReq("f")=="") {
 			$show = $setting['language']['plugin_news_snatch_interrupt'];
 		} else {
 			$show = "";
@@ -361,7 +361,7 @@ function build_page($method) {
 		}
 		$refresh = 600;
 		if(isset($para['refresh'])) $refresh = $para['refresh'];
-		if(file_exists($info_import) && (time()-filemtime($info_import))<$refresh && $req->getReq("f")=="") {
+		if(false && file_exists($info_import) && (time()-filemtime($info_import))<$refresh && $req->getReq("f")=="") {
 			$show = $setting['language']['plugin_news_import_interrupt'];
 		} else {
 			$show = "";

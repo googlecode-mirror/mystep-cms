@@ -9,7 +9,7 @@
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
-		<tr align="center"> 
+		<tr align="center">
 			<td class="cat"><a href="?order=date&order_type=<!--order_type-->"><font color="#000000">统计日期</font></a></td>
 			<td class="cat"><a href="?order=pv&order_type=<!--order_type-->"><font color="#000000">访问页数</font></a></td>
 			<td class="cat"><a href="?order=iv&order_type=<!--order_type-->"><font color="#000000">访问人数</font></a></td>
@@ -26,7 +26,7 @@
 			<td><!--record_pv--></a></td>
 			<td><!--record_iv--></td>
 			<td><!--record_online--></td>
-		 </tr>
+		</tr>
 <!--loop:end-->
 	</table>
 </div>

@@ -1,7 +1,7 @@
 <?php
 $ms_version = array(
-	'ver' => '0.99.8.3',
-	'date' => '2012-02-13',
+	'ver' => '0.99.9',
+	'date' => '2012-02-22',
 	'charset' => 'GBK',
 	'language' => 'CHS',
 );
@@ -47,6 +47,6 @@ $sess_handle = array(
 	array($setting['session']['mode'], "sess_gc")
 );
 
-$setting['cookie']['prefix'] .= substr(md5($_SERVER["USERNAME"].$_SERVER["COMPUTERNAME"].$_SERVER["OS"]), 0, 4)."_";
+//User the parameter below to access admin page without login, empty to disable, check checkUser() function in "source/function/web.php" for the detail
 $authority = "";
 ?>

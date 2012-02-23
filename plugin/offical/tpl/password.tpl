@@ -1,7 +1,7 @@
 		<div class="login">
-			<div class="box"> 
-				<div class="title">修改密码</div> 
-				<div class="content"> 
+			<div class="box">
+				<div class="title">修改密码</div>
+				<div class="content">
 					<form id="login" method="post" onsubmit="reset_psw(this); return false;">
 						<div>原密码：<input type="password" name="psw_org" size="16" /></div>
 						<div>新密码：<input type="password" name="psw_new" size="16" /></div>
@@ -11,7 +11,7 @@
 							<input type="reset" value=" 复 位 " />
 						</div>
 					<form>
-				</div> 
+				</div>
 			</div>
 		</div>
 <script language="JavaScript">

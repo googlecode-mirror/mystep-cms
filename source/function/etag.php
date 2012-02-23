@@ -7,7 +7,7 @@ header("Cache-Control: private, max-age=".$etag_expires);
 header("Last-Modified: ".gmdate('D, d M Y H:i:s')." GMT");
 header("Expires: ".gmdate('D, d M Y H:i:s', time()+$etag_expires)." GMT");
 $etag = md5($_SERVER["REQUEST_URI"].implode(",", $ms_version).$setting['gen']['etag']);
-if($_SERVER['HTTP_IF_NONE_MATCH'] == $etag) {
+if(isset($_SERVER['HTTP_IF_NONE_MATCH']) && $_SERVER['HTTP_IF_NONE_MATCH'] == $etag) {
 	header('Etag:'.$etag, true, 304);
 	exit();
 } else {

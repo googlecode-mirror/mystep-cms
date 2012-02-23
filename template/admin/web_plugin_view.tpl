@@ -3,10 +3,10 @@
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form id="setting" method="post" action="?method=install" onsubmit="return checkForm(this, checkPass)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
-			<tr> 
+			<tr>
 				<td align="center" colspan=2" class="cat"><!--title--> - “<!--name-->”</td>
 			</tr>
-			<tr> 
+			<tr>
 				<td colspan=2" class="row" style="line-height:18px;">
 				<b>插件名称：</b><!--name--><br />
 				<b>插件索引：</b><!--idx--><br />
@@ -18,7 +18,7 @@
 				<div style="margin:-16px 0px 0px 66px;"><!--check--></div>
 				</td>
 			</tr>
-			<tr> 
+			<tr>
 				<td colspan=2" class="row" style="line-height:18px;"><!--description--></td>
 			</tr>
 <?PHP
@@ -27,7 +27,7 @@ include(ROOT_PATH."/plugin/".$idx."/config.php");
 include(ROOT_PATH."/plugin/".$idx."/config-detail.php");
 if(!isset($setting_type)) {
 	echo <<<content
-			<tr> 
+			<tr>
 				<td colspan="2" align="center" class="row" style="font-size:24px;font-weight:bold;">{$setting['language']['admin_web_plugin_err']}</td>
 			</tr>
 content;
@@ -102,7 +102,7 @@ content;
 	}
 }
 ?>
-			<tr> 
+			<tr>
 				<td align="center" colspan=2" class="cat">
 					<input type="hidden" value="<!--idx-->" name="idx" />
 					<input class="btn" type="Submit" value=" 安 装 " />&nbsp;&nbsp;

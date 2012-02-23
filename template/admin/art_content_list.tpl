@@ -25,7 +25,7 @@
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center" border="1">
-		<tr align="center"> 
+		<tr align="center">
 			<td class="cat" width="30"><a href="?keyword=<!--keyword-->&cat_id=<!--cat_id-->&web_id=<!--web_id-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
 			<td class="cat" width="60"><a href="?keyword=<!--keyword-->&order=cat_id&order_type=<!--order_type-->&cat_id=<!--cat_id-->&web_id=<!--web_id-->"><font color="#000000">栏目</font></a></td>
 			<td class="cat"><a href="?keyword=<!--keyword-->&order=subject&order_type=<!--order_type-->&cat_id=<!--cat_id-->&web_id=<!--web_id-->"><font color="#000000">文章标题</font></a></td>

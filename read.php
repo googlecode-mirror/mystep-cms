@@ -6,7 +6,7 @@ if(!is_numeric($news_id)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
 }
-list($cat_id, $add_date, $page_count, $subject, $view_lvl)=array_values(getData("select cat_id, add_date, pages, subject, view_lvl from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record"));
+list($cat_id, $add_date, $page_count, $subject, $view_lvl)=array_values(getData("select cat_id, add_date, pages, subject, view_lvl from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record", 1200));
 if(is_null($cat_id) || is_null($add_date)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
@@ -62,6 +62,7 @@ if($detail===false) {
 	$mystep->pageEnd();
 }
 
+$web_id = $setting['info']['web']['web_id'];
 $tpl_info['idx'] = "read";
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 

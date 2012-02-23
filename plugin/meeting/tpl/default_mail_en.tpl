@@ -7,30 +7,36 @@
 			<BR />
 			<TEXTAREA COLS="110" ROWS="50" ID="emailcontent">
 Dear <!--record_name--> :
- 
+
 Welcome to "<!--name_en-->"£¡
- 
+
 Your online registration has been received. Please confirm the following information has been recorded correctly:
 <?php
 global $record;
 foreach($para as $key => $value) {
 	if(empty($value['title_en'])) continue;
+	if(is_array($value['value'])) {
+		$idx = array_search($record[$key], $value['value']['cn']);
+		if(!is_null($idx)) {
+			$record[$key] = $value['value']['en'][$idx];
+		}
+	}
 	echo $value['title_en']."£º".$record[$key]."\n";
 }
 ?>
- 
-Please check-in and pay for your room charge at the hotel's reception on your arrival. 
- 
+
+Please check-in and pay for your room charge at the hotel's reception on your arrival.
+
 Please remit your registration fee <!--record_total--> RMB:
 Beneficiary Name: CFNA
 Account No.110060194145300004859 (for USD)
-          110060194385300004948 (for EUR)
+					110060194385300004948 (for EUR)
 Name of Bank: Bank of Communications Beijing Branch
 Address of Bank: No.33, Jinrong Str., Xicheng Dist.,Beijing, 100032 China
 Swift Code: COMMCNSHBJG
- 
+
 <!--name_en-->
- 
+
 Tel: +86-10-87109800
 Fax: +86-10-87109800
 Email: cccfna@cccfna.org.cn

@@ -9,9 +9,9 @@
 			<td><!--err_content--></td>
 		</tr>
 <!--loop:end-->
-		<tr>
+		<tr class="row">
 			<td colspan="2" align="center">
-				<input type="button" class="btn" value=" 清空错误数据 " onclick="location.href='?method=clean'"	<!--err_output--> /> &nbsp; 
+				<input type="button" class="btn" value=" 清空错误数据 " onclick="location.href='?method=clean'"	<!--err_output--> /> &nbsp;
 				<input type="button" class="btn" value=" 保存错误数据 " onclick="location.href='?method=download'" <!--err_output--> />
 			</td>
 		</tr>

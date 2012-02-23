@@ -2,7 +2,7 @@
 <div align="center">
 	<form method="post" action="?update">
 		<table id="input_area" cellspacing="0" cellpadding="0">
-			<tr> 
+			<tr>
 				<td class="cat" colspan="4">语言设置</td>
 			</tr>
 			<tr>
@@ -17,14 +17,14 @@
 					作者：<a href="mailto:<!--lng_info_email-->"><!--lng_info_author--></a>（<!--lng_info_update--> For <!--lng_info_for-->）
 				</td>
 			</tr>
-			<tr align="center"> 
+			<tr align="center">
 				<td class="cat" width="30">序号</td>
 				<td class="cat" width="120">语言索引</td>
 				<td class="cat">显示文字</td>
 				<td class="cat" width="60">操作</td>
 			</tr>
 <!--loop:start key="language"-->
-			<tr> 
+			<tr>
 				<td class="cat"><!--language_idx--></td>
 				<td class="row"><!--language_key--></td>
 				<td class="row"><input name="language[<!--language_key-->]" type="text" size="10" style="width:500px;" maxlength="200" value="<!--language_value-->" /></td>
@@ -33,10 +33,10 @@
 				</td>
 			</tr>
 <!--loop:end-->
-			<tr> 
+			<tr>
 				<td class="cat" colspan="4">添加语言（会依据现有设置生成新的语言包，仅仅修改时，请留空！）</td>
 			</tr>
-			<tr> 
+			<tr>
 				<td class="row" colspan="4">
 					语言索引：<input name="lng_new_idx" type="text" size="10" maxlength="200" value="" /> &nbsp; &nbsp;
 					语言作者：<input name="lng_new_author" type="text" size="10" maxlength="200" value="" />

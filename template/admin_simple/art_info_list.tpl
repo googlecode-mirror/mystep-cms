@@ -2,7 +2,7 @@
 <div class="addnew"><a href="?method=add&web_id=<!--web_id-->">添加内容</a></div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
-		<tr align="center"> 
+		<tr align="center">
 			<td class="cat">展示标题</td>
 			<td class="cat">展示内容</td>
 			<td class="cat" width="60">操作</td>

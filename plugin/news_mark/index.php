@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__)."/class.php");
+require(dirname(__FILE__)."/class.php");
 
 $mystep->regTag("news_rank", "plugin_news_mark::news_rank");
 $mystep->regTag("news_jump", "plugin_news_mark::news_jump");
