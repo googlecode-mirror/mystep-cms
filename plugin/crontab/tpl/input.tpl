@@ -115,7 +115,6 @@
 						<option>21</option>
 						<option>22</option>
 						<option>23</option>
-						<option>24</option>
 					</select> 时
 					<select name="schedule[]" style="width:40px;" onchange="showSchedule()">
 						<option value="0"></option>
@@ -130,7 +129,6 @@
 						<option>45</option>
 						<option>50</option>
 						<option>55</option>
-						<option>60</option>
 					</select> 分
 					（周
 					<select name="schedule[]" style="width:40px;" onchange="showSchedule()">
@@ -156,7 +154,7 @@
 			<tr>
 				<td class="cat">连接网址：</td>
 				<td class="row">
-					<input name="url" type="text" value="<!--url-->" maxlength="120" need="url_" />
+					<input name="url" type="text" value="<!--url-->" maxlength="150" need="url_" />
 				</td>
 			</tr>
 			<tr>
@@ -199,7 +197,7 @@ function showSchedule() {
 			result += "每周"+schedule[4].value+"，";
 		}
 		if(schedule[2].value==0) {
-			result += "每小时，";
+			result += "0点，";
 		} else {
 			result += schedule[2].value+"点，";
 		}
@@ -223,7 +221,7 @@ function showSchedule() {
 			if(schedule[3].value!=0) {
 				result += schedule[3].value+"分钟，";
 			} else {
-				result += "10分钟，";
+				if(schedule[0].value+schedule[1].value+schedule[2].value=="000") result += "10分钟，";
 			}
 		} else {
 			result += schedule[4].value+"周，";

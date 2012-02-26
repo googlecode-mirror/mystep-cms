@@ -100,7 +100,7 @@ function build_page($method) {
 			$record['name'] = "";
 			$record['mode'] = 1;
 			$record['expire'] = "";
-			$record['schedule'] = "0,0,0,10,0";
+			$record['schedule'] = "0,0,1,0,0";
 			$record['url'] = "";
 			$record['code'] = "";
 		}
