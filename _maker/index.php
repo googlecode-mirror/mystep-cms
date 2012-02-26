@@ -11,7 +11,8 @@ function debug() {
 set_time_limit(0);
 ini_set('memory_limit', '512M');
 ini_set('magic_quotes_runtime', 0);
-include("mypack.php");
+require("mypack.php");
+require("chs2cht.dic");
 $pack_dir = str_replace("\\", "/", realpath(dirname(__FILE__)."/../"));
 $pack_file = "mystep.pack";
 

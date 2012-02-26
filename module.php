@@ -1,5 +1,5 @@
 <?php
-include("inc.php");
+require("inc.php");
 $module = $req->getGet("m");
 if($setting['gen']['cache']) {
 	$cache_info = array(

@@ -1,5 +1,5 @@
 <?php
-include("inc.php");
+require("inc.php");
 $api = $mystep->getInstance("MyApi");
 $para = explode("|", $req->getServer("QUERY_STRING"));
 for($i=0;$i<3;$i++) {

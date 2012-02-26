@@ -9,8 +9,10 @@ require("version.php");
 
 date_default_timezone_set($setting['gen']['timezone']);
 $v = $_GET['v'];
+$cs = $_GET['cs'];
+if($cs==$setting['gen']['charset']) $cs = "";
 if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
-	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver']);
+	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver'].$cs);
 	if(file_exists($cache_file)) {
 		$update = GetFile($cache_file);
 	} else {
@@ -27,6 +29,11 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 				$flag = ($key==$v || $key>$v);
 			}
 		}
+		if(!empty($cs)) {
+			$sql_list = chg_charset($sql_list, $setting['gen']['charset'], $cs);
+			$setting_list = chg_charset($setting_list, $setting['gen']['charset'], $cs);
+		}
+		
 		$file_list = array_unique($file_list);
 		$update_info = array('sql'=>$sql_list, 'file'=>$file_list, 'content'=>array(), 'setting'=>$setting_list);
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
@@ -35,6 +42,12 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 					$update_info['content'][$i] = ".";
 				} else {
 					$update_info['content'][$i] = GetFile(ROOT_PATH."/".$update_info['file'][$i]);
+					$path_parts = pathinfo($update_info['file'][$i]);
+					if(!empty($cs) && strpos(".php,.tpl,.html,.htm,.sql", $path_parts["extension"])!==false) {
+						$update_info['content'][$i] = str_replace(strtolower($setting['gen']['charset']), strtolower($cs), $update_info['content'][$i]);
+						$update_info['content'][$i] = str_replace(strtoupper($setting['gen']['charset']), strtoupper($cs), $update_info['content'][$i]);
+						$update_info['content'][$i] = chg_charset($update_info['content'][$i], $setting['gen']['charset'], $cs);
+					}
 				}
 			} else {
 				$update_info['content'][$i] = "";
@@ -52,7 +65,8 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 			array("ver_remote",30),
 			array("ver_local",30),
 			array("remote_ip",50),
-			array("referer",200)
+			array("referer",200),
+			array("charset",20)
 		);
 		$mydb->createTBL($db_setting);
 	}
@@ -62,7 +76,8 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 		$v,
 		$ms_version['ver'],
 		GetIp(),
-		$_SERVER["HTTP_REFERER"]
+		$_SERVER["HTTP_REFERER"],
+		$cs
 	);
 	$mydb->insertDate($data);
 	$mydb->closeTBL();

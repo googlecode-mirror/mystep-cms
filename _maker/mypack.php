@@ -61,6 +61,10 @@ class myPack {
 				if(strpos($this->charset['file_ext'], $path_parts["extension"])!==false) {
 					$file_content = str_replace(strtolower($this->charset['from']), strtolower($this->charset['to']), $file_content);
 					$file_content = str_replace(strtoupper($this->charset['from']), strtoupper($this->charset['to']), $file_content);
+					if(strtolower($this->charset['to'])=="big5") {
+						//$file_content = chs2cht($file_content, $this->charset['from']);
+						$file_content = chg_lng_custom($file_content, "tw", $this->charset['from']);
+					}
 					$result = chg_charset($file_content, $this->charset['from'], $this->charset['to']);
 					$content  =  "file".$separator.str_replace($this->pack_dir, "", $dir).$separator.strlen($result).$separator.filemtime($dir)."\n";
 					$file_content = $result;

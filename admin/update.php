@@ -37,7 +37,7 @@ switch($method) {
 		$result = array();
 		$header = array();
 		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST")."/update/";
-		$update_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver'], $header);
+		$update_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver']."&cs=".$setting['gen']['charset'], $header);
 		$update_info = base64_decode($update_info);
 		$update_info = unserialize($update_info);
 
