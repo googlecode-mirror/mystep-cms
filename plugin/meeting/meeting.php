@@ -102,7 +102,7 @@ switch($method) {
 			$para = chg_charset($para, "utf-8", $setting['gen']['charset']);
 		}
 		WriteFile("setting/{$mid}.php", '<?php
-$para = '.$para.';		
+$para = '.str_replace("\r", "", $para).';		
 ?>', "wb");
 		deleteCache("admin_cat");
 		include("setting/{$mid}.php");
@@ -183,7 +183,7 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 			$para = chg_charset($para, "utf-8", $setting['gen']['charset']);
 		}
 		WriteFile("setting/{$mid}.php", '<?php
-$para = '.$para.';		
+$para = '.str_replace("\r", "", $para).';		
 ?>', "wb");
 		deleteCache("admin_cat");
 		unset($para);
@@ -417,15 +417,26 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop("website", $GLOBALS['website'][$i]);
 		}
 		$db->Free();
-		include("setting/default.php");
+		if(file_exists("setting/".$mid.".php")) {
+			include("setting/".$mid.".php");
+			$tpl_tmp->Set_Variable('tpl_reg_cn', htmlspecialchars(GetFile("setting/".$mid."_regist_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_reg_en', htmlspecialchars(GetFile("setting/".$mid."_regist_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_reglist_cn', htmlspecialchars(GetFile("setting/".$mid."_reglist_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_reglist_en', htmlspecialchars(GetFile("setting/".$mid."_reglist_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("setting/".$mid."_mail_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("setting/".$mid."_mail_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("setting/".$mid."_edit_reg.tpl")));
+		} else {
+			include("setting/default.php");
+			$tpl_tmp->Set_Variable('tpl_reg_cn', htmlspecialchars(GetFile("tpl/default_regist_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_reg_en', htmlspecialchars(GetFile("tpl/default_regist_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_reglist_cn', htmlspecialchars(GetFile("tpl/default_reglist_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_reglist_en', htmlspecialchars(GetFile("tpl/default_reglist_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("tpl/default_mail_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("tpl/default_mail_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("tpl/edit_reg.tpl")));
+		}
 		$tpl_tmp->Set_Variable('reg_item', toJson($para, $setting['gen']['charset']));
-		$tpl_tmp->Set_Variable('tpl_reg_cn', htmlspecialchars(GetFile("tpl/default_regist_cn.tpl")));
-		$tpl_tmp->Set_Variable('tpl_reg_en', htmlspecialchars(GetFile("tpl/default_regist_en.tpl")));
-		$tpl_tmp->Set_Variable('tpl_reglist_cn', htmlspecialchars(GetFile("tpl/default_reglist_cn.tpl")));
-		$tpl_tmp->Set_Variable('tpl_reglist_en', htmlspecialchars(GetFile("tpl/default_reglist_en.tpl")));
-		$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("tpl/default_mail_cn.tpl")));
-		$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("tpl/default_mail_en.tpl")));
-		$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("tpl/edit_reg.tpl")));
 	}
 	$tpl_tmp->Set_Variable('mid', $mid);
 	$tpl->Set_Variable('path_admin', $setting['path']['admin']);

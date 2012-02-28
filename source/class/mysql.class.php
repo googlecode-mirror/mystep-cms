@@ -313,8 +313,9 @@ class MySQL extends class_common {
 		$row = mysql_fetch_assoc($this->DB_result);
 		$result = "#Table Name: ".$row["Name"]."\n# Create Time: ".$row["Create_time"]."\n# Update Time: ".$row["Update_time"]."\n";
 		$this->Free();
-		$tblInfo = array_values($this->getSingleRecord("show create table ".$the_tab));
+		$tblInfo = array_values($this->getSingleRecord("show create table `".$the_tab."`"));
 		$result .= $tblInfo[1].";\n";
+		$result .= "truncate table `".$the_tab."`;\n";
 		return $result;
 	}
 	
@@ -327,7 +328,7 @@ class MySQL extends class_common {
 		if ($this->CheckError()) $this->Error("Could not List Table's Setting");
 		$result = "";
 		while($row = mysql_fetch_row($this->DB_result)) {
-			$result .= "INSERT INTO {$the_tab} VALUES (";
+			$result .= "INSERT INTO `{$the_tab}` VALUES (";
 			$max_count = count($row);
 			for($i=0; $i<$max_count; $i++) {
 				//if(!is_numeric($row[$i])) $row[$i] = "0x".strToHex($row[$i]);
