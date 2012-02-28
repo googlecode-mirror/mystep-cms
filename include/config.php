@@ -31,9 +31,9 @@ $setting['gen']['rewrite'] = false;
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'classic';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
-$setting['gen']['update'] = 'http://cccfna.org.cn/update/';
+$setting['gen']['update'] = 'http://www.mysteps.cn/update/';
 $setting['gen']['minify'] = false;
-$setting['gen']['etag'] = 20120222;
+$setting['gen']['etag'] = 20120228;
 
 $setting['email'] = array();
 $setting['email']['mode'] = '';

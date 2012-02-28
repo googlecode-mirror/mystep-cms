@@ -1204,7 +1204,8 @@ $version = array(
 			),
 		'setting' => array(
 				'gen' => array(
-						'etag' => '20120222',
+						'update' => 'http://www.mysteps.cn/update/',
+						'etag' => '20120228',
 					),
 			),
 	),
