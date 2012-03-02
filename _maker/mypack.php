@@ -22,9 +22,10 @@ class myPack {
 		return;
 	}
 
-	public function setCharset($from, $to, $file_ext) {
+	public function setCharset($from, $to, $lng_type="", $file_ext="") {
 		$this->charset['from'] = $from;
 		$this->charset['to'] = $to;
+		$this->charset['lng_type'] = $lng_type;
 		$this->charset['file_ext'] = $file_ext;
 		return;
 	}
@@ -61,9 +62,12 @@ class myPack {
 				if(strpos($this->charset['file_ext'], $path_parts["extension"])!==false) {
 					$file_content = str_replace(strtolower($this->charset['from']), strtolower($this->charset['to']), $file_content);
 					$file_content = str_replace(strtoupper($this->charset['from']), strtoupper($this->charset['to']), $file_content);
-					if(strtolower($this->charset['to'])=="big5") {
-						//$file_content = chs2cht($file_content, $this->charset['from']);
-						$file_content = chg_lng_custom($file_content, "tw", $this->charset['from']);
+					if(!empty($this->charset['lng_type'])) {
+						$file_content = chg_lng_custom($file_content, $this->charset['lng_type'], $this->charset['from']);
+					} else {
+						if(strtolower($this->charset['to'])=="big5") {
+							$file_content = chs2cht($file_content, $this->charset['from']);
+						}
 					}
 					$result = chg_charset($file_content, $this->charset['from'], $this->charset['to']);
 					$content  =  "file".$separator.str_replace($this->pack_dir, "", $dir).$separator.strlen($result).$separator.filemtime($dir)."\n";

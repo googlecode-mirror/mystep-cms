@@ -178,10 +178,10 @@ tinyMCE.init({
 			image : 'images/div.png',
 			onclick : function() {
 				var content = tinyMCE.get('content').getContent();
-				if(content.indexOf("<div>")==-1) {
-					content = content.replace(/<p>(.+?)<\/p>/ig, "<div>$1</div>");
+				if(content.indexOf("<div")==-1) {
+					content = content.replace(/<p(.*?)>(.+?)<\/p>/ig, "<div$1>$2</div>");
 				} else {
-					content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
+					content = content.replace(/<div(.*?)>(.+?)<\/div>/ig, "<p$1>$2</p>");
 				}
 				tinyMCE.get('content').setContent(content);
 			}
@@ -191,9 +191,10 @@ tinyMCE.init({
 			image : 'images/format.png',
 			onclick : function() {
 				var content = tinyMCE.get('content').getContent();
-				content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
+				content = content.replace(/<div(.*?)>(.+?)<\/div>/ig, "<p$1>$2</p>");
 				content = content.replace(/[\r\n]*<br(.*?)>[\r\n]*/ig, "</p>\n<p>");
-				content = content.replace(/<p>[\s¡¡]+/ig, "<p>");
+				content = content.replace(/<p(.*?)>[\r\n\s¡¡]+/ig, "<p$1>");
+				content = content.replace(/mso\-[^;];/ig, "<p>");
 				tinyMCE.get('content').setContent(content);
 			}
 		});

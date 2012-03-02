@@ -17822,6 +17822,12 @@ function chg_lng_custom($content, $to, $charset="UTF-8") {
 	if(!empty($charset) && strtoupper($charset)!="UTF-8") $content = chg_charset($content, $charset, "utf-8");
 	$to = strtolower($to);
 	switch($to) {
+		case "chs":
+			$content = chs2cht($content, "", 0);
+			break;
+		case "cht":
+			$content = chs2cht($content);
+			break;
 		case "cn":
 			global $zh2CN;
 			$content = strtr($content, $zh2CN);

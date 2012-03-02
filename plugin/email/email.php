@@ -127,11 +127,13 @@ function send_mail($id) {
 	$mail->setSubject($record['subject']);
 	$mail->setContent($record['content'], true);
 	
+	$n = 0;
 	$record['reply'] = str_replace("\r", "", $record['reply']);
 	$reply = explode("\n", $record['reply']);
 	for($i=0,$m=count($reply);$i<$m;$i++) {
 		list($from, $name) = parse_mail($reply[$i]);
 		$mail->addEmail($from, $name, "reply");
+		$n++;
 	}
 	
 	$record['to'] = str_replace("\r", "", $record['to']);
@@ -139,6 +141,7 @@ function send_mail($id) {
 	for($i=0,$m=count($to);$i<$m;$i++) {
 		list($from, $name) = parse_mail($to[$i]);
 		$mail->addEmail($from, $name, "to");
+		$n++;
 	}
 	
 	$record['cc'] = str_replace("\r", "", $record['cc']);
@@ -146,6 +149,7 @@ function send_mail($id) {
 	for($i=0,$m=count($cc);$i<$m;$i++) {
 		list($from, $name) = parse_mail($cc[$i]);
 		$mail->addEmail($from, $name, "cc");
+		$n++;
 	}
 	
 	$record['bcc'] = str_replace("\r", "", $record['bcc']);
@@ -153,7 +157,10 @@ function send_mail($id) {
 	for($i=0,$m=count($bcc);$i<$m;$i++) {
 		list($from, $name) = parse_mail($bcc[$i]);
 		$mail->addEmail($from, $name, "bcc");
+		$n++;
 	}
+	
+	if($n>100) $record['single']=1;
 	
 	if(!empty($record['notification'])) 	$mail->addHeader("Disposition-Notification-To", $record['from']);
 	

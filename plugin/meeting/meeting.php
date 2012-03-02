@@ -26,16 +26,19 @@ switch($method) {
 			include("setting/".$mid.".php");
 			$title_list = array();
 			$title_list[] = "编号";
+			$col_list = "id,";
 			foreach($para as $key => $value) {
+				$col_list .= "`".$key."`,";
 				$title_list[] = $value["title"];
 			}
+			$col_list .= "`mailed`,`add_date`";
 			$title_list[] = "确认邮件";
 			$title_list[] = "报名日期";
 
 			$xls = $mystep->getInstance("MyXls", $plugin_setting['meeting']['name'], "报名情况");
 			$xls->addRow();
 			$xls->addCells($title_list);
-			$db->Query("select * from ".$setting['db']['pre']."meeting_".$mid." order by id asc");
+			$db->Query("select ".$col_list." from ".$setting['db']['pre']."meeting_".$mid." order by id asc");
 			while($record = $db->GetRS()) {
 				$xls->addRow();
 				$xls->addCells($record);

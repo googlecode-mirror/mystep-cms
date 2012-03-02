@@ -96,18 +96,10 @@ mystep;
 		}
 	}
 	if(strpos($ccList, ",6,")!==false) {
-		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/";
-		if($handle = opendir($cache_path)) {
-			while (false !== ($file = readdir($handle))) {
-				if($file!="." && $file!="..") {
-					MultiDel($cache_path.$file);
-				}
-			}
-			closedir($handle);
-		}
+		MultiDel(ROOT_PATH."/".$setting['path']['upload'], "cache");
 	}
 	if(strpos($ccList, ",7,")!==false) {
-		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/data/".date("Ymd")."/";
+		$cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/";
 		if($handle = opendir($cache_path)) {
 			while (false !== ($file = readdir($handle))) {
 				if($file!="." && $file!="..") {

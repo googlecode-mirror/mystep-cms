@@ -38,8 +38,6 @@ $version = array(
 				'source/function/global.php',
 				'template/admin/art_catalog_input.tpl',
 				'template/admin/info_main.tpl',
-				'update/index.php',
-				'update/version.php',
 			),
 		'setting' => array(),
 	),
@@ -158,7 +156,6 @@ $version = array(
 				'template/default/block_news_simple.tpl',
 				'template/default/block_news_slide.tpl',
 				'template/default/main.tpl',
-				'update/index.php',
 				'update/version.php'
 			),
 		'setting' => array(
@@ -200,7 +197,6 @@ $version = array(
 				'template/admin/info_main.tpl',
 				'template/admin/main.tpl',
 				'template/admin_simple/main.tpl',
-				'update/index.php',
 				'update/version.php'
 			),
 		'setting' => array(),
@@ -280,7 +276,6 @@ $version = array(
 				'script/language.js',
 				'source/merge.php',
 				'template/admin/func_backup.tpl',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -304,8 +299,6 @@ $version = array(
 				'script/addon.js',
 				'template/admin/art_content_input.tpl',
 				'template/admin_simple/art_content_input.tpl',
-				'update/index.php',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -329,7 +322,6 @@ $version = array(
 				'source/class/mydb.class.php',
 				'source/function/global.php',
 				'template/admin/info_main.tpl',
-				'update/version.php',
 			),
 		'setting' => array(),
 	),
@@ -352,8 +344,6 @@ $version = array(
 				'source/function/global.php',
 				'template/admin/info_main.tpl',
 				'template/admin/web_setting.tpl',
-				'update/index.php',
-				'update/version.php',
 			),
 		'setting' => array(),
 	),
@@ -367,7 +357,6 @@ $version = array(
 				'admin/language/chs.php',
 				'admin/update.php',
 				'include/parameter.php',
-				'update/version.php',
 			),
 		'setting' => array(),
 	),
@@ -385,8 +374,6 @@ $version = array(
 				'plugin/search/class.php',
 				'script/addon.js',
 				'template/admin/info_main.tpl',
-				'update/index.php',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -488,8 +475,6 @@ $version = array(
 				'template/admin/attachment_edit.tpl',
 				'template/admin/func_backup.tpl',
 				'template/admin/web_cache.tpl',
-				'update/index.php',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -513,8 +498,6 @@ $version = array(
 				'include/parameter.php',
 				'plugin/topic/class.php',
 				'script/language.js.php',
-				'update/index.php',
-				'update/version.php',
 			),
 		'setting' => array(),
 	),
@@ -654,7 +637,6 @@ $version = array(
 				'template/default/block_news_slide.tpl',
 				'template/default/main.tpl',
 				'template/default/rss.tpl',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -684,7 +666,6 @@ $version = array(
 				'plugin/visit_analysis/class.php',
 				'source/class/mycache.class.php',
 				'source/function/admin.php',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -719,7 +700,6 @@ $version = array(
 				'source/function/global.php',
 				'template/classic/list_0.tpl',
 				'template/classic/read.tpl',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -825,7 +805,6 @@ $version = array(
 				'template/admin_simple/func_link_list.tpl',
 				'template/admin_simple/web_subweb_input.tpl',
 				'template/classic/index.tpl',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -967,7 +946,6 @@ $version = array(
 				'template/admin_simple/art_info_input.tpl',
 				'template/admin_simple/index.tpl',
 				'template/admin_simple/main.tpl',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -993,7 +971,6 @@ $version = array(
 				'script/language.js.php',
 				'script/setting.js.php',
 				'template/admin/info_main.tpl',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -1198,14 +1175,50 @@ $version = array(
 				'template/admin_simple/upload_img.tpl',
 				'template/admin_simple/web_subweb_input.tpl',
 				'template/classic/index.tpl',
-				'update/index.php',
-				'update/version.php',
 				'vcode.php'
 			),
 		'setting' => array(
 				'gen' => array(
 						'update' => 'http://www.mysteps.cn/update/',
 						'etag' => '20120228',
+					),
+			),
+	),
+	'0.99.9.1' => array(
+		'info' => '
+				V0.99.9.1
+				1.Enhance setup pack maker module
+				2.Enhance chs2cht function
+				3.Adjust automatic update funtion, now you can choose to download update pack, and update manually
+				4.Add clean image cache funtion
+				5.Fix a bug in crontab plugin
+				6.Adjust email plugin to force single when the quantity of email large then 100
+				7.Fix a bug in export function of meeting plugin
+				8.Fix a bug in article content format function of editor
+				Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/language/chs.php',
+				'admin/language/default.php',
+				'admin/language/en.php',
+				'admin/update.php',
+				'admin/web_cache.php',
+				'install/step_4.php',
+				'plugin/crontab/run.php',
+				'plugin/email/email.php',
+				'plugin/meeting/meeting.php',
+				'plugin/news_snatch/news_snatch.php',
+				'source/function/chs2cht.dic',
+				'source/function/global.php',
+				'template/admin/art_content_input.tpl',
+				'template/admin/info_main.tpl',
+				'template/admin/web_cache.tpl',
+				'template/admin_simple/art_content_input.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120301',
 					),
 			),
 	),

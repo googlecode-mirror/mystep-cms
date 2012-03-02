@@ -439,27 +439,34 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	fclose($fp);
 	$gzip = (strpos($content, "Content-Encoding: gzip")!==false);
 	$content = RemoveHeader($content);
-	if($gzip) $content = gzinflate(substr($content,10));
+	if($gzip) $content = gzdecode($content);
+	//if($gzip) $content = gzinflate(substr($content,10));
 	return $content;
 }
 
-function decode_gzip($h,$d,$rn="\r\n"){
-if (isset($h['Transfer-Encoding'])){
- $lrn = strlen($rn);
- $str = '';
- $ofs=0;
- do{
-    $p = strpos($d,$rn,$ofs);
-    $len = hexdec(substr($d,$ofs,$p-$ofs));
-    $str .= substr($d,$p+$lrn,$len);
-     $ofs = $p+$lrn*2+$len;
- }while ($d[$ofs]!=='0');
- $d=$str;
+if(!function_exists('gzdecode')) {
+	function gzdecode($data) {
+		$flags = ord(substr($data, 3, 1 ));
+		$headerlen = 10;
+		$extralen = 0;
+		$filenamelen = 0;
+		if ($flags & 4){
+			$extralen = unpack('v', substr($data, 10, 2));
+			$extralen = $extralen[1];
+			$headerlen += 2 + $extralen;
+		}
+		if ($flags & 8) // Filename 
+			$headerlen = strpos($data, chr(0), $headerlen) + 1;
+		if ($flags & 16) // Comment 
+			$headerlen = strpos($data, chr(0), $headerlen) + 1;
+		if ($flags & 2) // CRC at end of file 
+			$headerlen += 2;
+		$unpacked = @gzinflate(substr($data, $headerlen));
+		if ($unpacked === FALSE)
+			$unpacked = $data;
+		return $unpacked;
+	}
 }
-if (isset($h['Content-Encoding'])) $d = gzinflate(substr($d,10));
-return $d;
-}
-
 
 function GetRemoteFile($remote_file, $local_file) {
 	//Coded By Windy2000 20080402 v1.3
@@ -580,14 +587,25 @@ function MakeDir($dir) {
 	return $flag;
 }
 
-function MultiDel($dir){
+function MultiDel($dir, $file_list=""){
 	//Coded By Windy2000 20031001 v1.0
 	if(is_dir($dir)){
 		$mydir = opendir($dir);
 		while(($file = readdir($mydir)) !== false) {
 			if($file!="." && $file!="..") {
 				$the_name = $dir."/".$file;
-				is_dir($the_name) ? MultiDel($the_name) : @unlink($the_name);
+				if(is_dir($the_name)) {
+					if(empty($file_list) || strpos($file_list, $file)!==false) {
+						MultiDel($the_name);
+					} else {
+						MultiDel($the_name, $file_list);
+					}
+				} else {
+					if(empty($file_list) || strpos($file_list, $file)!==false) {
+						@unlink($the_name);
+					}
+				}
+				//is_dir($the_name) ? MultiDel($the_name) : @unlink($the_name);
 			}
 		}
 		closedir($mydir);

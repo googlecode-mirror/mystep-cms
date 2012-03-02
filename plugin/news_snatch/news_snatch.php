@@ -118,7 +118,6 @@ $rules = '.var_export($rules, true).';
 					snatch_log('<div class="succeed" style="color:green;">'.sprintf($setting['language']['plugin_news_snatch_info_snatch_list'], $info["page"], $info['page_count']).'</div>');
 				} else {
 					snatch_log('<div class="failed" style="color:red;">'.$setting['language']['plugin_news_snatch_info_snatch_failed'].'</div>');
-					break;
 				}
 				snatch_log('<div class="split">-------------------------------</div>');
 			}

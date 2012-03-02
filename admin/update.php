@@ -32,6 +32,7 @@ switch($method) {
 		$mydb->closeTBL();
 		break;
 	case "update":
+	case "download":
 		ignore_user_abort("on");
 		set_time_limit(0);
 		$result = array();
@@ -72,8 +73,9 @@ mystep;
 		
 		$list = array();
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
-			if($update_info['file'][$i]=="include/config.php") continue;
-			if(isWriteable(ROOT_PATH."/".$update_info['file'][$i])) {
+			//if($update_info['file'][$i]=="include/config.php") continue;
+			if(strpos(strtolower($update_info['file'][$i]), "config.php")!==false) continue;
+			if($method=="update" && isWriteable(ROOT_PATH."/".$update_info['file'][$i])) {
 				if(empty($update_info['content'][$i])) {
 					@unlink(ROOT_PATH."/".$update_info['file'][$i]);
 				} elseif($update_info['content'][$i]==".") {

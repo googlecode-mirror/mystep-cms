@@ -6,9 +6,13 @@
 			<td class="cat" width="250">网站程序版本</td>
 			<td class="row">
 				V<?=$ms_version['ver']?> （<?=$ms_version['language']?>/<?=$ms_version['charset']?>/<?=$ms_version['date']?>）
-				<a href="###" onclick="checkUpdate()">检查升级</a> |
-				<a href="###" onclick="emptyUpdate()">清空升级信息</a> |
+				<a href="###" onclick="checkUpdate()">检查升级</a>
+<!--
+				 |
+				<a href="###" onclick="emptyUpdate()">清空升级信息</a>
+				 |
 				<a href="###" onclick="exportUpdate()">导出升级信息</a>
+-->
 			</td>
 		</tr>
 		<tr>
@@ -74,8 +78,10 @@ function checkUpdate() {
 		loadingShow();
 		try {
 			if(ver_info.ver>cur_ver.ver) {
-				if(confirm("目前更新服务器的最新版本为： v" + ver_info.ver + "(" + ver_info.date + ")\n\n是否更新？\n" + ver_info.update)) {
-					applyUpdate();
+				if(confirm("目前更新服务器的最新版本为： v" + ver_info.ver + "(" + ver_info.date + ")\n\n按“确定”自动更新，按“取消”下载更新程序！\n" + ver_info.update)) {
+					applyUpdate(1);
+				} else {
+					applyUpdate(0);
 				}
 			} else {
 				alert("系统当前版本已为最新，无需更新！");
@@ -85,9 +91,10 @@ function checkUpdate() {
 		}
 	}, "json");
 }
-function applyUpdate() {
+function applyUpdate(mode=0) {
 	loadingShow();
-	$.get("update.php?update", function(info){
+	var mode = (mode==0?"download":"update");
+	$.get("update.php?"+mode, function(info){
 		loadingShow();
 		try {
 			alert(info.info);

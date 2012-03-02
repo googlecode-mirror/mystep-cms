@@ -52,9 +52,9 @@ echo "</select>";
 					<input type="checkbox" class="cbox" id="ccache_3" name="ccache[]" value="3" /><label for="ccache_3">脚本缓存</label>
 					<input type="checkbox" class="cbox" id="ccache_4" name="ccache[]" value="4" /><label for="ccache_4">插件缓存</label>
 					<input type="checkbox" class="cbox" id="ccache_5" name="ccache[]" value="5" /><label for="ccache_5">会话缓存</label>
-					<input type="checkbox" class="cbox" id="ccache_6" name="ccache[]" value="6" checked /><label for="ccache_6">页面缓存</label>
-					<input type="checkbox" class="cbox" id="ccache_7" name="ccache[]" value="7" /><label for="ccache_7">数据缓存</label>
-					<input type="checkbox" class="cbox" id="ccache_8" name="ccache[]" value="8" checked /><label for="ccache_8">当日缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_8" name="ccache[]" value="6" /><label for="ccache_8">图片缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_6" name="ccache[]" value="7" checked /><label for="ccache_6">页面缓存</label>
+					<input type="checkbox" class="cbox" id="ccache_7" name="ccache[]" value="8" checked /><label for="ccache_7">数据缓存</label>
 					&nbsp; <input class="btn" type="button" onclick="cclean()" value="清理" /><br />
 					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">清理缓存所占用的磁盘空间，也可以使相关更改立即生效</span>
 				</td>
