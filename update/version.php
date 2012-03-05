@@ -1238,7 +1238,7 @@ $version = array(
 				'template/admin/info_main.tpl',
 				'template/admin/web_plugin_setting.tpl',
 				'template/admin/web_plugin_view.tpl',
-				'template/classic/main.tpl',,
+				'template/classic/main.tpl',
 			),
 		'setting' => array(
 				'gen' => array(
