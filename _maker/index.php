@@ -20,7 +20,7 @@ $target_file = "mystep".(!empty($cs)?("_".$cs):"").(!empty($lng_type)?("_".$lng_
 
 @unlink($pack_file);
 $mypack = new MyPack($pack_dir, $pack_file);
-$mypack->AddIgnore(basename(dirname(__FILE__)), ".svn", "_bak", "cache", "update", "install.lock", "2011", "article", "pic", "tmp", "colorway", "news_show", "web.config", "aspnet_client","config_main.php","config_test.php","config-bak.php");
+$mypack->AddIgnore(basename(dirname(__FILE__)), ".svn", "_bak", "cache", "update", "install.lock", "2011", "article", "pic", "tmp", "colorway", "ciguang","news_show", "web.config", "aspnet_client","config_main.php","config_test.php","config-bak.php");
 if(!empty($cs)) $mypack->setCharset("gbk", $cs, $lng_type,".php,.tpl,.html,.htm,.sql");
 
 $mypack->DoIt();
