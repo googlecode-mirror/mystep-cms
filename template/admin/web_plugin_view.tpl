@@ -23,8 +23,21 @@
 			</tr>
 <?PHP
 $language = $setting['language'];
-include(ROOT_PATH."/plugin/".$idx."/config.php");
-include(ROOT_PATH."/plugin/".$idx."/config-detail.php");
+$the_file = ROOT_PATH."/plugin/".$idx."/config.php";
+if(file_exists($the_file)) {
+	include($the_file);
+	$flag = true;
+	$the_path = ROOT_PATH."/plugin/".$idx."/config/";
+	if(isset($setting['gen']['language'])) {
+		if(is_file($the_path.$setting['gen']['language'].".php")) {
+			include($the_path.$setting['gen']['language'].".php");
+			$flag = false;
+		}
+	}
+	if($flag) include($the_path."/default.php");
+	unset($flag, $the_path);
+}
+unset($the_file);
 if(!isset($setting_type)) {
 	echo <<<content
 			<tr>
