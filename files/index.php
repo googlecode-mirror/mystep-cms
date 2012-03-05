@@ -48,7 +48,7 @@ if($record=getData("select * from ".$setting['db']['pre']."attachment where id =
 	header("Content-type: ".$record['file_type']);
 	header("Accept-Ranges: bytes");
 	header("Accept-Length: ".$record['file_size']);
-	header("Content-Disposition: attachment; filename=".chg_charset($record['file_name'], $setting['gen']['charset'],"utf-8"));
+	header("Content-Disposition: attachment; filename=".getSafeCode($record['file_name'], "utf-8"));
 	if(strpos($record['file_type'],"image")===0 && ($setting['watermark']['mode'] & 2)==2 && $record['watermark']==1) {
 		img_watermark($the_file, ROOT_PATH."/".$setting['watermark']['img'], dirname($the_file)."/cache/".basename($the_file), 3, array('rate'=>4, 'alpha'=>50));
 	} else {

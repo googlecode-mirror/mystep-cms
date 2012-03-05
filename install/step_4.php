@@ -31,4 +31,5 @@
 <?php
 MultiDel(ROOT_PATH."/error.log");
 MultiDel(ROOT_PATH."/".$setting['path']['cache']);
+MultiDel(dirname(__FILE__));
 ?>

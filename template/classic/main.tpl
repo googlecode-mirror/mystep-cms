@@ -57,7 +57,7 @@
 	</div>
 
 	<div align="center"><!--lang_page_update_time--> : <!--last_modify--><a name="bottom"></a></div>
-</div>
 <!--page_end-->
+</div>
 </body>
 </html>

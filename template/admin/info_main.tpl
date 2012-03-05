@@ -91,9 +91,9 @@ function checkUpdate() {
 		}
 	}, "json");
 }
-function applyUpdate(mode=0) {
+function applyUpdate(mode) {
 	loadingShow();
-	var mode = (mode==0?"download":"update");
+	mode = (mode==1?"update":"download");
 	$.get("update.php?"+mode, function(info){
 		loadingShow();
 		try {

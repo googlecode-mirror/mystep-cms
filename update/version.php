@@ -1222,5 +1222,46 @@ $version = array(
 					),
 			),
 	),
+	'0.99.9.2' => array(
+		'info' => '
+				V0.99.9.2
+				1.Fix a bug in attachment downloading
+				2.Enhance Crontab plugin
+				3.Add just-download option to update module
+				4.Enhance plugin module
+				Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'files/index.php',
+				'images',
+				'include/parameter.php',
+				'install/step_4.php',
+				'plugin/comment/config-detail.php',
+				'plugin/crontab/config',
+				'plugin/crontab/config.php',
+				'plugin/crontab/config/chs.php',
+				'plugin/crontab/config/default.php',
+				'plugin/crontab/config/en.php',
+				'plugin/crontab/log.txt',
+				'plugin/crontab/run.php',
+				'plugin/email/config-detail.php',
+				'plugin/mssql/config-detail.php',
+				'plugin/news_mark/config-detail.php',
+				'plugin/offical/config-detail.php',
+				'plugin/se_detect/config-detail.php',
+				'script/global.js',
+				'template',
+				'template/admin/info_main.tpl',
+				'template/admin/web_plugin_setting.tpl',
+				'template/classic/main.tpl',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120305',
+					),
+			),
+	),
 );
 ?>

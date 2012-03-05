@@ -295,7 +295,7 @@ function setHomepage() {
 
 function reportError(msg, url, line) {
 	var str = "You have found an error as below: \n\n";
-	str += "Err: " + msg + "on line: " + line;
+	str += "Err: " + msg + "\n\non line: " + line;
 	if(typeof(ms_setting)!="undefined" && ms_setting.debug) alert(str);
 	return true;
 }

@@ -9,15 +9,33 @@ C:\Windows\System32\inetsrv\config\applicationHost.config
 require("../inc.php");
 ignore_user_abort("on");
 set_time_limit(0);
-$interval = 120;
-if(file_get_contents("status.txt")=="run") {
-	file_put_contents("status.txt", "");
-	sleep($interval+2);
+require("config.php");
+$interval = $plugin_setting['crontab']['interval'];
+$interval_resume = $plugin_setting['crontab']['interval_resume'];
+$file_status = "status.txt";
+$file_log = "log.txt";
+$flag = empty($_SERVER["QUERY_STRING"]);
+if($flag) {
+	if(file_get_contents($file_status)=="run") {
+		file_put_contents($file_status, "");
+		sleep($interval+2);
+	}
+	file_put_contents($file_status, "run");
+	WriteFile($file_log, "Mission Start at ".date("Y-m-d H:i:s")."\n", "wb");
+} else {
+	WriteFile($file_log, "Mission Resume at ".date("Y-m-d H:i:s")."\n", "ab");
 }
-file_put_contents("status.txt", "run");
-WriteFile("log.txt", "Mission Start at ".date("Y-m-d H:i:s")."\n", "wb");
+$counter = 0;
+$flag = true;
 while(true) {
-	if(file_get_contents("status.txt")!="run") break;
+	//WriteFile($file_log, "Mission Check at ".date("Y-m-d H:i:s")."\n", "ab");
+	if(file_get_contents($file_status)!="run") break;
+	$counter++;
+	if($interval_resume!=0 && $counter>$interval_resume) {
+		$flag = false;
+		$goto_url = "run.php?".rand();
+		break;
+	}
 	if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."crontab where next_date<now() and (expire='0000-00-00' || expire>now()) order by next_date limit 1")) {
 		if(!empty($record['code'])) {
 			eval($record['code']);
@@ -29,18 +47,19 @@ while(true) {
 			}
 		}
 		$next_date = getNextTime($record['mode'], $record['schedule']);
-		WriteFile("log.txt", $record['name']." - ".date("Y-m-d H:i:s")." / ".$next_date."\n", "ab");
+		WriteFile($file_log, $record['name']." - ".date("Y-m-d H:i:s")." / ".$next_date."\n", "ab");
 		$db->Query("update ".$setting['db']['pre']."crontab set `exe_date`=now(), `exe_count`=`exe_count`+1, `next_date`='".$next_date."' where id=".$record['id']);
 		unset($record);
 	}
 	$db->Free();
 	sleep($interval);
 }
-WriteFile("log.txt", "Mission Stop at ".date("Y-m-d H:i:s")."\n", "ab");
+if($flag) WriteFile($file_log, "Mission Stop at ".date("Y-m-d H:i:s")."\n", "ab");
+ob_clean();
 $mystep->pageEnd(false);
 
 function getNextTime($mode, $schedule) {
-	if($schedule=="0,0,0,0,0") $schedule = ($mode==1?"0,0,1,0,0":"0,0,0,10,0");
+	if($schedule=="0,0,0,0,0") $schedule = ($mode==1?"0,0,0,0,0":"0,0,0,10,0");
 	$schedule = explode(",", $schedule);
 	if($mode==1) {
 		$date_year = date("Y");
