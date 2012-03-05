@@ -27,7 +27,9 @@
 			<input type="button" onclick="location.href='<?=$setting['web']['url']?>'" value="Íê ³É">
 		</div>
 	</div>
-
+<script language="javascript">
+	location.replace('<?=$setting['web']['url']?>/admin');
+</script>
 <?php
 MultiDel(ROOT_PATH."/error.log");
 MultiDel(ROOT_PATH."/".$setting['path']['cache']);
