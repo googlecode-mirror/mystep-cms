@@ -33,7 +33,7 @@
 		</tr>
 <!--loop:end-->
 		<tr>
-			<td colspan="8" align="center">
+			<td class="row" colspan="8" align="center">
 				<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 				<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 				<input class="btn" type="button" value=" 导 入 " onclick="showPop('upload','导入插件','url','web_plugin.php?method=upload',420, 100)" />

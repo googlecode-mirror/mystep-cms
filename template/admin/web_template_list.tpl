@@ -8,7 +8,7 @@
 	</select>
 </div>
 <div align="center">
-	<table id="input_area" cellspacing="0" cellpadding="0">
+	<table id="list_area" cellspacing="0" cellpadding="0">
 		<tr align="center">
 			<td class="cat">模板文件</td>
 			<td class="cat" width="80">文件大小</td>
