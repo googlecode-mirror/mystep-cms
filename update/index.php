@@ -10,7 +10,6 @@ date_default_timezone_set($setting['gen']['timezone']);
 $v = $_GET['v'];
 $cs = $_GET['cs'];
 if($cs==$setting['gen']['charset']) $cs = "";
-$_SERVER["HTTP_REFERER"] = "111";
 if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver'].$cs);
 	if(file_exists($cache_file)) {
