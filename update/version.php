@@ -6,7 +6,7 @@ $version = array(
 		'file' => array(),
 		'setting' => array(),
 	),
-	'0.98.12' => array(
+	'0.98' => array(
 		'info' => '
 				V0.98.12
 				1.JavaScript Parameter Settings added

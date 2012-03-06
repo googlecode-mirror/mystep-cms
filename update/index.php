@@ -6,11 +6,11 @@ require(ROOT_PATH."/source/function/global.php");
 require(ROOT_PATH."/source/class/abstract.class.php");
 require(ROOT_PATH."/source/class/mydb.class.php");
 require("version.php");
-
 date_default_timezone_set($setting['gen']['timezone']);
 $v = $_GET['v'];
 $cs = $_GET['cs'];
 if($cs==$setting['gen']['charset']) $cs = "";
+$_SERVER["HTTP_REFERER"] = "111";
 if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver'].$cs);
 	if(file_exists($cache_file)) {
@@ -19,14 +19,11 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 		$sql_list = array();
 		$file_list = array();
 		$setting_list = array();
-		$flag = false;
 		foreach($version as $key => $value) {
-			if($flag) {
+			if($key>$v) {
 				$sql_list = array_merge($sql_list, $value['sql']);
 				$file_list = array_merge($file_list, $value['file']);
 				$setting_list = arrayMerge($setting_list, $value['setting']);
-			} else {
-				$flag = ($key==$v || $key>$v);
 			}
 		}
 		if(!empty($cs)) {
@@ -44,8 +41,8 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 					$update_info['content'][$i] = GetFile(ROOT_PATH."/".$update_info['file'][$i]);
 					$path_parts = pathinfo($update_info['file'][$i]);
 					if(!empty($cs) && strpos(".php,.tpl,.html,.htm,.sql", $path_parts["extension"])!==false) {
-						$update_info['content'][$i] = str_replace(strtolower($setting['gen']['charset']), strtolower($cs), $update_info['content'][$i]);
-						$update_info['content'][$i] = str_replace(strtoupper($setting['gen']['charset']), strtoupper($cs), $update_info['content'][$i]);
+						$update_info['content'][$i] = str_ireplace(strtolower($setting['gen']['charset']), strtolower($cs), $update_info['content'][$i]);
+						$update_info['content'][$i] = str_ireplace(strtoupper($setting['gen']['charset']), strtoupper($cs), $update_info['content'][$i]);
 						$update_info['content'][$i] = chg_charset($update_info['content'][$i], $setting['gen']['charset'], $cs);
 					}
 				}

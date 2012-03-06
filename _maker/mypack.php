@@ -60,8 +60,8 @@ class myPack {
 				$file_content = GetFile($dir);
 				$path_parts = pathinfo($dir);
 				if(strpos($this->charset['file_ext'], $path_parts["extension"])!==false) {
-					$file_content = str_replace(strtolower($this->charset['from']), strtolower($this->charset['to']), $file_content);
-					$file_content = str_replace(strtoupper($this->charset['from']), strtoupper($this->charset['to']), $file_content);
+					$file_content = str_ireplace(strtolower($this->charset['from']), strtolower($this->charset['to']), $file_content);
+					$file_content = str_ireplace(strtoupper($this->charset['from']), strtoupper($this->charset['to']), $file_content);
 					if(!empty($this->charset['lng_type'])) {
 						$file_content = chg_lng_custom($file_content, $this->charset['lng_type'], $this->charset['from']);
 					} else {
