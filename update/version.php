@@ -1236,8 +1236,10 @@ $version = array(
 				'plugin/se_detect/config-detail.php',
 				'script/global.js',
 				'template/admin/info_main.tpl',
+				'template/admin/web_plugin_list.tpl',
 				'template/admin/web_plugin_setting.tpl',
 				'template/admin/web_plugin_view.tpl',
+				'template/admin/web_template_list.tpl',
 				'template/classic/main.tpl',
 			),
 		'setting' => array(
