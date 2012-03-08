@@ -86,6 +86,7 @@ switch($method) {
 		if(empty($_POST["tpl_mail_cn"])) $_POST["tpl_mail_cn"] = GetFile("tpl/default_mail_cn.tpl");
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
+		if(empty($_POST["tpl_list_reg"])) $_POST["tpl_list_reg"] = GetFile("tpl/list_reg.tpl");
 		WriteFile("setting/{$mid}_regist_cn.tpl", $_POST["tpl_reg_cn"], "wb");
 		WriteFile("setting/{$mid}_regist_en.tpl", $_POST["tpl_reg_en"], "wb");
 		WriteFile("setting/{$mid}_reglist_cn.tpl", $_POST["tpl_reglist_cn"], "wb");
@@ -93,6 +94,7 @@ switch($method) {
 		WriteFile("setting/{$mid}_mail_cn.tpl", $_POST["tpl_mail_cn"], "wb");
 		WriteFile("setting/{$mid}_mail_en.tpl", $_POST["tpl_mail_en"], "wb");
 		WriteFile("setting/{$mid}_edit_reg.tpl", $_POST["tpl_edit_reg"], "wb");
+		WriteFile("setting/{$mid}_list_reg.tpl", $_POST["tpl_list_reg"], "wb");
 		if(empty($_POST["itemlist"])) {
 			include("setting/default.php");
 			$para = var_export($para, true);
@@ -166,6 +168,7 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		if(empty($_POST["tpl_mail_cn"])) $_POST["tpl_mail_cn"] = GetFile("tpl/default_mail_cn.tpl");
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
+		if(empty($_POST["tpl_list_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/list_reg.tpl");
 		WriteFile("setting/{$mid}_regist_cn.tpl", $_POST["tpl_reg_cn"], "wb");
 		WriteFile("setting/{$mid}_regist_en.tpl", $_POST["tpl_reg_en"], "wb");
 		WriteFile("setting/{$mid}_reglist_cn.tpl", $_POST["tpl_reglist_cn"], "wb");
@@ -173,6 +176,7 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		WriteFile("setting/{$mid}_mail_cn.tpl", $_POST["tpl_mail_cn"], "wb");
 		WriteFile("setting/{$mid}_mail_en.tpl", $_POST["tpl_mail_en"], "wb");
 		WriteFile("setting/{$mid}_edit_reg.tpl", $_POST["tpl_edit_reg"], "wb");
+		WriteFile("setting/{$mid}_list_reg.tpl", $_POST["tpl_list_reg"], "wb");
 		
 		if(empty($_POST["itemlist"])) {
 			include("setting/{$mid}.php");
@@ -265,6 +269,7 @@ $para = '.var_export($para, true).';
 			unlink("setting/{$mid}_mail_cn.tpl");
 			unlink("setting/{$mid}_mail_en.tpl");
 			unlink("setting/{$mid}_edit_reg.tpl");
+			unlink("setting/{$mid}_list_reg.tpl");
 			unlink("setting/{$mid}.php");
 			deleteCache("admin_cat");
 		}
@@ -288,7 +293,7 @@ function build_page($method) {
 		"style" => "../plugin/".basename(realpath(dirname(__FILE__))),
 		"path" => ROOT_PATH."/".$setting['path']['template'],
 	);
-	if($method=="list" || $method=="list_reg" || $method=="add" || $method=="edit") {
+	if($method=="list" || $method=="add" || $method=="edit") {
 		$tpl_info['style'] .= "/tpl/";
 	} else {
 		$tpl_info['style'] .= "/setting/";
@@ -296,6 +301,8 @@ function build_page($method) {
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
 	if($method=="edit_reg") {
 		$tpl_info['idx'] = $mid."_edit_reg";
+	} elseif($method=="list_reg") {
+		$tpl_info['idx'] = $mid."_list_reg";
 	} else {
 		$tpl_info['idx'] = $method;
 	}
@@ -412,6 +419,7 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("setting/{$mid}_mail_cn.tpl")));
 		$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("setting/{$mid}_mail_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("setting/{$mid}_edit_reg.tpl")));
+		$tpl_tmp->Set_Variable('tpl_list_reg', htmlspecialchars(GetFile("setting/{$mid}_list_reg.tpl")));
 	} elseif($method == "add") {
 		$tpl_tmp->Set_Variable('title', 'Ìí¼Ó»áÒé');
 		$tpl_tmp->Set_Variable('method', 'add');
@@ -429,6 +437,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("setting/".$mid."_mail_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("setting/".$mid."_mail_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("setting/".$mid."_edit_reg.tpl")));
+			$tpl_tmp->Set_Variable('tpl_list_reg', htmlspecialchars(GetFile("setting/".$mid."_list_reg.tpl")));
 		} else {
 			include("setting/default.php");
 			$tpl_tmp->Set_Variable('tpl_reg_cn', htmlspecialchars(GetFile("tpl/default_regist_cn.tpl")));
@@ -438,6 +447,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("tpl/default_mail_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("tpl/default_mail_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("tpl/edit_reg.tpl")));
+			$tpl_tmp->Set_Variable('tpl_list_reg', htmlspecialchars(GetFile("tpl/list_reg.tpl")));
 		}
 		$tpl_tmp->Set_Variable('reg_item', toJson($para, $setting['gen']['charset']));
 	}

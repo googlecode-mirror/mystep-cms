@@ -68,7 +68,10 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 			} else {
 				continue;
 			}
+			
 			if(strpos($img_list[$i], $setting['web']['url'])!==false) continue;
+			if(strpos($img_list[$i], getSetting('web', 'url'))!==false) continue;
+			
 			$the_time = GetMicrotime();
 			$old_name = strtolower(basename($img_list[$i]));
 			$ext = ".".GetFileExt($img_list[$i]);
@@ -134,6 +137,7 @@ function GetPictures(&$content, $db=null, $zoom = 700) {
 				continue;
 			}
 			if(strpos($img_list[$i], $setting['web']['url'])!==false) continue;
+			if(strpos($img_list[$i], getSetting('web', 'url'))!==false) continue;
 			$the_time = GetMicrotime();
 			$old_name = strtolower(basename($img_list[$i]));
 			$ext = ".".GetFileExt($img_list[$i]);

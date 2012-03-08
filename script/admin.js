@@ -23,4 +23,17 @@ $(function(){
 			});
 		}
 	}
+	var obj_addnew = $(".addnew");
+	if(obj_addnew.length) {
+		if($.browser.msie) {
+			$(window).scroll(function() {
+				obj_addnew.css("top", $(document.body).scrollTop()+36);
+			});
+			$(window).resize(function() {
+				obj_addnew.css("top", $(document.body).scrollTop()+36);
+			});
+		} else {
+			obj_addnew.css("position","fixed");
+		}
+	}
 });

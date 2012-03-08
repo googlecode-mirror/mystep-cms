@@ -58,6 +58,7 @@ mystep;
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_mail_cn.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_mail_en.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_edit_reg.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_list_reg.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}.php");
 		}
 		$db->Free();

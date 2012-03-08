@@ -1,7 +1,7 @@
 <div class="title">网站基本信息</div>
 <div>&nbsp;</div>
 <div>
-	<table width="80%" cellspacing="0" cellpadding="0" align="center" border="0">
+	<table width="900" cellspacing="0" cellpadding="0" align="center" border="0">
 		<tr>
 			<td class="cat" width="250">网站程序版本</td>
 			<td class="row">

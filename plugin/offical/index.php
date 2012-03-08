@@ -44,4 +44,14 @@ $mystep->setAddedContent("start", '
 $mystep->setAddedContent("end", '
 <div style="text-align:center;padding:10px;float:none;clear:both;">Powered By <a href="http://www.mysteps.cn" target="_blank">MystepCMS</a></div>
 ');
+if(!empty($plugin_setting['offical']['bgsound'])) {
+	$mystep->setAddedContent("end", '
+<div style="width:0px;height:0px;overflow:hidden;">
+	<audio autoplay="1">
+		<source src="'.$plugin_setting['offical']['bgsound'].'" type="audio/mp3" />
+		<embed src="'.$plugin_setting['offical']['bgsound'].'" type="audio/mp3" autostart="true" />
+	</audio>
+</div>
+	');
+}
 ?>

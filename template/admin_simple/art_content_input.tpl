@@ -249,6 +249,8 @@ function attach_remove(aid) {
 	content = content.replace(re, "");
 	re = new RegExp("<p>[\s\r\n]*<\\/p>", "ig");
 	content = content.replace(re, "");
+	re = new RegExp("<div>[\s\r\n]*<\\/div>", "ig");
+	content = content.replace(re, "");
 	tinyMCE.get('content').setContent(content);
 	return;
 }
@@ -315,7 +317,7 @@ function setIframe(idx) {
 	if($id("popupLayer_"+idx)) {
 		theFrame = $("#popupLayer_"+idx).find("iframe");
 		theHeight = theFrame.contents().find("body")[0].scrollHeight + 20;
-		if(theHeight>650) theHeight = 650;
+		//if(theHeight>650) theHeight = 650;
 		theFrame.height(theHeight);
 		$("#popupLayer_"+idx).height($("#popupLayer_"+idx+"_title").height()+theHeight);
 		$("#popupLayer_"+idx+"_content").height(theHeight);

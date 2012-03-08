@@ -112,6 +112,23 @@ function getSubSetting($web_id=1) {
 	return $setting_sub;
 }
 
+function getSetting($para_1="", $para_2="", $idx="") {
+	if(!empty($idx) && file_exists(ROOT_PATH."/include/config_".$idx.".php")) {
+		include(ROOT_PATH."/include/config_".$idx.".php");
+		$result = $setting_sub;
+	} else {
+		include(ROOT_PATH."/include/config.php");
+		$result = $setting;
+	}
+	if(!empty($para_1) && isset($result[$para_1])) {
+		$result = $result[$para_1];
+		if(!empty($para_2) && isset($result[$para_2])) {
+			$result = $result[$para_2];
+		}
+	}
+	return $result;
+}
+
 function getList($layer = 1, $cat_main = 0) {
 	global $catalog, $max_layer;
 	if($layer>$max_layer || !is_array($GLOBALS["catalog_{$layer}"])) return;

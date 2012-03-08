@@ -92,6 +92,12 @@
 								<textarea name="tpl_edit_reg" style="width:100%; height:200px;"><!--tpl_edit_reg--></textarea>
 							</td>
 						</tr>
+						<tr>
+							<td class="cat">×¢²áÁÐ±íÄ£°å£º</td>
+							<td class="row">
+								<textarea name="tpl_list_reg" style="width:100%; height:200px;"><!--tpl_list_reg--></textarea>
+							</td>
+						</tr>
 					</table>
 				</td>
 			</tr>

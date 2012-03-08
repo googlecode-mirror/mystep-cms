@@ -1,7 +1,7 @@
 <div class="title">服务器基本信息</div>
 <div>&nbsp;</div>
 <div>
-	<table width="80%" cellspacing="0" cellpadding="0" align="center" border="0">
+	<table width="900" cellspacing="0" cellpadding="0" align="center" border="0">
 		<tr>
 			<td class="cat" width="250">服务器语言环境</td>
 			<td class="row"><?=$req->getServer("HTTP_ACCEPT_LANGUAGE")?></td>

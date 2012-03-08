@@ -128,9 +128,9 @@ mystep;
 		$max_count = count($plugins);
 		for($i=0; $i<$max_count; $i++) {
 			if($plugins[$i]['active']=='1') {
-				$curPlugin = ROOT_PATH."/plugin/".$plugins[$i]['idx']."/index.php";
-				if(is_file($curPlugin)) include($curPlugin);
 				$curPlugin = ROOT_PATH."/plugin/".$plugins[$i]['idx']."/config.php";
+				if(is_file($curPlugin)) include($curPlugin);
+				$curPlugin = ROOT_PATH."/plugin/".$plugins[$i]['idx']."/index.php";
 				if(is_file($curPlugin)) include($curPlugin);
 			}
 		}

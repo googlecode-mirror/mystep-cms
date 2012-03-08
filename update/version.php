@@ -1248,5 +1248,44 @@ $version = array(
 					),
 			),
 	),
+	'0.99.9.3' => array(
+		'info' => '
+				V0.99.9.3
+				1.Allow custom regist list to meeting plugin
+				2.Fix a bug in downloading local attachment
+				3.Add background music setting in offical plugin
+				Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/style.css',
+				'include/parameter.php',
+				'plugin/meeting/class.php',
+				'plugin/meeting/meeting.php',
+				'plugin/meeting/tpl/add.tpl',
+				'plugin/meeting/tpl/edit.tpl',
+				'plugin/offical/config.php',
+				'plugin/offical/config/chs.php',
+				'plugin/offical/config/default.php',
+				'plugin/offical/config/en.php',
+				'plugin/offical/index.php',
+				'script/admin.js',
+				'source/class/mystep.class.php',
+				'source/function/admin.php',
+				'source/function/web.php',
+				'template/admin/art_content_input.tpl',
+				'template/admin/info_main.tpl',
+				'template/admin/info_mysql.tpl',
+				'template/admin/info_php.tpl',
+				'template/admin/info_server.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120308',
+					),
+			),
+	),
 );
 ?>
