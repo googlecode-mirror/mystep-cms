@@ -188,6 +188,6 @@ $(function(){
 	}, "json");
 	//Misc
 	setSwitch();
-	setList()
+	setList();
 });
 </script> 

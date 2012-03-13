@@ -9,6 +9,8 @@ C:\Windows\System32\inetsrv\config\applicationHost.config
 require("../inc.php");
 ignore_user_abort("on");
 set_time_limit(0);
+ob_end_clean();
+
 require("config.php");
 $interval = $plugin_setting['crontab']['interval'];
 $interval_resume = $plugin_setting['crontab']['interval_resume'];
@@ -20,20 +22,26 @@ if($flag) {
 		file_put_contents($file_status, "");
 		sleep($interval+2);
 	}
-	file_put_contents($file_status, "run");
 	WriteFile($file_log, "Mission Start at ".date("Y-m-d H:i:s")."\n", "wb");
+	echo "Mission Start at ".date("Y-m-d H:i:s")."<br />\n";
 } else {
 	WriteFile($file_log, "Mission Resume at ".date("Y-m-d H:i:s")."\n", "ab");
 }
+file_put_contents($file_status, "run");
 $counter = 0;
 $flag = true;
+if(!empty($plugin_setting['crontab']['s_pass']) && !empty($GLOBALS['authority'])) {
+	$q_str = $GLOBALS['authority']."=".urlencode($plugin_setting['crontab']['s_pass']);
+} else {
+	$q_str = rand();
+}
 while(true) {
 	//WriteFile($file_log, "Mission Check at ".date("Y-m-d H:i:s")."\n", "ab");
 	if(file_get_contents($file_status)!="run") break;
 	$counter++;
 	if($interval_resume!=0 && $counter>$interval_resume) {
 		$flag = false;
-		$goto_url = "run.php?".rand();
+		$goto_url = "http://".$_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"]."?".$q_str;
 		break;
 	}
 	if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."crontab where next_date<now() and (expire='0000-00-00' || expire>now()) order by next_date limit 1")) {
@@ -41,6 +49,9 @@ while(true) {
 			eval($record['code']);
 		}
 		if(!empty($record['url'])) {
+			if(strpos($record['url'], $setting['web']['url'])!==false && !is_numeric($q_str)) {
+				$record['url'] .= (strpos($record['url'],"?")?"&":"?").$q_str;
+			}
 			if($fp = @fopen($record['url'], "r")) {
         $buffer = fgets($fp, 4096);
 				fclose($fp);
@@ -48,6 +59,7 @@ while(true) {
 		}
 		$next_date = getNextTime($record['mode'], $record['schedule']);
 		WriteFile($file_log, $record['name']." - ".date("Y-m-d H:i:s")." / ".$next_date."\n", "ab");
+		echo $record['name']." - ".date("Y-m-d H:i:s")."<br />\n";
 		$db->Query("update ".$setting['db']['pre']."crontab set `exe_date`=now(), `exe_count`=`exe_count`+1, `next_date`='".$next_date."' where id=".$record['id']);
 		unset($record);
 	}
@@ -55,7 +67,18 @@ while(true) {
 	sleep($interval);
 }
 if($flag) WriteFile($file_log, "Mission Stop at ".date("Y-m-d H:i:s")."\n", "ab");
-ob_clean();
+echo "Mission Stop at ".date("Y-m-d H:i:s")."<br />\n";
+file_put_contents($file_status, "");
+
+sleep($interval);
+if(!empty($goto_url)) {
+	if($fp = @fopen($goto_url, "r")) {
+		$buffer = fgets($fp, 4096);
+		$buffer .= fgets($fp, 4096);
+		fclose($fp);
+	}
+}
+$goto_url = "";
 $mystep->pageEnd(false);
 
 function getNextTime($mode, $schedule) {

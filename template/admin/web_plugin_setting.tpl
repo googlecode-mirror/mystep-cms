@@ -53,13 +53,13 @@ content;
 					break;
 				case "password":
 					$cur_component = '
-						<input type="password" id="'.$idx.'_'.$key.'" name="plugin_setting['.$idx.']['.$key.']" value="'.$value.'" maxlength="'.$setting_type[$key][2].'" />
+						<input type="password" id="'.$idx.'_'.$key.'" name="plugin_setting['.$idx.']['.$key.']" value="" maxlength="'.$setting_type[$key][2].'" />
 						<span class="comment">'.$cur_description.'</span>
 					</td>
 				<tr>
 					<td class="cat" align="right">'.$language['admin_psw'].'</td>
 					<td class="row">
-						<input type="password" id="'.$idx.'_'.$key.'_r" name="setting['.$idx.']['.$key.'_r]" value="'.$value.'" maxlength="'.$setting_type[$key][2].'" />
+						<input type="password" id="'.$idx.'_'.$key.'_r" name="plugin_setting['.$idx.']['.$key.'_r]" value="" maxlength="'.$setting_type[$key][2].'" />
 					';
 					$cur_description = $language['admin_psw_desc'];
 					break;
@@ -137,7 +137,7 @@ function checkPass() {
 			return false;
 		}
 	}
-	theObjs.remove();
+	//theObjs.remove();
 	return true;
 }
 function checkAll(checkSet, sign) {

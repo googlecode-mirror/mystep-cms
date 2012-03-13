@@ -111,6 +111,15 @@ mystep;
 	}
 	if(strpos($ccList, ",8,")!==false) {
 		$cache->clean();
+		$cache_path = ROOT_PATH."/".$setting['path']['upload']."/tmp/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
+			}
+			closedir($handle);
+		}
 	}
 	$goto_url = $setting['info']['self'];
 } else {

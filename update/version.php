@@ -1287,5 +1287,56 @@ $version = array(
 					),
 			),
 	),
+	'0.99.9.4' => array(
+		'info' => '
+				V0.99.9.4
+				1.Add scoll loading function for images in article read page
+				2.Exhance password input method in plugin setting function
+				3.Fix a bug in comment plugin
+				4.Echance crontab plugin, resume mode works fun with authority mode (see V0.99.8.3)
+				5.Add background music setting in offical plugin
+				6.Add modified file check funtion
+				7.Exhance update function, modified files will not be rewrite when auto-update
+				Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/art_content.php',
+				'admin/func_attach.php',
+				'admin/language/chs.php',
+				'admin/language/default.php',
+				'admin/language/en.php',
+				'admin/style.css',
+				'admin/update.php',
+				'admin/web_cache.php',
+				'admin/web_plugin.php',
+				'images/loading_img.gif',
+				'include/config.php',
+				'include/parameter.php',
+				'plugin/comment/class.php',
+				'plugin/crontab/class.php',
+				'plugin/crontab/config.php',
+				'plugin/crontab/config/chs.php',
+				'plugin/crontab/config/default.php',
+				'plugin/crontab/config/en.php',
+				'plugin/crontab/install.sql',
+				'plugin/crontab/run.php',
+				'plugin/offical/config.php',
+				'script/addon.js',
+				'script/jquery.addon.js',
+				'script/setting.js.php',
+				'source/class/session.class.php',
+				'source/function/admin.php',
+				'template/admin/info_main.tpl',
+				'template/admin/web_plugin_setting.tpl',
+				'template/classic/index.tpl',
+				'template/classic/read.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120312',
+					),
+			),
+	),
 );
 ?>

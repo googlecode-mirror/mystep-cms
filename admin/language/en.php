@@ -10,10 +10,16 @@ $language = array (
   'admin_update_done' => 'Online Update',
   'admin_update_sql' => '%d SQL query has been executed!',
   'admin_update_file' => '%d files has been updated!',
-  'admin_update_error' => 'Because of power limit or you prefer to manual update, script file on your server cannot be writen, download the update file and uncompres to the root of your website!',
+  'admin_update_error' => 'Because of below reasons, auto update cannot be apply:
   
+  1.Power limit - some files is unwritable.
+  2.You prefer to manual update.
+  3.Some files haves been modified after last update.
+  
+  Download the update file and uncompres to the root of your website!',
+
   'admin_psw' => 'Password repeat',
-  'admin_psw_desc' => 'Reinput the previous password please',
+  'admin_psw_desc' => 'Reinput the previous password please(blank means no change)',
   'admin_psw_desc_addon' => ' (If no need to change, just keep the blank empty)',
   'admin_nopower' => 'You havn\'t the power to make current operation!',
   

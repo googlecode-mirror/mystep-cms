@@ -82,6 +82,7 @@ TABLE .cat span {color:red;}
 #input_area .btn {width:90px; background-color:#DAE7F2; color:black; font-weight:normal; border:1px solid black; padding:1px 10px 1px 10px;}
 #input_area .cbox {width:20px; background-color:transparent; border:0px;}
 #list_area tr:hover {background-color:#eef;}
+#list_area td {word-wrap:break-word;word-break:break-all;}
 
 #page_bottom {position:absolute; bottom:0px; background-color:#fff; clear:both; line-height:20px; text-align:center; margin:0px auto 0px auto; padding:10px 0px 10px 0px; width:100%; border-top:2px solid #739ace;}
 

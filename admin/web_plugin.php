@@ -130,9 +130,14 @@ mystep;
 			MultiDel(ROOT_PATH."/cache/plugin/");
 			deleteCache("plugin");
 			
+			include($plugin_path.$idx."/config.php");
 			foreach($_POST['plugin_setting'][$idx] as $key => $value) {
 				if(is_array($value)) {
 					$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
+				}
+				if(isset($_POST['plugin_setting'][$idx][$key."_r"])) {
+					if(empty($_POST['plugin_setting'][$idx][$key])) $_POST['plugin_setting'][$idx][$key] = $plugin_setting[$idx][$key];
+					unset($_POST['plugin_setting'][$idx][$key."_r"]);
 				}
 			}
 			$result = <<<mystep

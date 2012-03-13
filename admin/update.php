@@ -71,11 +71,13 @@ mystep;
 			$result['info'] = "";
 		}
 		
+		$check_file_list = checkFile();
+		if($check_file_list==false) $check_file_list = array();
 		$list = array();
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
 			//if($update_info['file'][$i]=="include/config.php") continue;
 			if(strpos(strtolower($update_info['file'][$i]), "config.php")!==false) continue;
-			if($method=="update" && isWriteable(ROOT_PATH."/".$update_info['file'][$i])) {
+			if($method=="update" && isWriteable(ROOT_PATH."/".$update_info['file'][$i]) && array_search("/".$update_info['file'][$i], $check_file_list)===false) {
 				if(empty($update_info['content'][$i])) {
 					@unlink(ROOT_PATH."/".$update_info['file'][$i]);
 				} elseif($update_info['content'][$i]==".") {
@@ -111,6 +113,7 @@ mystep;
 		write_log($setting['language']['admin_update_done']);
 		echo toJson($result, $setting['db']['charset']);
 		
+		checkFile(ROOT_PATH);
 		$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
 		if($handle = opendir($cache_path)) {
 			while (false !== ($file = readdir($handle))) {
@@ -137,6 +140,18 @@ mystep;
 				}
 			}
 			closedir($handle);
+		}
+		break;
+	case "build":
+		if(!checkFile(ROOT_PATH)) {
+			echo "error";
+		}
+		break;
+	case "check":
+		if(($result = checkFile())!==false) {
+			echo implode("\n", $result);
+		} else {
+			echo "error";
 		}
 		break;
 	default:

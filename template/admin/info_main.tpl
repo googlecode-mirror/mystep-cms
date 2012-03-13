@@ -7,6 +7,8 @@
 			<td class="row">
 				V<?=$ms_version['ver']?> （<?=$ms_version['language']?>/<?=$ms_version['charset']?>/<?=$ms_version['date']?>）
 				<a href="###" onclick="checkUpdate()">检查升级</a>
+				<a href="###" onclick="checkModify()">检查文件改动</a>
+				<a href="###" onclick="updateModify()">更新文件校验</a>
 <!--
 				 |
 				<a href="###" onclick="emptyUpdate()">清空升级信息</a>
@@ -116,7 +118,27 @@ function emptyUpdate() {
 		}
 	});
 }
-
+function checkModify() {
+	$.get("update.php?check", function(info){
+		if(info=="error") {
+			alert("校验失败，请确认校验信息是否已成功建立！");
+		} else if(info.length==0) {
+			alert("未发现改变的文件！");
+		} else {
+			alert("发现如下文件发生改变：\n\n"+info);
+		}
+	});
+}
+function updateModify() {
+	if(confirm("更新校验信息会造成自动升级时将已改动文件错误覆盖，是否继续？")==false) return;
+	$.get("update.php?build", function(info){
+		if(info.length==0) {
+			alert("已成功更新当前系统文件校验信息！");
+		} else {
+			alert("校验信息更新失败！");
+		}
+	});
+}
 function exportUpdate() {
 	window.open("update.php?export");
 }

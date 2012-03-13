@@ -10,10 +10,16 @@ $language = array (
   'admin_update_done' => '在线升级',
   'admin_update_sql' => '成功执行 %d 条数据库命令',
   'admin_update_file' => '成功更新 %d 个文件',
-  'admin_update_error' => '由于权限不足或您选择了下载更新文件，无法自动完成更新，请保存更新文件，并直接解压至网站根目录',
+  'admin_update_error' => '可能由于以下原因，更新无法自动完成：
+  
+  1.权限不足；
+  2.您选择了下载更新文件；
+  3.部分文件在上次更新后被修改过。
+  
+  请保存更新文件，并直接解压至网站根目录',
 	
   'admin_psw' => '重复密码',
-  'admin_psw_desc' => '请重复输入密码',
+  'admin_psw_desc' => '请重复输入密码（如果无需更改请留空）',
   'admin_psw_desc_addon' => '（如果密码不变，此项和前一项请留空！）',
   'admin_nopower' => '您无权进行该操作！',
   

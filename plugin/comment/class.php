@@ -276,6 +276,7 @@ windy2000;
 			$comment_list[] = $comment;
 		}
 		$content = toJson($comment_list, $setting['gen']['charset']);
+		if(is_null($content)) $content = "";
 		
 		WriteFile(ROOT_PATH."/plugin/comment/cache/".$web_id."/".(ceil($news_id/1000)*1000)."/".$news_id.".txt", $content, "wb");
 		return;

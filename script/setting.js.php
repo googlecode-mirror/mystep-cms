@@ -12,7 +12,7 @@ require(ROOT_PATH."/source/class/mystep.class.php");
 $mystep = new MyStep();
 $mystep->pageStart(true);
 header('Content-Type: application/x-javascript');
-$cache_file = ROOT_PATH."/".$setting['path']['cache']."script/".$setting['info']['web']['idx']."setting.js";
+$cache_file = ROOT_PATH."/".$setting['path']['cache']."script/".$setting['info']['web']['idx']."_setting.js";
 
 if(file_exists($cache_file) && (filemtime($cache_file)+$etag_expires)>($setting['info']['time_start']/1000)) {
 	$result = GetFile($cache_file);

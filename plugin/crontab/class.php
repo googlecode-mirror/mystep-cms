@@ -79,6 +79,7 @@ mystep;
 	public static function check() {
 		$result = "";
 		$theList = array(
+			"/config.php",
 			"/log.txt",
 			"/status.txt",
 		);

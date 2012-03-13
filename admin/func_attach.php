@@ -17,7 +17,7 @@ switch($method) {
 			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/", substr($record['file_time'],0, 10));
 			$the_ext = GetFileExt($record['file_name']);
 			if($the_ext=="php") $the_ext = "txt";
-			$the_file = $record['file_time'].substr(md5($record['file_name']),0,5).".".$the_ext;
+			$the_file = $record['file_time'].substr(md5($record['file_size']),0,5).".".$the_ext;
 			MultiDel($the_path.$the_file);
 			MultiDel($the_path."preview/".$the_file);
 			MultiDel($the_path."cache/".$the_file);

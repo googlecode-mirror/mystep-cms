@@ -33,7 +33,7 @@ $setting['gen']['template'] = 'classic';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
 $setting['gen']['update'] = 'http://www.mysteps.cn/update/';
 $setting['gen']['minify'] = false;
-$setting['gen']['etag'] = 20120228;
+$setting['gen']['etag'] = 20120308;
 
 $setting['email'] = array();
 $setting['email']['mode'] = '';

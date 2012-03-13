@@ -47,7 +47,7 @@ function GetPageList($counter, $qry_str="", $page=1, $page_size=20) {
 }
 
 function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
-	global $db, $setting, $req;
+	global $db, $setting, $pic_list;
 	if(is_array($content)) {
 		$tmp = $content;
 	} else {
@@ -60,52 +60,7 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 	for($n=0; $n<$max_count; $n++) {
 		$attach_list = "";
 		preg_match_all("/<img.+?src=(.?)(http.+?)\\1.*?>/is", $tmp[$n], $arr);
-		$img_list = $arr[2];
-		$max_count2 = count($img_list);
-		for($i=0; $i<$max_count2; $i++) {
-			if(array_search($img_list[$i], $pic_list)===false) {
-				array_push($pic_list, $img_list[$i]);
-			} else {
-				continue;
-			}
-			
-			if(strpos($img_list[$i], $setting['web']['url'])!==false) continue;
-			if(strpos($img_list[$i], getSetting('web', 'url'))!==false) continue;
-			
-			$the_time = GetMicrotime();
-			$old_name = strtolower(basename($img_list[$i]));
-			$ext = ".".GetFileExt($img_list[$i]);
-			$ext = preg_replace("/\?.*$/", "", $ext);
-			$old_name = preg_replace("/\?.*$/", "", $old_name);
-			//if(strpos("*.jpg.bmp.gif.png",$ext)===false) continue;
-			if($ext==".") {
-				$ext = ".jpg";
-				$old_name .= $ext;
-			}
-			$new_name = $the_time.$ext;
-			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/");
-			MakeDir($the_path);
-			if(GetRemoteFile($img_list[$i], $the_path.$new_name)) {
-				$img_info = GetImageSize($the_path.$new_name);
-				$the_width = $img_info[0];
-				$the_height = $img_info[1];
-				if(!is_numeric($zoom)) $zoom = 600;
-				if($the_width > $zoom) {
-					$the_height *= $zoom/$the_width;
-					$the_width = $zoom;
-				}
-				MakeDir("{$the_path}/preview/");
-				img_thumb($the_path.$new_name, $the_width, $the_height, $the_path."/preview/".$new_name);
-				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$req->getSession('username')."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
-				$db->Query($qrl_str);
-				$new_id = $db->GetInsertId();
-				if($new_id != 0) {
-					$attach_list .= $new_id.",";
-					$tmp[$n] = str_replace($img_list[$i], $setting['web']['url']."/files?".$new_id, $tmp[$n]);
-					array_push($id_list, $new_id);
-				}
-			}
-		}
+		$attach_list .= localPicture($arr[2], $tmp[$n], $zoom);
 		$attach_list .= "0";
 		$db->Query("update ".$setting['db']['pre_sub']."news_detail set content='".mysql_real_escape_string($tmp[$n])."' where news_id={$news_id} and page=".($n+1));
 		$db->Query("update ".$setting['db']['pre']."attachment set news_id={$news_id}, web_id={$web_id} where id in ({$attach_list})");
@@ -114,7 +69,6 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 }
 
 function GetPictures(&$content, $db=null, $zoom = 700) {
-	global $setting, $req;
 	if(is_null($db)) global $db;
 	if(is_array($content)) {
 		$tmp = $content;
@@ -122,59 +76,70 @@ function GetPictures(&$content, $db=null, $zoom = 700) {
 		$tmp = array();
 		$tmp[] = $content;
 	}
+	global $pic_list;
 	$pic_list = array();
 	$id_list = array();
 	$max_count = count($tmp);
 	$attach_list = "";
 	for($n=0; $n<$max_count; $n++) {
 		preg_match_all("/<img.+?src=(.?)(http.+?)\\1.*?>/is", $tmp[$n], $arr);
-		$img_list = $arr[2];
-		$max_count2 = count($img_list);
-		for($i=0; $i<$max_count2; $i++) {
-			if(array_search($img_list[$i], $pic_list)===false) {
-				array_push($pic_list, $img_list[$i]);
-			} else {
-				continue;
-			}
-			if(strpos($img_list[$i], $setting['web']['url'])!==false) continue;
-			if(strpos($img_list[$i], getSetting('web', 'url'))!==false) continue;
-			$the_time = GetMicrotime();
-			$old_name = strtolower(basename($img_list[$i]));
-			$ext = ".".GetFileExt($img_list[$i]);
-			if($ext==".") {
-				$ext = ".jpg";
-				$old_name .= $ext;
-			}
-			$new_name = $the_time.$ext;
-			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/");
-			MakeDir($the_path);
-			if(GetRemoteFile($img_list[$i], $the_path.$new_name)) {
-				$img_info = GetImageSize($the_path.$new_name);
-				$the_width = $img_info[0];
-				$the_height = $img_info[1];
-				if(!is_numeric($zoom)) $zoom = 600;
-				if($the_width > $zoom) {
-					$the_height *= $zoom/$the_width;
-					$the_width = $zoom;
-				}
-				MakeDir("{$the_path}/preview/");
-				img_thumb($the_path.$new_name, $the_width, $the_height, $the_path."/preview/".$new_name);
-				$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$req->getSession('username')."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
-				$db->Query($qrl_str);
-				$new_id = $db->GetInsertId();
-				if($new_id != 0) {
-					$attach_list .= $new_id.",";
-					$tmp[$n] = str_replace($img_list[$i], $setting['web']['url']."/files?".$new_id, $tmp[$n]);
-					array_push($id_list, $new_id);
-				}
-			}
-		}
+		$attach_list .= localPicture($arr[2], $tmp[$n], $zoom);
 	}
 	$attach_list .= "0";
 	if(count($tmp)==1) {
 		$content = $tmp[0];
 	} else {
 		$content = $tmp;
+	}
+	return $attach_list;
+}
+
+function localPicture($img_list, &$content, $zoom=700) {
+	global $db, $setting, $req, $pic_list;
+	for($i=0, $m=count($img_list); $i<$m; $i++) {
+		if(array_search($img_list[$i], $pic_list)===false) {
+			array_push($pic_list, $img_list[$i]);
+		} else {
+			continue;
+		}
+		if(strpos($img_list[$i], $setting['web']['url'])!==false) continue;
+		if(strpos($img_list[$i], getSetting('web', 'url'))!==false) continue;
+		$the_time = GetMicrotime();
+		$old_name = strtolower(basename($img_list[$i]));
+		$ext = ".".GetFileExt($img_list[$i]);
+		$ext = preg_replace("/\?.*$/", "", $ext);
+		$old_name = preg_replace("/\?.*$/", "", $old_name);
+		$old_name = preg_replace("/[;,&\=]/", "", $old_name);
+		//if(strpos("*.jpg.bmp.gif.png",$ext)===false) continue;
+		if($ext==".") {
+			$ext = ".jpg";
+			$old_name .= $ext;
+		}
+		$new_name = $the_time.$ext;
+		$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/");
+		MakeDir($the_path);
+		if(GetRemoteFile($img_list[$i], $the_path.$new_name)) {
+			$img_info = GetImageSize($the_path.$new_name);
+			$the_width = $img_info[0];
+			$the_height = $img_info[1];
+			if(!is_numeric($zoom)) $zoom = 700;
+			if($the_width > $zoom) {
+				$the_height *= $zoom/$the_width;
+				$the_width = $zoom;
+			}
+			$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$req->getSession('username')."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
+			$db->Query($qrl_str);
+			$new_id = $db->GetInsertId();
+			if($new_id != 0) {
+				$attach_list .= $new_id.",";
+				$content = str_replace($img_list[$i], $setting['web']['url']."/files?".$new_id, $content);
+				array_push($id_list, $new_id);
+			}
+			$name_new = $the_time.substr(md5(filesize($the_path.$new_name)),0,5).$ext;
+			rename($the_path.$new_name, $the_path.$name_new);
+			MakeDir("{$the_path}/preview/");
+			img_thumb($the_path.$name_new, $the_width, $the_height, $the_path."/preview/".$name_new);
+		}
 	}
 	return $attach_list;
 }
@@ -188,6 +153,53 @@ function delTplCache($tpl="", $file="") {
 		MultiDel($cache_pathe.$tpl);
 	} else {
 		MultiDel($cache_pathe.$tpl."/".$file.".php");
+	}
+}
+
+$ignore_list = array(".", "..", ".svn", "_bak", "_maker", "cache", "update", "install.lock", "2011", "article", "pic", "tmp", "colorway", "ciguang","news_show", "web.config", "aspnet_client","config_main.php","config_test.php","config-bak.php");
+$file_list = array();
+$file_list_md5 = array();
+function checkFile($dir="", $layer=0) {
+	$the_file = ROOT_PATH."/cache/checkfile.php";
+	if(!empty($dir)) {
+		if(!is_dir($dir)) return false;
+		global $file_list, $file_list_md5, $ignore_list;
+		if($handle = opendir($dir)) {
+			while (false !== ($file = readdir($handle))) {
+				if(array_search($file, $ignore_list)===false) {
+					$the_name = $dir."/".$file;
+					if(is_dir($the_name)) {
+						checkFile($the_name, $layer+1);
+					} else {
+						$file_list[] = str_replace(ROOT_PATH, "", $the_name);
+						$file_list_md5[] = md5_file($the_name);
+					}
+				}
+			}
+			closedir($handle);
+			if($layer==0) {
+				$content = '<?php
+$file_list = '.var_export($file_list, true).';
+$file_list_md5 = '.var_export($file_list_md5, true).';
+?>';
+				WriteFile($the_file, $content, "wb");
+			}
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		if(!is_file($the_file)) return false;
+		include($the_file);
+		$result = array();
+		for($i=0,$m=count($file_list);$i<$m;$i++) {
+			if(!is_file(ROOT_PATH.$file_list[$i])) {
+				$result[] = $file_list[$i];
+			} elseif(md5_file(ROOT_PATH.$file_list[$i])!=$file_list_md5[$i]) {
+				$result[] = $file_list[$i];
+			}
+		}
+		return $result;
 	}
 }
 /*--------------------------------Website Functions End-----------------------------------------*/
