@@ -1302,6 +1302,7 @@ $version = array(
 		'sql' => array(),
 		'file' => array(
 				'admin/art_content.php',
+				'admin/images/btn.gif',
 				'admin/func_attach.php',
 				'admin/language/chs.php',
 				'admin/language/default.php',
@@ -1323,6 +1324,7 @@ $version = array(
 				'plugin/crontab/run.php',
 				'plugin/offical/config.php',
 				'script/addon.js',
+				'script/admin.js',
 				'script/jquery.addon.js',
 				'script/setting.js.php',
 				'source/class/session.class.php',
