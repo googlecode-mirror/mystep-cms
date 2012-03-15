@@ -12,7 +12,7 @@
 <link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 </head>
 <body>
-<div id="bar_loading"><img src="images/loading.gif" alt="<!--lang_ajax_sending-->"><br / ><!--lang_ajax_sending--></div>
+<div id="bar_loading"><img src="images/loading.gif" alt="<!--lang_ajax_sending-->"><br / ><span><!--lang_ajax_sending--></span></div>
 <div id="page_ole">
 	<div id="page_top_nav" class="after">
 		<div class="fl">

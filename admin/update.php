@@ -1,5 +1,7 @@
 <?php
 require("inc.php");
+ignore_user_abort("on");
+set_time_limit(0);
 $method = $req->GetServer("QUERY_STRING");
 switch($method) {
 	case "empty":
@@ -33,8 +35,6 @@ switch($method) {
 		break;
 	case "update":
 	case "download":
-		ignore_user_abort("on");
-		set_time_limit(0);
 		$result = array();
 		$header = array();
 		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST")."/update/";

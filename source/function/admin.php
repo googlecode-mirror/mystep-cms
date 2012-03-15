@@ -156,7 +156,6 @@ function delTplCache($tpl="", $file="") {
 	}
 }
 
-$ignore_list = array(".", "..", ".svn", "_bak", "_maker", "cache", "update", "install.lock", "2011", "article", "pic", "tmp", "colorway", "ciguang","news_show", "web.config", "aspnet_client","config_main.php","config_test.php","config-bak.php");
 $file_list = array();
 $file_list_md5 = array();
 function checkFile($dir="", $layer=0) {

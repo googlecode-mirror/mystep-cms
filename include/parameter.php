@@ -47,6 +47,9 @@ $sess_handle = array(
 	array($setting['session']['mode'], "sess_gc")
 );
 
+$ignore_list = array(".", "..", "_maker", "cache", "update", "install.lock", "article", "pic", "tmp", "web.config", "aspnet_client");
+$ignore_list = array_merge($ignore_list, array(".svn", "_bak", "2011", "2012", "colorway", "ciguang","news_show"));
+
 //User the parameter below to access admin page without login, empty to disable, check checkUser() function in "source/function/web.php" for the detail
 $authority = "";
 ?>

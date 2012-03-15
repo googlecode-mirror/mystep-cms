@@ -306,53 +306,78 @@ jQuery.fn.outerHTML = function(s) {
 };
 
 /*!
- * jquery.scrollLoading.js
- * by zhangxinxu  http://www.zhangxinxu.com
- * mod by windy2000
+ * jquery.powerImage.js
+ * Mixture image enhance function by windy2000
 */
 (function($) {
-	$.fn.scrollLoading = function(options) {
+	$.fn.powerImage = function(options) {
 		var defaults = {
-			attr: "src_org"	
+			image: "images/loading_img.gif",
+			width: 600,
+			zoom: true
 		};
 		var params = $.extend({}, defaults, options || {});
-		params.cache = [];
-		$(this).each(function() {
-			var node = this.nodeName.toLowerCase(), url = $(this).attr(params["attr"]);
-			if (!url) { return; }
+		params.imgs = [];
+		$(this).find("img").each(function(i) {
+			if($(this).hasClass("title_img")) return;
+			var url = $(this).attr("src");
+			if(!url) return;
+			this.src = params.image;
+			if(this.title=="" && this.alt!="") this.title = this.alt;
+			if(params.zoom) {
+				if(this.title!="") this.title += "\n";
+				this.title += "Press ALT buttom, and wheel the mouse to zoom in or zoom out.";
+				$(this).mousewheel(function(objEvent, intDelta){
+					if(objEvent.altKey) {
+						var zoom = parseInt(this.style.zoom, 10) || 100;
+						zoom += intDelta * 10;
+						if(zoom > 0) {
+							this.style.zoom = zoom + '%';
+						}
+						if(objEvent.preventDefault){
+							objEvent.preventDefault();
+						} else {
+							objEvent.returnValue = false;
+						}
+						return false;
+					} else {
+						return true;
+					}
+				});
+			}
 			var data = {
 				obj: $(this),
-				tag: node,
 				url: url
 			};
-			params.cache.push(data);
+			params.imgs.push(data);
 		});
-		var loading = function() {
-			var st = $(window).scrollTop(), sth = st + $(window).height();
-			$.each(params.cache, function(i, data) {
-				var o = data.obj, tag = data.tag, url = data.url;
-				if (o) {
-					post = o.offset().top; posb = post + o.height();
-					if ((post > st && post < sth) || (posb > st && posb < sth)) {
-						if (tag === "img") {
-							var cur_img = $("<img>");
-							cur_img.attr("src", url);
-							cur_img.load(function() {
-								o.hide();
-								o.attr("src", url);
-								o.fadeIn("slow");
-								$(this).remove();
-							});
-						} else {
-							o.load(url);
-						}
+		var doit = function() {
+			var win_top_1 = $(window).scrollTop(), win_top_2 = win_top_1 + $(window).height();
+			$.each(params.imgs, function(i, data) {
+				var obj = data.obj, url = data.url;
+				if(obj!=null) {
+					var img_top_1 = obj.offset().top; img_top_2 = img_top_1 + obj.height();
+					if((img_top_1 > win_top_1 && img_top_1 < win_top_2) || (img_top_2 > win_top_1 && img_top_2 < win_top_2)) {
+						var cur_img = $("<img>");
+						cur_img.attr("src", url);
+						cur_img.load(function() {
+							obj.hide();
+							obj.attr("src", url);
+							obj.fadeIn("slow");
+							if(obj.width()>params.width) obj.width(params.width);
+							$(this).remove();
+						});
+						cur_img.error(function(){
+							$(this).remove();
+							obj.remove();
+						});
 						data.obj = null;
 					}
 				}
 			});
 			return false;
 		};
-		loading();
-		$(window).bind("scroll", loading);
+		doit();
+		$(window).bind("scroll", doit);
 	};
 })(jQuery);

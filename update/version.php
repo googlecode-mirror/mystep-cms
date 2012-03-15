@@ -1290,7 +1290,7 @@ $version = array(
 	'0.99.9.4' => array(
 		'info' => '
 				V0.99.9.4
-				1.Add scoll loading function for images in article read page
+				1.Enhance image loading function in article read page
 				2.Exhance password input method in plugin setting function
 				3.Fix a bug in comment plugin
 				4.Echance crontab plugin, resume mode works fun with authority mode (see V0.99.8.3)
@@ -1327,9 +1327,12 @@ $version = array(
 				'script/setting.js.php',
 				'source/class/session.class.php',
 				'source/function/admin.php',
+				'template/admin/func_backup.tpl',
 				'template/admin/info_main.tpl',
+				'template/admin/web_cache.tpl',
 				'template/admin/web_plugin_setting.tpl',
 				'template/classic/index.tpl',
+				'template/classic/main.tpl',
 				'template/classic/read.tpl',
 			),
 		'setting' => array(

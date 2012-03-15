@@ -71,11 +71,11 @@
 		</tr>
 	</table>
 </div>
-<div id="bar_loading"><img src="../images/loading.gif" alt="系统更新"><br / >本系统正在更新，请稍候！</div>
+<div id="bar_loading"><img src="../images/loading.gif" alt="<!--lang_ajax_sending-->"><br / ><span><!--lang_ajax_sending--></span></div>
 <script language="javascript">
 var cur_ver = <?=toJson($ms_version, $setting['gen']['charset']);?>;
 function checkUpdate() {
-	loadingShow();
+	loadingShow("正在连接服务器，检测更新。。。");
 	$.get("update.php?"+Math.random(), function(ver_info){
 		loadingShow();
 		try {
@@ -94,7 +94,7 @@ function checkUpdate() {
 	}, "json");
 }
 function applyUpdate(mode) {
-	loadingShow();
+	loadingShow("系统正在更新，请等待！");
 	mode = (mode==1?"update":"download");
 	$.get("update.php?"+mode, function(info){
 		loadingShow();
@@ -119,7 +119,9 @@ function emptyUpdate() {
 	});
 }
 function checkModify() {
+	loadingShow("正在检测系统文件的变更情况，请等待！");
 	$.get("update.php?check", function(info){
+		loadingShow();
 		if(info=="error") {
 			alert("校验失败，请确认校验信息是否已成功建立！");
 		} else if(info.length==0) {
@@ -131,7 +133,9 @@ function checkModify() {
 }
 function updateModify() {
 	if(confirm("更新校验信息会造成自动升级时将已改动文件错误覆盖，是否继续？")==false) return;
+	loadingShow("正在更新系统文件校验信息，请等待！");
 	$.get("update.php?build", function(info){
+		loadingShow();
 		if(info.length==0) {
 			alert("已成功更新当前系统文件校验信息！");
 		} else {

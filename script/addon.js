@@ -79,7 +79,7 @@ function setList() {
 	});
 }
 
-function loadingShow() {
+function loadingShow(info) {
 	if($("#screenLocker").length) {
 		$("#screenLocker").remove();
 		$("#bar_loading").hide();
@@ -100,6 +100,7 @@ function loadingShow() {
 		var theTop = ($(window).height() - $("#bar_loading").height())/2 + $(document.body).scrollTop();
 		var theLeft = ($(window).width() - $("#bar_loading").width())/2 + $(document.body).scrollLeft();
 		$("#bar_loading").css({"opacity":"0.7", "top":theTop, "left":theLeft});
+		if(info) $("#bar_loading span").html(info);
 		$("#bar_loading").show();
 	}
 	return true;

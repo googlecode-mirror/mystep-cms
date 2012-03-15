@@ -68,7 +68,7 @@ echo "</select>";
 		</table>
 	</form>
 </div>
-<div id="bar_loading"><img src="../images/loading.gif" alt="清空缓存" width="400" height="10" /><br / >正在清空网站缓存，请耐心等待！</div>
+<div id="bar_loading"><img src="../images/loading.gif" alt="<!--lang_ajax_sending-->" width="400" height="10" /><br / ><span><!--lang_ajax_sending--></span></div>
 <script Language="JavaScript">
 function add(obj) {
 	obj = $(obj).parent().parent().clone();
@@ -83,7 +83,7 @@ function del(obj) {
 }
 
 function cclean() {
-	loadingShow();
+	loadingShow("正在清空网站缓存，请耐心等待！");
 	var theForm = $("form").get(0);
 	theForm.action = "?clean";
 	theForm.submit();

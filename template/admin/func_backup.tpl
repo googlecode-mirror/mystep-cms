@@ -58,12 +58,12 @@
 		</table>
 	</form>
 </div>
-<div id="bar_loading"><img src="../images/loading.gif" alt="数据库操作" width="400" height="10" /><br / >操作正在进行，请耐心等待！</div>
+<div id="bar_loading"><img src="../images/loading.gif" alt="<!--lang_ajax_sending-->" width="400" height="10" /><br / ><span><!--lang_ajax_sending--></span></div>
 <script language="JavaScript">
 function doit(theForm) {
 	if(checkForm(theForm, checkForm_append)) {
 		if(document.db_bak.method.value!='export') {
-			loadingShow();
+			loadingShow("操作正在进行，请耐心等待！");
 		} else {
 			theForm.target = "_blank";
 		}
