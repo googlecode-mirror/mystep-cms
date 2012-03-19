@@ -149,6 +149,62 @@ mystep;
 			WriteFile($plugin_path.$idx."/config.php", $result, "w");
 		}
 		break;
+	case "update":
+		$result = array();
+		$header = array();
+		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST")."/update/";
+		$update_info = GetRemoteContent($setting['gen']['update']."/plugin.php?p=".$idx."&cs=".$setting['gen']['charset'], $header);
+		$update_info = base64_decode($update_info);
+		$update_info = unserialize($update_info);
+		$strFind = array("{db_name}", "{pre}", "{charset}");
+		$strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset']);
+		for($i=0,$m=count($update_info['sql']); $i<$m; $i++) {
+			$db->Query(str_replace($strFind, $strReplace, $update_info['sql'][$i]));
+		}
+		if($m>0) {
+			$result['info'] = sprintf($setting['language']['admin_update_sql'], $m);
+		} else {
+			$result['info'] = "";
+		}
+		$plugin_path = ROOT_PATH."/plugin/".$idx;
+		$list = array();
+		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
+			MakeDir(dirname($plugin_path."/".$update_info['file'][$i]));
+			if(isWriteable($plugin_path."/".$update_info['file'][$i])) {
+				if(empty($update_info['content'][$i])) {
+					@unlink($plugin_path."/".$update_info['file'][$i]);
+				} elseif($update_info['content'][$i]==".") {
+					MakeDir($plugin_path."/".$update_info['file'][$i]);
+				} else {
+					WriteFile($plugin_path."/".$update_info['file'][$i], $update_info['content'][$i], "wb");
+				}
+			} else {
+				$list[] = $i;
+			}
+		}
+		$result['link'] = "";
+		$m = count($list);
+		if($m>0) {
+			require(ROOT_PATH."/source/class/myzip.class.php");
+			$dir = ROOT_PATH."/".$setting['path']['upload']."/tmp/";
+			$zipfile = $dir."update_".$idx."_".date("Ymd").".zip";
+			$dir = $dir."update/".date("Ymd/");
+			$files = array();
+			for($i=0; $i<$m; $i++) {
+				if($update_info['content'][$list[$i]]==".") continue;
+				$files[$i] = $dir.$idx.$update_info['file'][$list[$i]];
+				WriteFile($files[$i], $update_info['content'][$list[$i]], "wb");
+			}
+			if(zip($files, $zipfile, $dir)) {
+				$result['link'] = $setting['web']['url']."/".$setting['path']['upload']."/tmp/".basename($zipfile);
+			}
+			MultiDel($dir);
+			$result['info'] .= "\n". $setting['language']['admin_update_error'];
+		} else {
+			$result['info'] .= "\n". sprintf($setting['language']['admin_update_file'], count($update_info['file']));
+		}
+		echo toJson($result, $setting['db']['charset']);
+		break;
 	default:
 		build_page("list");
 }
@@ -162,12 +218,22 @@ $mystep->pageEnd(false);
 
 function build_page($method) {
 	global $mystep, $req, $tpl, $tpl_info, $plugin, $setting, $idx, $plugin_path, $website;
-
 	$tpl_info['idx'] = "web_plugin_".$method;
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	$tpl_tmp->allow_script = true;
-
 	if($method == "list") {
+		if($plugin_info = json_decode(GetRemoteContent($setting['gen']['update']."/plugin.php?l=".$setting['gen']['language']))) {
+			foreach($plugin_info as $key => $value) {
+				$update_info[$key] = array();
+				$update_info[$key]['idx'] = $key;
+				$update_info[$key]['name'] = getSafeCode($value->name, $setting['gen']['charset']);
+				$update_info[$key]['ver'] = $value->ver;
+				$update_info[$key]['intro'] = getSafeCode($value->intro, $setting['gen']['charset']);
+			}
+			unset($plugin_info);
+		} else {
+			$update_info = array();
+		}
 		$fso = $mystep->getInstance("MyFSO");
 		$plugin_list = $fso->Get_List($plugin_path);
 		$max_count = count($plugin_list['dir']);
@@ -175,20 +241,29 @@ function build_page($method) {
 		for($i=0; $i<$max_count; $i++) {
 			if(is_file($plugin_list['dir'][$i]."/info.php")) {
 				include($plugin_list['dir'][$i]."/info.php");
-				$info['id'] = ++$n;
-				$info['install'] = "";
-				$info['uninstall'] = "";
+				if(isset($update_info[$info['idx']]) && $info['ver']<$update_info[$info['idx']]['ver']) {
+					$info['ver_new'] = $update_info[$info['idx']]['ver'];
+					$info['update'] = "";
+				} else {
+					$info['update'] = "none";
+				}
 				if($plugin_info = getParaInfo("plugin", "idx", $info['idx'])) {
 					$info['order'] = $plugin_info['order'];
-					$info['install'] = "none";
+					$info['active'] = $plugin_info['active']?$setting['language']['close']:$setting['language']['open'];
+					$tpl_tmp->Set_Loop("plugin_list_1", $info);
 				} else {
-					$info['uninstall'] = "none";
-					$info['order'] = 0;
+					$n++;
+					$tpl_tmp->Set_Loop("plugin_list_2", $info);
 				}
-				$info['active'] = $plugin_info['active']?$setting['language']['close']:$setting['language']['open'];
-				$tpl_tmp->Set_Loop("plugin_list", $info);
+				unset($update_info[$info['idx']]);
 			}
 		}
+		foreach($update_info as $key => $value) {
+			$tpl_tmp->Set_Loop("plugin_list_3", $value);
+		}
+		$tpl_tmp->Set_If('empty_2', $n==0);
+		$tpl_tmp->Set_If('empty_3', (count($update_info)==0));
+		$tpl_tmp->Set_Variable('self', $setting['info']['self']);
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_title']);
 		
 		global $db;

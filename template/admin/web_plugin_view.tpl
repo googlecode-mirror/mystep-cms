@@ -23,11 +23,11 @@
 			</tr>
 <?PHP
 $language = $setting['language'];
+$the_path = ROOT_PATH."/plugin/".$idx."/config/";
 $the_file = ROOT_PATH."/plugin/".$idx."/config.php";
-if(file_exists($the_file)) {
-	include($the_file);
+if(file_exists($the_file)) include($the_file);
+if(is_dir($the_path)) {
 	$flag = true;
-	$the_path = ROOT_PATH."/plugin/".$idx."/config/";
 	if(isset($setting['gen']['language'])) {
 		if(is_file($the_path.$setting['gen']['language'].".php")) {
 			include($the_path.$setting['gen']['language'].".php");
@@ -35,9 +35,9 @@ if(file_exists($the_file)) {
 		}
 	}
 	if($flag) include($the_path."/default.php");
-	unset($flag, $the_path);
 }
-unset($the_file);
+unset($the_file, $the_path, $flag);
+
 if(!isset($setting_type)) {
 	echo <<<content
 			<tr>
@@ -54,64 +54,63 @@ content;
 				$plugin_setting[$idx][$key][$i++] = (array_search((STRING)$value2, $theValue)!==false);
 			}
 		}
-	}
-	foreach($plugin_setting[$idx] as $key => $value) {
-			$cur_comment = $setting_comm[$key];
-			$cur_description = $setting_descr[$key];
-			switch($setting_type[$key][0]) {
-				case "text":
-					$cur_component = '<input type="text" name="plugin_setting['.$idx.']['.$key.']" value="'.any2str($value).'" maxlength="'.$setting_type[$key][2].'"'.($setting_type[$key][1]===false?'':(' need="'.$setting_type[$key][1].'"')).' />';
-					break;
-				case "password":
-					$cur_component = '
-						<input type="password" id="'.$idx.'_'.$key.'" name="plugin_setting['.$idx.']['.$key.']" value="'.$value.'" maxlength="'.$setting_type[$key][2].'" />
-						<span class="comment">'.$cur_description.'</span>
-					</td>
-				<tr>
-					<td class="cat" align="right">'.$language['admin_psw'].'</td>
-					<td class="row">
-						<input type="password" id="'.$idx.'_'.$key.'_r" name="setting['.$idx.']['.$key.'_r]" value="'.$value.'" maxlength="'.$setting_type[$key][2].'" />
-					';
-					$cur_description = $language['admin_psw_desc'];
-					break;
-				case "checkbox":
-					$cur_component = '';
-					$i = 0;
-					foreach($setting_type[$key][1] as $key3 => $value3) {
-						$checked = $plugin_setting[$idx][$key][$i++]?"checked":"";
-						$cur_component .= '<input type="checkbox" class="cbox" id="plugin_setting['.$idx.']['.$key.']['.$key3.']" name="plugin_setting['.$idx.']['.$key.'][]" value="'.$value3.'" '.$checked.' /><label for="plugin_setting['.$idx.']['.$key.']['.$key3.']">'.$key3.'</label> &nbsp; ';
-					}
-					break;
-				case "radio":
-					$cur_component = '';
-					foreach($setting_type[$key][1] as $key3 => $value3) {
-						$value3 = any2str($value3);
-						$checked = $value3==any2str($plugin_setting[$idx][$key])?"checked":"";
-						$cur_component .= '<input type="radio" class="cbox" id="plugin_setting['.$idx.']['.$key.']['.$key3.']" name="plugin_setting['.$idx.']['.$key.']" value="'.$value3.'" '.$checked.' /><label for="plugin_setting['.$idx.']['.$key.']['.$key3.']">'.$key3.'</label> &nbsp; '."\n";
-					}
-					break;
-				case "select":
-					$cur_component = "<select name=\"plugin_setting[{$idx}][{$key}]\">\n";
-					foreach($setting_type[$key][1] as $key3 => $value3) {
-						$value3 = any2str($value3);
-						$checked = $value3==any2str($plugin_setting[$idx][$key])?"selected":"";
-						$cur_component .= '<option value="'.$value3.'" '.$checked.'>'.$key3.'</option>'."\n";
-					}
-					$cur_component .= "</select>";
-					break;
-				default:
-					$cur_component = '<input name="plugin_setting['.$idx.']['.$key.']" value="'.$value.'" />';
-			}
-			echo <<<content
-				<tr>
-					<td class="cat" align="right">{$cur_comment}</td>
-					<td class="row">
-						{$cur_component}
-						<span class="comment">{$cur_description}</span>
-					</td>
-				</tr>
+		$value = $plugin_setting[$idx][$key];
+		$cur_comment = $setting_comm[$key];
+		$cur_description = $setting_descr[$key];
+		switch($setting_type[$key][0]) {
+			case "text":
+				$cur_component = '<input type="text" name="plugin_setting['.$idx.']['.$key.']" value="'.any2str($value).'" maxlength="'.$setting_type[$key][2].'"'.($setting_type[$key][1]===false?'':(' need="'.$setting_type[$key][1].'"')).' />';
+				break;
+			case "password":
+				$cur_component = '
+					<input type="password" id="'.$idx.'_'.$key.'" name="plugin_setting['.$idx.']['.$key.']" value="'.$value.'" maxlength="'.$setting_type[$key][2].'" />
+					<span class="comment">'.$cur_description.'</span>
+				</td>
+			<tr>
+				<td class="cat" align="right">'.$language['admin_psw'].'</td>
+				<td class="row">
+					<input type="password" id="'.$idx.'_'.$key.'_r" name="setting['.$idx.']['.$key.'_r]" value="'.$value.'" maxlength="'.$setting_type[$key][2].'" />
+				';
+				$cur_description = $language['admin_psw_desc'];
+				break;
+			case "checkbox":
+				$cur_component = '';
+				$i = 0;
+				foreach($setting_type[$key][1] as $key3 => $value3) {
+					$checked = $plugin_setting[$idx][$key][$i++]?"checked":"";
+					$cur_component .= '<input type="checkbox" class="cbox" id="plugin_setting['.$idx.']['.$key.']['.$key3.']" name="plugin_setting['.$idx.']['.$key.'][]" value="'.$value3.'" '.$checked.' /><label for="plugin_setting['.$idx.']['.$key.']['.$key3.']">'.$key3.'</label> &nbsp; ';
+				}
+				break;
+			case "radio":
+				$cur_component = '';
+				foreach($setting_type[$key][1] as $key3 => $value3) {
+					$value3 = any2str($value3);
+					$checked = $value3==any2str($plugin_setting[$idx][$key])?"checked":"";
+					$cur_component .= '<input type="radio" class="cbox" id="plugin_setting['.$idx.']['.$key.']['.$key3.']" name="plugin_setting['.$idx.']['.$key.']" value="'.$value3.'" '.$checked.' /><label for="plugin_setting['.$idx.']['.$key.']['.$key3.']">'.$key3.'</label> &nbsp; '."\n";
+				}
+				break;
+			case "select":
+				$cur_component = "<select name=\"plugin_setting[{$idx}][{$key}]\">\n";
+				foreach($setting_type[$key][1] as $key3 => $value3) {
+					$value3 = any2str($value3);
+					$checked = $value3==any2str($plugin_setting[$idx][$key])?"selected":"";
+					$cur_component .= '<option value="'.$value3.'" '.$checked.'>'.$key3.'</option>'."\n";
+				}
+				$cur_component .= "</select>";
+				break;
+			default:
+				$cur_component = '<input name="plugin_setting['.$idx.']['.$key.']" value="'.$value.'" />';
+		}
+		echo <<<content
+			<tr>
+				<td class="cat" align="right">{$cur_comment}</td>
+				<td class="row">
+					{$cur_component}
+					<span class="comment">{$cur_description}</span>
+				</td>
+			</tr>
 content;
-			echo "\n";
+		echo "\n";
 	}
 }
 ?>

@@ -127,13 +127,21 @@ $catid = 0;
 		if(!isset($att_list['limit'])) $att_list['limit'] = 0;
 		if(!isset($att_list['loop'])) $att_list['loop'] = 0;
 		if(!isset($att_list['condition'])) $att_list['condition'] = "";
+		if(!isset($att_list['template'])) $att_list['template'] = "";
 		
 		$str_sql = "select * from ".$setting['db']['pre']."meeting_".$att_list['mid']." where 1=1";
 		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
 		$str_sql .= " order by ".$att_list['order'];
 		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
 		
-		$cur_content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/block_reg".($att_list['lng']=="en"?"_en":"_cn").".tpl");
+		$tpl_file = dirname(__FILE__)."/tpl/block_reg".($att_list['lng']=="en"?"_en":"_cn");
+		if(!empty($att_list['template']) && is_file($tpl_file."_".$att_list['template'].".tpl")) {
+			$tpl_file .= "_".$att_list['template'].".tpl";
+		} else {
+			$tpl_file .= ".tpl";
+		}
+		
+		$cur_content = $tpl->Get_TPL($tpl_file);
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
 		$block = $block_all[0];
 		$unit = $block_all[1];
@@ -144,11 +152,20 @@ $catid = 0;
 		$result = <<<mytpl
 <?php
 \$db->Query("{$str_sql}");
+\$country_dic = array(
+	"ÖÐ¹ú" => "China",
+	"Ó¡¶È" => "India",
+);
 while(\$record=\$db->getRS()) {
 	HtmlTrans(&\$record);
 	if("{$att_list['lng']}"=="cn" && \$record['company']=="") {
 		\$record['company'] = \$record['company_en'];
 		\$record['name'] = \$record['name_en'];
+	} elseif("{$att_list['lng']}"=="en") {
+		\$record['country'] = strtr(\$record['country'], \$country_dic);
+		\$record['name_en'] = ucwords(strtolower(\$record['name_en']));
+		if(strlen(\$record['company_en'])>10) \$record['company_en'] = ucwords(strtolower(\$record['company_en']));
+		\$record['duty_en'] = ucwords(strtolower(\$record['duty_en']));
 	}
 	echo <<<content
 {$unit}

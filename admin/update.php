@@ -61,7 +61,7 @@ mystep;
 		}
 	
 		$strFind = array("{db_name}", "{pre}", "{charset}");
-		$strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset'], $req->getServer("HTTP_HOST"), $charset_collate["Default collation"]);
+		$strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset']);
 		for($i=0,$m=count($update_info['sql']); $i<$m; $i++) {
 			$db->Query(str_replace($strFind, $strReplace, $update_info['sql'][$i]));
 		}

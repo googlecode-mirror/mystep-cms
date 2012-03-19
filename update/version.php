@@ -1343,5 +1343,51 @@ $version = array(
 					),
 			),
 	),
+	'0.99.9.5' => array(
+		'info' => '
+				V0.99.9.5
+				1.Plugin online update added
+				2.Fix a plugin data bug
+				3.Enhance meeting plugin
+				4.Echance plugin management module
+				5.Some Style adjusts
+				Some other adjusts...
+			',
+		'sql' => array(),
+		'file' => array(
+				'admin/style.css',
+				'admin/update.php',
+				'admin/web_plugin.php',
+				'images/classic/style.css',
+				'include/parameter.php',
+				'plugin/ad_show/class.php',
+				'plugin/crontab/config.php',
+				'plugin/front_code/class.php',
+				'plugin/meeting/class.php',
+				'plugin/meeting/tpl/block_reg_cn_tbl.tpl',
+				'plugin/meeting/tpl/block_reg_en_tbl.tpl',
+				'plugin/meeting/tpl/default_reglist_cn.tpl',
+				'plugin/meeting/tpl/default_reglist_en.tpl',
+				'plugin/news_snatch/class.php',
+				'plugin/survey/class.php',
+				'plugin/topic/class.php',
+				'script/jquery.addon.js',
+				'source/function/global.php',
+				'template/admin/func_backup.tpl',
+				'template/admin/info_main.tpl',
+				'template/admin/main.tpl',
+				'template/admin/web_cache.tpl',
+				'template/admin/web_plugin_list.tpl',
+				'template/admin/web_plugin_setting.tpl',
+				'template/admin/web_plugin_view.tpl',
+				'update/plugin.php',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120319',
+					),
+			),
+	),
 );
 ?>

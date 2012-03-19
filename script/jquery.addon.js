@@ -326,7 +326,7 @@ jQuery.fn.outerHTML = function(s) {
 			if(this.title=="" && this.alt!="") this.title = this.alt;
 			if(params.zoom) {
 				if(this.title!="") this.title += "\n";
-				this.title += "Press ALT buttom, and wheel the mouse to zoom in or zoom out.";
+				this.title += "Press ALT button, wheel the mouse to zoom in or zoom out the image.";
 				$(this).mousewheel(function(objEvent, intDelta){
 					if(objEvent.altKey) {
 						var zoom = parseInt(this.style.zoom, 10) || 100;

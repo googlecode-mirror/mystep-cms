@@ -563,6 +563,26 @@ function WriteFile($file_name, $content, $mode="wb") {
 	return $fp;
 }
 
+function getFileList($dir, $ext="", $base_dir="") {
+	if(!is_dir($dir)) return;
+	$ext = ",".$ext.",";
+	if(empty($base_dir)) $base_dir = $dir;
+	$file_list = array();
+	$mydir	= dir($dir);
+	if(!$mydir) return array();
+	while(($file = $mydir->read()) !== false){
+		if($file=="." || $file==".." || strpos($ext, ",".$file.",")!==false) continue;
+		$theFile = $dir."/".$file;
+		if(is_dir($theFile)){
+			$file_list = array_merge($file_list, getFileList($theFile, $ext, $dir));
+		} else {
+			$file_list[] = str_replace($base_dir, "", $theFile);
+		}
+	}
+	$mydir->close();
+	return $file_list;
+}
+
 function MakeDir($dir) {
 	//Coded By Windy2000 20031001 v1.0
 	$dir = str_replace("\\", "/", $dir);

@@ -13,7 +13,7 @@ class plugin_ad_show implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['var'].'", "'.$info['plugin_ad_show'].'", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_ad_show", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 3, '".$info['cat_name']."', 'ad_show.php', '../plugin/ad_show/', 0, 0, '".$info['cat_desc']."')");
 		$err = array();
 		if($db->GetError($err)) {

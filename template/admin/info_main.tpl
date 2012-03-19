@@ -71,7 +71,6 @@
 		</tr>
 	</table>
 </div>
-<div id="bar_loading"><img src="../images/loading.gif" alt="<!--lang_ajax_sending-->"><br / ><span><!--lang_ajax_sending--></span></div>
 <script language="javascript">
 var cur_ver = <?=toJson($ms_version, $setting['gen']['charset']);?>;
 function checkUpdate() {

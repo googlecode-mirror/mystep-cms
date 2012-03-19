@@ -68,7 +68,6 @@ echo "</select>";
 		</table>
 	</form>
 </div>
-<div id="bar_loading"><img src="../images/loading.gif" alt="<!--lang_ajax_sending-->" width="400" height="10" /><br / ><span><!--lang_ajax_sending--></span></div>
 <script Language="JavaScript">
 function add(obj) {
 	obj = $(obj).parent().parent().clone();

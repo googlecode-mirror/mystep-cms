@@ -152,7 +152,13 @@
 .page_main #content .title_img{float:right;padding:10px 10px 10px 10px;width:120px;display:none;}
 .page_main #content .notice{color:#ff0000;text-align:center;font-weight:bold;}
 .page_main #content UL, .page_main #content OL{padding-left:24px;}
-.page_main #content a{text-decoration:none;color:#000000;}
+.page_main #content a{text-decoration:underline;color:#0000ff;}
 .page_main #content a:hover{text-decoration:none;color:#ff0000;}
+.page_main #content li{white-space:normal;word-wrap:break-word;word-break:break-all;list-style:disc;overflow:visible;height:auto;}
+.page_main #content pre{white-space:normal;word-wrap:break-word;word-break:break-all;}
+
+.page_main #content table{border:1px #000 solid;font-size:12px;}
+.page_main #content td{padding:5px 5px 5px 5px;border:1px #000 solid;}
+.page_main #content th{padding:5px 5px 5px 5px;text-align:center;background-color:#ddd;font-weight:bold;}
 
 #page_bottom{line-height:20px;text-align:center;margin:10px auto 10px auto;padding-top:10px;width:100%;border-top:1px solid #CBCBCB;}
