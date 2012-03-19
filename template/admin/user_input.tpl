@@ -30,10 +30,10 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">组群选择：</td>
+				<td class="cat" width="80">管理组群：</td>
 				<td class="row">
 					<select name="group_id">
-						<option value="0">无群组权限</option>
+						<option value="0">无管理权限</option>
 <!--loop:start key="user_group"-->
 						<option value="<!--user_group_group_id-->" <!--user_group_selected-->><!--user_group_group_name--></option>
 <!--loop:end-->

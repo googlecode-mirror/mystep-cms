@@ -1,10 +1,10 @@
 <div class="title"><!--title--></div>
-<div class="addnew"><a href="?method=add">添加用户组</a></div>
+<div class="addnew"><a href="?method=add">添加新群组</a></div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">
 			<td class="cat" width="30">编号</td>
-			<td class="cat" width="80">组群名称</td>
+			<td class="cat" width="80">群组名称</td>
 			<td class="cat">管理权限</td>
 			<td class="cat">网站权限</td>
 			<td class="cat">栏目权限</td>

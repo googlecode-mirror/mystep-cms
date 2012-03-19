@@ -1353,13 +1353,16 @@ $version = array(
 				5.Some Style adjusts
 				Some other adjusts...
 			',
-		'sql' => array(),
+		'sql' => array(
+				'update {pre}admin_cat set `name`="管理群组", `comment`="管理群组维护" where `file`="user_group.php"',
+			),
 		'file' => array(
 				'admin/style.css',
 				'admin/update.php',
 				'admin/web_plugin.php',
 				'images/classic/style.css',
 				'include/parameter.php',
+				'install/install.sql',
 				'plugin/ad_show/class.php',
 				'plugin/crontab/config.php',
 				'plugin/front_code/class.php',
@@ -1376,6 +1379,11 @@ $version = array(
 				'template/admin/func_backup.tpl',
 				'template/admin/info_main.tpl',
 				'template/admin/main.tpl',
+				'template/admin/user_group_list.tpl',
+				'template/admin/user_input.tpl',
+				'template/admin/user_online.tpl',
+				'template/admin/user_power_list.tpl',
+				'template/admin/user_type_list.tpl',
 				'template/admin/web_cache.tpl',
 				'template/admin/web_plugin_list.tpl',
 				'template/admin/web_plugin_setting.tpl',

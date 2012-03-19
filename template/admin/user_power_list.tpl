@@ -1,5 +1,5 @@
 <div class="title"><!--title--></div>
-<div class="addnew"><a href="?method=add">添加用户权限</a></div>
+<div class="addnew"><a href="?method=add">添加新权限</a></div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">

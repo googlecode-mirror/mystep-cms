@@ -53,7 +53,7 @@ INSERT INTO `{pre}admin_cat` VALUES
 		(0, 2, '在线用户', 'user_online.php', '', 0, 0, '在线用户'),
 		(0, 2, '用户管理', 'user_detail.php', '', 0, 0, '用户管理'),
 		(0, 2, '用户类型', 'user_type.php', '', 0, 0, '用户类型维护'),
-		(0, 2, '用户群组', 'user_group.php', '', 0, 0, '用户组群维护'),
+		(0, 2, '管理群组', 'user_group.php', '', 0, 0, '管理群组维护'),
 		(0, 2, '用户权限', 'user_power.php', '', 0, 0, '用户权限维护'),
 		
 		(0, 3, '附件管理', 'func_attach.php', '', 0, 0, '附件管理'),
