@@ -1365,6 +1365,7 @@ $version = array(
 				'plugin/crontab/config.php',
 				'plugin/front_code/class.php',
 				'plugin/meeting/class.php',
+				'plugin/meeting/meeting.php',
 				'plugin/meeting/tpl/block_reg_cn_tbl.tpl',
 				'plugin/meeting/tpl/block_reg_en_tbl.tpl',
 				'plugin/meeting/tpl/default_reglist_cn.tpl',
