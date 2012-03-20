@@ -686,9 +686,10 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 		$img_wm->init($new_watermark);
 		list($wm_width, $wm_height) = $img_wm->getSize();
 		
-		list($alpha, $rate) = array_values($para);
-		if(is_null($alpha)) $alpha = 60;
+		$rate = $para['rate'];
 		if(is_null($rate)) $rate = 4;
+		$alpha = $para['alpha'];
+		if(is_null($alpha)) $alpha = 60;
 		if($rate!=1) {
 			$wm_rate = min($img->width/$rate/$wm_width, $img->height/$rate/$wm_height);
 			$wm_width *= $wm_rate;

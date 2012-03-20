@@ -47,12 +47,15 @@ switch($method) {
 			require(ROOT_PATH."/include/config.php");
 			$update_info['setting'] = arrayMerge($setting, $update_info['setting']);
 			$expire_list = var_export($expire_list, true);
+			$ignore_list = var_export($ignore_list, true);
 			$content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
 \$expire_list = {$expire_list};
+\$ignore_list = {$ignore_list};
+\$authority = "{$authority}";
 ?>
 mystep;
 			$content = str_replace("/*--settings--*/", makeVarsCode($update_info['setting'], '$setting'), $content);
@@ -110,6 +113,11 @@ mystep;
 		} else {
 			$result['info'] .= "\n". sprintf($setting['language']['admin_update_file'], count($update_info['file']));
 		}
+		
+		for($i=0,$m=count($update_info['code']); $i<$m; $i++) {
+			@eval($update_info['code'][$i]);
+		}
+		
 		write_log($setting['language']['admin_update_done']);
 		echo toJson($result, $setting['db']['charset']);
 		

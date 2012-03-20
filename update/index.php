@@ -18,11 +18,13 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 		$sql_list = array();
 		$file_list = array();
 		$setting_list = array();
+		$code_list = array();
 		foreach($version as $key => $value) {
 			if($key>$v) {
-				$sql_list = array_merge($sql_list, $value['sql']);
 				$file_list = array_merge($file_list, $value['file']);
-				$setting_list = arrayMerge($setting_list, $value['setting']);
+				if(isset($value['setting'])) $setting_list = arrayMerge($setting_list, $value['setting']);
+				if(isset($value['sql'])) $sql_list = array_merge($sql_list, $value['sql']);
+				if(isset($value['code'])) $code_list[] = $value['code'];
 			}
 		}
 		if(!empty($cs)) {
@@ -31,7 +33,7 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 		}
 		
 		$file_list = array_values(array_unique($file_list));
-		$update_info = array('sql'=>$sql_list, 'file'=>$file_list, 'content'=>array(), 'setting'=>$setting_list);
+		$update_info = array('sql'=>$sql_list, 'file'=>$file_list, 'content'=>array(), 'setting'=>$setting_list, 'code'=>$code_list);
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
 			if(file_exists(ROOT_PATH."/".$update_info['file'][$i])) {
 				if(is_dir(ROOT_PATH."/".$update_info['file'][$i])) {

@@ -5,6 +5,7 @@ $version = array(
 		'sql' => array(),
 		'file' => array(),
 		'setting' => array(),
+		'code' => '',
 	),
 	'0.98' => array(
 		'info' => '
@@ -38,7 +39,6 @@ $version = array(
 				'template/admin/art_catalog_input.tpl',
 				'template/admin/info_main.tpl',
 			),
-		'setting' => array(),
 	),
 	'0.99' => array(
 		'info' => '
@@ -54,7 +54,6 @@ $version = array(
 				9.Fix a bug in delete attachment in article edit page
 				10.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'inc.php',
 				'error.php',
@@ -173,7 +172,6 @@ $version = array(
 				5.Fix a order bug in admin template
 				6.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/func_backup.php',
 				'admin/language/chs.php',
@@ -196,7 +194,6 @@ $version = array(
 				'template/admin/main.tpl',
 				'template/admin_simple/main.tpl',
 			),
-		'setting' => array(),
 	),
 	'0.99.2' => array(
 		'info' => '
@@ -207,7 +204,6 @@ $version = array(
 				4.Fix a bug MySQL Class bug in record return function
 				5.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'include/config.php',
 				'plugin/admin_cat/admin_cat.php',
@@ -288,7 +284,6 @@ $version = array(
 				3.Enhance update function
 				4.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/func_backup.php',
 				'include/parameter.php',
@@ -311,7 +306,6 @@ $version = array(
 				3.Fix a problem in MyDB module
 				4.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/update.php',
 				'admin/web_cache.php',
@@ -320,7 +314,6 @@ $version = array(
 				'source/function/global.php',
 				'template/admin/info_main.tpl',
 			),
-		'setting' => array(),
 	),
 	'0.99.5' => array(
 		'info' => '
@@ -331,7 +324,6 @@ $version = array(
 				4.Fix a bug in getRemoteContent function
 				5.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/inc.php',
 				'admin/update.php',
@@ -342,20 +334,17 @@ $version = array(
 				'template/admin/info_main.tpl',
 				'template/admin/web_setting.tpl',
 			),
-		'setting' => array(),
 	),
 	'0.99.5.1' => array(
 		'info' => '
 				V0.99.5.1
 				Fix a language bug in update function
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/language/chs.php',
 				'admin/update.php',
 				'include/parameter.php',
 			),
-		'setting' => array(),
 	),
 	'0.99.5.2' => array(
 		'info' => '
@@ -364,7 +353,6 @@ $version = array(
 				2.Fix a update referer bug
 				3.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'include/parameter.php',
 				'plugin/news_mark/class.php',
@@ -488,7 +476,6 @@ $version = array(
 				3.Fix a custom link bug in topic plugin
 				4.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/func_backup.php',
 				'admin/update.php',
@@ -496,7 +483,6 @@ $version = array(
 				'plugin/topic/class.php',
 				'script/language.js.php',
 			),
-		'setting' => array(),
 	),
 	'0.99.7' => array(
 		'info' => '
@@ -649,7 +635,6 @@ $version = array(
 				3.Some adjust in meeting plugin
 				4.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/update.php',
 				'include/parameter.php',
@@ -680,7 +665,6 @@ $version = array(
 				5.Fix a bug in news_visit plugin
 				6.Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'error.php',
 				'read.php',
@@ -823,7 +807,6 @@ $version = array(
 				7.Add date input component(js) for all date input area
 				Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/info_err.php',
 				'admin/style.css',
@@ -953,7 +936,6 @@ $version = array(
 				4.Fix setting.js.php for more extend setting
 				Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/web_plugin.php',
 				'include/parameter.php',
@@ -979,7 +961,6 @@ $version = array(
 				5.Fix a bug in thumb making function
 				Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/art_content.php',
 				'admin/attachment.php',
@@ -1184,7 +1165,6 @@ $version = array(
 				8.Fix a bug in article content format function of editor
 				Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/language/chs.php',
 				'admin/language/default.php',
@@ -1217,7 +1197,6 @@ $version = array(
 				4.Enhance plugin module
 				Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'files/index.php',
 				'include/parameter.php',
@@ -1256,7 +1235,6 @@ $version = array(
 				3.Add background music setting in offical plugin
 				Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/style.css',
 				'include/parameter.php',
@@ -1298,7 +1276,6 @@ $version = array(
 				7.Exhance update function, modified files will not be rewrite when auto-update
 				Some other adjusts...
 			',
-		'sql' => array(),
 		'file' => array(
 				'admin/art_content.php',
 				'admin/images/btn.gif',
@@ -1393,6 +1370,51 @@ $version = array(
 						'etag' => '20120319',
 					),
 			),
+	),
+	'0.99.9.5.1' => array(
+		'info' => '
+				V0.99.9.5.1
+				1.Fix a bug in update function
+				2.Move "ignore list" and "authority" parameter from parameter.php to config.php
+				3.Fix a bug in powerImage function (javascript)
+				4.Fix a bug in image thumb funtion
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/update.php',
+				'admin/web_cache.php',
+				'admin/web_setting.php',
+				'include/config.php',
+				'include/parameter.php',
+				'script/jquery.addon.js',
+				'source/function/global.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120320',
+					),
+			),
+		'code' => '
+$cur_setting = $setting;
+unset($setting);
+include(ROOT_PATH."/include/config.php");
+$expire_list = var_export($expire_list, true);
+$ignore_list = var_export($ignore_list, true);
+$content = <<<mystep
+<?php
+\$setting = array();
+
+/*--settings--*/
+\$expire_list = {$expire_list};
+\$ignore_list = {$ignore_list};
+\$authority = "{$authority}";
+?>
+mystep;
+$content = str_replace("/*--settings--*/", makeVarsCode($setting, "\$setting"), $content);
+WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+unset($setting);
+$setting = $cur_setting;
+		',
 	),
 );
 ?>

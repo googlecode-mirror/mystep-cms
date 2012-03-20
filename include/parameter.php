@@ -1,7 +1,7 @@
 <?php
 $ms_version = array(
-	'ver' => '0.99.9.5',
-	'date' => '2012-03-19',
+	'ver' => '0.99.9.5.1',
+	'date' => '2012-03-20',
 	'charset' => 'GBK',
 	'language' => 'CHS',
 );
@@ -46,10 +46,4 @@ $sess_handle = array(
 	array($setting['session']['mode'], "sess_destroy"), 
 	array($setting['session']['mode'], "sess_gc")
 );
-
-$ignore_list = array(".", "..", "_maker", "cache", "update", "install.lock", "article", "pic", "tmp", "web.config", "aspnet_client");
-$ignore_list = array_merge($ignore_list, array(".svn", "2011", "2012", "_bak", "colorway", "ciguang","news_show","apple"));
-
-//User the parameter below to access admin page without login, empty to disable, check checkUser() function in "source/function/web.php" for the detail
-$authority = "";
 ?>

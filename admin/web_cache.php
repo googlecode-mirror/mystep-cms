@@ -20,12 +20,15 @@ if($method=="update" && count($_POST)>0) {
 		$expire_list[$_POST['page'][$i]] = $value;
 	}
 	$expire_list = var_export($expire_list, true);
+	$ignore_list = var_export($ignore_list, true);
 	$content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
 \$expire_list = {$expire_list};
+\$ignore_list = {$ignore_list};
+\$authority = "{$authority}";
 ?>
 mystep;
 	$content = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $content);

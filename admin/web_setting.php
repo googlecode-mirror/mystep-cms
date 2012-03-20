@@ -17,13 +17,15 @@ if($method=="update") {
 	}
 	unset($_POST['setting']['web']['s_pass_r'], $_POST['setting']['db']['pass_r']);
 	$expire_list = var_export($expire_list, true);
-	
+	$ignore_list = var_export($ignore_list, true);
 	$content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
 \$expire_list = {$expire_list};
+\$ignore_list = {$ignore_list};
+\$authority = "{$authority}";
 ?>
 mystep;
 	$content = str_replace("/*--settings--*/", makeVarsCode($_POST['setting'], '$setting'), $content);

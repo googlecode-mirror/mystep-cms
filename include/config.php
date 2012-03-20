@@ -97,4 +97,27 @@ $expire_list = array (
   'tag' => 86400,
   'read' => 604800,
 );
+$ignore_list = array (
+  0 => '.',
+  1 => '..',
+  2 => '_maker',
+  3 => 'cache',
+  4 => 'update',
+  5 => 'install.lock',
+  6 => 'article',
+  7 => 'pic',
+  8 => 'tmp',
+  9 => 'web.config',
+  10 => 'aspnet_client',
+  11 => '.svn',
+  12 => '2011',
+  13 => '2012',
+  14 => '_bak',
+  15 => 'colorway',
+  16 => 'ciguang',
+  17 => 'news_show',
+  18 => 'apple',
+  19 => '_archive',
+);
+$authority = "";
 ?>
