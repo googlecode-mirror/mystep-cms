@@ -30,7 +30,7 @@ if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 			$setting_list = chg_charset($setting_list, $setting['gen']['charset'], $cs);
 		}
 		
-		$file_list = array_unique($file_list);
+		$file_list = array_values(array_unique($file_list));
 		$update_info = array('sql'=>$sql_list, 'file'=>$file_list, 'content'=>array(), 'setting'=>$setting_list);
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
 			if(file_exists(ROOT_PATH."/".$update_info['file'][$i])) {
