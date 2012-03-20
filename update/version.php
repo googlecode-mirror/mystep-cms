@@ -1279,7 +1279,6 @@ $version = array(
 				'template/admin/info_php.tpl',
 				'template/admin/info_server.tpl',
 				'template/admin_simple/art_content_input.tpl',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
@@ -1362,7 +1361,6 @@ $version = array(
 				'admin/web_plugin.php',
 				'images/classic/style.css',
 				'include/parameter.php',
-				'install/install.sql',
 				'plugin/ad_show/class.php',
 				'plugin/crontab/config.php',
 				'plugin/front_code/class.php',
@@ -1388,8 +1386,6 @@ $version = array(
 				'template/admin/web_plugin_list.tpl',
 				'template/admin/web_plugin_setting.tpl',
 				'template/admin/web_plugin_view.tpl',
-				'update/plugin.php',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
