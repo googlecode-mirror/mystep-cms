@@ -1430,6 +1430,7 @@ $setting = $cur_setting;
 				'include/config.php',
 				'include/parameter.php',
 				'plugin/meeting/config.php',
+				'script/admin.js',
 				'script/global.js',
 				'script/jquery.codemirror.js',
 				'template/admin/art_catalog_input.tpl',
