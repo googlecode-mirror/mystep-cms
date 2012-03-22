@@ -9,7 +9,7 @@
 			<td class="cat" width="150">插件名称</td>
 			<td class="cat" width="80">插件版本</td>
 			<td class="cat">插件描述</td>
-			<td class="cat" width="90">相关操作</td>
+			<td class="cat" width="120">相关操作</td>
 		</tr>
 <!--loop:start key="plugin_list_1"-->
 		<tr class="row" align="center">
@@ -24,6 +24,7 @@
 				<a href="?method=uninstall&idx=<!--plugin_list_1_idx-->" onclick="return confirm('是否确认删除该插件？ 请按确定继续。')">卸载</a>
 				<a href="?method=active&idx=<!--plugin_list_1_idx-->"><!--plugin_list_1_active--></a>
 				<a href="?method=setting&idx=<!--plugin_list_1_idx-->">设置</a>
+				<a href="?method=pack&idx=<!--plugin_list_1_idx-->">打包</a>
 			</td>
 		</tr>
 <!--loop:end-->
@@ -44,7 +45,7 @@
 			<td class="cat" width="200">插件名称</td>
 			<td class="cat" width="80">插件版本</td>
 			<td class="cat">插件描述</td>
-			<td class="cat" width="90">相关操作</td>
+			<td class="cat" width="120">相关操作</td>
 		</tr>
 <!--loop:start key="plugin_list_2"-->
 		<tr class="row" align="center">
@@ -55,6 +56,7 @@
 				<a href="?method=view&idx=<!--plugin_list_2_idx-->">安装</a>
 				<a href="?method=uninstall&idx=<!--plugin_list_2_idx-->" onclick="return confirm('本功能主要用于清除安装未成功的插件残留，可能会造成一些错误记录！ 请按确定继续。')">清除</a>
 				<a href="?method=delete&idx=<!--plugin_list_2_idx-->" onclick="return confirm('是否确认删除当前插件？')">删除</a>
+				<a href="?method=pack&idx=<!--plugin_list_2_idx-->">打包</a>
 			</td>
 		</tr>
 <!--loop:end-->
@@ -74,7 +76,7 @@
 			<td class="cat" width="200">插件名称</td>
 			<td class="cat" width="80">插件版本</td>
 			<td class="cat">插件描述</td>
-			<td class="cat" width="90">相关操作</td>
+			<td class="cat" width="120">相关操作</td>
 		</tr>
 <!--loop:start key="plugin_list_3"-->
 		<tr class="row" align="center">
@@ -88,7 +90,7 @@
 <!--loop:end-->
 <!--if:start condition="judge" key="empty_3"-->
 		<tr align="center">
-			<td class="row" colspan="4" style="padding:10px;font-size:16px;text-align:center;">服务器无可下载插件</td>
+			<td class="row" colspan="4" style="padding:10px;font-size:16px;text-align:center;">更新服务器无可下载插件</td>
 		</tr>
 <!--if:end-->
 		</tr>

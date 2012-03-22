@@ -57,6 +57,10 @@
 	</div>
 
 	<div align="center"><!--lang_page_update_time--> : <!--last_modify--><a name="bottom"></a></div>
+	<div id="validBar">
+		<a id="validXhtml" target="_blank" href="http://validator.w3.org/check?uri=referer">Valid XHTML</a>
+		<a id="validCss" target="_blank" href="http://jigsaw.w3.org/css-validator/check/referer?profile=css3">Valid CSS</a>
+	</div>
 <!--page_end-->
 </div>
 </body>

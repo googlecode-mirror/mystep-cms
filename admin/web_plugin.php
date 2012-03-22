@@ -5,6 +5,7 @@ includeCache("plugin");
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $idx = $req->getReq("idx");
+$idx = preg_replace("/\W/", "", $idx);
 $log_info = "";
 $plugin_path = ROOT_PATH."/plugin/";
 
@@ -54,16 +55,18 @@ switch($method) {
 		build_page("upload");
 		break;
 	case "pack":
-		$pack_file = ROOT_PATH."/cache/plugin/".$idx.".plugin";
-		$mypack = $mystep->getInstance("MyPack", $plugin_path.$idx, $pack_file);
-		$mypack->DoIt();
-		//echo $mypack->GetResult();
-		header("Content-type: application/octet-stream");
-		header("Accept-Ranges: bytes");
-		header("Accept-Length: ".filesize($pack_file));
-		header("Content-Disposition: attachment; filename=".$idx.".plugin");
-		echo GetFile($pack_file);
-		$mystep->pageEnd(false);
+		if(!empty($idx) || is_dir($plugin_path.$idx)) {
+			$pack_file = ROOT_PATH."/cache/plugin/".$idx.".plugin";
+			$mypack = $mystep->getInstance("MyPack", $plugin_path.$idx, $pack_file);
+			$mypack->DoIt();
+			//echo $mypack->GetResult();
+			header("Content-type: application/octet-stream");
+			header("Accept-Ranges: bytes");
+			header("Accept-Length: ".filesize($pack_file));
+			header("Content-Disposition: attachment; filename=".$idx.".plugin");
+			echo GetFile($pack_file);
+			$mystep->pageEnd(false);
+		}
 		break;
 	case "delete":
 		if($record = $db->getSingleRecord("select idx from ".$setting['db']['pre']."plugin where `idx`='".$idx."'")) {

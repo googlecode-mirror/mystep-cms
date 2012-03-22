@@ -1,5 +1,5 @@
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" width="400" cellspacing="0" cellpadding="0" align="center">

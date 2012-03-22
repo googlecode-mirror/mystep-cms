@@ -1,5 +1,5 @@
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(password.value==password_c.value){return checkForm(this)}else{alert('两次输入的密码不一致！');return false;}">
 		<table id="input_area" width="400" cellspacing="0" cellpadding="0" align="center">

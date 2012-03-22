@@ -40,6 +40,10 @@ function $class(name, theOLE) {
 	return theOLE.getElementsByClassName(name);
 }
 
+function isArray(para) {
+	return Object.prototype.toString.apply(para) === '[object Array]';
+}
+
 function arr2json(theArr) {
 	var result = {};
 	for (var item in theArr) {
@@ -79,12 +83,12 @@ Date.prototype.format = function(format){  //eg:format="YYYY-MM-dd hh:mm:ss";
 }
 
 Array.prototype.append = function (newArray) {
-	if(typeof(newArray.length)=="undefined" || newArray.length==0) {
-		this[this.length] = newArray;
-	} else {
+	if(isArray(newArray)) {
 		for (var i = 0; i < newArray.length; i++) {
 			this[this.length] = newArray[i];
 		}
+	} else {
+		this[this.length] = newArray;
 	}
 	return;
 }

@@ -1,5 +1,5 @@
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(checkForm(this)){$id('web_id').disabled=false;return true;}else{return false;}">
 		<table id="input_area" cellspacing="0" cellpadding="0">

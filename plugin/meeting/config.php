@@ -1,3 +1,3 @@
 <?php
-$catid = 183;
+$catid = 0;
 ?>

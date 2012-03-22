@@ -35,3 +35,8 @@ blockquote{padding:5px;background-color:#eeeeee;border:1px #ccc solid;}
 .watermark{position:absolute;display:block;width:1px;height:1px;overflow:hidden;}
 @media print{.watermark{display:none;}}
 #bar_loading{top:0px;left:0px;display:none;color:#333333;font-size:24px;font-weight:bold;line-height:48px;font-family:ºÚÌå;position:absolute;border:1px #999999 solid;padding:20px 30px 10px 30px;z-index:999;background-color:#eeeeee;z-index:999;text-align:center;}
+
+#validBar {float:none; padding:0px; margin:10px auto 10px auto; width:140px; text-align:center;}
+#validBar a {text-indent:-1000em; float:left; margin:0px 5px 0px 5px;}
+#validXhtml {background: url(http://ir.listedcompany.com/images/icon_validXHTML.gif) no-repeat; width:60px; height:15px;}
+#validCss {background: url(http://ir.listedcompany.com/images/icon_validCSS.gif) no-repeat; width:60px;  height:15px;}

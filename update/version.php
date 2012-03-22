@@ -1416,5 +1416,54 @@ unset($setting);
 $setting = $cur_setting;
 		',
 	),
+	'0.99.9.5.2' => array(
+		'info' => '
+				V0.99.9.5.2
+				1.Fix a bug in plugin import function
+				2.Add visual mode for template edit function
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/style.css',
+				'admin/web_plugin.php',
+				'images/style.css',
+				'include/config.php',
+				'include/parameter.php',
+				'plugin/meeting/config.php',
+				'script/global.js',
+				'script/jquery.codemirror.js',
+				'template/admin/art_catalog_input.tpl',
+				'template/admin/art_content_input.tpl',
+				'template/admin/art_image_input.tpl',
+				'template/admin/art_info_input.tpl',
+				'template/admin/func_backup.tpl',
+				'template/admin/func_link_input.tpl',
+				'template/admin/info_err.tpl',
+				'template/admin/main.tpl',
+				'template/admin/user_group_input.tpl',
+				'template/admin/user_input.tpl',
+				'template/admin/user_power_input.tpl',
+				'template/admin/user_type_input.tpl',
+				'template/admin/web_cache.tpl',
+				'template/admin/web_language.tpl',
+				'template/admin/web_plugin_list.tpl',
+				'template/admin/web_plugin_setting.tpl',
+				'template/admin/web_plugin_view.tpl',
+				'template/admin/web_subweb_input.tpl',
+				'template/admin/web_template_input.tpl',
+				'template/admin_simple/art_catalog_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/admin_simple/art_image_input.tpl',
+				'template/admin_simple/art_info_input.tpl',
+				'template/admin_simple/func_link_input.tpl',
+				'template/admin_simple/web_subweb_input.tpl',
+				'template/classic/main.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120322',
+					),
+			),
+	),
 );
 ?>

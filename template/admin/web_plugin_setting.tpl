@@ -1,5 +1,5 @@
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form id="setting" method="post" action="?method=setting_ok" onsubmit="return checkForm(this, checkPass)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
@@ -118,7 +118,6 @@ content;
 					<input type="hidden" value="<!--idx-->" name="idx" />
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
-					<input class="btn" type="button" value=" 打 包 " onClick="location.href='?method=pack&idx=<!--idx-->'" />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
 			</tr>

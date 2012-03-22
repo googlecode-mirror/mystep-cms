@@ -1,5 +1,5 @@
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 	<table id="list_area" cellspacing="0" cellpadding="0" align="center">
 		<tr>
 			<td class="cat" style="font-size:16px; font-weight:bold; text-align:center; padding:10px"><!--err_msg--></td>
