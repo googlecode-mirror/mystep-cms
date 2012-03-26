@@ -14,7 +14,7 @@
 		</div>
 		<br />
 		<form name="reg_<!--method-->" method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
-			<center>
+			<div align="left">
 			<input name="id" type="hidden" value="<!--record_id-->">
 			<input name="mid" type="hidden" value="<!--mid-->">
 			<table cellspacing="0" cellpadding="0" align="center">
@@ -90,7 +90,7 @@ mystep;
 					</td>
 				</tr>
 			</table>
-			</center>
+			</div>
 		</form>
 		</td>
 	</tr>

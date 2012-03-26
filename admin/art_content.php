@@ -89,9 +89,15 @@ switch($method) {
 			$_POST['style'] = implode(",", $_POST['style']);
 			$_POST['content'] = preg_replace("/ mso(\-\w+)+\:[^;]+?;/", "", $_POST['content']);
 			$_POST['content'] = preg_replace("/[\/]+files/", "/files", $_POST['content']);
-			$_POST['content'] = str_replace("<!-- pagebreak -->", "</p><!-- pagebreak --><p>", $_POST['content']);
-			$_POST['content'] = preg_replace("/<p>[\r\n\s]*<\/p>/i", "", $_POST['content']);
-			$content = explode("<!-- pagebreak -->", str_replace('="../', '="'.$setting['web']['url'].'/', $_POST['content']));
+			$_POST['content'] = preg_replace("/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\\1>[\r\n\s]*/m", "<!-- pagebreak -->", $_POST['content']);
+			$_POST['content'] = preg_replace("/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\\1>[\r\n\s]*/m", "<!-- pagebreak -->", $_POST['content']);
+			$_POST['content'] = preg_replace("/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\\1>[\r\n\s]*/m", "<!-- pagebreak -->", $_POST['content']);
+			$_POST['content'] = preg_replace("/<(\w+)[^>]*>[\s\r\n]+<\/\\1>[\r\n\s]*/m", "", $_POST['content']);
+			$_POST['content'] = preg_replace("/<(\w+)[^>]*>[\s\r\n]+<\/\\1>[\r\n\s]*/m", "", $_POST['content']);
+			$_POST['content'] = preg_replace("/<(\w+)[^>]*>[\s\r\n]+<\/\\1>[\r\n\s]*/m", "", $_POST['content']);
+			$_POST['content'] = preg_replace("/<(p|div)[^>]*>[\r\n\s]*<\/\\1>[\r\n\s]*/i", "", $_POST['content']);
+			$_POST['content'] = str_replace('="../', '="'.$setting['web']['url'].'/', $_POST['content']);
+			$content = explode("<!-- pagebreak -->", $_POST['content']);
 			unset($_POST['content'], $_POST['multi_cata']);
 			$sub_title = array();
 			$max_count = count($content);
@@ -306,6 +312,7 @@ function build_page($method) {
 		$db->Query("select * from ".$setting['db']['pre_sub']."news_detail where news_id = {$news_id} order by page");
 		$content = array();
 		while($record = $db->GetRS()) {
+			$record['content'] = str_replace("&", "&#38;", $record['content']);
 			HtmlTrans(&$record);
 			$record['content'] = "<p><span class=\"mceSubtitle\">".$record['sub_title']."</span></p>\n".$record['content'];
 			$content[] = $record['content'];

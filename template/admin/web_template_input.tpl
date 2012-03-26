@@ -17,7 +17,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" colspan="2">模板内容</td>
+				<td class="cat" colspan="2">模板内容：<span class="comment">（高级模式中按 F11 - 全屏 , Shift+Tab - 缩进, Shift+Backspace - 反缩进）</span></td>
 			</tr>
 			<tr>
 				<td colspan="2" style="width:800px;overflow:hidden;">
@@ -38,10 +38,21 @@
 <script type="text/javascript">
 $.getScript("../script/jquery.codemirror.js");
 var editor = null;
+var hlLine = null;
 function setIt() {
 	if(editor == null) {
-		loadingShow("格式处理中，请稍候");
+		loadingShow("脚本载入中，请稍候");
 		$('#file_content').codemirror({
+				ext_css: "\
+					.CodeMirror-fullscreen {background-color:#fff;display:block;position:absolute;top:0;left:0;width:100%;height:100%;z-index:9999;margin:0;padding:0;border:0px solid #BBBBBB;opacity:1;}\
+					.activeline {background: #e8f2ff !important;}\
+				",
+				onCursorActivity: function () {
+					editor.setLineClass(hlLine, null, null);
+					if(editor.getSelection().length==0) {
+						hlLine = editor.setLineClass(editor.getCursor().line, "activeline");
+					}
+				},
 				extraKeys: {
 					"F11": function() {
 						var scroller = editor.getScrollerElement();
@@ -71,13 +82,47 @@ function setIt() {
 							scroller.style.width = '';
 							editor.refresh();
 						}
+					},
+					"Shift-Tab": function() {
+						var the_pos = editor.getCursor().line;
+						var the_selection = editor.getSelection().split("\n");
+						var the_line = editor.getLine(the_pos);
+						var line_start = 0, line_end = 0;
+						if(the_line.indexOf(the_selection[0])!=-1) {
+							line_start = the_pos;
+							line_end = the_pos + the_selection.length - 1;
+						} else {
+							line_start = the_pos - the_selection.length + 1;
+							line_end = the_pos;
+						}
+						for(var i=line_start; i<=line_end; i++) {
+							editor.setLine(i, "	" + editor.getLine(i));
+						}
+						editor.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
+					},
+					"Shift-Backspace": function() {
+						var the_pos = editor.getCursor().line;
+						var the_line = editor.getLine(the_pos);
+						var the_selection = editor.getSelection().split("\n");
+						var line_start = 0, line_end = 0;
+						if(the_line.indexOf(the_selection[0])!=-1) {
+							line_start = the_pos;
+							line_end = the_pos + the_selection.length - 1;
+						} else {
+							line_start = the_pos - the_selection.length + 1;
+							line_end = the_pos;
+						}
+						for(var i=line_start; i<=line_end; i++) {
+							editor.setLine(i, editor.getLine(i).replace(/^\s/, ""));
+						}
+						editor.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
 					}
 				}
 			},
-			null,
 			function(){
 				$('.CodeMirror').css({width:'800px','overflow':"hidden","text-align":"left"});
 				editor = $.codemirror_get_editor(0);
+				hlLine = editor.setLineClass(0, "activeline");
 				loadingShow();
 			}
 		);

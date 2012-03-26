@@ -124,6 +124,15 @@ function snatchGetList($record, &$info) {
 				}
 				$record['content'] = implode("<!-- pagebreak -->", $cur_content);
 				$flag = true;
+			} elseif(preg_match("/<div.+?id\=\"contentText\">(.+?)<\/div>/is", $content, $matches)) {
+				$record['content'] = $matches[1];
+				$record['content'] = preg_replace("/<div class\=\"editer.+?<\/div>/is", "", $record['content']);
+				$record['content'] = preg_replace("/<p>.+?<p>/is", "<p>", $record['content']);
+				$record['content'] = preg_replace("/<\/p>[\s\r\n]+?<\/p>/is", "</p>", $record['content']);
+				$record['content'] = preg_replace("/^[\r\n\s]+/is", "", $record['content']);
+				$record['content'] = preg_replace("/[\r\n\s]+$/is", "", $record['content']);
+				unset($matches);
+				$flag = true;
 			} elseif(preg_match("/<div id\=\"news_c\".+?>(.+?)<div id\=\"news_s\"/is", $content, $matches)) {
 				$record['content'] = $matches[1];
 				unset($matches);

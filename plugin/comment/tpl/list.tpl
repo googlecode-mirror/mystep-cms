@@ -17,7 +17,7 @@
 	<div id="page_main">
 
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 ËùÊôÍøÕ¾£º
 <select name="web_id" onchange="location.href='?keyword=<!--keyword-->&web_id='+this.value">
 <!--loop:start key="website"-->

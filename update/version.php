@@ -280,7 +280,7 @@ $version = array(
 		'info' => '
 				V0.99.3
 				1.Fix a bug in database import function
-				2.Fix a problem in input page with tinyMCE
+				2.Fix a problem in input page with TinyMCE
 				3.Enhance update function
 				4.Some other adjusts...
 			',
@@ -1463,6 +1463,66 @@ $setting = $cur_setting;
 		'setting' => array(
 				'gen' => array(
 						'etag' => '20120322',
+					),
+			),
+	),
+	'0.99.9.5.3' => array(
+		'info' => '
+				V0.99.9.5.3
+				1.Fix a bug in Multi-page article submit function
+				2.Add source code plugin for TinyMCE and show with codemirror module
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/art_content.php',
+				'images/classic/style.css',
+				'images/editor.css',
+				'images/style.css',
+				'include/config.php',
+				'include/parameter.php',
+				'plugin/ad_show/tpl/input.tpl',
+				'plugin/admin_cat/tpl/input.tpl',
+				'plugin/comment/tpl/list.tpl',
+				'plugin/crontab/tpl/input.tpl',
+				'plugin/custom_sql/tpl/input.tpl',
+				'plugin/email/tpl/input.tpl',
+				'plugin/front_code/tpl/input.tpl',
+				'plugin/meeting/tpl/add.tpl',
+				'plugin/meeting/tpl/edit.tpl',
+				'plugin/meeting/tpl/edit_reg.tpl',
+				'plugin/news_snatch/rule/3b405644d701556f7404a65acdf6d0f5_snatch.php',
+				'plugin/news_snatch/tpl/import.tpl',
+				'plugin/news_snatch/tpl/news_edit.tpl',
+				'plugin/news_snatch/tpl/rule_input.tpl',
+				'plugin/news_snatch/tpl/snatch.tpl',
+				'plugin/se_detect/tpl/input.tpl',
+				'plugin/search/tpl/engine.tpl',
+				'plugin/survey/tpl/input.tpl',
+				'plugin/topic/tpl/input.tpl',
+				'script/global.js',
+				'script/jquery.codemirror.js',
+				'script/tinymce/plugins/bbscode/bbscode.htm',
+				'script/tinymce/plugins/source_code',
+				'script/tinymce/plugins/source_code/editor_plugin.js',
+				'script/tinymce/plugins/source_code/img',
+				'script/tinymce/plugins/source_code/img/source_code.jpg',
+				'script/tinymce/plugins/source_code/js',
+				'script/tinymce/plugins/source_code/js/source_code.js',
+				'script/tinymce/plugins/source_code/langs',
+				'script/tinymce/plugins/source_code/langs/en.js',
+				'script/tinymce/plugins/source_code/langs/en_dlg.js',
+				'script/tinymce/plugins/source_code/langs/zh.js',
+				'script/tinymce/plugins/source_code/langs/zh_dlg.js',
+				'script/tinymce/plugins/source_code/source_code.htm',
+				'template/admin/art_content_input.tpl',
+				'template/admin/web_template_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/classic/read.tpl',
+				'template/default/main.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120326',
 					),
 			),
 	),

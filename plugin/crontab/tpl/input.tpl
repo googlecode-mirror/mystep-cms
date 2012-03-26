@@ -17,7 +17,7 @@
 <div id="page_ole">
 	<div id="page_main">
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 	<script type="text/javascript" src="../../script/checkForm.js" Language="JavaScript1.2"></script>
 	<script type="text/javascript" src="../../script/jquery.date_input.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">

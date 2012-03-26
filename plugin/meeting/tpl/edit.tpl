@@ -1,5 +1,5 @@
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 	<form method="post" action="?method=<!--method-->_ok">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>

@@ -26,6 +26,7 @@
 						<div id="content">
 <img src="<!--record_image-->" class="title_img" />
 <!--record_content-->
+							<div class="notice"><!--record_notice--></div>
 						</div>
 						<div class="page after"><!--page_list--></div>
 						<div>
@@ -66,5 +67,14 @@ $(function() {
 		$("#page_sel").parent().remove();
 	}
 	$("#content").powerImage();
+	
+	if($('.source_code').length>0) {
+		$.getScript("script/jquery.codemirror.js", function(){
+			$('.source_code').codemirror({
+					runmode : true,
+					ext_css : ".CodeMirror{border:1px #ccc solid;max-height:200px;overflow:auto;}"
+				});
+		});
+	}
 });
 </script>

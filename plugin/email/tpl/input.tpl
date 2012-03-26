@@ -17,7 +17,7 @@
 <div id="page_ole">
 	<div id="page_main">
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 	<script type="text/javascript" src="../../script/checkForm.js" Language="JavaScript1.2"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(!checkForm(this)){loadingShow();return false}">
 		<table id="input_area" cellspacing="0" cellpadding="0">

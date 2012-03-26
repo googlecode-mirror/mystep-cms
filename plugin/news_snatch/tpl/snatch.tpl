@@ -1,5 +1,5 @@
 <div class="title"><!--title--></div>
-<div align="center">
+<div align="left">
 	<div id="info_show" style="margin:auto; text-align:left; width:800px; padding:20px 10px 20px 10px; font-size:14px; line-height:20px;"></div>
 </div>
 <div>

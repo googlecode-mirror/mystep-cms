@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{#source_code_dlg.title}</title>
+	<script type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script type="text/javascript" src="js/source_code.js"></script>
+</head>
+<body onresize="SourceCodeDialog.resize();">
+
+<form onsubmit="SourceCodeDialog.insert();return false;" action="#">
+	<div>
+		<p><b>{#source_code_dlg.title}</b></p>
+		<p>{#source_code_dlg.desc}</p>
+		<p>{#source_code_dlg.type}
+			<select id="code_type" name="code_type">
+				<option value="htmlmixed">HTML mixed-mode</option>
+				<option value="php">PHP</option>
+				<option value="mysql">MySQL</option>
+				<option value="ruby">Ruby</option>
+				<option value="python">Python</option>
+				<option value="xml">XML/HTML</option>
+				<option value="lua">Lua</option>
+				<option value="clike">C, C++, C#, Java, and similar</option>
+				<option value="clojure">Clojure</option>
+				<option value="coffeescript">CoffeeScript</option>
+				<option value="css">CSS</option>
+				<option value="diff">diff</option>
+				<option value="ecl">ECL</option>
+				<option value="go">Go</option>
+				<option value="groovy">Groovy</option>
+				<option value="haskell">Haskell</option>
+				<option value="htmlembedded">HTML embedded scripts</option>
+				<option value="javascript">JavaScript</option>
+				<option value="jinja2">Jinja2</option>
+				<option value="less">LESS</option>
+				<option value="markdown">Markdown</a> (<a href="mode/gfm">Github-flavour</a>)</li>
+				<option value="ntriples">NTriples</option>
+				<option value="pascal">Pascal</option>
+				<option value="perl">Perl</option>
+				<option value="plsql">PL/SQL</option>
+				<option value="properties">Properties files</option>
+				<option value="r">R</option>
+				<option value="rpm_spec">spec</option>
+				<option value="rpm_changes">changelog</option>
+				<option value="rst">reStructuredText</option>
+				<option value="rust">Rust</option>
+				<option value="scheme">Scheme</option>
+				<option value="smalltalk">Smalltalk</option>
+				<option value="smarty">Smarty</option>
+				<option value="sparql">SPARQL</option>
+				<option value="stex">sTeX, LaTeX</option>
+				<option value="tiddlywiki">Tiddlywiki</option>
+				<option value="vbscript">VBScript</option>
+				<option value="velocity">Velocity</option>
+				<option value="verilog">Verilog</option>
+				<option value="xmlpure">alternative XML</option>
+				<option value="xquery">XQuery</option>
+				<option value="yaml">YAML</option>
+			</select>	
+		</p>
+		<p>
+			<textarea id="content" name="content" rows="22" cols="100" style="width: 100%; height: 100%; font-family: 'Courier New',Courier,mono; font-size: 12px;" dir="ltr" wrap="soft" class="mceFocus"></textarea>
+		</p>
+	</div>
+	<div class="mceActionPanel">
+		<div style="float: left">
+			<input type="button" id="insert" name="insert" value="{#insert}" onclick="SourceCodeDialog.insert();" />
+		</div>
+		<div style="float: right">
+			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+		</div>
+	</div>
+</form>
+
+</body>
+</html>

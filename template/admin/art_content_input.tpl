@@ -145,10 +145,10 @@ tinyMCE.init({
 	elements : "content",
 	language : "zh",
 	theme : "advanced",
-	plugins : "quote,bbscode,advlink,advimage,subtitle,safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
+	plugins : "quote,bbscode,source_code,advlink,advimage,subtitle,safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
 
 	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,format",
-	theme_advanced_buttons2 : "pagebreak,Subtitle,upload,|,cut,copy,paste,pastetext,pasteword,bbscode,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
+	theme_advanced_buttons2 : "pagebreak,Subtitle,upload,|,cut,copy,paste,pastetext,pasteword,bbscode,source_code,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
 	theme_advanced_buttons3 : "",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
@@ -158,12 +158,31 @@ tinyMCE.init({
 	content_css: "../images/editor.css",
 	entity_encoding : "raw",
 	add_unload_trigger : false,
+	
+	preformatted : false,
 	remove_linebreaks : false,
+	apply_source_formatting : true,
+	convert_fonts_to_spans : true,
+	verify_html : true,
+	paste_auto_cleanup_on_paste : true,
+	extended_valid_elements : "textarea[class|type|title],script[charset|defer|language|src|type]",
 	
 	template_external_list_url : "lists/template_list.js",
 	external_link_list_url : "lists/link_list.js",
 	external_image_list_url : "lists/image_list.js",
 	media_external_list_url : "lists/media_list.js",
+	
+	handle_event_callback : function(e) {
+			if(e.ctrlKey && e.keyCode==13) {
+				if(checkForm(document.forms[0], checkForm_append)) document.forms[0].submit();
+			}
+		},
+	oninit : function() {
+		var content = tinyMCE.get('content').getContent();
+		content = content.replace(/mce\:script/g, "script");
+		content = content.replace(/_mce_src/g, "src");
+		tinyMCE.get('content').setContent(content);
+	},
 	
 	setup : function(ed) {
 		ed.addButton('upload', {
@@ -342,6 +361,8 @@ function add_color(obj_select, theColor){
 	obj_select.selectedIndex = selIndex;
 }
 
-add_color($id("color_list_title"), "<!--check_c-->");
-profix_changed(<!--record_cat_id-->);
+$(function(){
+	add_color($id("color_list_title"), "<!--check_c-->");
+	profix_changed(<!--record_cat_id-->);
+});
 </script>

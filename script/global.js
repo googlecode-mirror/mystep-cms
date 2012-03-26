@@ -304,5 +304,7 @@ function reportError(msg, url, line) {
 	return true;
 }
 window.onerror = reportError;
+var ms_setting =  new Object();
+var language = new Object();
 $.getScript(rlt_path + "script/setting.js.php");
 $.getScript(rlt_path + "script/language.js.php");
