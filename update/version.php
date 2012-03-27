@@ -1526,5 +1526,38 @@ $setting = $cur_setting;
 					),
 			),
 	),
+	'0.99.9.5.4' => array(
+		'info' => '
+				V0.99.9.5.4
+				1.Fix some tpl display bug
+				2.Enhance codemirror module
+				3.Add codemirror module to meeting plugin
+				Some other adjusts...
+			',
+		'file' => array(
+				'include/parameter.php',
+				'plugin/ad_show/tpl/main.tpl',
+				'plugin/front_code/tpl/main.tpl',
+				'plugin/meeting/meeting.php',
+				'plugin/meeting/setting/main.tpl',
+				'plugin/meeting/tpl/add.tpl',
+				'plugin/meeting/tpl/edit.tpl',
+				'plugin/meeting/tpl/main.tpl',
+				'plugin/news_snatch/tpl/main.tpl',
+				'plugin/se_detect/tpl/main.tpl',
+				'plugin/search/tpl/main.tpl',
+				'plugin/survey/tpl/main.tpl',
+				'plugin/topic/tpl/main.tpl',
+				'plugin/visit_analysis/tpl/main.tpl',
+				'script/jquery.codemirror.js',
+				'template/admin/web_template_input.tpl',
+				'template/classic/read.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120326',
+					),
+			),
+	),
 );
 ?>

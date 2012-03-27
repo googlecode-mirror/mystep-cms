@@ -87,14 +87,14 @@ switch($method) {
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
 		if(empty($_POST["tpl_list_reg"])) $_POST["tpl_list_reg"] = GetFile("tpl/list_reg.tpl");
-		WriteFile("setting/{$mid}_regist_cn.tpl", $_POST["tpl_reg_cn"], "wb");
-		WriteFile("setting/{$mid}_regist_en.tpl", $_POST["tpl_reg_en"], "wb");
-		WriteFile("setting/{$mid}_reglist_cn.tpl", $_POST["tpl_reglist_cn"], "wb");
-		WriteFile("setting/{$mid}_reglist_en.tpl", $_POST["tpl_reglist_en"], "wb");
-		WriteFile("setting/{$mid}_mail_cn.tpl", $_POST["tpl_mail_cn"], "wb");
-		WriteFile("setting/{$mid}_mail_en.tpl", $_POST["tpl_mail_en"], "wb");
-		WriteFile("setting/{$mid}_edit_reg.tpl", $_POST["tpl_edit_reg"], "wb");
-		WriteFile("setting/{$mid}_list_reg.tpl", $_POST["tpl_list_reg"], "wb");
+		WriteFile("setting/{$mid}_regist_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_reg_cn"]), "wb");
+		WriteFile("setting/{$mid}_regist_en.tpl", str_replace("&#160; ","	",$_POST["tpl_reg_en"]), "wb");
+		WriteFile("setting/{$mid}_reglist_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_reglist_cn"]), "wb");
+		WriteFile("setting/{$mid}_reglist_en.tpl", str_replace("&#160; ","	",$_POST["tpl_reglist_en"]), "wb");
+		WriteFile("setting/{$mid}_mail_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_mail_cn"]), "wb");
+		WriteFile("setting/{$mid}_mail_en.tpl", str_replace("&#160; ","	",$_POST["tpl_mail_en"]), "wb");
+		WriteFile("setting/{$mid}_edit_reg.tpl", str_replace("&#160; ","	",$_POST["tpl_edit_reg"]), "wb");
+		WriteFile("setting/{$mid}_list_reg.tpl", str_replace("&#160; ","	",$_POST["tpl_list_reg"]), "wb");
 		if(empty($_POST["itemlist"])) {
 			include("setting/default.php");
 			$para = var_export($para, true);
@@ -169,14 +169,14 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
 		if(empty($_POST["tpl_list_reg"])) $_POST["tpl_list_reg"] = GetFile("tpl/list_reg.tpl");
-		WriteFile("setting/{$mid}_regist_cn.tpl", $_POST["tpl_reg_cn"], "wb");
-		WriteFile("setting/{$mid}_regist_en.tpl", $_POST["tpl_reg_en"], "wb");
-		WriteFile("setting/{$mid}_reglist_cn.tpl", $_POST["tpl_reglist_cn"], "wb");
-		WriteFile("setting/{$mid}_reglist_en.tpl", $_POST["tpl_reglist_en"], "wb");
-		WriteFile("setting/{$mid}_mail_cn.tpl", $_POST["tpl_mail_cn"], "wb");
-		WriteFile("setting/{$mid}_mail_en.tpl", $_POST["tpl_mail_en"], "wb");
-		WriteFile("setting/{$mid}_edit_reg.tpl", $_POST["tpl_edit_reg"], "wb");
-		WriteFile("setting/{$mid}_list_reg.tpl", $_POST["tpl_list_reg"], "wb");
+		WriteFile("setting/{$mid}_regist_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_reg_cn"]), "wb");
+		WriteFile("setting/{$mid}_regist_en.tpl", str_replace("&#160; ","	",$_POST["tpl_reg_en"]), "wb");
+		WriteFile("setting/{$mid}_reglist_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_reglist_cn"]), "wb");
+		WriteFile("setting/{$mid}_reglist_en.tpl", str_replace("&#160; ","	",$_POST["tpl_reglist_en"]), "wb");
+		WriteFile("setting/{$mid}_mail_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_mail_cn"]), "wb");
+		WriteFile("setting/{$mid}_mail_en.tpl", str_replace("&#160; ","	",$_POST["tpl_mail_en"]), "wb");
+		WriteFile("setting/{$mid}_edit_reg.tpl", str_replace("&#160; ","	",$_POST["tpl_edit_reg"]), "wb");
+		WriteFile("setting/{$mid}_list_reg.tpl", str_replace("&#160; ","	",$_POST["tpl_list_reg"]), "wb");
 		
 		if(empty($_POST["itemlist"])) {
 			include("setting/{$mid}.php");

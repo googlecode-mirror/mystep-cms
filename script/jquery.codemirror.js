@@ -16,6 +16,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 		indentWithTabs : true,
 		runmode : false,
 		readOnly : false,
+		times_count : 15,
 		base_path : "http://codemirror.net"
 	}, options);
 	var mode_list = new Object();
@@ -135,15 +136,18 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 	if(typeof(loaded)=="undefined") loaded = new Array();
 	var script_list = new Array();
 	if(settings.runmode && loaded.indexOf('/lib/util/runmode.js')==-1) script_list.push("/lib/util/runmode.js");
-	var the_type = "";
+	var the_type = "", the_type_list = ",";
 	for(var n=0, m=this.length;n<m;n++) {
 		the_type = $(this.get(n)).attr('type');
-		if(the_type!="" && typeof(type_list[the_type])!="undefined") {
+		if(the_type!="" && the_type_list.indexOf(the_type)==-1 && typeof(type_list[the_type])!="undefined") {
 			script_list = script_list.concat(type_list[the_type]);
+			the_type_list += the_type + ",";
 		}
 	}
 	n=0;
+	if(script_list.length==0) script_list = script_list.concat(type_list[settings.type]);
 	m = script_list.length;
+	
 	if(loaded.indexOf('/lib/codemirror.css')==-1) {
 		$("head").append($('<link rel="stylesheet" href="'+settings.base_path+'/lib/codemirror.css" type="text/css" media="screen" />'));
 		loaded.push('/lib/codemirror.css');
@@ -173,39 +177,13 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 	} else {
 		for(var i=0;i<m;i++) {
 			if(loaded.push(script_list[i])==-1) {
+				loaded.push(script_list[i]);
 				$.getScript(settings.base_path + script_list[i], function(){n++;});
 			} else {
 				n++;
 			}
 		}
 	}
-	
-	/*
-	var script_list = new Array();
-	if(settings.runmode) script_list.push("/lib/util/runmode.js");
-	var the_type = "";
-	for(var n=0, m=this.length;n<m;n++) {
-		the_type = $(this.get(n)).attr('type');
-		if(the_type!="" && typeof(type_list[the_type])!="undefined") {
-			script_list = script_list.concat(type_list[the_type]);
-		}
-	}
-	n=0;
-	m = script_list.length;
-	if(typeof(CodeMirror)=="undefined") {
-		$("head").append($('<link rel="stylesheet" href="'+settings.base_path+'/lib/codemirror.css" type="text/css" media="screen" />'));
-		if(typeof(type_list[settings.type].css)!="undefined") $("head").append($('<link rel="stylesheet" href="' + settings.base_path + type_list[settings.type].css + '" type="text/css" media="screen" />'));
-		if(settings.theme!=null) $("head").append($('<link rel="stylesheet" href="'+settings.base_path+'/theme/'+settings.theme+'.css" type="text/css" media="screen" />'));
-		if(settings.ext_css!=null) $("head").append($('<style type="text/css">' + settings.ext_css + '</style>'));
-		$.getScript(settings.base_path + "/lib/codemirror.js", function() {
-			for(var i=0;i<m;i++) {
-				$.getScript(settings.base_path + script_list[i], function(){n++;});
-			}
-		});
-	} else {
-		n = m;
-	}
-	*/
 	
 	$.codemirror_set = function() {
 		if(settings.runmode) {
@@ -248,12 +226,25 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 				$(this).html($(this).prev().find(".CodeMirror-lines").find("pre:first").html());
 				$(this).css({"width":($(this).prev().css("width")+3),"height":"16px","overflow-x":"scroll","overflow-y":"hidden"});
 				$(this).css({"white-space":"nowrap"});
-				$(this).scroll(function(){
-					var theLeft = $(this).scrollLeft();
-					if(theLeft!=0) theLeft += 80;
-					$(this).prev().find('.CodeMirror-lines pre').scrollLeft(theLeft);
-				});
+				if(this.scrollWidth==this.offsetWidth) {
+					$(this).remove();
+				} else {
+					$(this).scroll(function(){
+						var theLeft = $(this).scrollLeft();
+						if(theLeft!=0) theLeft += 80;
+						$(this).prev().find('.CodeMirror-lines pre').scrollLeft(theLeft);
+					});
+				}
 			});
+			if(typeof(settings.height)!="undefined") {
+				$(".CodeMirror").each(function(){
+					if($(this).height()<settings.height) {
+						$(this).css("overflow-y","hidden");
+					} else {
+						$(this).css({"overflow-y":"auto","max-height":settings.height});
+					}
+				});
+			}
 		} else {
 			result.each(function() {
 				var the_type = $(this).attr('type');
@@ -263,6 +254,10 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 				this.value = this.value.replace(/\t/g,  String.fromCharCode(160)+" ");
 				editors[editors.length] = CodeMirror.fromTextArea(this, settings);
 			});
+			if(typeof(settings.height)!="undefined") {
+				$(".CodeMirror-scroll").css({"height":settings.height});
+				$(".CodeMirror-gutter").css({"height":settings.height-18});
+			}
 		}
 		if(typeof(callback_func) == "function") callback_func();
 		return;
@@ -276,13 +271,21 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 		}
 	}
 	
+	$.codemirror_error = false;
 	if(n==m) {
 		$.codemirror_set();
 	} else {
+		var times_count = 0;
 		var timer = setInterval(function(){
 			if(n==m) {
 				$.codemirror_set();
 				clearInterval(timer);
+			}
+			times_count++;
+			if(times_count>settings.times_count) {
+				clearInterval(timer);
+				$.codemirror_error = true;
+				if(typeof(callback_func) == "function") callback_func();
 			}
 		}, 1000);
 	}

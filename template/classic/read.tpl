@@ -72,7 +72,8 @@ $(function() {
 		$.getScript("script/jquery.codemirror.js", function(){
 			$('.source_code').codemirror({
 					runmode : true,
-					ext_css : ".CodeMirror{border:1px #ccc solid;max-height:200px;overflow:auto;}"
+					height : 200,
+					ext_css : ".CodeMirror{border:1px #ccc solid;}"
 				});
 		});
 	}

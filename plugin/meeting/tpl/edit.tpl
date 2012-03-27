@@ -53,49 +53,49 @@
 						<tr>
 							<td class="cat" width="100">中文注册页面：</td>
 							<td class="row">
-								<textarea name="tpl_reg_cn" style="width:100%; height:200px;"><!--tpl_reg_cn--></textarea>
+								<textarea class="source_code" type="php" name="tpl_reg_cn" style="width:100%; height:200px;"><!--tpl_reg_cn--></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td class="cat">英文注册页面：</td>
 							<td class="row">
-								<textarea name="tpl_reg_en" style="width:100%; height:200px;"><!--tpl_reg_en--></textarea>
+								<textarea class="source_code" type="php" name="tpl_reg_en" style="width:100%; height:200px;"><!--tpl_reg_en--></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td class="cat" width="100">中文列表页面：</td>
 							<td class="row">
-								<textarea name="tpl_reglist_cn" style="width:100%; height:200px;"><!--tpl_reglist_cn--></textarea>
+								<textarea class="source_code" type="php" name="tpl_reglist_cn" style="width:100%; height:200px;"><!--tpl_reglist_cn--></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td class="cat">英文列表页面：</td>
 							<td class="row">
-								<textarea name="tpl_reglist_en" style="width:100%; height:200px;"><!--tpl_reglist_en--></textarea>
+								<textarea class="source_code" type="php" name="tpl_reglist_en" style="width:100%; height:200px;"><!--tpl_reglist_en--></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td class="cat">中文邮件模板：</td>
 							<td class="row">
-								<textarea name="tpl_mail_cn" style="width:100%; height:200px;"><!--tpl_mail_cn--></textarea>
+								<textarea class="source_code" type="php" name="tpl_mail_cn" style="width:100%; height:200px;"><!--tpl_mail_cn--></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td class="cat">英文邮件模板：</td>
 							<td class="row">
-								<textarea name="tpl_mail_en" style="width:100%; height:200px;"><!--tpl_mail_en--></textarea>
+								<textarea class="source_code" type="php" name="tpl_mail_en" style="width:100%; height:200px;"><!--tpl_mail_en--></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td class="cat">注册编辑模板：</td>
 							<td class="row">
-								<textarea name="tpl_edit_reg" style="width:100%; height:200px;"><!--tpl_edit_reg--></textarea>
+								<textarea class="source_code" type="php" name="tpl_edit_reg" style="width:100%; height:200px;"><!--tpl_edit_reg--></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td class="cat">注册列表模板：</td>
 							<td class="row">
-								<textarea name="tpl_list_reg" style="width:100%; height:200px;"><!--tpl_list_reg--></textarea>
+								<textarea class="source_code" type="php" name="tpl_list_reg" style="width:100%; height:200px;"><!--tpl_list_reg--></textarea>
 							</td>
 						</tr>
 					</table>
@@ -319,7 +319,6 @@ function copyObj(obj) {
 	}
 	return new_obj;
 }
-functio
 function confirmItem(mode) {
 	switch(mode) {
 		case "add":
@@ -436,4 +435,17 @@ for(var i=0; i<$id("webList").options.length; i++) {
 		break;
 	}
 }
+$.getScript("../../script/jquery.codemirror.js", function(){
+	$('.source_code').codemirror({
+				lineWrapping: false,
+				height: 250
+		}, function(){
+				if($.codemirror_error) {
+					alert("脚本载入失败！");
+				} else {
+					$('.CodeMirror').css({width:'680px','overflow':"hidden","text-align":"left"});
+					$('.source_code').parent(".row").css("padding","0px");
+				}
+			});
+});
 </script>

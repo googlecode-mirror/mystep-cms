@@ -36,13 +36,15 @@
 	</form>
 </div>
 <script type="text/javascript">
-$.getScript("../script/jquery.codemirror.js");
+$.getScript("../script/jquery.codemirror.js", setIt);
 var editor = null;
 var hlLine = null;
 function setIt() {
 	if(editor == null) {
 		loadingShow("Ω≈±æ‘ÿ»Î÷–£¨«Î…‘∫Ú");
 		$('#file_content').codemirror({
+				lineWrapping: false,
+				height: 400,
 				ext_css: "\
 					.CodeMirror-fullscreen {background-color:#fff;display:block;position:absolute;top:0;left:0;width:100%;height:100%;z-index:9999;margin:0;padding:0;border:0px solid #BBBBBB;opacity:1;}\
 					.activeline {background: #e8f2ff !important;}\
@@ -118,11 +120,14 @@ function setIt() {
 						editor.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
 					}
 				}
-			},
-			function(){
-				$('.CodeMirror').css({width:'800px','overflow':"hidden","text-align":"left"});
-				editor = $.codemirror_get_editor(0);
-				hlLine = editor.setLineClass(0, "activeline");
+			}, function(){
+				if($.codemirror_error) {
+					alert("Ω≈±æ‘ÿ»Î ß∞‹£°");
+				} else {
+					$('.CodeMirror').css({width:'800px','overflow':"hidden","text-align":"left"});
+					editor = $.codemirror_get_editor(0);
+					hlLine = editor.setLineClass(0, "activeline");
+				}
 				loadingShow();
 			}
 		);
