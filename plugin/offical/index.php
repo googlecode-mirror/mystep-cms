@@ -44,12 +44,15 @@ $mystep->setAddedContent("start", '
 $mystep->setAddedContent("end", '
 <div style="text-align:center;padding:10px;float:none;clear:both;">Powered By <a href="http://www.mysteps.cn" target="_blank">MystepCMS</a></div>
 ');
-if(!empty($plugin_setting['offical']['bgsound'])) {
+
+$bg_sound = explode("\n", $plugin_setting['offical']['bgsound']);
+$bg_sound = $bg_sound[$setting['info']['web']['web_id']-1];
+if(strlen($bg_sound)>4 && $setting['info']['self']=="index.php") {
 	$mystep->setAddedContent("end", '
 <div style="width:0px;height:0px;overflow:hidden;">
-	<audio autoplay="1">
-		<source src="'.$plugin_setting['offical']['bgsound'].'" type="audio/mp3" />
-		<embed src="'.$plugin_setting['offical']['bgsound'].'" type="audio/mp3" autostart="true" />
+	<audio autoplay="1" loop="loop">
+		<source src="'.$bg_sound.'" type="audio/mp3" />
+		<embed src="'.$bg_sound.'" loop="true" type="audio/mp3" autostart="true" hidden="true" />
 	</audio>
 </div>
 	');

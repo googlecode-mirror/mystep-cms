@@ -78,6 +78,7 @@ H1 {font-size:16px;font-weight:bold;text-align:center;margin:10px auto 0px auto;
 #list_area,
 #input_area {width:800px; border:1px solid #629DC5; margin:10px auto 10px auto;}
 #input_area input,
+#input_area textarea,
 #input_area select {width:280px; background-color:#DAE7F2; color:#15324A; font-weight:bold; font-size:12px; border:1px inset #A9A9A9; padding-top:3px;}
 #input_area span.comment {color:#00a; font-size:12px; margin-left:10px;}
 #input_area .btn {width:90px; background-color:#DAE7F2; color:black; font-weight:normal; border:1px solid black; padding:1px 10px 1px 10px;}

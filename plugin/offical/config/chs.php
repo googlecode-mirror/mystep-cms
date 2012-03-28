@@ -19,7 +19,7 @@ $setting_descr['counter'] = "简单访问统计，会有三次简单查询";
 $setting_descr['ct_news'] = "新闻列表缓存时间";
 $setting_descr['ct_info'] = "页面信息缓存时间";
 $setting_descr['ct_tag'] = "标签列表缓存时间";
-$setting_descr['bgsound'] = "网站背景音乐，可为本地或网络地址";
+$setting_descr['bgsound'] = "网站背景音乐链接，每行针对对应索引的子站";
 $setting_descr['para_1'] = "不可为特殊符号，限长50字";
 $setting_descr['para_2'] = "只可为合法实数，限长10位";
 $setting_descr['para_3'] = "可多选";
@@ -33,7 +33,7 @@ $setting_type['counter'] = array("radio", array("开启"=>"true", "关闭"=>"false")
 $setting_type['ct_news'] = array("text", "number", "6");
 $setting_type['ct_info'] = array("text", "number", "6");
 $setting_type['ct_tag'] = array("text", "number", "6");
-$setting_type['bgsound'] = array("text", false, "200");
+$setting_type['bgsound'] = array("textarea", false, "4");
 $setting_type['para_1'] = array("text", "name", "50");
 $setting_type['para_2'] = array("text", "number", "10");
 $setting_type['para_3'] = array("checkbox", array("选项 1"=>1, "选项 2"=>2, "选项 3"=>3, "选项 4"=>4));

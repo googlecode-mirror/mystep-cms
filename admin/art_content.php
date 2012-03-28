@@ -24,7 +24,7 @@ if($method=="edit_ok" || $method=="delete") {
 	$cat_id = $record['cat_id'];
 	$add_date = $record['add_date'];
 	unset($record);
-	if(!$op_mode && ($setting['info']['time_start']/1000-strtotime($add_date))/(60*60*24)>60) {
+	if($group['power_func']!="all" && ($setting['info']['time_start']/1000-strtotime($add_date))/(60*60*24)>60) {
 		$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_locked'], 0));
 		$mystep->show($tpl);
 		$mystep->pageEnd(false);

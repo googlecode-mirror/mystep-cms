@@ -19,7 +19,7 @@ $setting_descr['counter'] = "Simple visit counter, query database 3 times";
 $setting_descr['ct_news'] = "Cache expire time of News List";
 $setting_descr['ct_info'] = "Cache expire time of Info Show";
 $setting_descr['ct_tag'] = "Cache expire time of Tag List";
-$setting_descr['bgsound'] = "Background music of the website";
+$setting_descr['bgsound'] = "Background music of the website, every line make effect with corresponding subweb";
 $setting_descr['para_1'] = "Alphabets only, 50 charactors as max";
 $setting_descr['para_2'] = "Numbers only, 10 digitals as max";
 $setting_descr['para_3'] = "Multiselect";
@@ -33,7 +33,7 @@ $setting_type['counter'] = array("radio", array("Open"=>"true", "Close"=>"false"
 $setting_type['ct_news'] = array("text", "number", "6");
 $setting_type['ct_info'] = array("text", "number", "6");
 $setting_type['ct_tag'] = array("text", "number", "6");
-$setting_type['bgsound'] = array("text", false, "200");
+$setting_type['bgsound'] = array("textarea", false, "4");
 $setting_type['para_1'] = array("text", "name", "50");
 $setting_type['para_2'] = array("text", "number", "10");
 $setting_type['para_3'] = array("checkbox", array("Selection 1"=>1, "Selection 2"=>2, "Selection 3"=>3, "Selection 4"=>4));

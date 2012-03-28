@@ -1559,5 +1559,37 @@ $setting = $cur_setting;
 					),
 			),
 	),
+	'0.99.9.5.5' => array(
+		'info' => '
+				V0.99.9.5.5
+				1.Fix a bug that admin cannot edit locked articles
+				2.Allow user edit css file of every template
+				3.Add textara mode from all setting functions
+				4.Add bgsound setting from every subweb
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/art_content.php',
+				'admin/style.css',
+				'admin/web_template.php',
+				'include/parameter.php',
+				'plugin/offical/config.php',
+				'plugin/offical/config/chs.php',
+				'plugin/offical/config/default.php',
+				'plugin/offical/config/en.php',
+				'plugin/offical/index.php',
+				'script/checkForm.js',
+				'template/admin/web_plugin_setting.tpl',
+				'template/admin/web_plugin_view.tpl',
+				'template/admin/web_setting.tpl',
+				'template/admin/web_template_input.tpl',
+				'template/admin_simple/main.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120327',
+					),
+			),
+	),
 );
 ?>

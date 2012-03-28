@@ -21,7 +21,7 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="width:800px;overflow:hidden;">
-					<textarea id="file_content" name="file_content" style="width:100%;height:400px;" wrap='off'><!--file_content--></textarea>
+					<textarea id="file_content" type="<!--file_type-->" name="file_content" style="width:100%;height:400px;" wrap='off'><!--file_content--></textarea>
 				</td>
 			</tr>
 			<tr class="row">

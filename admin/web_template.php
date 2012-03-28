@@ -21,11 +21,16 @@ switch($method) {
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) > 0) {
-			$ext = GetFileExt($_POST['file_name']);
-			if($ext!="tpl") $_POST['file_name'] .= ".tpl";
 			$log_info = $setting['language']['admin_web_template_edit'];
+			if($_POST['file_name']=="style.css") {
+				$the_file = ROOT_PATH."/images/".$idx."/style.css";
+			} else {
+				$ext = GetFileExt($_POST['file_name']);
+				if($ext!="tpl") $_POST['file_name'] .= ".tpl";
+				$the_file = $tpl_path.$idx."/".$_POST['file_name'];
+			}
 			$_POST['file_content'] = str_replace("  ", "\t", $_POST['file_content']);
-			WriteFile($tpl_path.$idx."/".$_POST['file_name'], $_POST['file_content'], "wb");
+			WriteFile($the_file, $_POST['file_content'], "wb");
 		}
 		break;
 	default:
@@ -56,6 +61,11 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop("tpl_list", array("idx"=>$tpl_list['dir'][$i], "selected"=>$tpl_list['dir'][$i]==$idx?"selected":""));
 		}
 		
+		$css_file = ROOT_PATH."/images/".$idx."/style.css";
+		if(is_file($css_file)) {
+			$tpl_tmp->Set_Loop("file", array("name"=>"style.css", "size"=>GetFileSize(filesize($css_file)), "attr"=>($fso->Get_Attrib(substr(DecOct(fileperms($css_file)),-3))), "time"=>date("Y/m/d H:i:s", filemtime($css_file))));
+		}
+		
 		$file_list = $fso->Get_Tree($tpl_path.$idx, false, ".tpl");
 		foreach($file_list as $key => $value) {
 			$curFile = $value;
@@ -68,8 +78,15 @@ function build_page($method) {
 		$file['content'] = "";
 		if($method=="edit") {
 			$file['name'] = $req->getGet("file");
-			if(is_file($tpl_path.$idx."/".$file['name'])) {
-				$file['content'] = file_get_contents($tpl_path.$idx."/".$file['name']);
+			if($file['name']=="style.css") {
+				$the_file = ROOT_PATH."/images/".$idx."/style.css";
+				$file['type'] = "css";
+			} else {
+				$the_file = $tpl_path.$idx."/".$file['name'];
+				$file['type'] = "htmlmixed";
+			}
+			if(is_file($the_file)) {
+				$file['content'] = file_get_contents($the_file);
 				$file['content'] = htmlspecialchars($file['content']);
 				$file['content'] = str_replace("\t", "  ", $file['content']);
 			}

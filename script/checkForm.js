@@ -90,7 +90,7 @@ function checkForm(the_form, myChecker){
 				}
 				break;
 			case "alpha":
-				if(!/^[a-z_\d]+$/i.test(the_value)) {
+				if(!/^[a-z_\d\-]+$/i.test(the_value)) {
 					alert(language.checkform_err_alpha);
 					(tag_name=="input") ? the_obj.select() : the_obj.focus();
 					return false;

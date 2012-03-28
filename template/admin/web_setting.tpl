@@ -33,6 +33,9 @@ content;
 			case "text":
 				$cur_component = '<input type="text" name="setting['.$key1.']['.$key2.']" value="'.any2str($value2).'" maxlength="'.$setting_type[$key1][$key2][2].'"'.($setting_type[$key1][$key2][1]===false?'':(' need="'.$setting_type[$key1][$key2][1].'"')).' />';
 				break;
+			case "textarea":
+				$cur_component = '<textarea name="plugin_setting['.$idx.']['.$key.']" wrap="off" rows="'.$setting_type[$key][2].'"'.($setting_type[$key][1]===false?'':(' need="'.$setting_type[$key][1].'"')).'>'.any2str($value).'</textarea>';
+				break;
 			case "password":
 				$cur_component = '
 					<input type="password" id="'.$key1.'_'.$key2.'" name="setting['.$key1.']['.$key2.']" value="" maxlength="'.$setting_type[$key1][$key2][2].'" />
