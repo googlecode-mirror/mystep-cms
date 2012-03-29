@@ -15,7 +15,7 @@
 						<option value="<!--catalog_cat_id-->" web_id="<!--catalog_web_id-->" view_lvl="<!--catalog_view_lvl-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
 					</select> &nbsp;
-					<input style="width:80px" class="btn" type="button" onClick="showPop('newsCatalog','多栏目同时发布','id','newsCatalog',200);setMultiCata();" value="其他栏目" /> <span class="comment">（请选择当前文章所属的类别）</span>
+					<input style="width:80px" class="btn" type="button" onClick="showPop('newsCatalog','多栏目同时发布','id','newsCatalog',200);setMultiCata();" value="多栏目发布" /> <span class="comment">（请选择当前文章所属的类别）</span>
 				</td>
 			</tr>
 			<tr>
@@ -213,7 +213,7 @@ tinyMCE.init({
 				content = content.replace(/<div(.*?)>(.+?)<\/div>/ig, "<p$1>$2</p>");
 				content = content.replace(/[\r\n]*<br(.*?)>[\r\n]*/ig, "</p>\n<p>");
 				content = content.replace(/<p(.*?)>[\r\n\s　]+/ig, "<p$1>");
-				content = content.replace(/mso\-[^;];/ig, "<p>");
+				content = content.replace(/mso\-[^;]+;/ig, "<p>");
 				content = content.replace(/[\xa0]/g, "");
 				content = content.replace(/<\/td>/g, "&nbsp;</td>");
 				while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "");

@@ -1664,5 +1664,25 @@ $setting = $cur_setting;
 					),
 			),
 	),
+	'0.99.9.5.7' => array(
+		'info' => '
+				V0.99.9.5.7
+				1.Fix a bug in multi_catalog post
+				2.Fix a mistake in html tag
+				3.Fix a bug in format function of TinyMCE
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/art_content.php',
+				'include/parameter.php',
+				'template/admin/art_content_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120328',
+					),
+			),
+	),
 );
 ?>

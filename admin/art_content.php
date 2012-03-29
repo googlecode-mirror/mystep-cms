@@ -197,6 +197,7 @@ switch($method) {
 				if(is_numeric($cid_list[$i]) && $theCat!=$cid_list[$i]) {
 					$_POST['cat_id'] = $cid_list[$i];
 					$_POST['link'] = getFileURL($news_id, $_POST['cat_id'], $_POST['web_id']);
+					$_POST['add_date'] = "now()";
 					$sql_list[] = $db->buildSQL($setting['db']['pre_sub']."news_show", $_POST, "insert");
 				}
 			}

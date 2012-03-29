@@ -15,7 +15,7 @@
 						<option value="<!--catalog_cat_id-->" web_id="<!--catalog_web_id-->" view_lvl="<!--catalog_view_lvl-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
 					</select> &nbsp;
-					<input style="width:80px" class="btn" type="button" onClick="showPop('newsCatalog','多栏目同时发布','id','newsCatalog',200);setMultiCata();" value="其他栏目" /> <span class="comment">（请选择当前文章所属的类别）</span>
+					<input style="width:80px" class="btn" type="button" onClick="showPop('newsCatalog','多栏目同时发布','id','newsCatalog',200);setMultiCata();" value="多栏目发布" /> <span class="comment">（请选择当前文章所属的类别）</span>
 				</td>
 			</tr>
 			<tr>
@@ -131,7 +131,7 @@
 	<div style="text-align:center;margin-top:10px;"><input class="btn" type="button" onClick="putMultiCata()" value=" 确 定 " /></div>
 </div>
 
-<script language="JavaScript type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
+<script type="text/javascript" language="JavaScript" src="../script/tinymce/tiny_mce.js"></script>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
@@ -187,7 +187,7 @@ tinyMCE.init({
 	
 	setup : function(ed) {
 		ed.addButton('upload', {
-			title : '附件上传',
+			title : 'upload',
 			image : 'images/file.gif',
 			onclick : function() {
 				showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
@@ -214,7 +214,7 @@ tinyMCE.init({
 				content = content.replace(/<div(.*?)>(.+?)<\/div>/ig, "<p$1>$2</p>");
 				content = content.replace(/[\r\n]*<br(.*?)>[\r\n]*/ig, "</p>\n<p>");
 				content = content.replace(/<p(.*?)>[\r\n\s　]+/ig, "<p$1>");
-				content = content.replace(/mso\-[^;];/ig, "<p>");
+				content = content.replace(/mso\-[^;]+;/ig, "<p>");
 				content = content.replace(/[\xa0]/g, "");
 				content = content.replace(/<\/td>/g, "&nbsp;</td>");
 				while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "");
