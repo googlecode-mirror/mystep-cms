@@ -87,14 +87,39 @@ switch($method) {
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
 		if(empty($_POST["tpl_list_reg"])) $_POST["tpl_list_reg"] = GetFile("tpl/list_reg.tpl");
-		WriteFile("setting/{$mid}_regist_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_reg_cn"]), "wb");
-		WriteFile("setting/{$mid}_regist_en.tpl", str_replace("&#160; ","	",$_POST["tpl_reg_en"]), "wb");
-		WriteFile("setting/{$mid}_reglist_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_reglist_cn"]), "wb");
-		WriteFile("setting/{$mid}_reglist_en.tpl", str_replace("&#160; ","	",$_POST["tpl_reglist_en"]), "wb");
-		WriteFile("setting/{$mid}_mail_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_mail_cn"]), "wb");
-		WriteFile("setting/{$mid}_mail_en.tpl", str_replace("&#160; ","	",$_POST["tpl_mail_en"]), "wb");
-		WriteFile("setting/{$mid}_edit_reg.tpl", str_replace("&#160; ","	",$_POST["tpl_edit_reg"]), "wb");
-		WriteFile("setting/{$mid}_list_reg.tpl", str_replace("&#160; ","	",$_POST["tpl_list_reg"]), "wb");
+		
+		$_POST["tpl_reg_cn"] = str_replace("&#160; ","	",$_POST["tpl_reg_cn"]);
+		$_POST["tpl_reg_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reg_cn"]);
+		WriteFile("setting/{$mid}_regist_cn.tpl", $_POST["tpl_reg_cn"], "wb");
+		
+		$_POST["tpl_reg_en"] = str_replace("&#160; ","	",$_POST["tpl_reg_en"]);
+		$_POST["tpl_reg_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reg_en"]);
+		WriteFile("setting/{$mid}_regist_en.tpl", $_POST["tpl_reg_en"], "wb");
+		
+		$_POST["tpl_reglist_cn"] = str_replace("&#160; ","	",$_POST["tpl_reglist_cn"]);
+		$_POST["tpl_reglist_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reglist_cn"]);
+		WriteFile("setting/{$mid}_reglist_cn.tpl", $_POST["tpl_reglist_cn"], "wb");
+		
+		$_POST["tpl_reglist_en"] = str_replace("&#160; ","	",$_POST["tpl_reglist_en"]);
+		$_POST["tpl_reglist_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reglist_en"]);
+		WriteFile("setting/{$mid}_reglist_en.tpl", $_POST["tpl_reglist_en"], "wb");
+		
+		$_POST["tpl_mail_cn"] = str_replace("&#160; ","	",$_POST["tpl_mail_cn"]);
+		$_POST["tpl_mail_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_mail_cn"]);
+		WriteFile("setting/{$mid}_mail_cn.tpl", $_POST["tpl_mail_cn"], "wb");
+		
+		$_POST["tpl_mail_en"] = str_replace("&#160; ","	",$_POST["tpl_mail_en"]);
+		$_POST["tpl_mail_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_mail_en"]);
+		WriteFile("setting/{$mid}_mail_en.tpl", $_POST["tpl_mail_en"], "wb");
+		
+		$_POST["tpl_edit_reg"] = str_replace("&#160; ","	",$_POST["tpl_edit_reg"]);
+		$_POST["tpl_edit_reg"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_edit_reg"]);
+		WriteFile("setting/{$mid}_edit_reg.tpl", $_POST["tpl_edit_reg"], "wb");
+		
+		$_POST["tpl_list_reg"] = str_replace("&#160; ","	",$_POST["tpl_list_reg"]);
+		$_POST["tpl_list_reg"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_list_reg"]);
+		WriteFile("setting/{$mid}_list_reg.tpl", $_POST["tpl_list_reg"], "wb");
+		
 		if(empty($_POST["itemlist"])) {
 			include("setting/default.php");
 			$para = var_export($para, true);
@@ -146,7 +171,7 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 	`mailed` BOOL NOT NULL DEFAULT 0,
 	`add_date` DATETIME,
 	PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=".$setting['gen']['charset']." COMMENT='".mysql_real_escape_string($sql_item['name'])."';
+) ENGINE=MyISAM DEFAULT CHARSET=".$setting['db']['charset']." COMMENT='".mysql_real_escape_string($sql_item['name'])."';
 ";
 		$db->Query($str_sql);
 		break;
@@ -169,14 +194,38 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
 		if(empty($_POST["tpl_list_reg"])) $_POST["tpl_list_reg"] = GetFile("tpl/list_reg.tpl");
-		WriteFile("setting/{$mid}_regist_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_reg_cn"]), "wb");
-		WriteFile("setting/{$mid}_regist_en.tpl", str_replace("&#160; ","	",$_POST["tpl_reg_en"]), "wb");
-		WriteFile("setting/{$mid}_reglist_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_reglist_cn"]), "wb");
-		WriteFile("setting/{$mid}_reglist_en.tpl", str_replace("&#160; ","	",$_POST["tpl_reglist_en"]), "wb");
-		WriteFile("setting/{$mid}_mail_cn.tpl", str_replace("&#160; ","	",$_POST["tpl_mail_cn"]), "wb");
-		WriteFile("setting/{$mid}_mail_en.tpl", str_replace("&#160; ","	",$_POST["tpl_mail_en"]), "wb");
-		WriteFile("setting/{$mid}_edit_reg.tpl", str_replace("&#160; ","	",$_POST["tpl_edit_reg"]), "wb");
-		WriteFile("setting/{$mid}_list_reg.tpl", str_replace("&#160; ","	",$_POST["tpl_list_reg"]), "wb");
+		
+		$_POST["tpl_reg_cn"] = str_replace("&#160; ","	",$_POST["tpl_reg_cn"]);
+		$_POST["tpl_reg_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reg_cn"]);
+		WriteFile("setting/{$mid}_regist_cn.tpl", $_POST["tpl_reg_cn"], "wb");
+		
+		$_POST["tpl_reg_en"] = str_replace("&#160; ","	",$_POST["tpl_reg_en"]);
+		$_POST["tpl_reg_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reg_en"]);
+		WriteFile("setting/{$mid}_regist_en.tpl", $_POST["tpl_reg_en"], "wb");
+		
+		$_POST["tpl_reglist_cn"] = str_replace("&#160; ","	",$_POST["tpl_reglist_cn"]);
+		$_POST["tpl_reglist_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reglist_cn"]);
+		WriteFile("setting/{$mid}_reglist_cn.tpl", $_POST["tpl_reglist_cn"], "wb");
+		
+		$_POST["tpl_reglist_en"] = str_replace("&#160; ","	",$_POST["tpl_reglist_en"]);
+		$_POST["tpl_reglist_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reglist_en"]);
+		WriteFile("setting/{$mid}_reglist_en.tpl", $_POST["tpl_reglist_en"], "wb");
+		
+		$_POST["tpl_mail_cn"] = str_replace("&#160; ","	",$_POST["tpl_mail_cn"]);
+		$_POST["tpl_mail_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_mail_cn"]);
+		WriteFile("setting/{$mid}_mail_cn.tpl", $_POST["tpl_mail_cn"], "wb");
+		
+		$_POST["tpl_mail_en"] = str_replace("&#160; ","	",$_POST["tpl_mail_en"]);
+		$_POST["tpl_mail_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_mail_en"]);
+		WriteFile("setting/{$mid}_mail_en.tpl", $_POST["tpl_mail_en"], "wb");
+		
+		$_POST["tpl_edit_reg"] = str_replace("&#160; ","	",$_POST["tpl_edit_reg"]);
+		$_POST["tpl_edit_reg"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_edit_reg"]);
+		WriteFile("setting/{$mid}_edit_reg.tpl", $_POST["tpl_edit_reg"], "wb");
+		
+		$_POST["tpl_list_reg"] = str_replace("&#160; ","	",$_POST["tpl_list_reg"]);
+		$_POST["tpl_list_reg"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_list_reg"]);
+		WriteFile("setting/{$mid}_list_reg.tpl", $_POST["tpl_list_reg"], "wb");
 		
 		if(empty($_POST["itemlist"])) {
 			include("setting/{$mid}.php");

@@ -1684,5 +1684,24 @@ $setting = $cur_setting;
 					),
 			),
 	),
+	'0.99.9.5.8' => array(
+		'info' => '
+				V0.99.9.5.8
+				1.Fix a bug in meeting plugin
+				2.Fix a bug in format function of TinyMCE
+				Some other adjusts...
+			',
+		'file' => array(
+				'include/parameter.php',
+				'plugin/meeting/meeting.php',
+				'template/admin/art_content_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120328',
+					),
+			),
+	),
 );
 ?>
