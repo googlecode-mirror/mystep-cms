@@ -71,7 +71,8 @@
 		</tr>
 	</table>
 </div>
-<script language="javascript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 var cur_ver = <?=toJson($ms_version, $setting['gen']['charset']);?>;
 function checkUpdate() {
 	loadingShow("正在连接服务器，检测更新。。。");
@@ -145,4 +146,5 @@ function updateModify() {
 function exportUpdate() {
 	window.open("update.php?export");
 }
+//]]> 
 </script>

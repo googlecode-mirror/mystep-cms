@@ -1,4 +1,5 @@
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 function check(){
 	var objs = document.getElementsByName("the_file[]");
 	for(var i=0; i<objs.length; i++) {
@@ -26,6 +27,7 @@ function upload_add_file(){
 $(function(){
 	upload_add_file();
 });
+//]]> 
 </script>
 <form name="upload" method="post" ACTION="?method=add_ok" ENCTYPE="multipart/form-data" onsubmit="return false">
 	<table border="0" cellspacing="0">

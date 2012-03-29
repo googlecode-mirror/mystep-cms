@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="left">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
@@ -53,7 +53,8 @@
 		</table>
 	</form>
 </div>
-<script Language="JavaScript1.2">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 function checkFunc(pid) {
 	var objs = document.getElementsByName("power_func[]");
 	var flag = $id("power_func_"+pid).checked;
@@ -140,4 +141,5 @@ $(function(){
 	$id('power_cat_all').checked ? checkAll('power_cat') : checkStatus('power_cat');
 	$id('power_web_all').checked ? checkAll('power_web', false) : checkStatus('power_web');
 });
+//]]> 
 </script>

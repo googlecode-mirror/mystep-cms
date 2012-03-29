@@ -60,7 +60,8 @@
 			</div>
 		</div>
 	</div>
-<script language="javascript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 $(function() {
 	var subPage = <!--sub_page-->;
 	if(subPage.length>0) {
@@ -78,4 +79,5 @@ $(function() {
 		$("#page_sel").parent().remove();
 	}
 });
+//]]> 
 </script>

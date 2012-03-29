@@ -7,9 +7,9 @@
 <meta http-equiv="windows-Target" contect="_top" />
 <meta http-equiv="Content-Type" content="text/html; charset=<!--charset-->" />
 <link rel="stylesheet" type="text/css" media="all" href="style.css" />
-<script language="JavaScript" src="/script/global.js"></script>
-<script language="JavaScript" src="/script/jquery.js"></script>
-<script language="JavaScript" src="/script/jquery.addon.js"></script>
+<script language="JavaScript" type="text/javascript" src="/script/global.js"></script>
+<script language="JavaScript" type="text/javascript" src="/script/jquery.js"></script>
+<script language="JavaScript" type="text/javascript" src="/script/jquery.addon.js"></script>
 <base target="main" />
 </head>
 <body style="overflow:hidden;">
@@ -54,7 +54,8 @@
 	</form>
 </div>
 </body>
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
@@ -177,5 +178,6 @@ var web_id = "<!--web_id-->";
 group.power_cat = "," + group.power_cat + ",";
 group.power_web = "," + group.power_web + ",";
 group.power_func = "," + group.power_func + ",";
+//]]> 
 </script>
 </html>

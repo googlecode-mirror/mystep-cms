@@ -35,7 +35,8 @@
 <!--loop:end-->
 </table>
 <div id="show"></div>
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 function attach_add(id, news_id, file_name, file_type) {
 	var code = "";
 	if(file_type.indexOf("image")==-1) {
@@ -62,4 +63,5 @@ $(function(){
 		$("#show").hide();
 	});
 });
+//]]> 
 </script>

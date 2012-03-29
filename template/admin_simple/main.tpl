@@ -7,11 +7,11 @@
 <meta http-equiv="windows-Target" contect="_top" />
 <meta http-equiv="Content-Type" content="text/html; charset=<!--charset-->" />
 <link rel="stylesheet" type="text/css" media="all" href="style.css" />
-<script language="JavaScript" src="../script/jquery.js"></script>
-<script language="JavaScript" src="../script/jquery.addon.js"></script>
-<script language="JavaScript" src="../script/global.js"></script>
-<script language="JavaScript" src="../script/admin.js"></script>
-<script language="JavaScript" src="../script/addon.js"></script>
+<script language="JavaScript" type="text/javascript" src="../script/jquery.js"></script>
+<script language="JavaScript" type="text/javascript" src="../script/jquery.addon.js"></script>
+<script language="JavaScript" type="text/javascript" src="../script/global.js"></script>
+<script language="JavaScript" type="text/javascript" src="../script/admin.js"></script>
+<script language="JavaScript" type="text/javascript" src="../script/addon.js"></script>
 </head>
 <body>
 <div id="page_ole">

@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="left">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
@@ -48,11 +48,13 @@
 		</table>
 	</form>
 </div>
-<script type="text/javascript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.4"
 	});
 });
+//]]> 
 </script>

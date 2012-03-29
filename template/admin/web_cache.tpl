@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="left">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?update" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
@@ -68,7 +68,8 @@ echo "</select>";
 		</table>
 	</form>
 </div>
-<script Language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 function add(obj) {
 	obj = $(obj).parent().parent().clone();
 	obj.find("input:first").val("");
@@ -87,4 +88,5 @@ function cclean() {
 	theForm.action = "?clean";
 	theForm.submit();
 }
+//]]> 
 </script>

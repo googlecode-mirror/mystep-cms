@@ -97,7 +97,8 @@
 	</table>
 </div>
 
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
@@ -123,4 +124,5 @@ function update(idx, name) {
 		}
 	}, "json");
 }
+//]]> 
 </script>

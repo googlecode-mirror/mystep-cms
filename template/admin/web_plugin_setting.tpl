@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="left">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form id="setting" method="post" action="?method=setting_ok" onsubmit="return checkForm(this, checkPass)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
@@ -127,7 +127,8 @@ content;
 		</table>
 	</form>
 </div>
-<script Language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 function checkPass() {
 	var theObjs = $("#setting input:password[id$=_r]");
 	for(var i=0; i<theObjs.length; i++) {
@@ -171,4 +172,5 @@ $(function(){
 	if("<!--subweb-->"=="") checkAll('subweb', true);
 	checkStatus('subweb');
 });
+//]]> 
 </script>

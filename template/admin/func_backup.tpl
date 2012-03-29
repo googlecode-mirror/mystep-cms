@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="left">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form name="db_bak" method="post" ENCTYPE="multipart/form-data" onSubmit="return doit(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
@@ -58,7 +58,8 @@
 		</table>
 	</form>
 </div>
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 function doit(theForm) {
 	if(checkForm(theForm, checkForm_append)) {
 		if(document.db_bak.method.value!='export') {
@@ -95,4 +96,5 @@ function checkForm_append(theForm) {
 	}
 	return flag;
 }
+//]]> 
 </script>

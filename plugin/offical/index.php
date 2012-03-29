@@ -24,7 +24,7 @@ $mystep->addJS("script/jquery.js");
 $mystep->addJS("script/jquery.addon.js");
 $mystep->addJS("script/global.js");
 $mystep->addJS("script/addon.js");
-$mystep->setAddedContent("start", '<script language="JavaScript" src="/source/merge.php?js"></script>');
+$mystep->setAddedContent("start", '<script language="JavaScript" type="text/javascript" src="/source/merge.php?js"></script>');
 $mystep->addCSS("images/style.css");
 $mystep->setAddedContent("start", '<link rel="stylesheet" type="text/css" media="all" href="/source/merge.php?css" />');
 

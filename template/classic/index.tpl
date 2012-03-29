@@ -23,7 +23,7 @@
 					<span class="highlight">新闻栏目一</span>
 					<span>新闻栏目二</span>
 					<span>新闻栏目三</span>
-					<div class="more"><a href="list.php"><img src="images/classic/more.png" /></a></div>
+					<div class="more"><a href="list.php"><img src="images/classic/more.png" alt="More"/></a></div>
 				</div>
 				<div class="content">
 <!--news cat_id="1" limit="6" loop="6" show_date="Y-m-d"-->
@@ -48,7 +48,7 @@
 				<div class="title">
 					<span class="highlight">新闻栏目一</span>
 					<span>新闻栏目二</span>
-					<div class="more"><a href="list.php"><img src="images/classic/more.png" /></a></div>
+					<div class="more"><a href="list.php"><img src="images/classic/more.png" alt="More"/></a></div>
 				</div>
 				<div class="content">
 <!--news cat_id="1" limit="6" loop="6" show_date="Y-m-d"-->
@@ -68,7 +68,7 @@
 		<div class="fr page_r">
       <div class="box box_m">
         <div class="title">新闻栏目三
-          <div class="more"><a href="list.php?cat=3"><img src="images/classic/more.png" /></a></div>
+          <div class="more"><a href="list.php?cat=3"><img src="images/classic/more.png" alt="More"/></a></div>
         </div>
         <div class="content">
 <!--news cat_id="3" limit="6" loop="6" show_date="Y-m-d"-->
@@ -110,7 +110,8 @@
 		</div>
 	</div>
 
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 $(function(){
 	//News Picture
 	var stop_news_image = false;
@@ -190,4 +191,5 @@ $(function(){
 	setSwitch();
 	setList();
 });
+//]]> 
 </script> 

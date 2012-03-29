@@ -19,7 +19,8 @@
 	</table>
 </form>
 <iframe scrolling="no" name="upload_file" src="about:blank" MARGINHEIGHT="0" MARGINWIDTH="0" style="display:none;"></iframe>
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 $(function(){
 	<!--script-->
 	if(typeof(window.dialogArguments)=='undefined' && typeof(window.opener)=='undefined' && typeof(window.parent)=='undefined') {
@@ -52,4 +53,5 @@ function check(){
 	document.upload.the_file.focus();
 	}
 }
+//]]> 
 </script>

@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="left">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
@@ -34,8 +34,9 @@
 		</table>
 	</form>
 </div>
-<script type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
-<script type="text/javascript">
+<script language="JavaScript" type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
@@ -148,4 +149,5 @@ function attach_edit() {
 	showPop('attach','¸½¼þ¹ÜÀí','url','attachment.php?method=edit&attach_list='+document.forms[0].attach_list.value, 600, 200);
 	return;
 }
+//]]> 
 </script>

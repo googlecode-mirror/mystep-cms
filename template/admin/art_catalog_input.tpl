@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="left">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(checkForm(this)){$id('web_id').disabled=false;return true;}else{return false;}">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
@@ -123,7 +123,8 @@
 		</table>
 	</form>
 </div>
-<script Language="JavaScript1.2">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
@@ -145,4 +146,5 @@ function changeCata(idx) {
 	}
 	if("<!--web_disabled-->"=="disabled") $id("web_id").disabled = true;
 }
+//]]> 
 </script>

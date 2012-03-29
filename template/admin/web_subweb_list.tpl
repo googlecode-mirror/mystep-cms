@@ -20,11 +20,13 @@
 <!--loop:end-->
 	</table>
 </div>
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 if(parent.setNav!=null) {
 	parent.website = <!--website-->;
 	parent.admin_cat = <!--admin_cat-->;
 	parent.setNav();
 }
+//]]> 
 </script>
 

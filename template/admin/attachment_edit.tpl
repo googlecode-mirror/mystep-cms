@@ -35,7 +35,8 @@
 	</tr>
 </table>
 </form><br />
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 <!--script-->
 
 function attach_add(id, news_id, file_name, file_type) {
@@ -77,4 +78,5 @@ function setWatermark() {
 $(function(){
 	parent.setIframe('attach');
 });
+//]]> 
 </script>

@@ -89,13 +89,9 @@ switch($method) {
 			$_POST['style'] = implode(",", $_POST['style']);
 			$_POST['content'] = preg_replace("/ mso(\-\w+)+\:[^;]+?;/", "", $_POST['content']);
 			$_POST['content'] = preg_replace("/[\/]+files/", "/files", $_POST['content']);
-			$_POST['content'] = preg_replace("/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\\1>[\r\n\s]*/m", "<!-- pagebreak -->", $_POST['content']);
-			$_POST['content'] = preg_replace("/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\\1>[\r\n\s]*/m", "<!-- pagebreak -->", $_POST['content']);
-			$_POST['content'] = preg_replace("/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\\1>[\r\n\s]*/m", "<!-- pagebreak -->", $_POST['content']);
-			$_POST['content'] = preg_replace("/<(\w+)[^>]*>[\s\r\n]+<\/\\1>[\r\n\s]*/m", "", $_POST['content']);
-			$_POST['content'] = preg_replace("/<(\w+)[^>]*>[\s\r\n]+<\/\\1>[\r\n\s]*/m", "", $_POST['content']);
-			$_POST['content'] = preg_replace("/<(\w+)[^>]*>[\s\r\n]+<\/\\1>[\r\n\s]*/m", "", $_POST['content']);
-			$_POST['content'] = preg_replace("/<(p|div)[^>]*>[\r\n\s]*<\/\\1>[\r\n\s]*/i", "", $_POST['content']);
+			$_POST['content'] = preg_replace("/<\/(\w+)><\\1([^>]*)>/", "", $_POST['content']);
+			while(preg_match("/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\\1>[\r\n\s]*/m", $_POST['content'])) $_POST['content'] = preg_replace("/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\\1>[\r\n\s]*/m", "<!-- pagebreak -->", $_POST['content']);
+			while(preg_match("/<(\w+)[^>]*>[\s\r\n]*<\/\\1>[\r\n\s]*/m", $_POST['content'])) $_POST['content'] = preg_replace("/<(\w+)[^>]*>[\s\r\n]*<\/\\1>[\r\n\s]*/m", "", $_POST['content']);
 			$_POST['content'] = str_replace('="../', '="'.$setting['web']['url'].'/', $_POST['content']);
 			$content = explode("<!-- pagebreak -->", $_POST['content']);
 			unset($_POST['content'], $_POST['multi_cata']);

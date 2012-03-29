@@ -1,7 +1,7 @@
 <div class="title"><!--title--></div>
 <div class="addnew"><a href="?method=add">ÃÌº”∑÷¿‡</a></div>
 <div align="center">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?method=order" onsubmit="return checkForm(this)">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 		<tr align="center">
@@ -33,7 +33,8 @@
 	</table>
 	</form>
 </div>
-<script language="javascript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 if(parent.showCat!=null) {
 	parent.group=<!--group-->;
 	parent.group.power_cat = "," + parent.group.power_cat + ",";
@@ -42,4 +43,5 @@ if(parent.showCat!=null) {
 	parent.news_cat = <!--news_cat-->;
 	parent.showCat(parent.document.getElementById("cat_tree"), parent.getWebCat(<!--web_id-->), true);
 }
+//]]> 
 </script>

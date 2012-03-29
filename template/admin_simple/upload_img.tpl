@@ -1,4 +1,5 @@
-<script language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 <!--script-->
 if(typeof(window.dialogArguments)=='undefined' && typeof(window.opener)=='undefined' && typeof(window.parent)=='undefined') {
 	window.opener = null;
@@ -29,6 +30,7 @@ function check(){
 
 if(window.opener!='undefined') window.resizeTo(400,160);
 document.body.style.overflow="hidden";
+//]]> 
 </script>
 <br />
 <form name="upload" method="post" ACTION="<!--self-->?<!--parent_element-->" target="upload_img" ENCTYPE="multipart/form-data" >

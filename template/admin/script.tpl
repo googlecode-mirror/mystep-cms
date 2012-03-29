@@ -1,3 +1,5 @@
-<script language="javascript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 <!--script-->
+//]]> 
 </script>

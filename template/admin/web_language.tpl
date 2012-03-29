@@ -51,9 +51,11 @@
 		</table>
 	</form>
 </div>
-<script Language="JavaScript">
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 function del(obj) {
 	obj = $(obj).parent().parent();
 	if(obj.find("input")[0].defaultValue.toLowerCase()!="default") obj.remove();
 }
+//]]> 
 </script>

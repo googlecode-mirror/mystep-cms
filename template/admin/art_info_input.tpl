@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="left">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
@@ -45,8 +45,9 @@
 		</table>
 	</form>
 </div>
-<script type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
-<script type="text/javascript">
+<script language="JavaScript" type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
@@ -57,10 +58,10 @@ tinyMCE.init({
 	mode : "textareas",
 	language : "zh",
 	theme : "advanced",
-	plugins : "safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+	plugins : "safari,bbscode,source_code,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-	theme_advanced_buttons1 : "newdocument,fullscreen,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,|,charmap,media",
-	theme_advanced_buttons2 : "upload,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,image,removeformt,code,preview,change",
+	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,format",
+	theme_advanced_buttons2 : "upload,|,cut,copy,paste,pastetext,pasteword,bbscode,source_code,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
 	theme_advanced_buttons3 : "",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
@@ -75,22 +76,39 @@ tinyMCE.init({
 	
 	setup : function(ed) {
 		ed.addButton('upload', {
-			title : 'upload',
+			title : '附件上传',
 			image : 'images/file.gif',
 			onclick : function() {
 				showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
 			}
 		});
 		ed.addButton('change', {
-			title : 'Div Mode',
+			title : 'Div/P 模式切换',
 			image : 'images/div.png',
 			onclick : function() {
 				var content = tinyMCE.get('content').getContent();
-				if(content.indexOf("<div>")==-1) {
-					content = content.replace(/<p>(.+?)<\/p>/ig, "<div>$1</div>");
+				if(content.indexOf("<div")==-1) {
+					content = content.replace(/<p(.*?)>(.+?)<\/p>/ig, "<div$1>$2</div>");
 				} else {
-					content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
+					content = content.replace(/<div(.*?)>(.+?)<\/div>/ig, "<p$1>$2</p>");
 				}
+				tinyMCE.get('content').setContent(content);
+			}
+		});
+		ed.addButton('format', {
+			title : '文本格式化',
+			image : 'images/format.png',
+			onclick : function() {
+				var content = tinyMCE.get('content').getContent();
+				content = content.replace(/<div(.*?)>(.+?)<\/div>/ig, "<p$1>$2</p>");
+				content = content.replace(/[\r\n]*<br(.*?)>[\r\n]*/ig, "</p>\n<p>");
+				content = content.replace(/<p(.*?)>[\r\n\s　]+/ig, "<p$1>");
+				content = content.replace(/mso\-[^;];/ig, "<p>");
+				content = content.replace(/[\xa0]/g, "");
+				content = content.replace(/<\/td>/g, "&nbsp;</td>");
+				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
+				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
+				content = content.replace(/  /g, String.fromCharCode(160)+" ");
 				tinyMCE.get('content').setContent(content);
 			}
 		});
@@ -159,4 +177,5 @@ function attach_edit() {
 	showPop('attach','附件管理','url','attachment.php?method=edit&attach_list='+document.forms[0].attach_list.value, 600, 200);
 	return;
 }
+//]]> 
 </script>

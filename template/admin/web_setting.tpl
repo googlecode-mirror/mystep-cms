@@ -5,7 +5,7 @@
 <!--loop:end-->
 </div>
 <div align="center">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?update" onsubmit="if($id('web_s_pass').value==$id('web_s_pass_r').value && $id('db_pass').value==$id('db_pass_r').value){return checkForm(this)}else{alert('两次输入的密码不一致！');return false;}">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 <?PHP

@@ -1,6 +1,6 @@
 <div class="title"><!--title--></div>
 <div align="left">
-	<script src="../script/checkForm.js" Language="JavaScript1.2"></script>
+	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this, checkForm_append)">
 		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 			<tr>
@@ -131,8 +131,9 @@
 	<div style="text-align:center;margin-top:10px;"><input class="btn" type="button" onClick="putMultiCata()" value=" 确 定 " /></div>
 </div>
 
-<script type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
-<script type="text/javascript">
+<script language="JavaScript type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
@@ -186,7 +187,7 @@ tinyMCE.init({
 	
 	setup : function(ed) {
 		ed.addButton('upload', {
-			title : 'upload',
+			title : '附件上传',
 			image : 'images/file.gif',
 			onclick : function() {
 				showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
@@ -214,6 +215,12 @@ tinyMCE.init({
 				content = content.replace(/[\r\n]*<br(.*?)>[\r\n]*/ig, "</p>\n<p>");
 				content = content.replace(/<p(.*?)>[\r\n\s　]+/ig, "<p$1>");
 				content = content.replace(/mso\-[^;];/ig, "<p>");
+				content = content.replace(/[\xa0]/g, "");
+				content = content.replace(/<\/td>/g, "&nbsp;</td>");
+				while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "");
+				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
+				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
+				content = content.replace(/  /g, String.fromCharCode(160)+" ");
 				tinyMCE.get('content').setContent(content);
 			}
 		});
@@ -365,4 +372,5 @@ $(function(){
 	add_color($id("color_list_title"), "<!--check_c-->");
 	profix_changed(<!--record_cat_id-->);
 });
+//]]> 
 </script>
