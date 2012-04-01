@@ -8,7 +8,7 @@
 <meta name="description" content="<!--page_description-->" />
 <link rel="Shortcut Icon" href="favicon.ico" />
 <!--page_start-->
-<link rel="stylesheet" type="text/css" href="images/<!--template-->/style.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="images/<!--template-->/style.css" />
 <link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 </head>
 <body>

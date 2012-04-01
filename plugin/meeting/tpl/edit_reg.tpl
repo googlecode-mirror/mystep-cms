@@ -15,8 +15,8 @@
 		<br />
 		<form name="reg_<!--method-->" method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 			<div align="left">
-			<input name="id" type="hidden" value="<!--record_id-->">
-			<input name="mid" type="hidden" value="<!--mid-->">
+			<input name="id" type="hidden" value="<!--record_id-->" />
+			<input name="mid" type="hidden" value="<!--mid-->" />
 			<table cellspacing="0" cellpadding="0" align="center">
 <?php
 global $record;
@@ -84,9 +84,9 @@ mystep;
 ?>
 				<tr>
 					<td class="cat" colspan="4" align="center">
-						<input class="normal" type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
-						<input class="normal" type="reset" value=" 重 置 " name="reset">&nbsp;&nbsp;
-						<input class="normal" type="button" value=" 返 回 " name="return" onClick="history.go(-1)">
+						<input class="normal" type="Submit" value=" 确 定 " name="Submit" />&nbsp;&nbsp;
+						<input class="normal" type="reset" value=" 重 置 " name="reset" />&nbsp;&nbsp;
+						<input class="normal" type="button" value=" 返 回 " name="return" onClick="history.go(-1)" />
 					</td>
 				</tr>
 			</table>

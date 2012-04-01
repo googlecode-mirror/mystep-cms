@@ -19,7 +19,7 @@ $language = array (
   Download the update file and uncompres to the root of your website!',
 
   'admin_psw' => 'Password repeat',
-  'admin_psw_desc' => 'Reinput the previous password please(blank means no change)',
+  'admin_psw_desc' => 'Reinput the previous password please',
   'admin_psw_desc_addon' => ' (If no need to change, just keep the blank empty)',
   'admin_nopower' => 'You havn\'t the power to make current operation!',
   

@@ -11,6 +11,8 @@ $log_info = "";
 if(!empty($mid) && $method=="list") $method = "list_reg";
 if(!empty($id) && $method=="edit") $method = "edit_reg";
 
+if(file_exists("setting/{$mid}_ext_script.php")) include("setting/{$mid}_ext_script.php");
+
 switch($method) {
 	case "add":
 	case "edit":
@@ -40,6 +42,7 @@ switch($method) {
 			$xls->addCells($title_list);
 			$db->Query("select ".$col_list." from ".$setting['db']['pre']."meeting_".$mid." order by id asc");
 			while($record = $db->GetRS()) {
+				if(function_exists("ext_func")) ext_func();
 				$xls->addRow();
 				$xls->addCells($record);
 			}
@@ -49,6 +52,7 @@ switch($method) {
 	case "add_reg_ok":
 		if(!empty($_GET['name'])) {
 			$log_info = "添加注册";
+			if(function_exists("ext_func")) ext_func();
 			$db->Query("insert into ".$setting['db']['pre']."meeting_{$mid} (id, name, company, add_date) values(0, '".$_GET['name']."', '".$_GET['name']."', curdate())");
 			$goto_url = $setting['info']['self']."?method=edit&mid={$mid}&id=".$db->getInsertID();
 		}
@@ -61,6 +65,7 @@ switch($method) {
 		foreach($_POST as $key => $value) {
 			if(is_array($value)) $_POST[$key] = implode(",", $value);
 		}
+		if(function_exists("ext_func")) ext_func();
 		$str_sql = $db->buildSQL($setting['db']['pre']."meeting_".$mid, $_POST, "update", "id={$id}");
 		$db->Query($str_sql);
 		$goto_url = $setting['info']['self']."?mid={$mid}";
@@ -87,6 +92,7 @@ switch($method) {
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
 		if(empty($_POST["tpl_list_reg"])) $_POST["tpl_list_reg"] = GetFile("tpl/list_reg.tpl");
+		if(empty($_POST["ext_script"])) $_POST["ext_script"] = GetFile("setting/ext_script.php");
 		
 		$_POST["tpl_reg_cn"] = str_replace("&#160; ","	",$_POST["tpl_reg_cn"]);
 		$_POST["tpl_reg_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reg_cn"]);
@@ -120,6 +126,10 @@ switch($method) {
 		$_POST["tpl_list_reg"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_list_reg"]);
 		WriteFile("setting/{$mid}_list_reg.tpl", $_POST["tpl_list_reg"], "wb");
 		
+		$_POST["ext_script"] = str_replace("&#160; ","	",$_POST["ext_script"]);
+		$_POST["ext_script"] = str_replace(hexToStr("c2a0"),"	",$_POST["ext_script"]);
+		WriteFile("setting/{$mid}_ext_script.php", $_POST["ext_script"], "wb");
+		
 		if(empty($_POST["itemlist"])) {
 			include("setting/default.php");
 			$para = var_export($para, true);
@@ -131,6 +141,7 @@ switch($method) {
 			$para = str_replace("))", ")", $para);
 			$para = chg_charset($para, "utf-8", $setting['gen']['charset']);
 		}
+		if(function_exists("ext_func")) ext_func();
 		WriteFile("setting/{$mid}.php", '<?php
 $para = '.str_replace("\r", "", $para).';		
 ?>', "wb");
@@ -194,6 +205,7 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_reg"])) $_POST["tpl_edit_reg"] = GetFile("tpl/edit_reg.tpl");
 		if(empty($_POST["tpl_list_reg"])) $_POST["tpl_list_reg"] = GetFile("tpl/list_reg.tpl");
+		if(empty($_POST["ext_script"])) $_POST["ext_script"] = GetFile("setting/ext_script.php");
 		
 		$_POST["tpl_reg_cn"] = str_replace("&#160; ","	",$_POST["tpl_reg_cn"]);
 		$_POST["tpl_reg_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_reg_cn"]);
@@ -227,6 +239,10 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 		$_POST["tpl_list_reg"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_list_reg"]);
 		WriteFile("setting/{$mid}_list_reg.tpl", $_POST["tpl_list_reg"], "wb");
 		
+		$_POST["ext_script"] = str_replace("&#160; ","	",$_POST["ext_script"]);
+		$_POST["ext_script"] = str_replace(hexToStr("c2a0"),"	",$_POST["ext_script"]);
+		WriteFile("setting/{$mid}_ext_script.php", $_POST["ext_script"], "wb");
+		
 		if(empty($_POST["itemlist"])) {
 			include("setting/{$mid}.php");
 			$para = var_export($para, true);
@@ -238,6 +254,7 @@ CREATE TABLE `".$setting['db']['pre']."meeting_".$mid."` (
 			$para = str_replace("))", ")", $para);
 			$para = chg_charset($para, "utf-8", $setting['gen']['charset']);
 		}
+		if(function_exists("ext_func")) ext_func();
 		WriteFile("setting/{$mid}.php", '<?php
 $para = '.str_replace("\r", "", $para).';		
 ?>', "wb");
@@ -301,6 +318,7 @@ $para = '.var_export($para, true).';
 		$db->BatchExec($sql_list);
 		break;
 	case "delete":
+		if(function_exists("ext_func")) ext_func();
 		if(!empty($id)) {
 			$log_info = "删除注册信息";
 			$db->Query("delete from ".$setting['db']['pre']."meeting_{$mid} where id = '{$id}'");
@@ -319,10 +337,24 @@ $para = '.var_export($para, true).';
 			unlink("setting/{$mid}_mail_en.tpl");
 			unlink("setting/{$mid}_edit_reg.tpl");
 			unlink("setting/{$mid}_list_reg.tpl");
+			unlink("setting/{$mid}_ext_script.php");
 			unlink("setting/{$mid}.php");
 			deleteCache("admin_cat");
 		}
 		$goto_url = $req->getServer("HTTP_REFERER");
+		break;
+	case "mail":
+		if(function_exists("ext_func")) ext_func();
+		$mail = $mystep->getInstance("MyEmail", $setting['web']['email'], $setting['gen']['charset']);
+		$mail->addEmail($setting['web']['email'], $setting['web']['title'], "reply");
+		$mail->setFrom($setting['web']['email'], $setting['web']['title'], true);
+		$mail->setSubject($_POST['subject']);
+		$mail->setContent($_POST['content']);
+		$mail->addEmail($_POST['email']);
+		$mail->addHeader("Disposition-Notification-To", $setting['web']['email']);
+		$flag = $mail->send($setting['email']);
+		unset($mail);
+		$goto_url = $setting['info']['self']."?mid=".$mid;
 		break;
 	default:
 		$goto_url = $setting['info']['self'];
@@ -335,7 +367,7 @@ if(!empty($log_info)) {
 $mystep->pageEnd(false);
 
 function build_page($method) {
-	global $mystep, $req, $db, $setting, $id, $mid;
+	global $mystep, $req, $db, $setting, $id, $mid, $record, $tpl_tmp;
 
 	$tpl_info = array(
 		"idx" => "main",
@@ -357,13 +389,14 @@ function build_page($method) {
 	}
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	if($method=="confirm") {
-		global $para, $record;
+		global $para;
 		$record = $db->getSingleRecord("select * from ".$setting['db']['pre']."meeting_{$mid} where id=".$id);
 		if($record===false || !file_exists("setting/{$mid}.php")) {
 			$tpl->Set_Variable('main', showInfo("指定的记录不存在或配置文件缺失！", 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
+		if(function_exists("ext_func")) ext_func();
 		$db->Query("update ".$setting['db']['pre']."meeting_{$mid} set mailed=1 where id='".$record['id']."'");
 		include("setting/".$mid.".php");
 		$tpl_info['idx'] = "{$mid}_mail_".(empty($record['name'])?"en":"cn");
@@ -396,10 +429,11 @@ function build_page($method) {
 		$db->Query($str_sql);
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
+			if(function_exists("ext_func")) ext_func();
 			if(empty($record['name'])) $record['name'] = $record['name_en'];
 			if(empty($record['company'])) $record['company'] = $record['company_en'];
 			$record['confirm'] = "";
-			if($record['mailed']!="已发") $record['confirm'] = ' &nbsp;<a href="?method=confirm&mid='.$mid.'&id='.$record['id'].'" target="_blank">确认</a>';
+			if($record['mailed']!="已发") $record['confirm'] = ' &nbsp;<a href="?method=confirm&mid='.$mid.'&id='.$record['id'].'">确认</a>';
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$tpl_tmp->Set_Variable('meeting_name', $db->GetSingleResult("select name from ".$setting['db']['pre']."meeting where mid=".$mid));
@@ -418,6 +452,7 @@ function build_page($method) {
 			$mystep->pageEnd(false);
 		}
 		HtmlTrans(&$record);
+		if(function_exists("ext_func")) ext_func();
 		$tpl_tmp->Set_Variables($record, "record");
 		$tpl_tmp->Set_Variable('meeting_name', $db->GetSingleResult("select name from ".$setting['db']['pre']."meeting where mid=".$mid));
 		$tpl_tmp->Set_Variable('title', '注册信息更新');
@@ -428,6 +463,7 @@ function build_page($method) {
 		$db->Query("select * from ".$setting['db']['pre']."meeting order by mid desc");
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
+			if(function_exists("ext_func")) ext_func();
 			if($record['web_id']==0) {
 				$record['web_id'] = "仅管理面板";
 			} elseif($record['web_id']==255) {
@@ -451,6 +487,7 @@ function build_page($method) {
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
+		if(function_exists("ext_func")) ext_func();
 		$tpl_tmp->Set_Variables($record);
 		$tpl_tmp->Set_Variable('title', '修改会议项目');
 		$tpl_tmp->Set_Variable('method', 'edit');
@@ -469,6 +506,7 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("setting/{$mid}_mail_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("setting/{$mid}_edit_reg.tpl")));
 		$tpl_tmp->Set_Variable('tpl_list_reg', htmlspecialchars(GetFile("setting/{$mid}_list_reg.tpl")));
+		$tpl_tmp->Set_Variable('ext_script', htmlspecialchars(GetFile("setting/{$mid}_ext_script.php")));
 	} elseif($method == "add") {
 		$tpl_tmp->Set_Variable('title', '添加会议');
 		$tpl_tmp->Set_Variable('method', 'add');
@@ -487,6 +525,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("setting/".$mid."_mail_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("setting/".$mid."_edit_reg.tpl")));
 			$tpl_tmp->Set_Variable('tpl_list_reg', htmlspecialchars(GetFile("setting/".$mid."_list_reg.tpl")));
+			$tpl_tmp->Set_Variable('ext_script', htmlspecialchars(GetFile("setting/".$mid."_ext_script.php")));
 		} else {
 			include("setting/default.php");
 			$tpl_tmp->Set_Variable('tpl_reg_cn', htmlspecialchars(GetFile("tpl/default_regist_cn.tpl")));
@@ -497,8 +536,10 @@ function build_page($method) {
 			$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("tpl/default_mail_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_edit_reg', htmlspecialchars(GetFile("tpl/edit_reg.tpl")));
 			$tpl_tmp->Set_Variable('tpl_list_reg', htmlspecialchars(GetFile("tpl/list_reg.tpl")));
+			$tpl_tmp->Set_Variable('ext_script', htmlspecialchars(GetFile("setting/ext_script.php")));
 		}
 		$tpl_tmp->Set_Variable('reg_item', toJson($para, $setting['gen']['charset']));
+		if(function_exists("ext_func")) ext_func();
 	}
 	$tpl_tmp->Set_Variable('mid', $mid);
 	$tpl->Set_Variable('path_admin', $setting['path']['admin']);

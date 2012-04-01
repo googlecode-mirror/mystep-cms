@@ -98,6 +98,12 @@
 								<textarea class="source_code" type="php" name="tpl_list_reg" style="width:100%; height:200px;"><!--tpl_list_reg--></textarea>
 							</td>
 						</tr>
+						<tr>
+							<td class="cat">¿©≥‰≥Ã–Ú£∫</td>
+							<td class="row">
+								<textarea class="source_code" type="php" name="ext_script" style="width:100%; height:200px;"><!--ext_script--></textarea>
+							</td>
+						</tr>
 					</table>
 				</td>
 			</tr>
@@ -441,7 +447,7 @@ $.getScript("../../script/jquery.codemirror.js", function(){
 				height: 250
 		}, function(){
 				if($.codemirror_error) {
-					alert("Ω≈±æ‘ÿ»Î ß∞‹£°");
+					//alert("Ω≈±æ‘ÿ»Î ß∞‹£°");
 				} else {
 					$('.CodeMirror').css({width:'680px','overflow':"hidden","text-align":"left"});
 					$('.source_code').parent(".row").css("padding","0px");

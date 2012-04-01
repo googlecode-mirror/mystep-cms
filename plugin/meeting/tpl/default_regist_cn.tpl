@@ -1,5 +1,5 @@
 <div style="padding-top:20px;text-align:center;font-size:18px;font-weight:bold;">
-	“<!--meeting_name-->” 参会代表资料登记表
+	<!--meeting_name-->
 </div>
 <hr />
 <br />
@@ -75,7 +75,7 @@ mystep;
 }
 ?>
 		<TR CLASS="row">
-			<TD colspan="2"><center><input type="submit" value=" 提 交 "> &nbsp; <input type="reset" value=" 复 位 "></center></TD>
+			<TD colspan="2"><center><input type="submit" value=" 提 交 " /> &nbsp; <input type="reset" value=" 复 位 " /></center></TD>
 		</TR>
 	</table>
 </form>

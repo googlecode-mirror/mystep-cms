@@ -14,7 +14,7 @@ class plugin_meeting implements plugin {
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_meeting", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '会议', 'meeting.php', '../plugin/meeting/', 0, 0, '".$info['intro']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '问卷', 'meeting.php', '../plugin/meeting/', 0, 0, '".$info['intro']."')");
 		$new_id = $db->GetInsertId();
 		$err = array();
 		if($db->GetError($err)) {
@@ -59,6 +59,7 @@ mystep;
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_mail_en.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_edit_reg.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_list_reg.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_ext_script.php");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}.php");
 		}
 		$db->Free();
@@ -67,7 +68,7 @@ mystep;
 		if(isset($catid) && $catid!=0)	$db->query("delete from ".$setting['db']['pre']."admin_cat where pid='".$catid."'");
 		$db->query("truncate table ".$setting['db']['pre']."meeting");
 		$db->query("drop table ".$setting['db']['pre']."meeting");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where name='会议'");
+		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'meeting.php%'");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
 		$err = array();
 		if($db->GetError($err)) {

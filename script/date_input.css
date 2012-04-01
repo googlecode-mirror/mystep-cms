@@ -104,5 +104,5 @@
     }
     .date_selector td:hover, .date_selector td.hover {
       background: #003C78;
-      color: white;
+      color: red;
     }

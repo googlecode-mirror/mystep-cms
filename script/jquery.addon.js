@@ -380,4 +380,4 @@ jQuery.fn.outerHTML = function(s) {
 		$(window).bind("resize", doit);
 		$(window).bind("scroll", doit);
 	};
-})(jQuery);
+})(jQuery); 

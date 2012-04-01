@@ -1,5 +1,5 @@
 <div style="padding-top:20px;text-align:center;font-size:18px;font-weight:bold;">
-	"<!--meeting_name-->" Sign-up Form
+	<!--meeting_name-->
 </div>
 <hr />
 <br />
@@ -75,7 +75,7 @@ mystep;
 ?>
 		<TR CLASS="row">
 			<TD colspan="2" style="text-align:center;padding:20px;">
-				<input type="submit" value=" Submit "> &nbsp; &nbsp; &nbsp; <input type="reset" value=" Reset ">
+				<input type="submit" value=" Submit " /> &nbsp; &nbsp; &nbsp; <input type="reset" value=" Reset " />
 			</TD>
 		</TR>
 	</table>

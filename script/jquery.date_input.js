@@ -39,9 +39,9 @@ DateInput = (function($) {
 		this.hide();
 	};
 	DateInput.DEFAULT_OPTS = {
-		month_names: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-		short_month_names: ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二"],
-		short_day_names: ["一", "二", "三", "四", "五", "六", "日"],
+		month_names: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+		short_month_names: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+		short_day_names: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
 		start_of_week: 0
 	};
 	DateInput.prototype = {
@@ -240,7 +240,8 @@ DateInput = (function($) {
 			var offset = this.input.offset();
 			this.rootLayers.css({
 				top: offset.top + this.input.outerHeight(),
-				left: offset.left
+				left: offset.left,
+				width: $(".date_selector").css("width")
 			});
 			
 			if (this.ieframe) {
@@ -355,15 +356,12 @@ $(function() {
 	try {
 		$("head").append($('<link rel="stylesheet" href="'+rlt_path+'script/date_input.css" type="text/css" media="screen" />'));
 		var setDateInput = setInterval(function() {
-			if(typeof(ms_setting)=="undefined") return;
-			if(ms_setting.lang=="en") {
-				jQuery.extend(DateInput.DEFAULT_OPTS, {
-					month_names: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-					short_month_names: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-					short_day_names: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-					start_of_week: 6
-				});
-			}
+			if(typeof(language)=="undefined") return;
+			jQuery.extend(DateInput.DEFAULT_OPTS, {
+				month_names: [language.month_names_1, language.month_names_2, language.month_names_3, language.month_names_4, language.month_names_5, language.month_names_6, language.month_names_7, language.month_names_8, language.month_names_9, language.month_names_10, language.month_names_11, language.month_names_12],
+				short_month_names: [language.short_month_names_1, language.short_month_names_2, language.short_month_names_3, language.short_month_names_4, language.short_month_names_5, language.short_month_names_6, language.short_month_names_7, language.short_month_names_8, language.short_month_names_9, language.short_month_names_10, language.short_month_names_11, language.short_month_names_12],
+				short_day_names: [language.short_day_names_1, language.short_day_names_2, language.short_day_names_3, language.short_day_names_4, language.short_day_names_5, language.short_day_names_6, language.short_day_names_7]
+			});
 			$("input[need=date]").attr("readonly", true);
 			$("input[need=date]").date_input();
 			$("input[need=date_]").attr("readonly", true);

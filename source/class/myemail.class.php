@@ -227,6 +227,7 @@ Content-Transfer-Encoding: base64
 			}
 			if(!$smtp->Data($mail_content)) {
 				$this->Error("Mail send Failed!");
+				return false;
 			}
 			$smtp->Reset();
 			if($smtp->Connected()) {
@@ -244,7 +245,7 @@ Content-Transfer-Encoding: base64
 			}
 		}
 		if($this->log_fp) fclose($this->log_fp);
-		return;
+		return true;
 	}
 
 	public function setFile($file, $embed = false) {

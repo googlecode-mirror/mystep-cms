@@ -19,7 +19,7 @@ $language = array (
   请保存更新文件，并直接解压至网站根目录',
   
   'admin_psw' => '重复密码',
-  'admin_psw_desc' => '请重复输入密码（如果无需更改请留空）',
+  'admin_psw_desc' => '请重复输入密码',
   'admin_psw_desc_addon' => '（如果密码不变，此项和前一项请留空！）',
   'admin_nopower' => '您无权进行该操作！',
   

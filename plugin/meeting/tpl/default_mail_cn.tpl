@@ -1,55 +1,164 @@
+<div class="title">用户确认信发送</div>
+<div align="left">
+<form method="post" action="?method=mail">
 <TABLE BORDER="0" WIDTH="700" CELLSPACING="1" CELLPADDING="2" ALIGN="center">
 	<TR>
 		<TD>
+			<BR />
 			<div style="text-align:center;font-size:20px;font-weight:bold;">代表ID：<!--record_id--></div>
 			<BR />
-			<div>下面是默认邮件的内容，发送前还可以根据实际情况再修改。若发送，请点下面“发送邮件”的链接。</div>
+			<div>下面是默认邮件的内容，发送前请根据实际情况修改。</div>
 			<BR />
-			<TEXTAREA COLS="110" ROWS="40" ID="emailcontent">
-尊敬的 <!--record_name-->：
-
-欢迎您参加“<!--name-->”！
-
+			<input type="hidden" name="mid" value="<!--mid-->" />
+			<input type="hidden" name="subject" value="<!--name-->" />
+			<input type="hidden" name="email" value="<!--record_email-->" />
+			<TEXTAREA name="content" COLS="110" ROWS="40" ID="emailcontent">
+尊敬的 <span style="font-weight:bold;color:#aa0000"><!--record_name--></span> ：
+ 
+欢迎您参加<b>“<!--name-->”</b>！
+ 
 您报名信息已经收到。请确认下列注册信息正确无误：
+ 
 <?php
 global $record;
 foreach($para as $key => $value) {
 	if(empty($value['title'])) continue;
-	echo $value['title']."：".$record[$key]."\n";
+	echo "<b>".$value['title']."：</b> ".$record[$key]."\n";
 }
 ?>
-
+ 
 住宿费用请到会当日与酒店前台接洽。
-
+ 
 请将您的会议费 <!--record_total--> 元汇至以下地址：
-收款单位： 中国食品土畜进出口商会
-开户行：交通银行东单支行
-帐号： 110060194018010001190
-汇入地点：北京
-
-<!--name-->
-
-Tel: +86-10-87109800
-Fax: +86-10-87109800
-Email: cccfna@cccfna.org.cn
-website: <?=$setting['web']['url']?>
+<b>收款单位：</b><span style="color:#ff0000">中国食品土畜进出口商会</span>
+<b>开户行：</b><span style="color:#ff0000">交通银行东单支行</span>
+<b>帐号：</b><span style="color:#ff0000">110060194018010001190</span>
+<b>汇入地点：</b><span style="color:#ff0000">北京</span>
+ 
+<span style="font-weight:bold;color:#aa0000"><!--name--></span>
+<b>Tel:</b> +86-10-87109800
+<b>Fax:</b> +86-10-87109800
+<b>Email:</b> cccfna@cccfna.org.cn
+<b>website:</b> <?=$setting['web']['url']?>
 			</TEXTAREA>
 		</TD>
 	</TR>
 	<TR>
-		<TD HEIGHT="30" ALIGN="CENTER"><A HREF="#" onClick="formmail(document.getElementById('emailcontent'),'<!--record_email--> ', '<!--name-->');" style="color:red; font-weight:bold;">发送邮件</A></TD>
+		<TD HEIGHT="30" ALIGN="CENTER">
+			<input style="padding:10px;margin:10px;" type="submit" value="使用系统程序发送" />
+			<input style="padding:10px;margin:10px;" type="button" value="使用邮件程序发送" onclick="formmail('<!--record_email--> ', '<!--name-->', tinyMCE.get('emailcontent').getContent());" />
+		</TD>
 	</TR>
 </TABLE>
+</form>
+</div>
 
+<script type="text/javascript" language="JavaScript" src="../../script/tinymce/tiny_mce.js"></script>
 <script language="JavaScript" type="text/JavaScript">
-function formmail(theformitem, mailaddress, mailsubject)	{
-	str = theformitem.value;
-	re = /&/g;	// 2004-3-11 14:53 还需要转码的有 & 符，因为它用来作查询字符串中参数分隔符，用一个 QueryString 看出来需要把它变成 %26 ！
-	str = str.replace(re, "%26");
-	re = /\n/g;	//表单项中的文字直接用在mailto:的body 里所有换行都没了，还得用 JavaScript 转换成 %0D%0A 才行！
-	newstr = str.replace(re, "%0D%0A");
-	//alert(mailsubject.replace(/\s/g, "%20")+newstr);
-	//好像标题中有空格符也不灵，会出现邮件内容不能加到发送窗口里的问题，待解决
-	window.location="mailto:"+mailaddress+"?subject="+mailsubject.replace(/\s/g, "%20")+"&body="+newstr;
+//<![CDATA[
+function formmail(email, subject, content)	{
+	//content = content.replace(/<(\/)?\w+[^>]+>/g, "");
+	content = content.replace(/&/g, "%26");
+	content = content.replace(/\n/g, "%0D%0A");
+	content = content.replace(/\s/g, "%20");
+	content = content.replace(/#/g, "%23");
+	content = UrlEncode(content);
+	subject = subject.replace(/&/g, "%26");
+	subject = subject.replace(/\s/g, "%20");
+	subject = subject.replace(/#/g, "%23");
+	subject = UrlEncode(subject);
+	if(content.length>1900) {
+		window.location="mailto:"+email+"?subject="+subject+"&body="+UrlEncode("由于邮件内容过长，无法自动调用邮件程序！<br><br>请将内容直接复制到邮件程序，或通过系统程序发送！");
+	} else {
+		window.location="mailto:"+email+"?subject="+subject+"&body="+content;
+	}
 }
+
+tinyMCE.init({
+	mode : "exact",
+	elements : "emailcontent",
+	language : "zh",
+	theme : "advanced",
+	plugins : "safari,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+
+	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,format",
+	theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
+	theme_advanced_buttons3 : "",
+	theme_advanced_toolbar_location : "top",
+	theme_advanced_toolbar_align : "left",
+	theme_advanced_statusbar_location : "bottom",
+	theme_advanced_resizing : false,
+	
+	content_css: "../../images/editor.css",
+	entity_encoding : "raw",
+	add_unload_trigger : false,
+	
+	preformatted : false,
+	remove_linebreaks : false,
+	apply_source_formatting : true,
+	convert_fonts_to_spans : true,
+	verify_html : true,
+	paste_auto_cleanup_on_paste : true,
+	extended_valid_elements : "textarea[class|type|title],script[charset|defer|language|src|type]",
+	forced_root_block : "div",
+	force_br_newlines : true,
+	force_p_newlines : false,
+	
+	template_external_list_url : "lists/template_list.js",
+	external_link_list_url : "lists/link_list.js",
+	external_image_list_url : "lists/image_list.js",
+	media_external_list_url : "lists/media_list.js",
+	
+	oninit : function() {
+		var content = tinyMCE.get('emailcontent').getContent();
+		content = content.replace(/mce\:script/g, "script");
+		content = content.replace(/_mce_src/g, "src");
+		content = content.replace(/\n/g, "<br />\n");
+		tinyMCE.get('emailcontent').setContent(content);
+	},
+	
+	setup : function(ed) {
+		ed.addButton('change', {
+			title : 'Div/P 模式切换',
+			image : 'images/div.png',
+			onclick : function() {
+				var content = tinyMCE.get('emailcontent').getContent();
+				if(content.indexOf("<div")==-1) {
+					content = content.replace(/<p(.*?)>([\w\W]+?)<\/p>/ig, "<div$1>$2</div>");
+				} else {
+					content = content.replace(/<div(.*?)>([\w\W]+?)<\/div>/ig, "<p$1>$2</p>");
+				}
+				tinyMCE.get('emailcontent').setContent(content);
+			}
+		});
+		ed.addButton('format', {
+			title : '代码清理',
+			image : 'images/format.png',
+			onclick : function() {
+				var content = tinyMCE.get('emailcontent').getContent();
+				if(content.indexOf("<div")==-1) {
+					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
+					content = content.replace(/<\/p><p/g, "<\p>\n<p");
+				} else {
+					content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
+					content = content.replace(/<\/div><div/g, "<\div>\n<div");
+				}
+				content = content.replace(/mso\-[^;]+?;/ig, "");
+				content = content.replace(/[\xa0]/g, "");
+				content = content.replace(/<\/td>/g, "&nbsp;</td>");
+				while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "<!-- pagebreak -->");
+				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
+				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
+				content = content.replace(/  /g, String.fromCharCode(160)+" ");
+				tinyMCE.get('emailcontent').setContent(content);
+			}
+		});
+	},
+	
+	template_replace_values : {
+		username : "mystep",
+		staffid : "31415926"
+	}
+});
+//]]>
 </script>

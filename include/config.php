@@ -33,7 +33,7 @@ $setting['gen']['template'] = 'classic';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
 $setting['gen']['update'] = 'http://www.mysteps.cn/update/';
 $setting['gen']['minify'] = false;
-$setting['gen']['etag'] = 20120322;
+$setting['gen']['etag'] = 20120401;
 
 $setting['email'] = array();
 $setting['email']['mode'] = '';
@@ -119,5 +119,5 @@ $ignore_list = array (
   18 => 'apple',
   19 => '_archive',
 );
-$authority = "";
+$authority = "mystep";
 ?>

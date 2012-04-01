@@ -1703,5 +1703,65 @@ $setting = $cur_setting;
 					),
 			),
 	),
+	'0.99.9.6' => array(
+		'info' => '
+				V0.99.9.6
+				1.Enhance resume function for crontab plugin
+				2.Fix a bug in crontab schedule calculate
+				3.Add extend script method for all of the functions of meeting plugin
+				4.Fix a bug in date_input script in IE
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/language/chs.php',
+				'admin/language/default.php',
+				'admin/language/en.php',
+				'include/config.php',
+				'include/parameter.php',
+				'plugin/crontab/class.php',
+				'plugin/crontab/config.php',
+				'plugin/crontab/index.php',
+				'plugin/crontab/run.php',
+				'plugin/meeting/class.php',
+				'plugin/meeting/images',
+				'plugin/meeting/images/div.png',
+				'plugin/meeting/images/format.png',
+				'plugin/meeting/info.php',
+				'plugin/meeting/language/chs.php',
+				'plugin/meeting/language/default.php',
+				'plugin/meeting/language/en.php',
+				'plugin/meeting/meeting.php',
+				'plugin/meeting/setting/ext_script.php',
+				'plugin/meeting/tpl/add.tpl',
+				'plugin/meeting/tpl/default_mail_cn.tpl',
+				'plugin/meeting/tpl/default_mail_en.tpl',
+				'plugin/meeting/tpl/default_regist_cn.tpl',
+				'plugin/meeting/tpl/default_regist_en.tpl',
+				'plugin/meeting/tpl/edit.tpl',
+				'plugin/meeting/tpl/edit_reg.tpl',
+				'plugin/meeting/tpl/list_reg.tpl',
+				'script/date_input.css',
+				'script/global.js',
+				'script/jquery.addon.js',
+				'script/jquery.codemirror.js',
+				'script/jquery.date_input.js',
+				'script/jquery.jmpopups.js',
+				'source/class/myemail.class.php',
+				'source/language/chs.php',
+				'source/language/default.php',
+				'source/language/en.php',
+				'template/admin/art_content_input.tpl',
+				'template/admin/art_info_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/classic/main.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'cache' => true,
+						'minify' => true,
+						'etag' => '20120401',
+					),
+			),
+	),
 );
 ?>

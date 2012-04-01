@@ -5,9 +5,9 @@
 <div class="nav">
 	<a href="?method=export&mid=<!--mid-->">导出数据</a>
  |
-	新用户：<input type="text" size="10" value="<!--keyword-->" onkeypress="if(window.event.keyCode==13)location.href='?method=add_reg_ok&mid=<!--mid-->&name='+this.value"><input type="button" value="添加" onclick="location.href='?method=add_reg_ok&mid=<!--mid-->&name='+this.previousSibling.value">
+	新用户：<input type="text" size="10" value="<!--keyword-->" onkeypress="if(window.event.keyCode==13)location.href='?method=add_reg_ok&mid=<!--mid-->&name='+this.value" /><input type="button" value="添加" onclick="location.href='?method=add_reg_ok&mid=<!--mid-->&name='+this.previousSibling.value" />
  |
-	关键字：<input type="text" size="10" value="<!--keyword-->" onkeypress="if(window.event.keyCode==13)location.href='?mid=<!--mid-->&keyword='+this.value"><input type="button" value="检索" onclick="location.href='?mid=<!--mid-->&keyword='+this.previousSibling.value">
+	关键字：<input type="text" size="10" value="<!--keyword-->" onkeypress="if(window.event.keyCode==13)location.href='?mid=<!--mid-->&keyword='+this.value" /><input type="button" value="检索" onclick="location.href='?mid=<!--mid-->&keyword='+this.previousSibling.value" />
 </div>
 <div align="center">
 	<table id="list_area" cellSpacing="0" cellPadding="0" align="center">
@@ -37,7 +37,7 @@
 	<a href="<!--page_prev-->">上页</a>
 	<a href="<!--page_next-->">下页</a>
 	<a href="<!--page_last-->">末页</a>
-	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center"><input type="button" value="GO" onclick="location.href='?mid=<!--mid-->&keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value">
+	跳页<input type="text" size="2" value="<!--page_cur-->" style="text-align:center" /><input type="button" value="GO" onclick="location.href='?mid=<!--mid-->&keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
 </div>
 		</td>
 	</tr>

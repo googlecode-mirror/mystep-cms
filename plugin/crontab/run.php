@@ -85,6 +85,7 @@ function getNextTime($mode, $schedule) {
 	if($schedule=="0,0,0,0,0") $schedule = ($mode==1?"0,0,0,0,0":"0,0,0,10,0");
 	$schedule = explode(",", $schedule);
 	if($mode==1) {
+		$the_time = time();
 		$date_year = date("Y");
 		$date_month = date("n");
 		$date_day = date("j");
@@ -93,27 +94,18 @@ function getNextTime($mode, $schedule) {
 		$date_minute = date("i");
 		if($schedule[4]==0) {
 			if($schedule[0]!=0) {
-				$date_year += 1;
+				if($schedule[0]<=$date_month+1) $date_year += 1;
 				$date_month = $schedule[0];
 			}
 			if($schedule[1]!=0) {
-				if($schedule[0]==0) $date_month += 1;
+				if($schedule[1]<=$date_day+1) $date_month += 1;
 				$date_day = $schedule[1];
 			} else {
 				if($schedule[0]!=0) $date_day = 1;
 			}
-			if($schedule[2]!=0) {
-				if($schedule[1]==0) $date_day += 1;
-				$date_hour = $schedule[2];
-			} else {
-				if($schedule[1]!=0) $date_hour = 1;
-			}
-			if($schedule[3]!=0) {
-				if($schedule[2]==0) $date_hour += 1;
-				$date_minute = $schedule[3];
-			} else {
-				if($schedule[2]!=0) $date_minute = 1;
-			}
+			if($schedule[2]<=$date_hour) $date_day += 1;
+			$date_hour = $schedule[2];
+			$date_minute = $schedule[3];
 		} else {
 			if($schedule[4] > $date_week) {
 				$date_day += $schedule[4]-$date_week+1;
@@ -123,8 +115,7 @@ function getNextTime($mode, $schedule) {
 			$date_hour = $schedule[2];
 			$date_minute = $schedule[3];
 		}
-		$next_time = $date_year."-".$date_month."-".$date_day." ".$date_hour.":".$date_minute.":0";
-		$next_time = date("Y-m-d H:i:s", strtotime($next_time));
+		$next_time = date("Y-m-d H:i:s", mktime($date_hour, $date_minute, 0, $date_month, $date_day, $date_year));
 	} else {
 		$now = time();
 		if($schedule[4]==0) {

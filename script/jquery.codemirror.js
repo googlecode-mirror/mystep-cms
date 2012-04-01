@@ -238,6 +238,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 			});
 			if(typeof(settings.height)!="undefined") {
 				$(".CodeMirror").each(function(){
+					$(this).find(".CodeMirror-gutter").css("height",$(this).height());
 					if($(this).height()<settings.height) {
 						$(this).css("overflow-y","hidden");
 					} else {

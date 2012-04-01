@@ -167,6 +167,7 @@ tinyMCE.init({
 	verify_html : true,
 	paste_auto_cleanup_on_paste : true,
 	extended_valid_elements : "textarea[class|type|title],script[charset|defer|language|src|type]",
+	forced_root_block : "p",
 	
 	template_external_list_url : "lists/template_list.js",
 	external_link_list_url : "lists/link_list.js",
@@ -199,30 +200,33 @@ tinyMCE.init({
 			onclick : function() {
 				var content = tinyMCE.get('content').getContent();
 				if(content.indexOf("<div")==-1) {
-					content = content.replace(/<p(.*?)>(.+?)<\/p>/ig, "<div$1>$2</div>");
+					content = content.replace(/<p(.*?)>([\w\W]+?)<\/p>/ig, "<div$1>$2</div>");
 				} else {
-					content = content.replace(/<div(.*?)>(.+?)<\/div>/ig, "<p$1>$2</p>");
+					content = content.replace(/<div(.*?)>([\w\W]+?)<\/div>/ig, "<p$1>$2</p>");
 				}
 				tinyMCE.get('content').setContent(content);
 			}
 		});
 		ed.addButton('format', {
-			title : '文本格式化',
+			title : '代码清理',
 			image : 'images/format.png',
 			onclick : function() {
-				var content = tinyMCE.get('content').getContent();
-				content = content.replace(/<div(.*?)>(.+?)<\/div>/ig, "<p$1>$2</p>");
-				content = content.replace(/[\r\n]*<br(.*?)>[\r\n]*/ig, "</p>\n<p>");
-				content = content.replace(/<p(.*?)>[\r\n\s　]+/ig, "<p$1>");
+				var content = tinyMCE.get('emailcontent').getContent();
+				if(content.indexOf("<div")==-1) {
+					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
+					content = content.replace(/<\/p><p/g, "<\p>\n<p");
+				} else {
+					content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
+					content = content.replace(/<\/div><div/g, "<\div>\n<div");
+				}
 				content = content.replace(/mso\-[^;]+?;/ig, "");
 				content = content.replace(/[\xa0]/g, "");
 				content = content.replace(/<\/td>/g, "&nbsp;</td>");
 				while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "<!-- pagebreak -->");
 				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
-				content = content.replace(/<\/p><p/g, "<\p>\n<p");
 				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
 				content = content.replace(/  /g, String.fromCharCode(160)+" ");
-				tinyMCE.get('content').setContent(content);
+				tinyMCE.get('emailcontent').setContent(content);
 			}
 		});
 	},
