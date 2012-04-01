@@ -103,53 +103,71 @@ switch($method) {
 		deleteCache("plugin");
 		MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
 		
-		if($method=="install" && isset($_POST['plugin_setting'])) {
-			foreach($_POST['plugin_setting'][$idx] as $key => $value) {
-				if(is_array($value)) {
-					$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
+		if($method=="install") {
+			if(isset($_POST['subweb'])) {
+				if($_POST['subweb'][0]=="all") {
+					$subweb = "";
+				} else {
+					$subweb = ",".join($_POST['subweb'], ",").",";
 				}
+			} else {
+				$subweb = ",";
 			}
-			$result = <<<mystep
+			$db->Query('update '.$setting['db']['pre'].'plugin set subweb="'.$subweb.'" where idx="'.$idx.'"');
+			
+			if(isset($_POST['plugin_setting'])) {
+				foreach($_POST['plugin_setting'][$idx] as $key => $value) {
+					if(is_array($value)) {
+						$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
+					}
+				}
+				$result = <<<mystep
 <?php
 /*--settings--*/
 ?>
 mystep;
-			$result = str_replace("/*--settings--*/", makeVarsCode($_POST['plugin_setting'], '$plugin_setting'), $result);
-			WriteFile($plugin_path.$idx."/config.php", $result, "wb");
+				$result = str_replace("/*--settings--*/", makeVarsCode($_POST['plugin_setting'], '$plugin_setting'), $result);
+				WriteFile($plugin_path.$idx."/config.php", $result, "wb");
+			}
 		}
 		break;
 	case "setting_ok":
-		if(count($_POST) == 0 || !isset($_POST['plugin_setting'])) {
+		if(count($_POST) == 0) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$log_info = $setting['language']['admin_web_plugin_setup'];
-			
-			if($_POST['subweb'][0]=="all") {
-				$subweb = "";
+			if(isset($_POST['subweb'])) {
+				if($_POST['subweb'][0]=="all") {
+					$subweb = "";
+				} else {
+					$subweb = ",".join($_POST['subweb'], ",").",";
+				}
 			} else {
-				$subweb = ",".join($_POST['subweb'], ",").",";
+				$subweb = ",";
 			}
 			$db->Query('update '.$setting['db']['pre'].'plugin set subweb="'.$subweb.'" where idx="'.$idx.'"');
-			MultiDel(ROOT_PATH."/cache/plugin/");
+			MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
 			deleteCache("plugin");
 			
-			include($plugin_path.$idx."/config.php");
-			foreach($_POST['plugin_setting'][$idx] as $key => $value) {
-				if(is_array($value)) {
-					$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
+			if(isset($_POST['plugin_setting'])) {
+				include($plugin_path.$idx."/config.php");
+				foreach($_POST['plugin_setting'][$idx] as $key => $value) {
+					if(is_array($value)) {
+						$_POST['plugin_setting'][$idx][$key] = implode(",", $value);
+					}
+					if(isset($_POST['plugin_setting'][$idx][$key."_r"])) {
+						if(empty($_POST['plugin_setting'][$idx][$key])) $_POST['plugin_setting'][$idx][$key] = $plugin_setting[$idx][$key];
+						unset($_POST['plugin_setting'][$idx][$key."_r"]);
+					}
 				}
-				if(isset($_POST['plugin_setting'][$idx][$key."_r"])) {
-					if(empty($_POST['plugin_setting'][$idx][$key])) $_POST['plugin_setting'][$idx][$key] = $plugin_setting[$idx][$key];
-					unset($_POST['plugin_setting'][$idx][$key."_r"]);
-				}
-			}
-			$result = <<<mystep
+				$result = <<<mystep
 <?php
 /*--settings--*/
 ?>
 mystep;
-			$result = str_replace("/*--settings--*/", makeVarsCode($_POST['plugin_setting'], '$plugin_setting'), $result);
-			WriteFile($plugin_path.$idx."/config.php", $result, "w");
+				$result = str_replace("/*--settings--*/", makeVarsCode($_POST['plugin_setting'], '$plugin_setting'), $result);
+				WriteFile($plugin_path.$idx."/config.php", $result, "w");
+			}
 		}
 		break;
 	case "update":
@@ -308,10 +326,15 @@ function build_page($method) {
 		$info['description'] = nl2br($info['description']);
 		$tpl_tmp->Set_Variables($info);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
+		$max_count = count($website);
+		for($i=0; $i<$max_count; $i++) {
+			$tpl_tmp->Set_Loop('subweb', array("web_id"=>$website[$i]['web_id'], "name"=>$website[$i]['name'], "checked"=>""));
+		}
 		include($plugin_path.$idx."/class.php");
 		$check_info = call_user_func(array($info['class'], "check"));
 		if(empty($check_info)) $check_info = '<span style="color:green">'.$setting['language']['admin_web_plugin_check_ok'].'</span>';
 		$tpl_tmp->Set_Variable('check', $check_info);
+		$tpl_tmp->Set_Variable('subweb', "");
 	}
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting, $idx'));
 	unset($tpl_tmp);

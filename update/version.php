@@ -1710,12 +1710,14 @@ $setting = $cur_setting;
 				2.Fix a bug in crontab schedule calculate
 				3.Add extend script method for all of the functions of meeting plugin
 				4.Fix a bug in date_input script in IE
+				5.Fix a bug in subweb setting for plugin
 				Some other adjusts...
 			',
 		'file' => array(
 				'admin/language/chs.php',
 				'admin/language/default.php',
 				'admin/language/en.php',
+				'admin/web_plugin.php',
 				'include/config.php',
 				'include/parameter.php',
 				'plugin/crontab/class.php',
@@ -1752,6 +1754,8 @@ $setting = $cur_setting;
 				'source/language/en.php',
 				'template/admin/art_content_input.tpl',
 				'template/admin/art_info_input.tpl',
+				'template/admin/web_plugin_setting.tpl',
+				'template/admin/web_plugin_view.tpl',
 				'template/admin_simple/art_content_input.tpl',
 				'template/classic/main.tpl',
 			),

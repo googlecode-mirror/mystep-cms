@@ -109,7 +109,7 @@ content;
 				<td class="cat" align="right">子站赋权</td>
 				<td class="row">
 					<div id="subweb" style="width:500px;">
-						<input type="checkbox" onclick="checkAll('subweb');" id="subweb_all" class="cbox" name="subweb[]" value="all" /><label for="subweb_all"> 全部权限</label><br />
+						<input type="checkbox" onclick="checkAll('subweb');" id="subweb_all" class="cbox" name="subweb[]" value="all" /><label for="subweb_all"> 全部子站</label><br />
 <!--loop:start key="subweb"-->
 						<input type="checkbox" onclick="checkStatus('subweb');" id="subweb_<!--subweb_web_id-->" class="cbox" name="subweb[]" value="<!--subweb_web_id-->" <!--subweb_checked--> /><label for="subweb_<!--subweb_web_id-->" /> <!--subweb_name--></label> <br />
 <!--loop:end-->
