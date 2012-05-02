@@ -174,6 +174,8 @@ CREATE TABLE `{pre}info_show` (
 	INDEX (`web_id`),
 	PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='ÄÚÈÝÕ¹Ê¾';
+INSERT INTO `{pre}info_show` VALUES (0, 1, 0, 'copyright', '', '<p style="text-align: center;">&copy;2010-2012&nbsp;www.mysteps.cn</p>');
+INSERT INTO `{pre}info_show` VALUES (0, 1, 0, 'contact', '', '<p>QQ£º18509608</p><p>MSN£ºwindy2000_sk@msn.com</p><p>Email£ºwindy2006@gmail.com</p>');
 
 # ---------------------------------------------------------------------------------------------------------------
 

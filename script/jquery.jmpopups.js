@@ -1,4 +1,4 @@
-
+/**
  * jmpopups
  * Copyright (c) 2009 Otavio Avila (http://otavioavila.com)
  * Licensed under GNU Lesser General Public License

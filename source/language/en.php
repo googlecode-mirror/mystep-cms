@@ -11,6 +11,7 @@ $language = array (
   'close' => 'Closed',
 	'etc' => 'Etc',
   'ajax_sending' => 'Data Sending...',
+  'original' => 'Original',
   
   'page_main' => 'Main',
   'page_error' => 'An error occurs, <a href="mailto:%s">contact webmaster</a> please.',

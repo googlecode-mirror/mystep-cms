@@ -26,10 +26,13 @@ $tpl_info['idx'] = "tag";
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 
 $db->Query("update ".$setting['db']['pre_sub']."news_tag set click=click+1 where tag = '{$tag}'");
+$cur_tag = "";
+if(!empty($tag)) $cur_tag = " - ".$tag;
 
 $news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show where tag like '%{$tag}%'", "result");
 $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('tag', $tag);
+$tpl_tmp->Set_Variable('cur_tag', $cur_tag);
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 $tpl_tmp->Set_Variable('cat_main_link', $cat_main_link);
 $tpl_tmp->Set_Variable('page_list', PageList($page, ceil($news_count/$page_size)));
@@ -43,5 +46,5 @@ if(!empty($tag)) {
 	$setting['web']['description'] = $tag.",".$setting['web']['description'];
 }
 $mystep->show($tpl);
-$mystep->pageEnd();
+$mystep->pageEnd($setting['gen']['show_info']);
 ?>

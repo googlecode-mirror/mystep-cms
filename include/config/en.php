@@ -54,6 +54,7 @@ $setting_comm['gen']['timezone'] = "Timezone";
 $setting_comm['gen']['update'] = "Update URL";
 $setting_comm['gen']['minify'] = "HTML Minify";
 $setting_comm['gen']['etag'] = "Etag Fix";
+$setting_comm['gen']['show_info'] = "Page Info";
 $setting_comm['gen_descr']['language'] = 'Change CMS language';
 $setting_comm['gen_descr']['charset'] = 'Charset of CMS';
 $setting_comm['gen_descr']['gzip_level'] = 'GZIP page content (Level 0-9)';
@@ -65,6 +66,7 @@ $setting_comm['gen_descr']['timezone'] = "Set the timezone of the website";
 $setting_comm['gen_descr']['update'] = "From the URL your can get the newest update of CMS";
 $setting_comm['gen_descr']['minify'] = "Minify the html code of each page to reduce the internet transfer time";
 $setting_comm['gen_descr']['etag'] = "Append to Etag with which to avoid non-modification HTML pages transfer";
+$setting_comm['gen_descr']['show_info'] = "Show execution information at the bottom of page";
 
 $setting_comm['email'] = array();
 $setting_comm['email_comm'] = 'SMTP Parameter Set';
@@ -173,7 +175,7 @@ $setting_type['web']['keyword'] = array("text", "", "60");
 $setting_type['web']['description'] = array("text", "", "100");
 $setting_type['web']['s_user'] = array("text", "alpha", "16");
 $setting_type['web']['s_pass'] = array("password", "", "40");
-$setting_type['web']['close'] = array("radio", array("ÍøÕ¾¹Ø±Õ"=>"true", "ÍøÕ¾¿ªÆô"=>"false"));
+$setting_type['web']['close'] = array("radio", array("Offline"=>"true", "Online"=>"false"));
 $setting_type['web']['close_page'] = array("text", "", "100");
 $setting_type['web']['cache_mode'] = array("select", array("File Mode"=>"file", "DB Mode"=>"mysql", "MemCache"=>"memcache", "eAccelerator"=>"eaccelerator", "xCache"=>"xcache"));
 
@@ -198,6 +200,7 @@ $setting_type['gen']['timezone'] = array("select", array("GMT-12"=>"Etc/GMT+12",
 $setting_type['gen']['update'] = array("text", "url", "200");
 $setting_type['gen']['minify'] = array("radio", array("Open"=>"true", "Close"=>"false"));
 $setting_type['gen']['etag'] = array("text", "", "10");
+$setting_type['gen']['show_info'] = array("radio", array("Show"=>"true", "Hide"=>"false"));
 
 $setting_type['email'] = array();
 $setting_type['email']['mode'] = array("select", array("PHP mail()"=>"", "Normal SMTP"=>"smtp", "SSL SMTP"=>"ssl", "TLS SMTP"=>"tls", "SSL/TLS Mix"=>"ssl/tls"));

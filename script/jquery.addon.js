@@ -323,6 +323,7 @@ jQuery.fn.outerHTML = function(s) {
 			var url = $(this).attr("src");
 			if(!url) return;
 			this.src = params.image;
+			$(this).css({"width":32,"height":32});
 			if(this.title=="" && this.alt!="") this.title = this.alt;
 			if(params.zoom) {
 				if(this.title!="") this.title += "\n";
@@ -362,6 +363,7 @@ jQuery.fn.outerHTML = function(s) {
 					cur_img.load(function() {
 						obj.hide();
 						obj.attr("src", url);
+						obj.css({"width":"auto","height":"auto"});
 						obj.fadeIn("slow");
 						if(obj.width()>params.width) obj.width(params.width);
 						$(this).remove();
@@ -380,4 +382,4 @@ jQuery.fn.outerHTML = function(s) {
 		$(window).bind("resize", doit);
 		$(window).bind("scroll", doit);
 	};
-})(jQuery); 
+})(jQuery); 

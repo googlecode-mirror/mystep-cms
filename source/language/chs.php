@@ -11,6 +11,7 @@ $language = array (
 	'close' => '关闭',
 	'etc' => '其他',
   'ajax_sending' => '正在发送数据',
+  'original' => '原创',
   
   'page_main' => '首页',
   'page_error' => '网站出现错误，请联系<a href="mailto:%s">管理员</a>！',

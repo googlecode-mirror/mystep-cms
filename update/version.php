@@ -1767,5 +1767,42 @@ $setting = $cur_setting;
 					),
 			),
 	),
+	'0.99.9.7' => array(
+		'info' => '
+				V0.99.9.7
+				1.Add switch for page information display
+				2.Fix a bug in search keyword display
+				3.Adjust power image function
+				4.Doudle image attachment to set it to news image
+				Some other adjusts...
+			',
+		'file' => array(
+				'include/config.php',
+				'include/config/chs.php',
+				'include/config/default.php',
+				'include/config/en.php',
+				'include/parameter.php',
+				'index.php',
+				'list.php',
+				'plugin/search/search.php',
+				'read.php',
+				'script/jquery.addon.js',
+				'script/jquery.jmpopups.js',
+				'source/class/mystep.class.php',
+				'source/language/chs.php',
+				'source/language/default.php',
+				'source/language/en.php',
+				'tag.php',
+				'template/admin/art_content_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/classic/tag.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120501',
+						'show_info' => true,
+					),
+			),
+	),
 );
 ?>

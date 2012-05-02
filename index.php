@@ -22,5 +22,5 @@ $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_temp);
 
 $mystep->show($tpl);
-$mystep->pageEnd();
+$mystep->pageEnd($setting['gen']['show_info']);
 ?>

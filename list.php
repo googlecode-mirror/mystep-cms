@@ -99,5 +99,5 @@ if(!empty($cat_idx)) {
 	$setting['web']['description'] = $cat_comment;
 }
 $mystep->show($tpl);
-$mystep->pageEnd();
+$mystep->pageEnd($setting['gen']['show_info']);
 ?>

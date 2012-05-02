@@ -54,6 +54,7 @@ $setting_comm['gen']['timezone'] = "时区矫正";
 $setting_comm['gen']['update'] = "更新网址";
 $setting_comm['gen']['minify'] = "超文本压缩";
 $setting_comm['gen']['etag'] = "过期标识";
+$setting_comm['gen']['show_info'] = "页面信息";
 $setting_comm['gen_descr']['language'] = '网站显示语种切换';
 $setting_comm['gen_descr']['charset'] = '网站显示编码集';
 $setting_comm['gen_descr']['gzip_level'] = 'GZIP 压缩页面的级别（0-9），0 为关闭压缩';
@@ -65,6 +66,7 @@ $setting_comm['gen_descr']['timezone'] = "设定网站显示时区";
 $setting_comm['gen_descr']['update'] = "获取内容系统程序更新的网址";
 $setting_comm['gen_descr']['minify'] = "超文本代码压缩，以减少页面传送时间";
 $setting_comm['gen_descr']['etag'] = "用于 Etag 标识，减少未更改页面的传输";
+$setting_comm['gen_descr']['show_info'] = "是否在页面下方显示相关执行信息";
 
 $setting_comm['email'] = array();
 $setting_comm['email_comm'] = '发送Email参数设置';
@@ -198,6 +200,7 @@ $setting_type['gen']['timezone'] = array("select", array("GMT-12"=>"Etc/GMT+12",
 $setting_type['gen']['update'] = array("text", "url", "200");
 $setting_type['gen']['minify'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
 $setting_type['gen']['etag'] = array("text", "", "10");
+$setting_type['gen']['show_info'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
 
 $setting_type['email'] = array();
 $setting_type['email']['mode'] = array("select", array("内置函数"=>"", "普通验证"=>"smtp", "SSL 验证"=>"ssl", "TLS 验证"=>"tls", "SSL/TLS 混合验证"=>"ssl/tls"));

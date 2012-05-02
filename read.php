@@ -82,6 +82,7 @@ watermark(\$id('content'), 5, "{$setting['watermark']['credit']}", "{$setting['w
 mystep;
 	$mystep->setAddedContent("end", $script);
 }
+if(empty($detail['original'])) $detail['original'] = $setting['language']['original'];
 if(empty($detail['image'])) $detail['image'] = "images/dummy.png";
 $tpl_tmp->Set_Variables($detail, "record");
 
@@ -150,5 +151,5 @@ $setting['web']['title'] = $detail['subject']."_".$setting['web']['title'];
 $setting['web']['keyword'] = $detail['subject'].",".$cat_name;
 $setting['web']['description'] = $detail['describe'];
 $mystep->show($tpl);
-$mystep->pageEnd();
+$mystep->pageEnd($setting['gen']['show_info']);
 ?>

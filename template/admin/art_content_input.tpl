@@ -47,6 +47,7 @@
 					<input id="image" name="image" type="text" maxlength="150" value="<!--record_image-->" /> &nbsp;
 					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','新闻图示上传','url','upload_img.php?image',420, 100)" value="上传" />
 					<input style="width:60px" class="btn" type="button" onClick="showPop('newsImage','常用新闻图示选择','id','newsImage',570)" value="选择" />
+					<input style="width:60px" class="btn" type="button" onClick="insertImg()" value="插入" />
 					<span class="comment">（文章标题图形显示）</span>
 				</td>
 			</tr>
@@ -229,6 +230,14 @@ tinyMCE.init({
 				tinyMCE.get('emailcontent').setContent(content);
 			}
 		});
+		ed.onDblClick.add(function(ed, e) {
+			e = e.target;
+			if(e.nodeName === 'IMG') {
+				if(confirm("是否将 "+e.src+" 设定为新闻标题图?")) {
+					$id("image").value = e.src;
+				}
+			}
+		});
 	},
 	
 	template_replace_values : {
@@ -236,6 +245,12 @@ tinyMCE.init({
 		staffid : "31415926"
 	}
 });
+
+function insertImg() {
+	if($id("image").value!="") {
+		attach_add('<br /><img src="'+$id("image").value+'" /><br />');
+	}
+}
 
 function putImage(obj) {
 	$id("keyword").value = obj.title;

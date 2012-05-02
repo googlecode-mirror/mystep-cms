@@ -9,7 +9,7 @@
 		</div>
 		<div class="fr page_main">
 			<div class="box">
-				<div class="title">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 列表</div>
+				<div class="title">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - TAG 列表<!--cur_tag--></div>
 				<div class="taglist">
 					<h4>热门标签</h4>
 					<div>

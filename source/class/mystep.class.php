@@ -211,7 +211,7 @@ mystep;
 		$this->regAjax("reset_psw", "MyStep::ajax_reset_psw");
 	}
 	
-	public function pageEnd($show_info = true) {
+	public function pageEnd($show_info = false) {
 		global $setting;
 		$max_count = count($this->func_end);
 		for($i=0; $i<$max_count; $i++) {
