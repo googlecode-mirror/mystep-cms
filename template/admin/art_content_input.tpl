@@ -45,7 +45,7 @@
 				<td class="cat">文章图示：</td>
 				<td class="row">
 					<input id="image" name="image" type="text" maxlength="150" value="<!--record_image-->" /> &nbsp;
-					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','新闻图示上传','url','upload_img.php?image',420, 100)" value="上传" />
+					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','新闻图示上传','url','upload_img.php?image|240|180',420, 100)" value="上传" />
 					<input style="width:60px" class="btn" type="button" onClick="showPop('newsImage','常用新闻图示选择','id','newsImage',570)" value="选择" />
 					<input style="width:60px" class="btn" type="button" onClick="insertImg()" value="插入" />
 					<span class="comment">（文章标题图形显示）</span>
@@ -212,7 +212,7 @@ tinyMCE.init({
 			title : '代码清理',
 			image : 'images/format.png',
 			onclick : function() {
-				var content = tinyMCE.get('emailcontent').getContent();
+				var content = tinyMCE.get('content').getContent();
 				if(content.indexOf("<div")==-1) {
 					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
 					content = content.replace(/<\/p><p/g, "<\p>\n<p");
@@ -227,7 +227,7 @@ tinyMCE.init({
 				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
 				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
 				content = content.replace(/  /g, String.fromCharCode(160)+" ");
-				tinyMCE.get('emailcontent').setContent(content);
+				tinyMCE.get('content').setContent(content);
 			}
 		});
 		ed.onDblClick.add(function(ed, e) {

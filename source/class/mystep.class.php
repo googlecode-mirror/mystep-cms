@@ -37,6 +37,7 @@ class MyStep extends class_common {
 		}
 		$argList = func_get_args();
 		$obj = call_user_func_array(array($this, 'parent::getInstance'), $argList);
+		$obj->SetErrorHandle("WriteError");
 		switch($calledClass) {
 			case 'MySQL':
 				$obj->Connect($setting['db']['pconnect'], $setting['db']['name']);
@@ -54,7 +55,6 @@ class MyStep extends class_common {
 			default:
 				break;
 		}
-		$obj->SetErrorHandle("WriteError");
 		return $obj;
 	}
 	

@@ -1,5 +1,5 @@
 <br />
-<form name="upload" method="post" ACTION="<!--self-->?<!--parent_element-->" target="upload_file" ENCTYPE="multipart/form-data" >
+<form name="upload" method="post" ACTION="<!--self-->?<!--para-->" target="upload_file" ENCTYPE="multipart/form-data" >
 	<table border="0" cellspacing="0" width="400">
 		<tr id="load">
 			<td align="center">

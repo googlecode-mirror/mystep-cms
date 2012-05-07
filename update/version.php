@@ -1777,7 +1777,6 @@ $setting = $cur_setting;
 				Some other adjusts...
 			',
 		'file' => array(
-				'include/config.php',
 				'include/config/chs.php',
 				'include/config/default.php',
 				'include/config/en.php',
@@ -1801,6 +1800,50 @@ $setting = $cur_setting;
 				'gen' => array(
 						'etag' => '20120501',
 						'show_info' => true,
+					),
+			),
+	),
+	'0.99.9.8' => array(
+		'info' => '
+				V0.99.9.8
+				1.Article title image will be resize to a small size when upload
+				2.Enhance image watermark function and add more settings
+				3.Fix a bug in page information show when page cache enabled
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/upload_img.php',
+				'files/index.php',
+				'include/config/chs.php',
+				'include/config/default.php',
+				'include/config/en.php',
+				'include/parameter.php',
+				'index.php',
+				'list.php',
+				'module.php',
+				'read.php',
+				'source/class/image.class.php',
+				'source/class/mystep.class.php',
+				'source/function/global.php',
+				'tag.php',
+				'template/admin/art_content_input.tpl',
+				'template/admin/upload_img.tpl',
+				'template/admin/web_cache.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/admin_simple/upload_img.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120507',
+					),
+				'watermark' => array(
+						'position' => 3,
+						'img_rate' => 4,
+						'txt_font' => 'images/font.ttc',
+						'txt_fontsize' => 12,
+						'txt_fontcolor' => '#FFFFFF',
+						'txt_bgcolor' => '#000000',
+						'alpha' => 60,
 					),
 			),
 	),

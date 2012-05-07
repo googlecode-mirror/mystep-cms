@@ -137,13 +137,27 @@ $setting_comm['content_descr']['get_remote_img'] = '下载新闻中的非本网图片到本地
 
 $setting_comm['watermark'] = array();
 $setting_comm['watermark_comm'] = '水印设置';
-$setting_comm['watermark']['mode'] = '水印模式';
-$setting_comm['watermark']['txt'] = '水印文字';
-$setting_comm['watermark']['img'] = '水印图片';
+$setting_comm['watermark']['mode'] = '水印添加';
+$setting_comm['watermark']['txt'] = '干扰文字';
+$setting_comm['watermark']['img'] = '图片水印';
+$setting_comm['watermark']['position'] = '水印位置';
+$setting_comm['watermark']['img_rate'] = '水印比例';
+$setting_comm['watermark']['txt_font'] = '水印字体';
+$setting_comm['watermark']['txt_fontsize'] = '字体尺寸';
+$setting_comm['watermark']['txt_fontcolor'] = '字体颜色';
+$setting_comm['watermark']['txt_bgcolor'] = '背景颜色';
+$setting_comm['watermark']['alpha'] = '水印透明度';
 $setting_comm['watermark']['credit'] = '版权文字';
 $setting_comm['watermark_descr']['mode'] = '是否在文章内容或图片上添加水印';
-$setting_comm['watermark_descr']['txt'] = '用于水印的文字';
-$setting_comm['watermark_descr']['img'] = '用于水印的图片';
+$setting_comm['watermark_descr']['txt'] = '用于文章水印的干扰字符串';
+$setting_comm['watermark_descr']['img'] = '用于图片水印的图片或文字';
+$setting_comm['watermark_descr']['position'] = '用于水印的图片';
+$setting_comm['watermark_descr']['img_rate'] = '用于控制水印图片的大小，数值越大，水印越小';
+$setting_comm['watermark_descr']['txt_font'] = '水印文字所用到的字体';
+$setting_comm['watermark_descr']['txt_fontsize'] = '水印文字的大小（像素）';
+$setting_comm['watermark_descr']['txt_fontcolor'] = '水印文字的颜色，为标准HTML颜色代码（如:#000000）';
+$setting_comm['watermark_descr']['txt_bgcolor'] = '文字水印的背景颜色，为标准HTML颜色代码（如:#000000）';
+$setting_comm['watermark_descr']['alpha'] = '水印透明度（同时作用于文字水印和图片水印，0-100）';
 $setting_comm['watermark_descr']['credit'] = '显示在文章内容中的版权文字';
 
 $setting_comm['memcache'] = array();
@@ -240,9 +254,16 @@ $setting_type['content'] = array();
 $setting_type['content']['get_remote_img'] = array("radio", array("开启"=>"true", "关闭"=>"false"));
 
 $setting_type['watermark'] = array();
-$setting_type['watermark']['mode'] = array("checkbox", array("文字水印"=>1, "图片水印"=>2));
+$setting_type['watermark']['mode'] = array("checkbox", array("文章水印"=>1, "图片水印"=>2));
 $setting_type['watermark']['txt'] = array("text", "", "30");
 $setting_type['watermark']['img'] = array("text", "", "30");
+$setting_type['watermark']['position'] = array("select", array("右下"=>1, "右上"=>2, "左下"=>3, "左上"=>4, "左中"=>5, "右中"=>6, "中上"=>7, "中下"=>8, "正中"=>9));
+$setting_type['watermark']['img_rate'] = array("text", "digital", "2");
+$setting_type['watermark']['txt_font'] = 'font.ttc';
+$setting_type['watermark']['txt_fontsize'] = array("text", "", "2");
+$setting_type['watermark']['txt_fontcolor'] = array("text", "", "7");
+$setting_type['watermark']['txt_bgcolor'] = array("text", "", "7");
+$setting_type['watermark']['alpha'] = array("text", "digital", "3");
 $setting_type['watermark']['credit'] = array("text", "", "30");
 
 $setting_type['cache'] = array();

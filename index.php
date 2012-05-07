@@ -13,7 +13,7 @@ $tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 $web_id = $setting['info']['web']['web_id'];
 if($tpl->Is_Cached()) {
 	echo $tpl->Get_Content();
-	$mystep->pageEnd();
+	$mystep->pageEnd($setting['gen']['show_info']);
 }
 includeCache("link");
 $tpl_info['idx'] = "index";

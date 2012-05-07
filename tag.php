@@ -20,7 +20,7 @@ if($setting['gen']['cache']) {
 $tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 if($tpl->Is_Cached()) {
 	echo $tpl->Get_Content();
-	$mystep->pageEnd();
+	$mystep->pageEnd($setting['gen']['show_info']);
 }
 $tpl_info['idx'] = "tag";
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);

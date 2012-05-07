@@ -668,6 +668,7 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 		MakeDir(dirname($img_dst));
 	}
 	$img = new imageCreator_file;
+	$img->SetErrorHandle("WriteError");
 	$img->init($img_src);
 	if(!$img->img) {
 		readfile($img_src);
@@ -683,6 +684,7 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 	if(file_exists($watermark)) {
 		$new_watermark = $watermark;
 		$img_wm = new imageCreator_file;
+		$img_wm->SetErrorHandle("WriteError");
 		$img_wm->init($new_watermark);
 		list($wm_width, $wm_height) = $img_wm->getSize();
 		
@@ -698,90 +700,139 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 			$img_wm->setTransparent(array(0,0));
 		}
 		switch($position) {
-			case 1:
+			case 1: //right-bottom
 				$pos = array($img->width - $wm_width, $img->height - $wm_height);
 				break;
-			case 2:
+			case 2:	//right-top
 				$pos = array($img->width - $wm_width, 0);
 				break;
-			case 3:
+			case 3:	//left-bottom
 				$pos = array(0, $img->height - $wm_height);
 				break;
-			case 4:
+			case 4:	//left-top
 				$pos = array(0, 0);
 				break;
-			default:
+			case 5:	//left-middle
+				$pos = array(0, ($img->height - $wm_height)/2);
+				break;
+			case 6:	//right-middle
+				$pos = array($img->width - $wm_width, ($img->height - $wm_height)/2);
+				break;
+			case 7:	//middle-top
+				$pos = array(($img->width - $wm_width)/2, 0);
+				break;
+			case 8:	//middle-bottom
+				$pos = array(($img->width - $wm_width)/2, $img->height - $wm_height);
+				break;
+			default:	//middle
+				if(is_numeric($position)) {
+					$img_wm->rotateImage($position);
+					$wm_width = $img_wm->width;
+					$wm_height = $img_wm->height;
+				}
 				$pos = array(($img->width - $wm_width)/2, ($img->height - $wm_height)/2);
-				brak;
+				break;
 		}
 		$img->pasteImage($img_wm->img, $pos, $alpha);
 		$img->makeImage($dst_type, $img_dst);
 		$img_wm->destroyImage();
 		$img->destroyImage();
 	} else {
-		list($font, $fontsize, $fontcolor, $bgcolor) = $para;
-		if(is_null($font)) $font = realpath("font.ttc");
-		if(is_null($fontsize)) $fontsize = ($position<=2 ? $img->width/80 : $img->height/80);
-		if($fontsize<9) $fontsize = 9;
-		if(is_null($fontcolor)) $fontcolor = "white";
-		if(is_null($bgcolor)) $bgcolor = array(0x00,0x00,0x00);
+		$alpha = isset($para['alpha']) ? $para['alpha'] : 100;
+		$font = isset($para['font']) ? $para['font'] : "font.ttc";
+		if(!file_exists($font)) $font = false;
+		$fontsize = isset($para['fontsize']) ? $para['fontsize'] : (($position==5 || $position==6) ? $img->height/80 : $img->width/80);
+		if($fontsize<12) $fontsize = 12;
+		$fontcolor = isset($para['fontcolor']) ? $para['fontcolor'] : "white";
+		$bgcolor = isset($para['bgcolor']) ? $para['bgcolor'] : null;
+		if(preg_match("/(#)?[0-9a-f]{6}/i", $bgcolor)) $bgcolor = array_map("hexdec", str_split(str_replace("#","",$bgcolor), "2"));
 
 		if($img->setFont($font)) {
 			$font_size = $img->getFontSize($watermark, $fontsize);
 			$font_size[0] += 10;
 			$font_size[1] += 10;
 			$img_txt = new imageCreator;
+			$img_txt->SetErrorHandle("WriteError");
 			$img_txt->init($font_size[0], $font_size[1]);
 			$img_txt->createImage(true, $bgcolor);
+			if(preg_match("/(#)?[0-9a-f]{6}/i", $fontcolor)) {
+				$img_txt->setColor("fontcolor", array_map("hexdec", str_split(str_replace("#","",$fontcolor), "2")));
+				$fontcolor = "fontcolor";
+			}
 			$img_txt->drawString($img_txt->transString($watermark), array(5,$font_size[1]-5), $fontcolor, $font, $fontsize);
 
-			if($position==3) {
-				$img_txt->img = $img_txt->rotateImage(90, $img_txt->img);
-			} elseif($position==4) {
-				$img_txt->img = $img_txt->rotateImage(270, $img_txt->img);
+			if($position==5) {
+				$img_txt->rotateImage(270);
+			} elseif($position==6) {
+				$img_txt->rotateImage(90);
 			}
 
 			switch($position) {
 				case 1:
 				case 2:
+				case 3:
+				case 4:
+				case 7:
+				case 8:
 					$width = $img->width;
 					$height = $img->height + $font_size[1];
 					break;
-				case 3:
-				case 4:
+				case 5:
+				case 6:
 					$width = $img->width + $font_size[1];
 					$height = $img->height;
 					break;
 				default:
 					$width = $img->width;
 					$height = $img->height;
-					brak;
+					break;
 			}
 			$img_out = new imageCreator;
+			$img_out->SetErrorHandle("WriteError");
 			$img_out->init($width, $height);
 			$img_out->createImage(true, $bgcolor);
 
 			switch($position) {
-				case 1:
+				case 1: //right-bottom
 					$img_out->pasteImage($img->img, array(0, 0));
-					$img_out->pasteImage($img_txt->img, array($img->width - $img_txt->width, $img->height));
+					$img_out->pasteImage($img_txt->img, array($img->width - $img_txt->width, $img->height), $alpha);
 					break;
-				case 2:
+				case 2:	//right-top
 					$img_out->pasteImage($img->img, array(0, $font_size[1]));
-					$img_out->pasteImage($img_txt->img, array(0, 0));
+					$img_out->pasteImage($img_txt->img, array($img->width - $img_txt->width, 0), $alpha);
 					break;
-				case 3:
+				case 3:	//left-bottom
 					$img_out->pasteImage($img->img, array(0, 0));
-					$img_out->pasteImage($img_txt->img, array($img->width, 0));
+					$img_out->pasteImage($img_txt->img, array(0, $img->height), $alpha);
 					break;
-				case 4:
+				case 4:	//left-top
+					$img_out->pasteImage($img->img, array(0, $font_size[1]));
+					$img_out->pasteImage($img_txt->img, array(0, 0), $alpha);
+					break;
+				case 5:	//left-middle
 					$img_out->pasteImage($img->img, array($font_size[1], 0));
-					$img_out->pasteImage($img_txt->img, array(0, 0));
+					$img_out->pasteImage($img_txt->img, array(0, ($img->height - $font_size[0])/2), $alpha);
 					break;
-				default:
+				case 6:	//right-middle
 					$img_out->pasteImage($img->img, array(0, 0));
-					$img_out->pasteImage($img_txt->img, array($img->width - $img_txt->width, $img->height));
-					brak;
+					$img_out->pasteImage($img_txt->img, array($img->width, ($img->height - $font_size[0])/2), $alpha);
+					break;
+				case 7:	//middle-top
+					$img_out->pasteImage($img->img, array(0, $font_size[1]));
+					$img_out->pasteImage($img_txt->img, array(($img->width - $font_size[0])/2, 0), $alpha);
+					break;
+				case 8:	//middle-bottom
+					$img_out->pasteImage($img->img, array(0, 0));
+					$img_out->pasteImage($img_txt->img, array(($img->width - $font_size[0])/2, $img->height), $alpha);
+					break;
+				default:	//middle
+					if(is_numeric($position)) {
+						$img_txt->rotateImage($position);
+						$font_size = array($img_txt->width, $img_txt->height);
+					}
+					$img_out->pasteImage($img->img, array(0, 0));
+					$img_out->pasteImage($img_txt->img, array(($img->width - $font_size[0])/2, ($img->height - $font_size[1])/2), $alpha);
+					break;
 			}
 			$img_out->makeImage($dst_type, $img_dst);
 			$img->destroyImage();
@@ -804,6 +855,7 @@ function img_thumb($img_src, $dstW, $dstH, $img_dst="") {
 		return;
 	}
 	$img = new imageCreator_file;
+	$img->SetErrorHandle("WriteError");
 	$img->init($img_src);
 	if(!$img->img) return false;
 
@@ -820,6 +872,7 @@ function img_thumb($img_src, $dstW, $dstH, $img_dst="") {
 	$img->resizeImage($rate);
 
 	$img_out = new imageCreator;
+	$img_out->SetErrorHandle("WriteError");
 	$img_out->init($dstW, $dstH);
 	$img_out->createImage(true, array(0xff,0xff,0xff));
 	$img_out->setTransparent("white");
@@ -834,6 +887,7 @@ function img_thumb($img_src, $dstW, $dstH, $img_dst="") {
 function vertify_img($str, $font = "font.ttc", $fontsize = 16) {
 	if(!class_exists("imageCreator")) return;
 	$img = new imageCreator();
+	$img->SetErrorHandle("WriteError");
 	$img->setFont($font);
 	list($img->width, $img->height) = $img->getFontSize($str, $fontsize);
 	$img->width += $fontsize*2;

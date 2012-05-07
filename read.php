@@ -1,7 +1,7 @@
 <?php
 require("inc.php");
 
-$news_id = $req->getGet("id");
+$news_id = intval($req->getGet("id"));
 if(!is_numeric($news_id)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
@@ -47,13 +47,13 @@ if($view_lvl>$setting['info']['user']['type']['view_lvl']) {
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content());
 	unset($tpl_tmp);
 	$mystep->show($tpl);
-	$mystep->pageEnd();
+	$mystep->pageEnd($setting['gen']['show_info']);
 }
 
 $tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 if($tpl->Is_Cached()) {
 	echo $tpl->Get_Content();
-	$mystep->pageEnd();
+	$mystep->pageEnd($setting['gen']['show_info']);
 }
 
 $detail = getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "record", 1200);

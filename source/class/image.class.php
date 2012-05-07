@@ -1,19 +1,19 @@
 <?php
 /********************************************
-*                                           *
-* Name    : Image Creator                   *
-* Author  : Windy2000                       *
-* Time    : 2007-06-26                      *
-* Email   : windy2006@gmail.com             *
-* HomePage: www.mysteps.cn                  *
-* Notice  : U Can Use & Modify it freely,   *
-*           BUT HOLD THIS ITEM PLEASE.      *
-*                                           *
+*																						*
+* Name		: Image Creator										*
+* Author	: Windy2000												*
+* Time		: 2007-06-26											*
+* Email	 : windy2006@gmail.com							*
+* HomePage: www.mysteps.cn									*
+* Notice	: U Can Use & Modify it freely,		*
+*					 BUT HOLD THIS ITEM PLEASE.				*
+*																						*
 ********************************************/
 
 /*--------------------------------------------------------------------------------------------------------------------
 
-  How To Use:
+	How To Use:
 	$imageCreator = new imageCreator($width, $height, $cr)				//构造函数
 	$imageCreator->createImage($trueImage, $background)					//生成画板
 	$imageCreator->setTile($image, $point, $width, $height)				//设置区域贴图
@@ -32,7 +32,7 @@
 	$imageCreator->setAlphaColor($idx, $alpha)							//设置透明色
 	$imageCreator->checkPoint()											//检测点的有效性
 	$imageCreator->checkImage()											//检测图像源的有效性
-	$imageCreator->fullImage($point, $color, $color_border)				//从一点向画布右下填充
+	$imageCreator->fillImage($point, $color, $color_border)				//从一点向画布右下填充
 	$imageCreator->drawLine($p_start, $p_end, $color)													//画线
 	$imageCreator->drawRectangle($point, $width, $height, $color_line, $color_fill)						//画矩形
 	$imageCreator->drawPolygon($points, $color_line, $color_fill)										//画多边形
@@ -71,15 +71,16 @@ class imageCreator extends class_common {
 		return;
 	}
 
-	public function createImage($trueImage = false, $background = NULL) {
+	public function createImage($trueImage = true, $background = NULL) {
 		if($this->checkImage()) return;
 		$this->img = $trueImage ? imagecreatetruecolor($this->width, $this->height) : imagecreate($this->width, $this->height);
-		$this->setColor("r",255,0,0);
-		$this->setColor("g",0,255,0);
-		$this->setColor("b",0,0,255);
-		$this->setColor("y",255,255,0);
+		$this->setColor("red",255,0,0);
+		$this->setColor("green",0,255,0);
+		$this->setColor("blue",0,0,255);
+		$this->setColor("yellow",255,255,0);
 		$this->setColor("white", 255,255,255);
 		$this->setColor("black", 0,0,0);
+		$this->setColor("transparent", 0,0,0);
 
 		$color_pie = array();
 		$color_pie[] = array(0, 62, 136);
@@ -102,14 +103,17 @@ class imageCreator extends class_common {
 			$this->setColor("pie_{$i}", $value);
 			$i++;
 		}
-
 		if(!is_null($background)) {
 			if(is_array($background)) {
 				$this->setColor("background", $background[0], $background[1], $background[2]);
-				$this->fullImage(array(0,0),"background");
+				$this->fillImage(array(0,0),"background");
 			} elseif(file_exists($background)) {
 				$this->setTile($background);
+			} else {
+				$this->fillImage(array(0,0),$background);
 			}
+		} else {
+			$this->fillImage(array(0,0),"transparent");
 		}
 		return;
 	}
@@ -141,12 +145,12 @@ class imageCreator extends class_common {
 		return $result;
 	}
 
-	public function randomColor($rand = false) {
+	public function randomColor($rand = false, $alpha = true) {
 		if(!$this->checkImage()) return false;
 		if(count($this->color_lst)>0 && $rand) {
 			return $this->color_lst[array_rand($this->color_lst)];
 		} else {
-			return imagecolorallocate($this->img, rand(0,255), rand(0,255), rand(0,255));
+			return $alpha ? imagecolorallocatealpha($this->img, rand(0,255), rand(0,255), rand(0,255), rand(0,127)) : imagecolorallocate($this->img, rand(0,255), rand(0,255), rand(0,255));
 		}
 	}
 
@@ -179,9 +183,10 @@ class imageCreator extends class_common {
 
 	public function rotateImage($angle, $img = NULL) {
 		if(is_null($img)) {
-			$new_img = imagerotate($this->img, $angle, IMG_COLOR_TRANSPARENT);
+			$new_img = imagerotate($this->img, $angle, 0);
 			$this->destroyImage();
 			$this->img = $new_img;
+			if(fmod($angle,90)!==0) $this->setTransparent(array(0,0));
 			list($this->width, $this->height) = $this->getSize();
 			return true;
 		} else {
@@ -307,23 +312,35 @@ class imageCreator extends class_common {
 
 	public function setColor($idx = "") {
 		if(!$this->checkImage()) return false;
+		if(empty($idx)) $idx = "idx_".(count($this->color_lst)+1);
 		$color = array();
+		$alpha = 0;
 		if(func_num_args()==2) {
 			$color = func_get_arg(1);
-		} elseif (func_num_args()==4) {
+		} elseif(func_num_args()==3) {
+			$color = func_get_arg(1);
+			$alpha = func_get_arg(2);
+		} elseif(func_num_args()==4) {
 			$color = array_slice(func_get_args(), 1);
+		} elseif(func_num_args()==5) {
+			$color = array_slice(func_get_args(), 1, -1);
+			$alpha = func_get_arg(4);
+		} elseif(func_num_args()==0 || func_num_args()==1 ) {
+			$color = array(0, 0, 0);
+			$alpha = 127;
 		} else {
 			return false;
 		}
-		if(empty($idx)) $idx = "idx_".(count($this->color_lst)+1);
-	    $color_mask = array();
-	    $color_mask[0] = $color[0]<50 ? 0 : $color[0]-50;
-	    $color_mask[1] = $color[1]<50 ? 0 : $color[1]-50;
-	    $color_mask[2] = $color[2]<50 ? 0 : $color[2]-50;
-	    if(isset($this->color_lst[$idx])) imagecolordeallocate($this->img, $this->color_lst[$idx]);
-		$this->color_lst[$idx] = imagecolorallocate($this->img, $color[0], $color[1], $color[2]);
-	    if(isset($this->color_lst["{$idx}_mask"])) imagecolordeallocate($this->img, $this->color_lst["{$idx}_mask"]);
-		$this->color_lst["{$idx}_mask"] = imagecolorallocate($this->img, $color_mask[0], $color_mask[1], $color_mask[2]);
+		imagealphablending($this->img, true);
+		imagesavealpha($this->img, true);
+		if(isset($this->color_lst[$idx])) imagecolordeallocate($this->img, $this->color_lst[$idx]);
+		$this->color_lst[$idx] = imagecolorallocatealpha($this->img, $color[0], $color[1], $color[2], $alpha);
+		$color_mask = array();
+		$color_mask[0] = $color[0]<50 ? 0 : $color[0]-50;
+		$color_mask[1] = $color[1]<50 ? 0 : $color[1]-50;
+		$color_mask[2] = $color[2]<50 ? 0 : $color[2]-50;
+		if(isset($this->color_lst["{$idx}_mask"])) imagecolordeallocate($this->img, $this->color_lst["{$idx}_mask"]);
+		$this->color_lst["{$idx}_mask"] = imagecolorallocatealpha($this->img, $color_mask[0], $color_mask[1], $color_mask[2], $alpha);
 		return true;
 	}
 
@@ -338,13 +355,13 @@ class imageCreator extends class_common {
 			return false;
 		}
 		if(empty($idx)) $idx = "idx_".(count($this->color_lst)+1);
-	    $color_mask = array();
-	    $color_mask[0] = $color[0]<50 ? 0 : $color[0]-50;
-	    $color_mask[1] = $color[1]<50 ? 0 : $color[1]-50;
-	    $color_mask[2] = $color[2]<50 ? 0 : $color[2]-50;
-	    if(isset($this->color_lst[$idx])) imagecolordeallocate($this->img, $this->color_lst[$idx]);
+			$color_mask = array();
+			$color_mask[0] = $color[0]<50 ? 0 : $color[0]-50;
+			$color_mask[1] = $color[1]<50 ? 0 : $color[1]-50;
+			$color_mask[2] = $color[2]<50 ? 0 : $color[2]-50;
+			if(isset($this->color_lst[$idx])) imagecolordeallocate($this->img, $this->color_lst[$idx]);
 		$this->color_lst[$idx] = imagecolorallocatealpha($this->img, $color[0], $color[1], $color[2], $alpha);
-    	if(isset($this->color_lst["{$idx}_mask"])) imagecolordeallocate($this->img, $this->color_lst["{$idx}_mask"]);
+			if(isset($this->color_lst["{$idx}_mask"])) imagecolordeallocate($this->img, $this->color_lst["{$idx}_mask"]);
 		$this->color_lst["{$idx}_mask"] = imagecolorallocatealpha($this->img, $color_mask[0], $color_mask[1], $color_mask[2], $alpha);
 		return true;
 	}
@@ -375,7 +392,7 @@ class imageCreator extends class_common {
 		return (is_resource($img) && get_resource_type($img)=="gd");
 	}
 
-	public function fullImage($point = array(0,0), $color = "", $color_border = NULL) {
+	public function fillImage($point = array(0,0), $color = "", $color_border = NULL) {
 		if(!$this->checkImage()) return false;
 		$color = isset($this->color_lst[$color]) ? $this->color_lst[$color] : $this->randomColor();
 		if(is_null($color_border)) {
@@ -467,7 +484,7 @@ class imageCreator extends class_common {
 		$points[8][0] = $x - ($radius * cos(deg2rad(90 - $angle)));
 		$points[8][1] = $y - ($radius * sin(deg2rad(90 - $angle)));
 		if($star) {
-			 if($spiky == NULL) $spiky = 0.5;  // degree of spikiness, default to 0.5
+			 if($spiky == NULL) $spiky = 0.5;	// degree of spikiness, default to 0.5
 			 $indent = $radius * $spiky;
 			 $points[1][0] = $x + ($indent * cos(deg2rad(90 - $angle/2)));
 			 $points[1][1] = $y - ($indent * sin(deg2rad(90 - $angle/2)));
@@ -525,7 +542,7 @@ class imageCreator extends class_common {
 		$max_count = count($data);
 		for($i=0; $i<$max_count; $i++) {
 			$angle[] = (($data[$i] / $data_sum) * 360);
-   		$angle_sum[] = array_sum($angle) + $start_angle;
+	 		$angle_sum[] = array_sum($angle) + $start_angle;
 		}
 
 		for($i=$point[1]+$mask; $i>$point[1]; $i--) {
@@ -658,13 +675,13 @@ class imageCreator extends class_common {
 			header("Content-type: {$contentType}");
 			if($func == "imagebmp") {
 				$this->imagebmp($img);
-			} else  {
+			} else	{
 				$func($img);
 			}
 		} else {
 			if($func == "imagebmp") {
 				$this->imagebmp($img, $file);
-			} else  {
+			} else	{
 				$func($img, $file);
 			}
 		}
@@ -786,11 +803,11 @@ class imageCreator extends class_common {
 		$numpad = $biStride - $biBPLine;
 		for ($y = $biHeight - 1; $y >= 0; --$y)	{
 			for ($x = 0; $x < $biWidth; ++$x) {
-				  $col = imagecolorat ($im, $x, $y);
-				  fwrite ($f, pack ('V', $col), 3);
+					$col = imagecolorat ($im, $x, $y);
+					fwrite ($f, pack ('V', $col), 3);
 			}
 			for ($i = 0; $i < $numpad; ++$i) {
-				  fwrite ($f, pack ('C', 0));
+					fwrite ($f, pack ('C', 0));
 			}
 		}
 		fclose($f);
@@ -816,7 +833,7 @@ class imageCreator extends class_common {
 
 /*--------------------------------------------------------------------------------------------------------------------
 
-  How To Use:
+	How To Use:
 	$coordinateMaker = new coordinateMaker($width, $height, $origin, $cr)				//构造函数
 	$coordinateMaker->setOrigin($point)													//设置原点位置
 	$coordinateMaker->setPara()															//设置坐标参数
@@ -1076,7 +1093,7 @@ class coordinateMaker extends imageCreator {
 		$max_count = count($data);
 		for($i=0; $i<$max_count; $i++) {
 			$angle[] = (($data[$i] / $data_sum) * 360);
-   		$angle_sum[] = array_sum($angle);
+	 		$angle_sum[] = array_sum($angle);
 		}
 		$radius = ($width + $height) / 4 + $distance + 20;
 		if($legend==1) {
@@ -1117,7 +1134,7 @@ class coordinateMaker extends imageCreator {
 
 /*--------------------------------------------------------------------------------------------------------------------
 
-  How To Use:
+	How To Use:
 	$imageCreator_file = new imageCreator_file($file)
 	
 	Just a image file open extend for imagecreate

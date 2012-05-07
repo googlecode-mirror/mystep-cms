@@ -56,7 +56,11 @@ echo "</select>";
 					<input type="checkbox" class="cbox" id="ccache_6" name="ccache[]" value="7" checked /><label for="ccache_6">页面缓存</label>
 					<input type="checkbox" class="cbox" id="ccache_7" name="ccache[]" value="8" checked /><label for="ccache_7">数据缓存</label>
 					&nbsp; <input class="btn" type="button" onclick="cclean()" value="清理" /><br />
-					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">清理缓存所占用的磁盘空间，也可以使相关更改立即生效</span>
+					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+					<input type="checkbox" class="cbox" id="ccache_all" onclick="checkIt(this.checked)" /><label for="ccache_all">全选</label>
+					&nbsp;&nbsp; 
+					<span class="comment">清理缓存所占用的磁盘空间，也可以使相关更改立即生效</span>
+					
 				</td>
 			</tr>
 			<tr>
@@ -87,6 +91,9 @@ function cclean() {
 	var theForm = $("form").get(0);
 	theForm.action = "?clean";
 	theForm.submit();
+}
+function checkIt(mode) {
+	$("input[name='ccache[]']").attr("checked", mode);
 }
 //]]> 
 </script>
