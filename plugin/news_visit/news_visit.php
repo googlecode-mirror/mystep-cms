@@ -50,6 +50,7 @@ $tpl->Set_Variable('order', $order);
 $tpl->Set_Variable('order_type', $order_type);
 $tpl->Set_Variable('path_admin', $setting['path']['admin']);
 $tpl->Set_Variable('title', $info['name']);
+$tpl->Set_Variable('web_id', $web_id);
 
 $max_count = count($GLOBALS['website']);
 for($i=0; $i<$max_count; $i++) {

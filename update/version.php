@@ -1847,5 +1847,30 @@ $setting = $cur_setting;
 					),
 			),
 	),
+	'0.99.9.8.1' => array(
+		'info' => '
+				V0.99.9.8.1
+				1.Adjust resume code of crontab plugin
+				2.Fix a multi-website bug in news_visit plugin
+				3.Fix a bug in format function of TinyMCE
+				Some other adjusts...
+			',
+		'file' => array(
+				'include/parameter.php',
+				'plugin/crontab/class.php',
+				'plugin/news_visit/class.php',
+				'plugin/news_visit/news_visit.php',
+				'plugin/news_visit/news_visit.tpl',
+				'template/admin/art_content_input.tpl',
+				'template/admin/art_info_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/admin_simple/art_info_input.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120508',
+					),
+			),
+	),
 );
 ?>

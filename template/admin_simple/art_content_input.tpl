@@ -214,10 +214,10 @@ tinyMCE.init({
 				var content = tinyMCE.get('content').getContent();
 				if(content.indexOf("<div")==-1) {
 					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
-					content = content.replace(/<\/p><p/g, "<\p>\n<p");
+					content = content.replace(/<\/p><p/g, "<\/p>\n<p");
 				} else {
 					content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
-					content = content.replace(/<\/div><div/g, "<\div>\n<div");
+					content = content.replace(/<\/div><div/g, "<\/div>\n<div");
 				}
 				content = content.replace(/mso\-[^;]+?;/ig, "");
 				content = content.replace(/[\xa0]/g, "");

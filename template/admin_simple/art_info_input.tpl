@@ -47,10 +47,10 @@ tinyMCE.init({
 	mode : "textareas",
 	language : "zh",
 	theme : "advanced",
-	plugins : "safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+	plugins : "safari,bbscode,source_code,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 
-	theme_advanced_buttons1 : "newdocument,fullscreen,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,|,charmap,media",
-	theme_advanced_buttons2 : "upload,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,undo,redo,|,link,unlink,image,removeformat,code,preview,change",
+	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,format",
+	theme_advanced_buttons2 : "upload,|,cut,copy,paste,pastetext,pasteword,bbscode,source_code,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
 	theme_advanced_buttons3 : "",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
@@ -63,25 +63,55 @@ tinyMCE.init({
 	external_image_list_url : "lists/image_list.js",
 	media_external_list_url : "lists/media_list.js",
 	
+	preformatted : false,
+	remove_linebreaks : false,
+	apply_source_formatting : true,
+	convert_fonts_to_spans : true,
+	verify_html : true,
+	paste_auto_cleanup_on_paste : true,
+	forced_root_block : "div",
+	
 	setup : function(ed) {
 		ed.addButton('upload', {
-			title : 'upload',
+			title : '附件上传',
 			image : 'images/file.gif',
 			onclick : function() {
 				showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
 			}
 		});
 		ed.addButton('change', {
-			title : 'Div Mode',
+			title : 'Div/P 模式切换',
 			image : 'images/div.png',
 			onclick : function() {
 				var content = tinyMCE.get('content').getContent();
-				if(content.indexOf("<div>")==-1) {
-					content = content.replace(/<p>(.+?)<\/p>/ig, "<div>$1</div>");
+				if(content.indexOf("<div")==-1) {
+					content = content.replace(/<p(.*?)>([\w\W]+?)<\/p>/ig, "<div$1>$2</div>");
 				} else {
-					content = content.replace(/<div>(.+?)<\/div>/ig, "<p>$1</p>");
+					content = content.replace(/<div(.*?)>([\w\W]+?)<\/div>/ig, "<p$1>$2</p>");
 				}
 				tinyMCE.get('content').setContent(content);
+			}
+		});
+		ed.addButton('format', {
+			title : '代码清理',
+			image : 'images/format.png',
+			onclick : function() {
+				var content = tinyMCE.get('emailcontent').getContent();
+				if(content.indexOf("<div")==-1) {
+					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
+					content = content.replace(/<\/p><p/g, "<\/p>\n<p");
+				} else {
+					content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
+					content = content.replace(/<\/div><div/g, "<\/div>\n<div");
+				}
+				content = content.replace(/mso\-[^;]+?;/ig, "");
+				content = content.replace(/[\xa0]/g, "");
+				content = content.replace(/<\/td>/g, "&nbsp;</td>");
+				while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "<!-- pagebreak -->");
+				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
+				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
+				content = content.replace(/  /g, String.fromCharCode(160)+" ");
+				tinyMCE.get('emailcontent').setContent(content);
 			}
 		});
 	},

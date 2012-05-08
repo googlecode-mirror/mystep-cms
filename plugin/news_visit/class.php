@@ -140,7 +140,7 @@ mystep;
 		global $setting;
 		$result = "";
 		if(!isset($att_list['template'])) $att_list['template'] = "classic";
-		if(!isset($att_list['web_id'])) $att_list['web_id'] = "";
+		if(!isset($att_list['web_id'])) $att_list['web_id'] = $setting['info']['web']['web_id'];
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
 		if(!isset($att_list['css1'])) $att_list['css1'] = "";
 		if(!isset($att_list['css2'])) $att_list['css2'] = $att_list['css1'];
