@@ -1872,5 +1872,42 @@ $setting = $cur_setting;
 					),
 			),
 	),
+	'0.99.9.8.2' => array(
+		'info' => '
+				V0.99.9.8.2
+				1.Optimize resume code of crontab plugin
+				2.Fix a bug in news visit plugin
+				Some other adjusts...
+			',
+		'file' => array(
+				'include/parameter.php',
+				'plugin/comment/info.php',
+				'plugin/crontab/class.php',
+				'plugin/crontab/config.php',
+				'plugin/crontab/config/chs.php',
+				'plugin/crontab/config/default.php',
+				'plugin/crontab/config/en.php',
+				'plugin/crontab/info.php',
+				'plugin/crontab/run.php',
+				'plugin/custom_sql/info.php',
+				'plugin/meeting/info.php',
+				'plugin/mssql/info.php',
+				'plugin/news_mark/info.php',
+				'plugin/news_snatch/info.php',
+				'plugin/news_visit/info.php',
+				'plugin/news_visit/news_visit.php',
+				'plugin/news_visit/news_visit.tpl',
+				'plugin/offical/info.php',
+				'plugin/se_detect/info.php',
+				'plugin/survey/info.php',
+				'plugin/topic/info.php',
+				'plugin/visit_analysis/info.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120510',
+					),
+			),
+	),
 );
 ?>

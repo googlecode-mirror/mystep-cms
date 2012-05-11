@@ -2,7 +2,7 @@
 $info = array(
 	"name" => "在线问卷构建系统",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.0",
+	"ver" => "1.5",
 	"class" => "plugin_meeting",
 	"intro" => "在线问卷创建及管理插件",
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

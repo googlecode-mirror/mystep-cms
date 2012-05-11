@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "新闻访问统计插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.0",
+	"ver" => "1.3",
 	"class" => "plugin_news_visit",
 	"intro" => "高级新闻访问统计及显示",
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

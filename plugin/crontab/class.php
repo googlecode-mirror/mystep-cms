@@ -102,7 +102,7 @@ mystep;
 			if($record = $db->GetSingleRecord("select exe_date, next_date from ".$setting['db']['pre']."crontab where next_date<now() and exe_date!='0000-00-00' and (expire='0000-00-00' || expire>now()) order by next_date limit 1")) {
 				$record['exe_date'] = strtotime($record['exe_date']);
 				$record['next_date'] = strtotime($record['next_date']);
-				if((time()-$log_date) > ($record['next_date']-$record['exe_date']+300)) {
+				if((time()-$log_date) > ($record['next_date']-$record['exe_date']+$plugin_setting['crontab']['interval'])) {
 					if($fp = @fopen("http://".$_SERVER["HTTP_HOST"].str_replace(ROOT_PATH, "", str_replace("\\", "/", dirname(__file__)))."/run.php?".$GLOBALS['authority']."=".urlencode($plugin_setting['crontab']['s_pass']), "r")) {
 						$buffer = fgets($fp, 4096);
 						fclose($fp);

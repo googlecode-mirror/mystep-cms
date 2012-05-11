@@ -3,6 +3,16 @@ require("../inc.php");
 include("info.php");
 $web_id = $req->getGet("web_id");
 if(empty($web_id)) $web_id = 1;
+$method = $req->getGet("method");
+if($method=="clean") {
+	$setting_sub = getSubSetting($web_id);
+	$db->Query("create table `temp_tbl` (select a.news_id from ".$setting['db']['pre']."news_visit a left join ".$setting_sub['db']['name'].".".$setting_sub['db']['pre']."news_show b on a.news_id=b.news_id where a.web_id={$web_id} and b.news_id is null)");
+	$db->Query("delete from ".$setting['db']['pre']."news_visit where web_id={$web_id} and news_id in (select news_id from `temp_tbl`)");
+	$db->Query("drop table `temp_tbl`");
+	$goto_url = $req->getServer("HTTP_REFERER");
+	$mystep->pageEnd(false);
+}
+
 $tpl_info = array(
 		"idx" => "news_visit",
 		"style" => "../plugin/".basename(realpath(dirname(__FILE__)))."/",

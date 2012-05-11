@@ -13,7 +13,6 @@ ob_end_clean();
 
 require("config.php");
 $interval = $plugin_setting['crontab']['interval'];
-$interval_resume = $plugin_setting['crontab']['interval_resume'];
 $file_status = "status.txt";
 $file_log = "log.txt";
 $flag = empty($_SERVER["QUERY_STRING"]);
@@ -28,7 +27,6 @@ if($flag) {
 	WriteFile($file_log, "Mission Resume at ".date("Y-m-d H:i:s")."\n", "ab");
 }
 file_put_contents($file_status, "run");
-$counter = 0;
 $flag = true;
 if(!empty($plugin_setting['crontab']['s_pass']) && !empty($GLOBALS['authority'])) {
 	$q_str = $GLOBALS['authority']."=".urlencode($plugin_setting['crontab']['s_pass']);
@@ -38,12 +36,6 @@ if(!empty($plugin_setting['crontab']['s_pass']) && !empty($GLOBALS['authority'])
 while(true) {
 	//WriteFile($file_log, "Mission Check at ".date("Y-m-d H:i:s")."\n", "ab");
 	if(file_get_contents($file_status)!="run") break;
-	$counter++;
-	if($interval_resume!=0 && $counter>$interval_resume) {
-		$flag = false;
-		$goto_url = "http://".$_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"]."?".$q_str;
-		break;
-	}
 	if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."crontab where next_date<now() and (expire='0000-00-00' || expire>now()) order by next_date limit 1")) {
 		if(!empty($record['code'])) {
 			eval($record['code']);
