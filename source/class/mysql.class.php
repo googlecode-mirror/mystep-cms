@@ -120,14 +120,13 @@ class MySQL extends class_common {
 		if($this->DB_conn == NULL) return false;
 		$this->DB_count++;
 		$this->Free();
-		$ifsel = strstr("|selec|show |descr|expla|repai|check", strtolower(substr(trim($sql), 0, 5)));
 		if($this->DB_Qtype) {
 			$this->DB_result = mysql_query($sql, $this->DB_conn);
 		} else {
 			$this->DB_result = mysql_unbuffered_query($sql, $this->DB_conn);
 		}
 		$this->DB_qstr	= $sql;
-		if($ifsel && is_resource($this->DB_result)) {
+		if(strstr("|selec|show |descr|expla|repai|check|optim", strtolower(substr(trim($sql), 0, 5))) && is_resource($this->DB_result)) {
 			$num_rows = mysql_num_rows($this->DB_result);
 		} elseif(is_resource($this->DB_conn)) {
 			$num_rows = mysql_affected_rows($this->DB_conn);
@@ -142,8 +141,18 @@ class MySQL extends class_common {
 		return $num_rows;
 	}
 
-	public function ChangUser($user, $pass, $db="") { // Maybe doesn't work !
-		eval("\$result = mysql_change_user('$user', '$pass'".($db==""?"":", '$db'").");");
+	public function ChangUser($user, $pass, $db="", $pconnect = false) {
+		$this->DB_user = $user;
+		$this->DB_pass = $pass;
+		if(function_exists("mysql_change_user")) {
+			if(empty($db)) {
+				$result = mysql_change_user($user, $pass);
+			} else {
+				$result = mysql_change_user($user, $pass, $db);
+			}
+		} else {
+			$this->ReConnect($pconnect, $db);
+		}
 		return $result;
 	}
 
@@ -171,7 +180,11 @@ class MySQL extends class_common {
 
 	public function GetResult($line, $field=""){
 		if(!$this->DB_Qtype || $this->DB_result == NULL) return false;
-		eval("\$result = mysql_result(\$this->DB_result, $line".(empty($field)?"":(is_numeric($field)?", $field":", '$field'")).");");
+		if(empty($field)) {
+			$result = mysql_result($this->DB_result, $line);
+		} else {
+			$result = mysql_result($this->DB_result, $line, $field);
+		}
 		if($this->CheckError())	$this->Error("Error Occur in Query !");
 		return $result;
 	}
@@ -306,14 +319,15 @@ class MySQL extends class_common {
 		return $keys;
 	}
 
-	public function GetTabSetting($the_tab) {
-		$this->DB_qstr	 = "SHOW TABLE STATUS FROM `{$this->DB_db}` LIKE '{$the_tab}'";
+	public function GetTabSetting($the_tab, $the_db="") {
+		if(empty($the_db)) $the_db = $this->DB_db;
+		$this->DB_qstr	 = "SHOW TABLE STATUS FROM `{$the_db}` LIKE '{$the_tab}'";
 		$this->DB_result = mysql_query($this->DB_qstr);
 		if ($this->CheckError()) $this->Error("Could not List Table's Setting");
 		$row = mysql_fetch_assoc($this->DB_result);
 		$result = "#Table Name: ".$row["Name"]."\n# Create Time: ".$row["Create_time"]."\n# Update Time: ".$row["Update_time"]."\n";
 		$this->Free();
-		$tblInfo = array_values($this->getSingleRecord("show create table `".$the_tab."`"));
+		$tblInfo = array_values($this->getSingleRecord("show create table `".$the_db."`.`".$the_tab."`"));
 		$result .= $tblInfo[1].";\n";
 		$result .= "truncate table `".$the_tab."`;\n";
 		return $result;
@@ -432,7 +446,7 @@ class MySQL extends class_common {
 				if(!empty($strFind)) $ArrSQL[$i] = str_replace($strFind, $strReplace, $ArrSQL[$i]);
 				$theSQL = $ArrSQL[$i];
 				$theSQL = strtolower($theSQL);
-				$theSQL = str_replace("`", "",  $theSQL);
+				$theSQL = str_replace("`", "", $theSQL);
 				$theSQL = str_replace("if not exists", "", $theSQL);
 				$theSQL = str_replace("if exists", "", $theSQL);
 				$return = $this->Query($ArrSQL[$i]);
@@ -491,7 +505,7 @@ class MySQL extends class_common {
 	public function HandleSQL($strSQL) {
 		$strSQL	= trim($strSQL);
 		$strSQL	= preg_replace("/^#[^\n]*\n?$/m", "", $strSQL);
-		$strSQL	= preg_replace("/\r\n/",  "\n", $strSQL);
+		$strSQL	= preg_replace("/\r\n/", "\n", $strSQL);
 		$strSQL	= preg_replace("/[\n]+/", "\n", $strSQL);
 		$strSQL	= preg_replace("/[\t ]+/", " ", $strSQL);
 		$strSQL	= preg_replace("/\/\*.*\*\//sU", "", $strSQL);

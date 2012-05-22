@@ -1,13 +1,23 @@
 <div class="title"><!--title--></div>
-<div class="nav">|&nbsp;
+<div class="nav" style="display:none;">
+<a href="#" onclick="setSection()">显示全部</a>
 <!--loop:start key="anchor"-->
-<a href="#<!--anchor_pos-->"><!--anchor_name--></a> |&nbsp;
+|&nbsp; <a href="#<!--anchor_pos-->" onclick="setSection('<!--anchor_pos-->')"><!--anchor_name--></a> &nbsp;
 <!--loop:end-->
 </div>
-<div align="center">
+<div align="left">
 	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
 	<form method="post" action="?update" onsubmit="if($id('web_s_pass').value==$id('web_s_pass_r').value && $id('db_pass').value==$id('db_pass_r').value){return checkForm(this)}else{alert('两次输入的密码不一致！');return false;}">
 		<table id="input_area" cellspacing="0" cellpadding="0">
+			<tbody id="head">
+			<div style="text-align:center;">
+				<select onchange="setSection(this.value)" style="font-size:14px;font-weight:bold;line-height:20px;margin:10px 10px 10px 10px;">
+					<option value="">显示全部设置项目</option>
+<!--loop:start key="anchor"-->
+					<option value="<!--anchor_pos-->"><!--anchor_name--></option>
+<!--loop:end-->
+				</select>
+			</div>
 <?PHP
 $language = $setting['language'];
 include(ROOT_PATH."/include/config.php");
@@ -20,6 +30,8 @@ foreach($setting as $key1 => $value1) {
 		$cur_comment = $setting_comm[$key1."_comm"];
 		$cur_section = $key1;
 		echo <<<content
+			</tbody>
+			<tbody id="{$key1}">
 			<tr>
 				<td class="cat" colspan="2"><a name="{$key1}">{$cur_comment}</a></td>
 			</tr>
@@ -90,16 +102,32 @@ content;
 }
 $setting['gen']['minify'] = false;
 ?>
-			<tr align="center">
-				<td colspan="2"><input id="set_default" name="set_default" class="cbox" type="checkbox" value="1" /><label for="set_default">定为默认</label></td>
-			</tr>
+			</tbody>
+			<tbody id="foot">
 			<tr>
-				<td class="cat" colspan="2" align="center">
+				<td class="cat" colspan="2" align="center" style="line-height:24px;">
+					<input id="set_default" name="set_default" class="cbox" type="checkbox" value="1" /><label for="set_default">定为默认</label>
+					<br />
 					<input class="btn" type="Submit" value=" 确认修改 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 恢复默认 " onclick="location.href='?restore'" />&nbsp;&nbsp;
-					<input class="btn" type="reset" value=" 重置数据 " />&nbsp;&nbsp;
+					<input class="btn" type="reset" value=" 重置数据 " />
 				</td>
 			</tr>
+			</tbody>
 		</table>
 	</form>
 </div>
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+function setSection(idx) {
+	if(idx==null || idx=="") {
+		$("#input_area > tbody").show();
+	} else {
+		$("#input_area > tbody").hide();
+		$("#input_area > #head").show();
+		$("#input_area > #foot").show();
+		$("#input_area > #"+idx).show(200);
+	}
+}
+//]]> 
+</script>

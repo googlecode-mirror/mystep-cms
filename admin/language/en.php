@@ -75,8 +75,9 @@ $language = array (
   'admin_func_backup_upload_failed_msg1' => 'Upload file missing!',
   'admin_func_backup_export' => 'Data Export',
   'admin_func_backup_repair' => 'Repair data table',
+  'admin_func_backup_optimize' => 'Optimize data table',
   'admin_func_backup_question' => 'Please choose the operation you want',
-  'admin_func_backup_title' => 'Database Backup',
+  'admin_func_backup_title' => 'Database Maintain',
   
   'admin_func_link_delete' => 'Delete Link',
   'admin_func_link_add' => 'Add Link',

@@ -128,10 +128,15 @@ content;
 					</div>
 				</td>
 			</tr>
+			<tr id="err_info">
+				<td colspan=2" class="row" style="text-align:center;color:#ff0000;">
+					由于未能完全通过检测，当前插件有可能无法正确安装，请根据检测信息提示修正相关问题后，点击“复查”按钮！
+				</td>
+			</tr>
 			<tr>
 				<td align="center" colspan=2" class="cat">
 					<input type="hidden" value="<!--idx-->" name="idx" />
-					<input class="btn" type="Submit" value=" 安 装 " />&nbsp;&nbsp;
+					<input class="btn" id="install" type="Submit" value=" 安 装 " /><input class="btn" id="refresh" type="button" value=" 复 查 " onclick="location.reload()" />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
@@ -183,6 +188,15 @@ function checkStatus(checkSet) {
 $(function(){
 	if("<!--subweb-->"=="") checkAll('subweb', true);
 	checkStatus('subweb');
+	if($("#error").length==0) {
+		$("#err_info").hide();
+		$("#refresh").hide();
+		$("#install").show();
+	} else {
+		$("#err_info").show();
+		$("#refresh").show();
+		$("#install").hide();
+	}
 });
 //]]> 
 </script>

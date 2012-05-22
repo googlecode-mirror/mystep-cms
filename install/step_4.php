@@ -24,14 +24,6 @@
 			<p style="color:red;font-weight:bold;">安装已经完成，请您删除 install 目录！</p>
 		</div>
 		<div class="btnbox marginbot">
-			<input type="button" onclick="location.href='<?=$setting['web']['url']?>'" value="完 成">
+			<input type="button" onclick="location.href='./?step=5'" value="完 成">
 		</div>
 	</div>
-<script language="javascript">
-	location.replace('<?=$setting['web']['url']?>/admin');
-</script>
-<?php
-MultiDel(ROOT_PATH."/error.log");
-MultiDel(ROOT_PATH."/".$setting['path']['cache']);
-MultiDel(dirname(__FILE__));
-?>

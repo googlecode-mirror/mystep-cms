@@ -7,7 +7,7 @@ $web_idx = $req->getReq("web_idx");
 set_time_limit(0);
 ini_set('memory_limit', '128M');
 $log_info = "";
-$import_info = "";
+$op_info = "";
 if(empty($web_idx)) {
 	$web_idx = $GLOBALS['website']['0']['idx'];
 }
@@ -56,31 +56,31 @@ if(count($_POST)>0) {
 		for($i=0;$i<$max_count;$i++) {
 			switch($result_exe[$i][1]){
 					case "select":
-						$import_info .=  ($i+1) . " - ".sprintf($setting['language']['db_create_table'], $result_exe[$i][2])."<br />\n";
+						$op_info .=  ($i+1) . " - ".sprintf($setting['language']['db_create_table'], $result_exe[$i][2])."<br />\n";
 						break;
 					case "create":
-						$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_create_done'], ($result_exe[$i][0]=="table"?$setting['language']['db_table']:$setting['language']['db_database']), $result_exe[$i][2])."<br />\n";
+						$op_info .= ($i+1) . " - ".sprintf($setting['language']['db_create_done'], ($result_exe[$i][0]=="table"?$setting['language']['db_table']:$setting['language']['db_database']), $result_exe[$i][2])."<br />\n";
 						break;
 					case "drop":
-						$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_drop_done'], ($result_exe[$i][0]=="table"?$setting['language']['db_table']:$setting['language']['db_database']), $result_exe[$i][2])."<br />\n";
+						$op_info .= ($i+1) . " - ".sprintf($setting['language']['db_drop_done'], ($result_exe[$i][0]=="table"?$setting['language']['db_table']:$setting['language']['db_database']), $result_exe[$i][2])."<br />\n";
 						break;
 					case "alter":
-						$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_alter_done'], $result_exe[$i][2])."<br />\n";
+						$op_info .= ($i+1) . " - ".sprintf($setting['language']['db_alter_done'], $result_exe[$i][2])."<br />\n";
 						break;
 					case "delete":
-						$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_delete_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
+						$op_info .= ($i+1) . " - ".sprintf($setting['language']['db_delete_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
 						break;
 					case "truncate":
-						$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_truncate_done'], $result_exe[$i][2])."<br />\n";
+						$op_info .= ($i+1) . " - ".sprintf($setting['language']['db_truncate_done'], $result_exe[$i][2])."<br />\n";
 						break;
 					case "insert":
-						$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_insert_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
+						$op_info .= ($i+1) . " - ".sprintf($setting['language']['db_insert_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
 						break;
 					case "update":
-						$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_update_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
+						$op_info .= ($i+1) . " - ".sprintf($setting['language']['db_update_done'], $result_exe[$i][2], $result_exe[$i][3])."<br />\n";
 						break;
 					default:
-						$import_info .= ($i+1) . " - ".sprintf($setting['language']['db_operate_done'], $result_exe[$i][2], $result_exe[$i][1])."<br />\n";
+						$op_info .= ($i+1) . " - ".sprintf($setting['language']['db_operate_done'], $result_exe[$i][2], $result_exe[$i][1])."<br />\n";
 						break;
 			}
 		}
@@ -117,8 +117,29 @@ if(count($_POST)>0) {
 			header("Content-Disposition: attachment; filename=".date("Ymd")."_db_{$table_name}.sql");
 		}
 		echo $content;
+	} elseif($method=="optimize") {
+		$log_info = $setting['language']['admin_func_backup_optimize'];
+		$op_info = "<b>Optimize Table Done! </b><br /><br />";
+		if($table_name == "all") {
+			$tbl_list = $db->GetTabs($setting_sub['db']['name']);
+			$tables = "";
+			for($i=0,$m=count($tbl_list); $i<$m; $i++) {
+				$tables .= $setting_sub['db']['name'].".".$tbl_list[$i].",";
+			}
+			if(!empty($tables)) {
+				$i = 1;
+				$db->Query("optimize table ".substr($tables, 0,  -1));
+				while($record = $db->GetRS()) {
+					$op_info .= ($i++).". ".$record['Table']." - <i>".$record['Msg_text']."</i><br />\n";
+				}
+			}
+		} else {
+			$record = $db->GetSingleRecord("optimize table ".$setting['db']['name'].".".$table_name);
+			$op_info .= $record['Table']." - <i>".$record['Msg_text']."</i>";
+		}
 	} elseif($method=="repair") {
 		$log_info = $setting['language']['admin_func_backup_repair'];
+		$op_info = "<b>Repair Table Done! </b><br /><br />";
 		if($table_name == "all") {
 			$tbl_list = $db->GetTabs($setting_sub['db']['name']);
 			$tables = "";
@@ -129,35 +150,24 @@ if(count($_POST)>0) {
 				$i = 1;
 				$db->Query("repair table ".substr($tables, 0,  -1));
 				while($record = $db->GetRS()) {
-					$import_info .= ($i++).".".$record['Table']." - ".$record['Msg_text']."<br />\n";
+					$op_info .= ($i++).". ".$record['Table']." - <i>".$record['Msg_text']."</i><br />\n";
 				}
 			}
 		} else {
 			$record = $db->GetSingleRecord("repair table ".$setting['db']['name'].".".$table_name);
-			$import_info .= $record['Table']." - ".$record['Msg_text'];
+			$op_info .= $record['Table']." - <i>".$record['Msg_text']."</i>";
 		}
 	}
 	write_log($log_info);
 	if($method=="export") $mystep->pageEnd(false);
 }
 
-
 $tpl_info['idx'] = "func_backup";
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 $Max_size = ini_get('upload_max_filesize');
 $tpl_tmp->Set_Variable('max_size', $Max_size);
-switch(strtoupper(substr($Max_size,-1))){
-	case "M":
-		$Max_size = ((int)str_replace("M","",$Max_size)) * 1024 * 1024;
-		break;
-	case "K":
-		$Max_size = ((int)str_replace("K","",$Max_size)) * 1024;
-		break;
-	default:
-		$Max_size = 1024 * 1024;
-		break;
-}
-
+$Max_size = GetFileSize($Max_size);
+if($Max_size==0) $Max_size = 1024*1024;
 $tbl_list = $db->GetTabs($setting_sub['db']['name']);
 $max_count = count($tbl_list);
 for($i=0; $i<$max_count; $i++) {
@@ -176,7 +186,7 @@ if(empty($result)) $result = $setting['language']['admin_func_backup_question'];
 $tpl_tmp->Set_Variable('title',$setting['language']['admin_func_backup_title']);
 $tpl_tmp->Set_Variable('upload_max_filesize', $Max_size);
 $tpl_tmp->Set_Variable('result', $result);
-$tpl_tmp->Set_Variable('import_info', $import_info);
+$tpl_tmp->Set_Variable('op_info', $op_info);
 
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_tmp);

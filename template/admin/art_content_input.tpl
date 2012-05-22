@@ -214,9 +214,11 @@ tinyMCE.init({
 			onclick : function() {
 				var content = tinyMCE.get('content').getContent();
 				if(content.indexOf("<div")==-1) {
+					content = content.replace(/(<br(\s\/)?>)+/ig, "</p><p>");
 					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
 					content = content.replace(/<\/p><p/g, "<\/p>\n<p");
 				} else {
+					content = content.replace(/(<br(\s\/)?>)+/ig, "</div><div>");
 					content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
 					content = content.replace(/<\/div><div/g, "<\/div>\n<div");
 				}

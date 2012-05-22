@@ -174,7 +174,12 @@ mystep;
 		$result = array();
 		$header = array();
 		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST")."/update/";
-		$update_info = GetRemoteContent($setting['gen']['update']."/plugin.php?p=".$idx."&cs=".$setting['gen']['charset'], $header);
+		$update_url = $setting['gen']['update'];
+		if(is_file($plugin_path.$idx."/info.php")) {
+			include($plugin_path.$idx."/info.php");
+			if(isset($info['update_url'])) $update_url = $info['update_url'];
+		}
+		$update_info = GetRemoteContent($update_url."/plugin.php?p=".$idx."&cs=".$setting['gen']['charset'], $header);
 		$update_info = base64_decode($update_info);
 		$update_info = unserialize($update_info);
 		$strFind = array("{db_name}", "{pre}", "{charset}");
@@ -262,10 +267,30 @@ function build_page($method) {
 		for($i=0; $i<$max_count; $i++) {
 			if(is_file($plugin_list['dir'][$i]."/info.php")) {
 				include($plugin_list['dir'][$i]."/info.php");
+				$update_info_hash = array();
+				if(isset($info['update_url'])) {
+					if(isset($update_info_hash[md5($info['update_url'])])) {
+						$plugin_info_remote = $update_info_hash[md5($info['update_url'])];
+					} else {
+						if($plugin_info_remote = json_decode(GetRemoteContent($info['update_url']."/plugin.php?l=".$setting['gen']['language']))) {
+							$update_info_hash[md5($info['update_url'])] = $plugin_info_remote;
+						} else {
+							$plugin_info_remote = new stdClass;
+						}
+					}
+					if(isset($plugin_info_remote->$info['idx'])) {
+						$update_info[$info['idx']] = array();
+						$update_info[$info['idx']]['idx'] = $info['idx'];
+						$update_info[$info['idx']]['name'] = getSafeCode($plugin_info_remote->$info['idx']->name, $setting['gen']['charset']);
+						$update_info[$info['idx']]['ver'] = $plugin_info_remote->$info['idx']->ver;
+						$update_info[$info['idx']]['intro'] = getSafeCode($plugin_info_remote->$info['idx']->intro, $setting['gen']['charset']);
+					}
+				}
 				if(isset($update_info[$info['idx']]) && $info['ver']<$update_info[$info['idx']]['ver']) {
 					$info['ver_new'] = $update_info[$info['idx']]['ver'];
 					$info['update'] = "";
 				} else {
+					$info['ver_new'] = "";
 					$info['update'] = "none";
 				}
 				if($plugin_info = getParaInfo("plugin", "idx", $info['idx'])) {

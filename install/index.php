@@ -63,6 +63,10 @@ mystep;
 	case 4:
 		WriteFile("../include/install.lock", date("Y-m-d H:i:s"));
 		break;
+	case 5:
+		MultiDel(ROOT_PATH."/error.log");
+		MultiDel(ROOT_PATH."/".$setting['path']['cache']);
+		MultiDel(dirname(__FILE__));
 	default:
 		break;
 }
@@ -88,6 +92,8 @@ mystep;
 
 if(is_file("./step_{$step}.php")) {
 	include("./step_{$step}.php");
+} elseif($step==5) {
+	echo '<script language="javascript">location.replace("../");</script>';
 } else {
 	include("./step_0.php");
 }

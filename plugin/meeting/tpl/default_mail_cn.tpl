@@ -12,7 +12,7 @@
 			<input type="hidden" name="mid" value="<!--mid-->" />
 			<input type="hidden" name="subject" value="<!--name-->" />
 			<input type="hidden" name="email" value="<!--record_email-->" />
-			<TEXTAREA name="content" COLS="110" ROWS="40" ID="emailcontent">
+			<TEXTAREA name="content" COLS="110" ROWS="40" id="content">
 尊敬的 <span style="font-weight:bold;color:#aa0000"><!--record_name--></span> ：
  
 欢迎您参加<b>“<!--name-->”</b>！
@@ -46,7 +46,7 @@ foreach($para as $key => $value) {
 	<TR>
 		<TD HEIGHT="30" ALIGN="CENTER">
 			<input style="padding:10px;margin:10px;" type="submit" value="使用系统程序发送" />
-			<input style="padding:10px;margin:10px;" type="button" value="使用邮件程序发送" onclick="formmail('<!--record_email--> ', '<!--name-->', tinyMCE.get('emailcontent').getContent());" />
+			<input style="padding:10px;margin:10px;" type="button" value="使用邮件程序发送" onclick="formmail('<!--record_email--> ', '<!--name-->', tinyMCE.get('content').getContent());" />
 		</TD>
 	</TR>
 </TABLE>
@@ -76,7 +76,7 @@ function formmail(email, subject, content)	{
 
 tinyMCE.init({
 	mode : "exact",
-	elements : "emailcontent",
+	elements : "content",
 	language : "zh",
 	theme : "advanced",
 	plugins : "safari,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
@@ -110,11 +110,11 @@ tinyMCE.init({
 	media_external_list_url : "lists/media_list.js",
 	
 	oninit : function() {
-		var content = tinyMCE.get('emailcontent').getContent();
+		var content = tinyMCE.get('content').getContent();
 		content = content.replace(/mce\:script/g, "script");
 		content = content.replace(/_mce_src/g, "src");
 		content = content.replace(/\n/g, "<br />\n");
-		tinyMCE.get('emailcontent').setContent(content);
+		tinyMCE.get('content').setContent(content);
 	},
 	
 	setup : function(ed) {
@@ -122,26 +122,28 @@ tinyMCE.init({
 			title : 'Div/P 模式切换',
 			image : 'images/div.png',
 			onclick : function() {
-				var content = tinyMCE.get('emailcontent').getContent();
+				var content = tinyMCE.get('content').getContent();
 				if(content.indexOf("<div")==-1) {
 					content = content.replace(/<p(.*?)>([\w\W]+?)<\/p>/ig, "<div$1>$2</div>");
 				} else {
 					content = content.replace(/<div(.*?)>([\w\W]+?)<\/div>/ig, "<p$1>$2</p>");
 				}
-				tinyMCE.get('emailcontent').setContent(content);
+				tinyMCE.get('content').setContent(content);
 			}
 		});
 		ed.addButton('format', {
 			title : '代码清理',
 			image : 'images/format.png',
 			onclick : function() {
-				var content = tinyMCE.get('emailcontent').getContent();
+				var content = tinyMCE.get('content').getContent();
 				if(content.indexOf("<div")==-1) {
+					content = content.replace(/(<br(\s\/)?>)+/ig, "</p><p>");
 					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
-					content = content.replace(/<\/p><p/g, "<\p>\n<p");
+					content = content.replace(/<\/p><p/g, "<\/p>\n<p");
 				} else {
+					content = content.replace(/(<br(\s\/)?>)+/ig, "</div><div>");
 					content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
-					content = content.replace(/<\/div><div/g, "<\div>\n<div");
+					content = content.replace(/<\/div><div/g, "<\/div>\n<div");
 				}
 				content = content.replace(/mso\-[^;]+?;/ig, "");
 				content = content.replace(/[\xa0]/g, "");
@@ -150,7 +152,7 @@ tinyMCE.init({
 				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
 				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
 				content = content.replace(/  /g, String.fromCharCode(160)+" ");
-				tinyMCE.get('emailcontent').setContent(content);
+				tinyMCE.get('content').setContent(content);
 			}
 		});
 	},

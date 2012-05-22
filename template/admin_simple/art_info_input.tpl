@@ -96,11 +96,13 @@ tinyMCE.init({
 			title : '¥˙¬Î«Â¿Ì',
 			image : 'images/format.png',
 			onclick : function() {
-				var content = tinyMCE.get('emailcontent').getContent();
+				var content = tinyMCE.get('content').getContent();
 				if(content.indexOf("<div")==-1) {
+					content = content.replace(/(<br(\s\/)?>)+/ig, "</p><p>");
 					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
 					content = content.replace(/<\/p><p/g, "<\/p>\n<p");
 				} else {
+					content = content.replace(/(<br(\s\/)?>)+/ig, "</div><div>");
 					content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
 					content = content.replace(/<\/div><div/g, "<\/div>\n<div");
 				}
@@ -111,7 +113,7 @@ tinyMCE.init({
 				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
 				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
 				content = content.replace(/  /g, String.fromCharCode(160)+" ");
-				tinyMCE.get('emailcontent').setContent(content);
+				tinyMCE.get('content').setContent(content);
 			}
 		});
 	},

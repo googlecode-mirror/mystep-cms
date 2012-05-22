@@ -76,7 +76,8 @@ $language = array (
   'admin_func_backup_export' => '导出数据',
   'admin_func_backup_question' => '请选择需要的操作',
   'admin_func_backup_repair' => '修复数据表',
-  'admin_func_backup_title' => '数据库备份',
+  'admin_func_backup_optimize' => '优化数据表',
+  'admin_func_backup_title' => '数据库维护',
   
   'admin_func_link_delete' => '删除链接',
   'admin_func_link_add' => '添加链接',

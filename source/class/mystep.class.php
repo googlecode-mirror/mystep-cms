@@ -143,6 +143,8 @@ mystep;
 		set_time_limit(30);
 		ini_set('memory_limit', '128M');
 		ini_set('magic_quotes_runtime', 0);
+		ini_set('mysql.connect_timeout', 300);
+		ini_set('default_socket_timeout', 300);
 		if(get_magic_quotes_gpc()) {
 			strip_slash($_POST);
 			strip_slash($_GET);

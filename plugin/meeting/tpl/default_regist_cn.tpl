@@ -82,6 +82,6 @@ mystep;
 <script Language="JavaScript1.2">
 var uTime = (new Date()).getTime();
 var date = new Date();
-date.setTime(uTime+5*60*1000);
+date.setTime(uTime+10*60*1000);
 $.cookie('reg_time', Math.round(date.getTime()/1000), {expires: date});
 </script>

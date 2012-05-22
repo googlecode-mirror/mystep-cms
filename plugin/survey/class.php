@@ -83,13 +83,16 @@ mystep;
 		$theList = array(
 			"/data/",
 		);
+		$error = false;
 		foreach($theList as $cur) {
 			if(isWriteable(dirname(__FILE__).$cur)) {
 				$result .= $cur . ' - <span style="color:green">Writable</span><br />';
 			} else {
 				$result .= $cur . ' - <span style="color:red">Readonly</span><br />';
+				$error = true;
 			}
 		}
+		if($error) $result .= '<span id="error"></span>';
 		return $result;
 	}
 	

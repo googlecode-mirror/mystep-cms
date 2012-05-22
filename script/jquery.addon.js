@@ -363,7 +363,11 @@ jQuery.fn.outerHTML = function(s) {
 					cur_img.load(function() {
 						obj.hide();
 						obj.attr("src", url);
-						obj.css({"width":"auto","height":"auto"});
+						var the_width = obj.attr("width");
+						var the_height = obj.attr("height");
+						if(typeof(the_width)=="undefined") the_width = "auto";
+						if(typeof(the_height)=="undefined") the_height = "auto";
+						obj.css({"width":the_width,"height":the_height});
 						obj.fadeIn("slow");
 						if(obj.width()>params.width) obj.width(params.width);
 						$(this).remove();

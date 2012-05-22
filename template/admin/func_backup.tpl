@@ -20,7 +20,6 @@
 				<td class="cat" width="80">数 据 表：</td>
 				<td class="row">
 					<select name="table">
-						<option value="">请选择</option>
 						<option value="all">全部数据表</option>
 <!--loop:start key="tbls"-->
 						<option value="<!--tbls_name-->"><!--tbls_name--></option>
@@ -36,6 +35,7 @@
 						<option value="import">导入</option>
 						<option value="export">导出</option>
 						<option value="repair">修复</option>
+						<option value="optimize">优化</option>
 					</select>
 				</td>
 			</tr>
@@ -53,7 +53,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2" class="cat"><!--import_info--></td>
+				<td colspan="2" class="row"><!--op_info--></td>
 			</tr>
 		</table>
 	</form>
@@ -80,7 +80,7 @@ function setSelection(mode) {
 	} else if(mode=='import') {
 		document.db_bak.the_file.disabled=false;
 		document.db_bak.table.disabled=true;
-	} else if(mode=='repair') {
+	} else if(mode=='repair' || mode=='optimize') {
 		document.db_bak.the_file.outerHTML = document.db_bak.the_file.outerHTML;
 		document.db_bak.the_file.disabled=true;
 		document.db_bak.table.disabled=false;

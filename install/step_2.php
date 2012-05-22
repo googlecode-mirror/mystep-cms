@@ -84,7 +84,7 @@ $cookie_domain = $req->getServer("SERVER_NAME");
 				<tr>
 					<th class="tbopt">数据库名称：</th>
 					<td><input type="text" name="setting[db][name]" value="<?=$setting['db']['name']?>" size="35" class="txt" need=""></td>
-					<td>存储网站数据表的数据库名称</td>
+					<td>存储网站数据表的数据库名称（该数据库将被清空，如有重要数据，请注意备份！）</td>
 				</tr>
 				<tr>
 					<th class="tbopt">数据表前缀：</th>
