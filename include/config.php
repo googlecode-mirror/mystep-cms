@@ -33,7 +33,7 @@ $setting['gen']['template'] = 'classic';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
 $setting['gen']['update'] = 'http://www.mysteps.cn/update/';
 $setting['gen']['minify'] = false;
-$setting['gen']['etag'] = 20120507;
+$setting['gen']['etag'] = 20120520;
 $setting['gen']['show_info'] = true;
 
 $setting['email'] = array();
@@ -81,8 +81,8 @@ $setting['watermark']['position'] = 3;
 $setting['watermark']['img_rate'] = 4;
 $setting['watermark']['txt_font'] = 'images/font.ttc';
 $setting['watermark']['txt_fontsize'] = 12;
-$setting['watermark']['txt_fontcolor'] = 'FFFFFF';
-$setting['watermark']['txt_bgcolor'] = '000000';
+$setting['watermark']['txt_fontcolor'] = '#FFFFFF';
+$setting['watermark']['txt_bgcolor'] = '#000000';
 $setting['watermark']['alpha'] = 50;
 $setting['watermark']['credit'] = 'Original From MyStep';
 

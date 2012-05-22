@@ -61,6 +61,7 @@ if(!empty($_SERVER["HTTP_REFERER"]) && isset($file_list)) {
 	$dir_list = $fso->Get_List($plugin_path);
 	$plugin_list = array();
 	for($i=0,$m=count($dir_list['dir']); $i<$m; $i++) {
+		if(file_exists($dir_list['dir'][$i]."/lock")) continue;
 		if(is_file($dir_list['dir'][$i]."/info.php")) {
 			include($dir_list['dir'][$i]."/info.php");
 			$plugin_list[$info['idx']] = array(
