@@ -100,7 +100,8 @@ function build_page($method) {
 						$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id'] = $setting['language']['plugin_admin_cat_allsub'];
 						break;
 					default:
-						$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id'] = $GLOBALS['website'][$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id']];
+						$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id'] = getParaInfo("website", "web_id", $GLOBALS['admin_cat'][$i]['sub'][$j]['web_id']);
+						$GLOBALS['admin_cat'][$i]['sub'][$j]['web_id'] = $GLOBALS['admin_cat'][$i]['sub'][$j]['web_id']['name'];
 						break;
 				}
 				$GLOBALS['admin_cat'][$i]['sub'][$j]['name'] = "&nbsp; &nbsp; ".$GLOBALS['admin_cat'][$i]['sub'][$j]['name'];

@@ -2003,10 +2003,12 @@ $setting = $cur_setting;
 				V0.99.9.8.4
 				1.New plugin custom_form as a alias of meeting plugin added
 				2.Meeting plugin enhanced
+				3.Fix a bug in admin_cat plugin
 				Some other adjusts...
 			',
 		'file' => array(
 				'include/parameter.php',
+				'plugin/admin_cat/admin_cat.php',
 				'plugin/custom_form',
 				'plugin/custom_form/class.php',
 				'plugin/custom_form/config.php',
