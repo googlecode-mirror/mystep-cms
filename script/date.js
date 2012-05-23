@@ -83,7 +83,7 @@
 	im = LunarCal[y].Intercalation;
 	if ( im != 0 && LunarMonth > im ) {
 		LunarMonth--;
-		if ( LunarMonth == im ) LunarMonth = -im;
+		//if ( LunarMonth == im ) LunarMonth = -im;
 	}
 	if ( LunarMonth > 12 ) LunarMonth -= 12;
 	today=new Date();

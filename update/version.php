@@ -2004,6 +2004,7 @@ $setting = $cur_setting;
 				1.New plugin custom_form as a alias of meeting plugin added
 				2.Meeting plugin enhanced
 				3.Fix a bug in admin_cat plugin
+				4.Fix a bug in date.js
 				Some other adjusts...
 			',
 		'file' => array(
@@ -2066,6 +2067,7 @@ $setting = $cur_setting;
 				'plugin/meeting/tpl/default_regist_cn.tpl',
 				'plugin/meeting/tpl/default_regist_en.tpl',
 				'plugin/meeting/tpl/edit.tpl',
+				'script/date.js',
 				'script/global.js',
 			),
 		'setting' => array(
