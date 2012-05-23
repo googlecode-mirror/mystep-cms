@@ -39,7 +39,7 @@
 			<tr>
 				<td colspan="2">
 					<table width="100%">
-						<tr><td class="cat" colspan="4">注册项目 &nbsp; [<a href="###" onclick="addItem()">添加</a>]</td></tr>
+						<tr><td class="cat" colspan="4">注册项目 &nbsp; [<a href="###" onclick="addItem()">添加</a>] &nbsp; [<a href="###" onclick="exportItem()">导出</a>]</td></tr>
 						<tr align="center"><td class="cat" width="100">索引</td><td class="cat" width="100">名称</td><td class="cat">说明</td><td class="cat" width="200">操作</td></tr>
 						<tbody id="reg_list"></tbody>
 					</table>
@@ -201,6 +201,10 @@
 		<input type="hidden" name="item" value="" /><input class="btn" type="button" onClick="confirmItem(this.previousSibling.value)" value=" 确 定 " />
 	</div>
 </div>
+<div id="item_export" class="popshow">
+	<textarea style="width:96%;height:500px;"></textarea>
+	<div style="text-align:center;margin-top:10px;"><input class="btn" type="button" onClick="confirmExport()" value=" 复 制 " /> &nbsp; <input class="btn" type="button" onClick="$.closePopupLayer();" value=" 关 闭 " /></div>
+</div>
 <script language="JavaScript">
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
@@ -226,6 +230,19 @@ function addItem() {
 	showPop('addItem','添加注册项目','id','item_edit',500);
 	$("#popupLayer_addItem input[name='item']").val("add");
 	return;
+}
+function exportItem() {
+	showPop('exportItem','导出表单项目','id','item_export',500);
+	$("#popupLayer_exportItem textarea").val($.toJSON(cf_item));
+	return;
+}
+function confirmExport() {
+	if(copyStr($('#popupLayer_exportItem textarea').val())) {
+		alert("复制成功！")
+	} else {
+		alert("复制失败，请按“Ctrl + C”复制设置内容！");
+		$('#popupLayer_exportItem textarea').focus().select();
+	}
 }
 function editItem(item) {
 	showPop('editItem','修改注册项目','id','item_edit',500);

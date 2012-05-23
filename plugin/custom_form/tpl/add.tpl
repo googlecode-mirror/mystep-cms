@@ -18,14 +18,14 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">会议中文名称：</td>
+				<td class="cat">问卷中文名称：</td>
 				<td class="row">
 					<input name="name" type="text" value="" maxlength="60" need="" />
 					<input type="hidden" name="mid" value="" />
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">会议英文名称：</td>
+				<td class="cat">问卷英文名称：</td>
 				<td class="row">
 					<input name="name_en" type="text" value="" maxlength="100" need="" />
 				</td>
@@ -39,9 +39,9 @@
 			<tr>
 				<td colspan="2">
 					<table width="100%">
-						<tr><td class="cat" colspan="4">注册项目 &nbsp; [<a href="###" onclick="addItem()">添加</a>] &nbsp; [<a href="###" onclick="importItem()">导入</a>]</td></tr>
+						<tr><td class="cat" colspan="4">表单项目 &nbsp; [<a href="###" onclick="addItem()">添加</a>] &nbsp; [<a href="###" onclick="importItem()">导入</a>]</td></tr>
 						<tr align="center"><td class="cat" width="100">索引</td><td class="cat" width="100">名称</td><td class="cat">说明</td><td class="cat" width="200">操作</td></tr>
-						<tbody id="reg_list"></tbody>
+						<tbody id="item_list"></tbody>
 					</table>
 					<input type="hidden" id="itemlist" name="itemlist" value="" />
 				</td>
@@ -51,27 +51,27 @@
 					<table width="100%">
 						<tr><td class="cat" colspan="2">页面模板</td></tr>
 						<tr>
-							<td class="cat" width="100">中文注册页面：</td>
+							<td class="cat" width="100">中文表单页面：</td>
 							<td class="row">
-								<textarea class="source_code" type="php" name="tpl_reg_cn" style="width:100%; height:200px;"><!--tpl_reg_cn--></textarea>
+								<textarea class="source_code" type="php" name="tpl_cf_submit_cn" style="width:100%; height:200px;"><!--tpl_cf_submit_cn--></textarea>
 							</td>
 						</tr>
 						<tr>
-							<td class="cat">英文注册页面：</td>
+							<td class="cat">英文表单页面：</td>
 							<td class="row">
-								<textarea class="source_code" type="php" name="tpl_reg_en" style="width:100%; height:200px;"><!--tpl_reg_en--></textarea>
+								<textarea class="source_code" type="php" name="tpl_cf_submit_en" style="width:100%; height:200px;"><!--tpl_cf_submit_en--></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td class="cat" width="100">中文列表页面：</td>
 							<td class="row">
-								<textarea class="source_code" type="php" name="tpl_reglist_cn" style="width:100%; height:200px;"><!--tpl_reglist_cn--></textarea>
+								<textarea class="source_code" type="php" name="tpl_cf_list_cn" style="width:100%; height:200px;"><!--tpl_cf_list_cn--></textarea>
 							</td>
 						</tr>
 						<tr>
 							<td class="cat">英文列表页面：</td>
 							<td class="row">
-								<textarea class="source_code" type="php" name="tpl_reglist_en" style="width:100%; height:200px;"><!--tpl_reglist_en--></textarea>
+								<textarea class="source_code" type="php" name="tpl_cf_list_en" style="width:100%; height:200px;"><!--tpl_cf_list_en--></textarea>
 							</td>
 						</tr>
 						<tr>
@@ -87,15 +87,15 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="cat">注册编辑模板：</td>
+							<td class="cat">表单编辑模板：</td>
 							<td class="row">
-								<textarea class="source_code" type="php" name="tpl_edit_reg" style="width:100%; height:200px;"><!--tpl_edit_reg--></textarea>
+								<textarea class="source_code" type="php" name="tpl_edit_data" style="width:100%; height:200px;"><!--tpl_edit_data--></textarea>
 							</td>
 						</tr>
 						<tr>
-							<td class="cat">注册列表模板：</td>
+							<td class="cat">表单列表模板：</td>
 							<td class="row">
-								<textarea class="source_code" type="php" name="tpl_list_reg" style="width:100%; height:200px;"><!--tpl_list_reg--></textarea>
+								<textarea class="source_code" type="php" name="tpl_list_data" style="width:100%; height:200px;"><!--tpl_list_data--></textarea>
 							</td>
 						</tr>
 						<tr>
@@ -212,22 +212,22 @@ if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopu
 		screenLockerOpacity: "0.4"
 	});
 });
-var reg_item=<!--reg_item-->;
+var cf_item=<!--cf_item-->;
 $(function(){
 	refreshItem();
 });
 function refreshItem() {
-	var ole = $("#reg_list");
+	var ole = $("#item_list");
 	var curItem = null;
 	ole.empty();
-	for(var item in reg_item) {
-		curItem = $('<tr id="item_'+item+'"><td class="cat">'+item+'</td><td class="row">'+(reg_item[item].title.length>0?reg_item[item].title:reg_item[item].title_en)+'</td><td class="row">'+(reg_item[item].comment.length>0?reg_item[item].comment:reg_item[item].comment_en)+'</td><td class="row" align="center"><a href="###" onclick="orderItem(\''+item+'\', 1)">提升</a> &nbsp; <a href="###" onclick="orderItem(\''+item+'\', 0)">下降</a> &nbsp; <a href="###" onclick="editItem(\''+item+'\')">编辑</a> &nbsp; <a href="###" onclick="removeItem(\''+item+'\')">删除</a></td></tr>');
+	for(var item in cf_item) {
+		curItem = $('<tr id="item_'+item+'"><td class="cat">'+item+'</td><td class="row">'+(cf_item[item].title.length>0?cf_item[item].title:cf_item[item].title_en)+'</td><td class="row">'+(cf_item[item].comment.length>0?cf_item[item].comment:cf_item[item].comment_en)+'</td><td class="row" align="center"><a href="###" onclick="orderItem(\''+item+'\', 1)">提升</a> &nbsp; <a href="###" onclick="orderItem(\''+item+'\', 0)">下降</a> &nbsp; <a href="###" onclick="editItem(\''+item+'\')">编辑</a> &nbsp; <a href="###" onclick="removeItem(\''+item+'\')">删除</a></td></tr>');
 		curItem.appendTo(ole);
 		curItem = null;
 	}
 }
 function addItem() {
-	showPop('addItem','添加注册项目','id','item_edit',500);
+	showPop('addItem','添加表单项目','id','item_edit',500);
 	$("#popupLayer_addItem input[name='item']").val("add");
 	return;
 }
@@ -244,36 +244,36 @@ function confirmImport() {
 	return;
 }
 function editItem(item) {
-	showPop('editItem','修改注册项目','id','item_edit',500);
+	showPop('editItem','修改表单项目','id','item_edit',500);
 	$("#popupLayer_editItem input[name='item']").val("edit");
 	$("#popupLayer_editItem input[name='idx']").val(item);
 	$("#popupLayer_editItem input[name='idx_org']").val(item);
-	$("#popupLayer_editItem select[name='type']").val(reg_item[item]['type']);
-	if(typeof(reg_item[item]['value'].cn)!="undefined") $("#popupLayer_editItem textarea[name='value_cn']").val(reg_item[item]['value'].cn.join("\n"));
-	if(typeof(reg_item[item]['value'].en)!="undefined") $("#popupLayer_editItem textarea[name='value_en']").val(reg_item[item]['value'].en.join("\n"));
-	$("#popupLayer_editItem input[name='default']").val(reg_item[item]['default']);
-	$("#popupLayer_editItem input[name='default_en']").val(reg_item[item]['default_en']);
-	if(reg_item[item]['format']==".") {
+	$("#popupLayer_editItem select[name='type']").val(cf_item[item]['type']);
+	if(typeof(cf_item[item]['value'].cn)!="undefined") $("#popupLayer_editItem textarea[name='value_cn']").val(cf_item[item]['value'].cn.join("\n"));
+	if(typeof(cf_item[item]['value'].en)!="undefined") $("#popupLayer_editItem textarea[name='value_en']").val(cf_item[item]['value'].en.join("\n"));
+	$("#popupLayer_editItem input[name='default']").val(cf_item[item]['default']);
+	$("#popupLayer_editItem input[name='default_en']").val(cf_item[item]['default_en']);
+	if(cf_item[item]['format']==".") {
 		$("#popupLayer_editItem select[name='format']").val("");
-	} else if(reg_item[item]['format']=="") {
+	} else if(cf_item[item]['format']=="") {
 		$("#popupLayer_editItem select[name='format']").val("");
 		$("#popupLayer_editItem input[name='needed']")[0].checked = true;
 	} else {
-		if(reg_item[item]['format'].indexOf("_")==-1) $("#popupLayer_editItem input[name='needed']")[0].checked = true;
-		$("#popupLayer_editItem select[name='format']").val(reg_item[item]['format'].replace("_", ""));
+		if(cf_item[item]['format'].indexOf("_")==-1) $("#popupLayer_editItem input[name='needed']")[0].checked = true;
+		$("#popupLayer_editItem select[name='format']").val(cf_item[item]['format'].replace("_", ""));
 	}
-	$("#popupLayer_editItem input[name='length']").val(reg_item[item]['length']);
-	$("#popupLayer_editItem input[name='title']").val(reg_item[item]['title']);
-	$("#popupLayer_editItem input[name='title_en']").val(reg_item[item]['title_en']);
-	$("#popupLayer_editItem input[name='comment']").val(reg_item[item]['comment']);
-	$("#popupLayer_editItem input[name='comment_en']").val(reg_item[item]['comment_en']);
+	$("#popupLayer_editItem input[name='length']").val(cf_item[item]['length']);
+	$("#popupLayer_editItem input[name='title']").val(cf_item[item]['title']);
+	$("#popupLayer_editItem input[name='title_en']").val(cf_item[item]['title_en']);
+	$("#popupLayer_editItem input[name='comment']").val(cf_item[item]['comment']);
+	$("#popupLayer_editItem input[name='comment_en']").val(cf_item[item]['comment_en']);
 	return;
 }
 function removeItem(item) {
 	if(confirm("是否确认删除项目："+item)==false) return;
-	delete reg_item[item];
+	delete cf_item[item];
 	$("#item_"+item).remove();
-	$id("itemlist").value = $.toJSON(reg_item);
+	$id("itemlist").value = $.toJSON(cf_item);
 	return;
 }
 function orderItem(item, mode) {
@@ -281,18 +281,18 @@ function orderItem(item, mode) {
 	var nxt_item = null;
 	var new_order = new Object();
 	var tmp = null
-	for(var i in reg_item) {
-		new_order[i] = reg_item[i];
+	for(var i in cf_item) {
+		new_order[i] = cf_item[i];
 		if(nxt_item!=null) {
 			if($.browser.msie) {
 				//For a IE BUG
 				tmp = copyObj(new_order);
-				tmp[nxt_item] = reg_item[nxt_item];
+				tmp[nxt_item] = cf_item[nxt_item];
 				delete new_order;
 				new_order = copyObj(tmp);
 				delete tmp;
 			} else {
-				new_order[nxt_item] = reg_item[nxt_item];
+				new_order[nxt_item] = cf_item[nxt_item];
 			}
 			nxt_item = null;
 		}
@@ -302,12 +302,12 @@ function orderItem(item, mode) {
 				if($.browser.msie) {
 					//For a IE BUG
 					tmp = copyObj(new_order);
-					tmp[pre_item] = reg_item[pre_item];
+					tmp[pre_item] = cf_item[pre_item];
 					delete new_order;
 					new_order = copyObj(tmp);
 					delete tmp;
 				} else {
-					new_order[pre_item] = reg_item[pre_item];
+					new_order[pre_item] = cf_item[pre_item];
 				}
 			} else {
 				delete new_order[i];
@@ -316,8 +316,8 @@ function orderItem(item, mode) {
 		}
 		pre_item = i;
 	}
-	reg_item = new_order;
-	$id("itemlist").value = $.toJSON(reg_item);
+	cf_item = new_order;
+	$id("itemlist").value = $.toJSON(cf_item);
 	refreshItem();
 	return;
 }
@@ -366,8 +366,8 @@ function confirmItem(mode) {
 			}
 			if(idx=="") return;
 			if(new_item["value"].cn.length<2) new_item["value"] = "";
-			reg_item[idx] = new_item;
-			$('<tr id="item_'+idx+'"><td class="cat">'+idx+'</td><td class="row">'+(reg_item[idx].title.length>0?reg_item[idx].title:reg_item[idx].title_en)+'</td><td class="row">'+(reg_item[idx].comment.length>0?reg_item[idx].comment:reg_item[idx].comment_en)+'</td><td class="row" align="center"><a href="###" onclick="editItem(\''+idx+'\')">编辑</a> &nbsp; <a href="###" onclick="removeItem(\''+idx+'\')">删除</a></td></tr>').appendTo($("#reg_list"));
+			cf_item[idx] = new_item;
+			$('<tr id="item_'+idx+'"><td class="cat">'+idx+'</td><td class="row">'+(cf_item[idx].title.length>0?cf_item[idx].title:cf_item[idx].title_en)+'</td><td class="row">'+(cf_item[idx].comment.length>0?cf_item[idx].comment:cf_item[idx].comment_en)+'</td><td class="row" align="center"><a href="###" onclick="editItem(\''+idx+'\')">编辑</a> &nbsp; <a href="###" onclick="removeItem(\''+idx+'\')">删除</a></td></tr>').appendTo($("#item_list"));
 			break;
 		case "edit":
 			var idx = "";
@@ -406,15 +406,15 @@ function confirmItem(mode) {
 			}
 			if(new_item["value"].cn.length<2) new_item["value"] = "";
 			if(idx=="") return;
-			if(idx!=idx_org) delete reg_item[idx_org];
-			reg_item[idx] = new_item;
+			if(idx!=idx_org) delete cf_item[idx_org];
+			cf_item[idx] = new_item;
 			$("#item_"+idx_org).replaceWith('<tr id="item_'+idx+'"><td class="cat">'+idx+'</td><td class="row">'+(new_item.title.length>0?new_item.title:new_item.title_en)+'</td><td class="row">'+(new_item.comment.length>0?new_item.comment:new_item.comment_en)+'</td><td class="row" align="center"><a href="###" onclick="editItem(\''+idx+'\')">编辑</a> &nbsp; <a href="###" onclick="removeItem(\''+idx+'\')">删除</a></td></tr>');
 			break;
 		default:
 			return;
 	}
 	$.closePopupLayer();
-	$id("itemlist").value = $.toJSON(reg_item);
+	$id("itemlist").value = $.toJSON(cf_item);
 	refreshItem();
 	return;
 }

@@ -1,4 +1,4 @@
-<table border="1" cellspacing="0" cellpadding="0" align="center" width="700">
+<table border="1" cellspacing="0" cellpadding="0" align="center" width="700" class="reg_list">
 	<tr>
 		<th>ÐòºÅ</th>
 		<th>µ¥Î»Ãû³Æ</th>
@@ -13,6 +13,6 @@
 		<td><!--reg_name--></td>
 		<td><!--reg_duty--></td>
 		<td><!--reg_country--></td>
-<!--loop:end-->
 	</tr>
+<!--loop:end-->
 </table>

@@ -1,5 +1,5 @@
 <?php
-class plugin_meeting implements plugin {
+class plugin_custom_form implements plugin {
 	public static function install() {
 		global $setting;
 		$info = self::info();
@@ -13,8 +13,8 @@ class plugin_meeting implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_meeting", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '会议', 'meeting.php', '../plugin/meeting/', 0, 0, '".$info['intro']."')");
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_custom_form", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '表单', 'custom_form.php', '../plugin/custom_form/', 0, 0, '".$info['intro']."')");
 		$new_id = $db->GetInsertId();
 		$err = array();
 		if($db->GetError($err)) {
@@ -46,19 +46,19 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->Query("select mid from ".$setting['db']['pre']."meeting");
+		$db->Query("select mid from ".$setting['db']['pre']."custom_form");
 		$sql_list = array();
 		while($record = $db->GetRS()) {
-			$sql_list[] = "truncate table ".$setting['db']['pre']."meeting_".$record['mid'];
-			$sql_list[] = "drop table ".$setting['db']['pre']."meeting_".$record['mid'];
-			unlink(dirname(__FILE__)."/setting/{$record['mid']}_regist_cn.tpl");
-			unlink(dirname(__FILE__)."/setting/{$record['mid']}_regist_en.tpl");
-			unlink(dirname(__FILE__)."/setting/{$record['mid']}_reglist_cn.tpl");
-			unlink(dirname(__FILE__)."/setting/{$record['mid']}_reglist_en.tpl");
+			$sql_list[] = "truncate table ".$setting['db']['pre']."custom_form_".$record['mid'];
+			$sql_list[] = "drop table ".$setting['db']['pre']."custom_form_".$record['mid'];
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_cf_submit_cn.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_cf_submit_en.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_cf_list_cn.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_cf_list_en.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_mail_cn.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_mail_en.tpl");
-			unlink(dirname(__FILE__)."/setting/{$record['mid']}_edit_reg.tpl");
-			unlink(dirname(__FILE__)."/setting/{$record['mid']}_list_reg.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_edit_data.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_list_data.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_ext_script.php");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}.php");
 		}
@@ -66,9 +66,9 @@ mystep;
 		$db->BatchExec($sql_list);
 		include("config.php");
 		if(isset($catid) && $catid!=0)	$db->query("delete from ".$setting['db']['pre']."admin_cat where pid='".$catid."'");
-		$db->query("truncate table ".$setting['db']['pre']."meeting");
-		$db->query("drop table ".$setting['db']['pre']."meeting");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'meeting.php%'");
+		$db->query("truncate table ".$setting['db']['pre']."custom_form");
+		$db->query("drop table ".$setting['db']['pre']."custom_form");
+		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'custom_form.php%'");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
 		$err = array();
 		if($db->GetError($err)) {
@@ -122,7 +122,7 @@ $catid = 0;
 		return $result;
 	}
 	
-	public static function tag_reg(MyTPL $tpl, $att_list = array()) {
+	public static function tag_list(MyTPL $tpl, $att_list = array()) {
 		global $setting;
 		$result = "";
 		if(!isset($att_list['mid'])) return "";
@@ -133,12 +133,12 @@ $catid = 0;
 		if(!isset($att_list['condition'])) $att_list['condition'] = "";
 		if(!isset($att_list['template'])) $att_list['template'] = "";
 		
-		$str_sql = "select * from ".$setting['db']['pre']."meeting_".$att_list['mid']." where 1=1";
+		$str_sql = "select * from ".$setting['db']['pre']."custom_form_".$att_list['mid']." where 1=1";
 		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
 		$str_sql .= " order by ".$att_list['order'];
 		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
 		
-		$tpl_file = dirname(__FILE__)."/tpl/block_reg".($att_list['lng']=="en"?"_en":"_cn");
+		$tpl_file = dirname(__FILE__)."/tpl/block_cf_list".($att_list['lng']=="en"?"_en":"_cn");
 		if(!empty($att_list['template']) && is_file($tpl_file."_".$att_list['template'].".tpl")) {
 			$tpl_file .= "_".$att_list['template'].".tpl";
 		} else {
@@ -152,7 +152,7 @@ $catid = 0;
 		$unit_blank = preg_replace("/".preg_quote($tpl->delimiter_l).".*?".preg_quote($tpl->delimiter_r)."/is", "", $unit);
 		$unit_blank = preg_replace("/<(td|li|p|dd|dt)([^>]*?)>.*?<\/\\1>/is", "<\\1\\2>&nbsp;</\\1>", $unit_blank);
 		$unit_blank = addslashes($unit_blank);
-		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."reg_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
+		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."cf_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
 		$result = <<<mytpl
 <?php
 \$db->Query("{$str_sql}");

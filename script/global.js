@@ -166,7 +166,6 @@ function copyStr(txt) {
 		var clipid = Components.interfaces.nsIClipboard;
 		if(!clip) return false;
 		clip.setData(trans,null,clipid.kGlobalClipboard);
-		alert("复制成功！")
 	} else {
 		return false;
 	}

@@ -1,14 +1,14 @@
 <div style="padding-top:20px;text-align:center;font-size:18px;font-weight:bold;">
-	<!--meeting_name-->
+	<!--custom_form_name-->
 </div>
 <hr />
 <br />
 <script src="script/checkForm.js" Language="JavaScript1.2"></script>
 <script src="script/jquery.date_input.js" Language="JavaScript1.2"></script>
-<form name="regist" method="post" ACTION="?m=regist" ENCTYPE="multipart/form-data" onsubmit="return checkForm(this)">
+<form name="cf_submit" method="post" ACTION="?m=cf_submit" ENCTYPE="multipart/form-data" onsubmit="return checkForm(this)">
 	<input name="id" type="hidden" value="0" />
 	<input name="mid" type="hidden" value="<!--mid-->" />
-	<table width="780" border="0" class="tbl_reg" align="center" cellpadding="2" cellspacing="1">
+	<table width="780" border="0" class="cf_form" align="center" cellpadding="2" cellspacing="1">
 <?php
 foreach($para as $key => $value) {
 	if(empty($value['title_en'])) continue;
@@ -84,6 +84,6 @@ mystep;
 var uTime = (new Date()).getTime();
 var date = new Date();
 date.setTime(uTime+10*60*1000);
-$.cookie('reg_time', Math.round(date.getTime()/1000), {expires: date});
+$.cookie('cf_time', Math.round(date.getTime()/1000), {expires: date});
 </script>
 
