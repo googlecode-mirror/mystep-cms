@@ -2086,6 +2086,7 @@ $setting = $cur_setting;
 				'admin/web_cache.php',
 				'admin/web_rewrite.php',
 				'admin/web_setting.php',
+				'admin/update.php',
 				'error.php',
 				'include/config.php',
 				'include/config/chs.php',
@@ -2171,7 +2172,7 @@ $setting = $cur_setting;
 				'gen' => array(
 						'etag' => '20120605',
 					),
-					'rewrite' => array(
+				'rewrite' => array(
 						'enable' => false,
 						'read' => 'article',
 						'list' => 'catalog',
@@ -2196,6 +2197,11 @@ $cur_setting = $setting;
 unset($setting);
 include(ROOT_PATH."/include/config.php");
 unset($setting["gen"]["rewrite"]);
+$setting["rewrite"] = array();
+$setting["rewrite"]["enable"] = false;
+$setting["rewrite"]["read"] = "article";
+$setting["rewrite"]["list"] = "catalog";
+$setting["rewrite"]["tag"] = "tag";
 $rewrite_list = var_export($rewrite_list, true);
 $expire_list = var_export($expire_list, true);
 $ignore_list = var_export($ignore_list, true);
