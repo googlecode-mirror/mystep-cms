@@ -127,6 +127,20 @@ mytpl;
 		return $result;
 	}
 	
+	public static function getUrl($idx="", $page=1, $web_id=1) {
+		global $setting;
+		if(!is_numeric($page)) $page = 1;
+		$webInfo = getParaInfo("website", "web_id", $web_id);
+		$url = "http://".$webInfo['host'];
+		if($setting['rewrite']['enable']) {
+			$url .= "/search/".$idx."/".$page;
+		} else {
+			$url .= "/module.php?m=search&k=".$idx."&page=".$page;
+		}
+		$url = str_replace("//", "/", $url);
+		$url = str_replace("http:/", "http://", $url);
+		return $url;
+	}
 	
 	public static function tag_keyword(MyTPL $tpl, $att_list = array()) {
 		if(!isset($att_list['limit'])) $att_list['limit'] = 10;
@@ -146,6 +160,7 @@ mytpl;
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
 	\$record["encode"] = urlencode(\$record["keyword"]);
+	\$record["url"] = getUrl("search", \$record["keyword"]);
 	HtmlTrans(&\$record);
 	echo <<<content
 {$unit}

@@ -8,4 +8,8 @@ $info = array(
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",
 	"description" => "<b>本插件主要用于定制并生成表单，如会议注册报名、网上调查等</b>"
 );
+$rewrite = array(
+	array("cform/submit/(\d+)", "module.php?m=cf_submit&mid=$1"),
+	array("cform/list/(\d+)", "module.php?m=cf_list&mid=$1"),
+);
 ?>

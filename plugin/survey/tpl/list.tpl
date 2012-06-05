@@ -24,7 +24,7 @@
 <!--loop:start key="record" time="20"-->
 		<tr align="center">
 			<td class="row"><!--record_id--></td>
-			<td class="row" align="left"><a href="../survey.php?id=<!--record_id-->" target="_blank"><!--record_subject--></a></td>
+			<td class="row" align="left"><a href="<!--record_link-->" target="_blank"><!--record_subject--></a></td>
 			<td class="row" align="left"><!--record_describe--></td>
 			<td class="row"><!--record_max_select--></td>
 			<td class="row"><!--record_add_date--></td>

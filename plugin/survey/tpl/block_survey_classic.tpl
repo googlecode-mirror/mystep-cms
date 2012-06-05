@@ -5,7 +5,8 @@
 			<input id="vote_<!--vote_id-->_<!--vote_idx-->" type="<!--vote_type-->" name="vote" value="<!--vote_idx-->" />
 			<label for="vote_<!--vote_id-->_<!--vote_idx-->">
 				<em><!--vote_catalog--></em>
-				<a href="<!--vote_url-->" target="_blank"><!--vote_title--></a>
+				<!--vote_title-->
+				<a href="<!--vote_url-->" target="_blank"><!--vote_link_text--></a>
 				<i>£¨¹²»ñ <!--vote_vote--> Æ±£©</i>
 			</label>
 		</li>

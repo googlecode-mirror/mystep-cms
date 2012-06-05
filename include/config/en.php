@@ -47,7 +47,6 @@ $setting_comm['gen']['language'] = 'Language';
 $setting_comm['gen']['charset'] = 'Charset';
 $setting_comm['gen']['gzip_level'] = 'Gzip output';
 $setting_comm['gen']['cache'] = 'HTML Cache';
-$setting_comm['gen']['rewrite'] = 'URL Rewrite';
 $setting_comm['gen']['cache_ext'] = 'Rewrite Ext.';
 $setting_comm['gen']['template'] = 'Template';
 $setting_comm['gen']['timezone'] = "Timezone";
@@ -59,7 +58,6 @@ $setting_comm['gen_descr']['language'] = 'Change CMS language';
 $setting_comm['gen_descr']['charset'] = 'Charset of CMS';
 $setting_comm['gen_descr']['gzip_level'] = 'GZIP page content (Level 0-9)';
 $setting_comm['gen_descr']['cache'] = 'Save high frequency db query data into cache';
-$setting_comm['gen_descr']['rewrite'] = 'Generate a .html url for every page of CMS';
 $setting_comm['gen_descr']['cache_ext'] = 'Extension name of URL Rewrite';
 $setting_comm['gen_descr']['template'] = 'Default Style for website';
 $setting_comm['gen_descr']['timezone'] = "Set the timezone of the website";
@@ -67,6 +65,17 @@ $setting_comm['gen_descr']['update'] = "From the URL your can get the newest upd
 $setting_comm['gen_descr']['minify'] = "Minify the html code of each page to reduce the internet transfer time";
 $setting_comm['gen_descr']['etag'] = "Append to Etag with which to avoid non-modification HTML pages transfer";
 $setting_comm['gen_descr']['show_info'] = "Show execution information at the bottom of page";
+
+$setting_comm['rewrite'] = array();
+$setting_comm['rewrite_comm'] = 'URL Rewrite Rules Setting';
+$setting_comm['rewrite']['enable'] = 'URL Rewrite';
+$setting_comm['rewrite']['read'] = 'Article Page';
+$setting_comm['rewrite']['list'] = 'List Page';
+$setting_comm['rewrite']['tag'] = 'Tag Page';
+$setting_comm['rewrite_descr']['enable'] = 'Generate a .html url for every page of CMS';
+$setting_comm['rewrite_descr']['read'] = 'Index of article page for rewrite';
+$setting_comm['rewrite_descr']['list'] = 'Index of list page for rewrite';
+$setting_comm['rewrite_descr']['tag'] = 'Index of tag page for rewrite';
 
 $setting_comm['email'] = array();
 $setting_comm['email_comm'] = 'SMTP Parameter Set';
@@ -200,21 +209,26 @@ $setting_type['db']['pass'] = array("password", "", "40");
 $setting_type['db']['charset'] = array("select", array("GBK"=>"gbk", "UTF-8"=>"utf8", "Latin1"=>"latin1"));
 $setting_type['db']['name'] = array("text", "alpha", "20");
 $setting_type['db']['pre'] = array("text", "alpha", "10");
-$setting_type['db']['pconnect'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['db']['pconnect'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
 
 $setting_type['gen'] = array();
 $setting_type['gen']['language'] = array("text", "alpha", "10");
 $setting_type['gen']['charset'] = array("text", "alpha", "10");
 $setting_type['gen']['gzip_level'] = array("text", "digital", "1");
-$setting_type['gen']['cache'] = array("radio", array("Open"=>"true", "Close"=>"false"));
-$setting_type['gen']['rewrite'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['gen']['cache'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
 $setting_type['gen']['cache_ext'] = array("text", "", "10");
 $setting_type['gen']['template'] = array("text", "alpha", "20");
 $setting_type['gen']['timezone'] = array("select", array("GMT-12"=>"Etc/GMT+12", "GMT-11"=>"Etc/GMT+11", "GMT-10"=>"Etc/GMT+10", "GMT-9"=>"Etc/GMT+9", "GMT-8"=>"Etc/GMT+8", "GMT-7"=>"Etc/GMT+7", "GMT-6"=>"Etc/GMT+6", "GMT-5"=>"Etc/GMT+5", "GMT-4"=>"Etc/GMT+4", "GMT-3"=>"Etc/GMT+3", "GMT-2"=>"Etc/GMT+2", "GMT-1"=>"Etc/GMT+1", "GMT"=>"Etc/GMT", "GMT+1"=>"Etc/GMT-1", "GMT+2"=>"Etc/GMT-2", "GMT+3"=>"Etc/GMT-3", "GMT+4"=>"Etc/GMT-4", "GMT+5"=>"Etc/GMT-5", "GMT+6"=>"Etc/GMT-6", "GMT+7"=>"Etc/GMT-7", "GMT+8"=>"Etc/GMT-8", "GMT+9"=>"Etc/GMT-9", "GMT+10"=>"Etc/GMT-10", "GMT+11"=>"Etc/GMT-11", "GMT+12"=>"Etc/GMT-12"));
 $setting_type['gen']['update'] = array("text", "url", "200");
-$setting_type['gen']['minify'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['gen']['minify'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
 $setting_type['gen']['etag'] = array("text", "", "10");
 $setting_type['gen']['show_info'] = array("radio", array("Show"=>"true", "Hide"=>"false"));
+
+$setting_type['rewrite'] = array();
+$setting_type['rewrite']['enable'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
+$setting_type['rewrite']['read'] = array("text", "", "10");
+$setting_type['rewrite']['list'] = array("text", "", "10");
+$setting_type['rewrite']['tag'] = array("text", "", "10");
 
 $setting_type['email'] = array();
 $setting_type['email']['mode'] = array("select", array("PHP mail()"=>"", "Normal SMTP"=>"smtp", "SSL SMTP"=>"ssl", "TLS SMTP"=>"tls", "SSL/TLS Mix"=>"ssl/tls"));
@@ -224,7 +238,7 @@ $setting_type['email']['user'] = array("text", false, "30");
 $setting_type['email']['password'] = array("text", false, "40");
 
 $setting_type['js'] = array();
-$setting_type['js']['debug'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['js']['debug'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
 
 $setting_type['list'] = array();
 $setting_type['list']['txt'] = array("text", "digital", "2");
@@ -234,8 +248,8 @@ $setting_type['list']['rss'] = array("text", "digital", "2");
 
 $setting_type['session'] = array();
 $setting_type['session']['expire'] = array("text", "digital", "2");
-$setting_type['session']['gc'] = array("radio", array("Open"=>"true", "Close"=>"false"));
-$setting_type['session']['trans_sid'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['session']['gc'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
+$setting_type['session']['trans_sid'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
 $setting_type['session']['name'] = array("text", "alpha", "10");
 $setting_type['session']['mode'] = array("select", array("MyStep mode"=>"sess_mystep", "DB mode"=>"sess_mysql", "File Mode"=>"sess_file"));
 
@@ -252,7 +266,7 @@ $setting_type['path']['template'] = array("text", "", "20");
 
 $setting_type['content'] = array();
 $setting_type['content']['max_length'] = array("text", "digital", "8");
-$setting_type['content']['get_remote_img'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['content']['get_remote_img'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
 
 $setting_type['watermark'] = array();
 $setting_type['watermark']['mode'] = array("checkbox", array("Text"=>1, "Image"=>2));
@@ -267,16 +281,13 @@ $setting_type['watermark']['txt_bgcolor'] = array("text", "", "7");
 $setting_type['watermark']['alpha'] = array("text", "digital", "3");
 $setting_type['watermark']['credit'] = array("text", "", "30");
 
-$setting_type['cache'] = array();
-$setting_type['cache']['memcache'] = array("radio", array("Open"=>"true", "Close"=>"false"));
-$setting_type['cache']['eaccelerator'] = array("radio", array("Open"=>"true", "Close"=>"false"));
-$setting_type['cache']['xcache'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['memcache'] = array();
 $setting_type['memcache']['server'] = array("text", false, "40");
 $setting_type['memcache']['weight'] = array("text", "digital", "2");
-$setting_type['memcache']['persistant'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['memcache']['persistant'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
 $setting_type['memcache']['timeout'] = array("text", "digital", "2");
 $setting_type['memcache']['retry_interval'] = array("text", "digital", "2");
-$setting_type['memcache']['status'] = array("radio", array("Open"=>"true", "Close"=>"false"));
+$setting_type['memcache']['status'] = array("radio", array("Enable"=>"true", "Disable"=>"false"));
 $setting_type['memcache']['expire'] = array("text", "digital", "8");
 $setting_type['memcache']['threshold'] = array("text", "number", "8");
 $setting_type['memcache']['min_savings'] = array("text", "number", "3");

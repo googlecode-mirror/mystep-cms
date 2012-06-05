@@ -33,7 +33,7 @@ while($record = $db->GetRS()) {
 	HtmlTrans(&$record);
 	$record['jump_time'] = date("Y-m-d", $record['jump_time']);
 	$record['rank_time'] = date("Y-m-d", $record['rank_time']);
-	$record['link'] = getFileURL($record['news_id'], "", $web_id);
+	$record['link'] = getUrl("list", $record['news_id'], 1, $web_id);
 	$catInfo = getParaInfo("news_cat", "cat_id", $record['cat_id']);
 	$record['cat_id'] = $catInfo['cat_name'];
 	$tpl->Set_Loop('record', $record);

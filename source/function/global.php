@@ -130,6 +130,7 @@ function add_slash(&$para) {
 		foreach($para as $key => $value) {
 			if(is_array($value)) {
 				add_slash($value);
+				$para[$key] = $value;
 			} else {
 				if(is_string($value)) $para[$key] = addslashes($value);
 			}
@@ -146,6 +147,7 @@ function strip_slash(&$para) {
 		foreach($para as $key => $value) {
 			if(is_array($value)) {
 				strip_slash($value);
+				$para[$key] = $value;
 			} else {
 				if(is_string($value)) $para[$key] = stripslashes($value);
 			}

@@ -193,7 +193,7 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	HtmlTrans(&\$record);
 	\$record['style'] = \$n++%2 ? "{$att_list['css1']}" : "{$att_list['css2']}";
 	\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
-	if(empty(\$record['link'])) \$record['link'] = getFileURL(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:""), \$record['web_id']);
+	if(empty(\$record['link'])) \$record['link'] = getUrl("read", array(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:"")), 1, \$record['web_id']);
 	\$record['add_date'] = "";
 	\$record['catalog'] = "";
 	echo <<<content

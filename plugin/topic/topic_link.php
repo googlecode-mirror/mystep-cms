@@ -86,7 +86,7 @@ switch($method) {
 			$record['id'] = "0";
 			$record['topic_id'] = $topic_id;
 			$record['link_name'] = $item[1];
-			$record['link_url'] = getFileURL($item[2], "", $req->getReq("web_id"));
+			$record['link_url'] = getUrl("read", $item[2], 1, $req->getReq("web_id"));
 			$record['link_cat'] = $cat_list[$item[0]-1];
 			$record['link_order'] = "0";
 			$record['add_date'] = date("Y-m-d H:i:s");

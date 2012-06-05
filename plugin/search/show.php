@@ -38,6 +38,7 @@ if(!empty($mode)) {
 	$news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".(empty($condition)?"":" and {$condition}"), "result");
 	$tpl_tmp->Set_Variable('title', $setting['web']['title']);
 	$tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
+	$tpl_tmp->Set_Variable('keyword', $keyword);
 	$tpl_tmp->Set_Variable('page_list', PageList($page, ceil($news_count/$page_size)));
 	$limit = (($page-1)*$page_size).", ".$page_size;
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
@@ -48,5 +49,5 @@ if(!empty($mode)) {
 	}
 	$mystep->show($tpl);
 }
-$mystep->pageEnd();
+if(!empty($goto_url)) $setting['gen']['show_info'] = false;
 ?>

@@ -12,6 +12,9 @@ $info_default = array(
 <b>survey: </b>用于显示对应ID的投票，可控属性包括 id, order, template 等
 <b>survey_list: </b>用于显示现有调查列表，可控属性包括 order, limit, condition 等",
 );
+$rewrite = array(
+	array("survey/(\d+)", "module.php?m=survey&id=$1"),
+);
 
 if(isset($setting['gen']['language'])) {
 	if(is_file(realpath(dirname(__FILE__))."/info/".$setting['gen']['language'].".php")) {

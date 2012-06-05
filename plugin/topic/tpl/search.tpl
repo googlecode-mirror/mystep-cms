@@ -57,4 +57,7 @@ function check_it(mode) {
 	all_box.attr("checked", mode);
 	return;
 }
+$(function(){
+	parent.setIframe('searchArticle');
+});
 </script>

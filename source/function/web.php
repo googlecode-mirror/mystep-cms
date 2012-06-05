@@ -355,43 +355,90 @@ function getFuncData($func) {
 	return $result;
 }
 
-function getFileURL($news_id=0, $cat_idx="", $web_id=1, $page=1) {
+function getUrl($mode, $idx="", $page=1, $web_id=0) {
 	global $setting;
+	if($web_id == 0) $web_id = $setting['info']['web']['web_id'];
+	if(!is_numeric($page)) $page = 1;
 	$webInfo = getParaInfo("website", "web_id", $web_id);
+	if($webInfo===false) return "#";
 	$url = $webInfo['host'];
-	if($setting['gen']['rewrite']) {
-		if(is_numeric($cat_idx)) {
-			if($cat_info = getParaInfo("news_cat_sub", "cat_id", $cat_idx)) {
-				$cat_idx = $cat_info['cat_idx'];
+	switch($mode) {
+		case "read":
+			if(is_array($idx)) {
+				$news_id = $idx[0];
+				$cat_idx = $idx[1];
 			} else {
+				$news_id = $idx;
 				$cat_idx = "";
 			}
-		}
-		$url = "http://".str_replace("//", "/", $url);
-		if($news_id==0) {
-			if(!empty($cat_idx)) {
-				$url .= "/catalog/".$cat_idx."/";
+			if($setting['rewrite']['enable']) {
+				if(is_numeric($cat_idx)) {
+					if($cat_info = getParaInfo("news_cat_sub", "cat_id", $cat_idx)) {
+						$cat_idx = $cat_info['cat_idx'];
+					} else {
+						$cat_idx = "";
+					}
+				}
+				$url = "http://".$url."/".$setting['rewrite']['read']."/";
+				if($news_id!=0) {
+					if(empty($cat_idx)) $cat_idx = "misc";
+					$url .= $cat_idx."/";
+					$url .= $news_id.($page==1?"":"_{$page}").$setting['gen']['cache_ext'];
+				}
 			} else {
-				$url .= "/catalog/misc/";
+				if($news_id!=0) {
+					$url = "http://".$url."/read.php?id=".$news_id."&page=".$page;
+				} else {
+					$url = "http://".$url."/list.php?cat=".$cat_idx;
+				}
 			}
-			if($page>1) $url .= "index_{$page}".$setting['gen']['cache_ext'];
-		} else {
-			if(!empty($cat_idx)) {
-				$url .= "/article/".$cat_idx."/";
+			break;
+		case "list":
+			if(is_array($idx)) {
+				$cat_idx = $idx[0];
+				$cat_pre = $idx[1];
 			} else {
-				$url .= "/article/misc/";
+				$cat_idx = $idx;
+				$cat_pre = "";
 			}
-			$url .= $news_id.($page==1?"":"_{$page}").$setting['gen']['cache_ext'];
-		}
-		$url = preg_replace("/([^:])\/+/", "\\1/", $url);
-	} else {
-		if($news_id==0) {
-			$url = "http://".$url."/list.php?cat={$cat_idx}";
-		} else {
-			$url = "http://".$url."/read.php?id={$news_id}";
-		}
-		if($page>1) $url .= "&page={$page}";
+			if($setting['rewrite']['enable']) {
+				if(is_numeric($cat_idx)) {
+					if($cat_info = getParaInfo("news_cat_sub", "cat_id", $cat_idx)) {
+						$cat_idx = $cat_info['cat_idx'];
+					} else {
+						$cat_idx = "";
+					}
+				}
+				$url = "http://".$url."/".$setting['rewrite']['list']."/";
+				if(!empty($cat_idx)) {
+					$url .= $cat_idx."/";
+				} else {
+					$url .= "misc/";
+				}
+				if(!empty($cat_pre)) {
+					$url .= $cat_pre."/";
+				}
+				$url .= "index";
+				if($page>1) $url .= "_{$page}";
+				$url .= $setting['gen']['cache_ext'];
+			} else {
+				$url = "http://".$url."/list.php?cat=".$cat_idx."&pre=".$cat_pre."&page=".$page;
+			}
+			break;
+		case "tag":
+			if($setting['rewrite']['enable']) {
+				$url = "http://".$url."/tag/".$idx.($page==1?"":"_{$page}").$setting['gen']['cache_ext'];
+			} else {
+				$url = "http://".$url."/tag.php?tag=".$idx."&page=".$page;
+			}
+			break;
+		default:
+			global $mystep;
+			$url = $mystep->getUrl($mode, $idx, $page, $web_id);
+			break;
 	}
+	$url = str_replace("//", "/", $url);
+	$url = str_replace("http:/", "http://", $url);
 	return $url;
 }
 
@@ -507,21 +554,27 @@ function PageList($page, $page_count, $show=6) {
 
 function gotoPage($page) {
 	global $req, $setting;
-	$the_url = "http://".$req->getServer("SERVER_NAME").$req->getServer("SCRIPT_NAME");
-	$qry_str = $req->getServer("QUERY_STRING");
-	if(!empty($qry_str)) $the_url .= "?".$qry_str;
-	if($setting['gen']['rewrite']) {
+	$script = $req->getServer("HTTP_X_ORIGINAL_URL");
+	if(empty($script)) $script = $req->getServer("SCRIPT_NAME");
+	$the_url = "http://".$req->getServer("SERVER_NAME").$script;
+	if($setting['rewrite']['enable'] && (isset($_SERVER['HTTP_X_ORIGINAL_URL']) || (!isset($_SERVER['HTTP_X_ORIGINAL_URL']) && strpos($_SERVER['REQUEST_URI'],".php")===false))) {
 		if(substr($the_url, -1, 1)=="/") {
 			$the_url .= "index_{$page}{$setting['gen']['cache_ext']}";
+		} elseif(preg_match("/\/\d+$/", $the_url)) {
+			$the_url = preg_replace("/\/\d+$/", "/".$page, $the_url);
+		} elseif(preg_match("/\/\w+$/", $the_url)) {
+			$the_url .= "/index_{$page}{$setting['gen']['cache_ext']}";
 		} else {
 			$the_url = preg_replace("/(_\d+)?{$setting['gen']['cache_ext']}$/", ($page==1?"{$setting['gen']['cache_ext']}":"_{$page}{$setting['gen']['cache_ext']}"), $the_url);
 		}
 	} else {
+		$qry_str = $req->getServer("QUERY_STRING");
+		if(!empty($qry_str)) $the_url .= "?".$qry_str;
 		if(empty($qry_str)) {
 			$the_url .= "?page={$page}";
 		} else {
-			if(preg_match("/page\=\d+/", $the_url)) {
-				$the_url = preg_replace("/page=(\d+)/", "page={$page}", $the_url);
+			if(preg_match("/page\=\d*/", $the_url)) {
+				$the_url = preg_replace("/page=(\d*)/", "page={$page}", $the_url);
 			} else {
 				$the_url .= "&page={$page}";
 			}

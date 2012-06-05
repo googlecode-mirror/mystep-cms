@@ -16,6 +16,7 @@ if($method=="update") {
 		$_POST['setting']['db']['pass'] = $setting['db']['pass'];
 	}
 	unset($_POST['setting']['web']['s_pass_r'], $_POST['setting']['db']['pass_r']);
+	$rewrite_list = var_export($rewrite_list, true);
 	$expire_list = var_export($expire_list, true);
 	$ignore_list = var_export($ignore_list, true);
 	$content = <<<mystep
@@ -23,6 +24,7 @@ if($method=="update") {
 \$setting = array();
 
 /*--settings--*/
+\$rewrite_list = {$rewrite_list};
 \$expire_list = {$expire_list};
 \$ignore_list = {$ignore_list};
 \$authority = "{$authority}";

@@ -21,11 +21,11 @@
 		</div>
 		<div class="fl page_main" style="width:560px; margin-left:10px;">
 			<div class="box">
-				<div class="title">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 列表</div>
+				<div class="title">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 文章检索 - <!--keyword--></div>
 				<div class="page after"><!--keyword limit="5" order="rand()"--></div>
 				<div class="content">
 					<div>
-<!--news limit='$limit' show_date="1" show_catalog="1" condition='$condition' loop='#limit'-->
+<!--news limit='$limit' show_date="1" show_catalog="1" condition='$condition' loop='30'-->
 					</div>
 				</div>
 				<div class="page after"><!--page_list--></div>

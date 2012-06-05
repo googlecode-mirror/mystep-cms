@@ -18,4 +18,7 @@ $info = array(
 <font color="red">&lt;!--news limit=\'$limit\' show_date="1" show_catalog="1" condition=\'$condition\' loop=\'20\'--&gt;</font>
 '
 );
+$rewrite = array(
+	array("search/([^\.]+?)(/(\d+))?", "module.php?m=search&k=$1&page=$3"),
+);
 ?>

@@ -18,14 +18,14 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">问卷中文名称：</td>
+				<td class="cat">中文名称：</td>
 				<td class="row">
 					<input name="name" type="text" value="<!--name-->" maxlength="60" need="" />
 					<input type="hidden" name="mid" value="<!--mid-->" />
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">问卷英文名称：</td>
+				<td class="cat">英文名称：</td>
 				<td class="row">
 					<input name="name_en" type="text" value="<!--name_en-->" maxlength="100" need="" />
 				</td>
@@ -63,7 +63,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="cat" width="100">中文列表页面：</td>
+							<td class="cat">中文列表页面：</td>
 							<td class="row">
 								<textarea class="source_code" type="php" name="tpl_cf_list_cn" style="width:100%; height:200px;"><!--tpl_cf_list_cn--></textarea>
 							</td>
@@ -72,6 +72,18 @@
 							<td class="cat">英文列表页面：</td>
 							<td class="row">
 								<textarea class="source_code" type="php" name="tpl_cf_list_en" style="width:100%; height:200px;"><!--tpl_cf_list_en--></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td class="cat">中文列表模块：</td>
+							<td class="row">
+								<textarea class="source_code" type="php" name="tpl_block_cf_list_cn" style="width:100%; height:200px;"><!--tpl_block_cf_list_cn--></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td class="cat">英文列表模块：</td>
+							<td class="row">
+								<textarea class="source_code" type="php" name="tpl_block_cf_list_en" style="width:100%; height:200px;"><!--tpl_block_cf_list_en--></textarea>
 							</td>
 						</tr>
 						<tr>

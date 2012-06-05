@@ -15,6 +15,13 @@ $info_default = array(
 <b>Include: </b>用于在指定位置嵌入其他文件，可控属性有 file"
 );
 
+$rewrite = array(
+	array("offical/login","module.php?m=offical&f=login_show"),
+	array("offical/password","module.php?m=offical&f=password"),
+	array("offical/login_check","module.php?m=offical&f=login"),
+	array("offical/logout","module.php?m=offical&f=logout"),
+);
+
 if(isset($setting['gen']['language'])) {
 	if(is_file(realpath(dirname(__FILE__))."/info/".$setting['gen']['language'].".php")) {
 		include(realpath(dirname(__FILE__))."/info/".$setting['gen']['language'].".php");

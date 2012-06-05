@@ -120,7 +120,7 @@ class plugin_offical implements plugin {
 				where 1=1".(empty($cat_id)?"":" and a.cat_id=".$cat_id)." limit ".$setting['list']['rss']
 			);
 		while($record = $db->GetRS()) {
-			$record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['web_id']);
+			$record['link'] = getUrl("read", array($record['news_id'], $record['cat_idx']), 1, $record['web_id']);
 			$record['add_date'] = date("r", strtotime($record['add_date']));
 			$tpl->Set_Loop("record", $record);
 		}
@@ -134,7 +134,7 @@ class plugin_offical implements plugin {
 		if(!is_numeric($id)) return;
 		$web_info = getSubSetting($web_id);
 		$result = $db->GetSingleRecord("select * from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show where news_id=".$id);
-		$result['link'] = getFileURL($result['news_id'], $result['cat_idx'], $result['web_id']);
+		$result['link'] = getUrl("read", array($record['news_id'], $record['cat_idx']), 1, $record['web_id']);
 		$result['add_date'] = date("Y-m-d H:i:s", strtotime($result['add_date']));
 		$result['content'] = array();
 		$db->Query("select * from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_detail where news_id=".$id." order by page asc");
@@ -166,7 +166,7 @@ class plugin_offical implements plugin {
 			);
 		$result = array();
 		while($record = $db->GetRS()) {
-			$record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['web_id']);
+			$record['link'] = getUrl("read", array($record['news_id'], $record['cat_idx']), 1, $record['web_id']);
 			$record['add_date'] = date("Y-m-d H:i:s", strtotime($record['add_date']));
 			$result[] = $record;
 		}
@@ -326,13 +326,13 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	if("{$att_list['template']}"=="classic" && \$setting['info']['time_start']/1000-strtotime(\$record['add_date'])<86400) \$record['subject'] .= ' <img src="images/new.gif" />';
 	\$record['style'] = \$n++%2 ? "{$att_list['css1']}" : "{$att_list['css2']}";
 	\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
-	if(empty(\$record['link'])) \$record['link'] = getFileURL(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:""), \$record['web_id']);
+	if(empty(\$record['link'])) \$record['link'] = getUrl("read", array(\$record['news_id'], (\$cat_info?\$cat_info['cat_idx']:"")), 1, \$record['web_id']);
 	\$record['add_date'] = ("{$att_list['show_date']}"!="") ? date("{$att_list['show_date']}", strtotime(\$record['add_date'])) : "";
 	\$record['catalog'] = "";
 	if("{$att_list['show_catalog']}"!="") {
 		\$cat_info = getParaInfo("news_cat", "cat_id", \$record['cat_id']);
 		if(\$cat_info) {
-			\$record['catalog'] = "<a href=\"".getFileURL(0, \$cat_info['cat_idx'], \$record['web_id'])."\" target=\"_blank\">[".\$cat_info['cat_name']."]</a>";
+			\$record['catalog'] = "<a href=\"".getUrl("list", \$cat_info['cat_idx'], 1, \$record['web_id'])."\" target=\"_blank\">[".\$cat_info['cat_name']."]</a>";
 		}
 	}
 	echo <<<content
@@ -447,13 +447,7 @@ global \$plugin_setting;
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
-	if(\$setting['gen']['rewrite']) {
-		\$record['link'] = \$setting['web']['url']."/tag/".urlencode(\$record['tag']).\$setting['gen']['cache_ext'];
-	} else {
-		\$record['link'] = \$setting['web']['url']."/tag.php?tag=".urlencode(\$record['tag']);
-	}
-	\$record['link'] = str_replace("//", "/", \$record['link']);
-	\$record['link'] = str_replace("http:/", "http://", \$record['link']);
+	\$record['link'] = getUrl("tag", urlencode(\$record['tag']), 1, \$setting['info']['web']['web_id']);
 	\$record['size'] = \$base_size;
 	if(\$count_max<\$record['count']) \$count_max = \$record['count'];
 	\$tag_list[] = \$record;
@@ -538,7 +532,7 @@ mytpl;
 				//if(empty($all) && (($news_cat[$i]['cat_show'] & 2)!=2 || ($deep_start==0 && $news_cat[$i]['cat_layer']>$catInfo['cat_layer']))) continue;
 				if($deep_start>0) {
 					$theLink = $news_cat[$i]['cat_link'];
-					if(empty($theLink)) $theLink = getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id']);
+					if(empty($theLink)) $theLink = getUrl("list", $news_cat[$i]['cat_idx'], 1, $news_cat[$i]['web_id']);
 					if($deep_cur==$news_cat[$i]['cat_layer']) {
 						if($cat_id!="" && $cat_id!=$news_cat[$i]['cat_id'] && $deep_start==$news_cat[$i]['cat_layer']) break;
 						$result .= "</li>\n";
@@ -564,7 +558,7 @@ mytpl;
 				} else {
 					if($cat_id==$news_cat[$i]['cat_id'] || $cat_id=="") {
 						$theLink = $news_cat[$i]['cat_link'];
-						if(empty($theLink)) $theLink = getFileURL(0, $news_cat[$i]['cat_idx'], $news_cat[$i]['web_id']);
+						if(empty($theLink)) $theLink = getUrl("list", $news_cat[$i]['cat_idx'], 1, $news_cat[$i]['web_id']);
 						$deep_cur = $news_cat[$i]['cat_layer'];
 						$deep_start = $news_cat[$i]['cat_layer'];
 						$deep_max = $deep_start + $deep;

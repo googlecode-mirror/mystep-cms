@@ -17,7 +17,7 @@
 			<td class="row"><a href="custom_form.php?mid=<!--record_mid-->"><!--record_name--></a></td>
 			<td class="row"><!--record_add_date--></td>
 			<td class="row" align="center"><a href="?method=edit&mid=<!--record_mid-->">编辑</a> &nbsp;<a href="?method=delete&mid=<!--record_mid-->" onclick="return confirm('确认删除？？')">删除</a> &nbsp;<a href="?method=add&mid=<!--record_mid-->">新建</a></td>
-			<td class="row" align="center"><a href="/module.php?m=cf_submit&mid=<!--record_mid-->" target="_blank">填表</a> &nbsp;<a href="/module.php?m=cf_list&mid=<!--record_mid-->" target="_blank">列表</a></td>
+			<td class="row" align="center"><a href="<!--record_link_submit-->" target="_blank">填表</a> &nbsp;<a href="<!--record_link_list-->" target="_blank">列表</a></td>
 		</tr>
 <!--loop:end-->
 	</table>

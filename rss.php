@@ -41,7 +41,7 @@ $tpl->Set_Variable('now', date("r"));
 $db->Query("select a.*, b.cat_name from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".(empty($cat_idx)?"":" and (b.cat_id='$cat_info[cat_id]' or b.cat_main='$cat_info[cat_id]')")." order by a.news_id desc limit ".$setting['list']['rss']);
 
 while($record = $db->GetRS()) {
-	$record['link'] = getFileURL($record['news_id'], $record['cat_idx'], $record['web_id']);
+	$record['link'] = getUrl("read", array($record['news_id'], $record['cat_idx']), 1, $record['web_id']);
 	$record['add_date'] = date("r", strtotime($record['add_date']));
 	$tpl->Set_Loop("record", $record);
 }

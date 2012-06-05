@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<!--charset-->" />
 <meta name="keywords" content="<!--page_keywords-->" />
 <meta name="description" content="<!--page_description-->" />
+<base href="<!--web_url-->" />
 <link rel="Shortcut Icon" href="favicon.ico" />
 <!--page_start-->
 <link rel="stylesheet" media="screen" type="text/css" href="images/<!--template-->/style.css" />

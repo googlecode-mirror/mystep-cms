@@ -134,6 +134,9 @@ $language = array (
   'admin_web_cache_clean' => 'Clean Cache',
   'admin_web_cache_title' => 'Website Cache Managerment',
   
+  'admin_web_rewrite_update' => 'URL Rewrite Rules Update',
+  'admin_web_rewrite_title' => 'URL Rewrite Rules Managerment',
+  
   'admin_web_language_update' => 'Update Language Setting',
   'admin_web_language_title' => 'Language Setting',
   

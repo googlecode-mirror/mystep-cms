@@ -1,5 +1,9 @@
 <?php
 $id = $req->getGet("id");
+if(!is_numeric($id)) {
+	$idx = $id;
+	$id = "";
+}
 $idx = $req->getGet("idx");
 
 $topic = false;
@@ -23,5 +27,5 @@ if($topic === false) {
 	$mystep->show($tpl);
 }
 
-$mystep->pageEnd(false);
+if(!empty($goto_url)) $setting['gen']['show_info'] = false;
 ?>

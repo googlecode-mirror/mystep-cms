@@ -51,6 +51,10 @@ if(!empty($mid) && is_numeric($mid)) {
 	$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/setting/";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
+	$the_name = $db->GetSingleResult("select name".($setting['gen']['language']=="en"?"_en":"")." from ".$setting['db']['pre']."custom_form where mid=".$mid);
+	HtmlTrans($the_name);
+	$setting['web']['title'] = $the_name."_".$setting['web']['title'];
+	
 	if($module=="cf_submit") {
 		$tpl_tmp->allow_script = true;
 		global $para;
@@ -63,21 +67,19 @@ if(!empty($mid) && is_numeric($mid)) {
 		$count = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."custom_form_".$mid);
 		$tpl_tmp->Set_Variable('custom_form_count', $count);
 		$tpl_tmp->Set_Variable('page_list', PageList($page, ceil($count/$page_size)));
-		$tpl_tmp->Set_Variable('title', $setting['web']['title']);
 		$limit = (($page-1)*$page_size).", ".$page_size;
 		$GLOBALS['mid'] = $mid;
 	}
 	
 	$GLOBALS['web_id'] = $setting['info']['web']['web_id'];
 	$tpl_tmp->Set_Variable('mid', $mid);
-	$tpl_tmp->Set_Variable('custom_form_name', $db->GetSingleResult("select name".($setting['gen']['language']=="en"?"_en":"")." from ".$setting['db']['pre']."custom_form where mid=".$mid));
+	$tpl_tmp->Set_Variable('custom_form_name', $the_name);
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting,$db,$para'));
 	unset($tpl_tmp);
 	
 	$mystep->show($tpl);
+	$setting['gen']['show_info'] = true;
 } else {
 	$goto_url = "/";
 }
-
-$mystep->pageEnd();
 ?>

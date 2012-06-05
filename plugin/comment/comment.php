@@ -59,7 +59,7 @@ $str_sql.= " limit $page_start, $page_size";
 $db->Query($str_sql);
 while($record = $db->GetRS()) {
 	HtmlTrans(&$record);
-	$record['link'] = getFileURL($record['news_id'], $record['cat_id'], $record['web_id']);
+	$record['link'] = getUrl("read", array($record['news_id'], $record['cat_id']), 1, $record['web_id']);
 	$tpl->Set_Loop('record', $record);
 }
 $db->Free();

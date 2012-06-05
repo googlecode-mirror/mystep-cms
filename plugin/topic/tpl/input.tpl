@@ -12,7 +12,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">专题索引：</td>
+				<td class="cat">专题索引：</td>
 				<td class="row">
 				<input name="topic_idx" type="text" maxlength="20" need="" value="<!--topic_idx-->"> <span class="comment">（用于专题调用）</span>
 				</td>
@@ -26,27 +26,21 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">专题链接：</td>
+				<td class="cat">专题链接：</td>
 				<td class="row">
 				<input name="topic_link" type="text" maxlength="80" value="<!--topic_link-->"> <span class="comment">（对外链接）</span>
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">关 键 字：</td>
+				<td class="cat">关 键 字：</td>
 				<td class="row">
 				<input name="topic_keyword" type="text" maxlength="150" need="" value="<!--topic_keyword-->"> <span class="comment">（用于搜索引擎检索的关键字）</span>
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" width="80">专题分类：</td>
+				<td class="cat">专题分类：</td>
 				<td class="row">
 				<input name="topic_cat" type="text" maxlength="120" need="" value="<!--topic_cat-->"> <span class="comment">（用逗号分隔各个分类）</span>
-				</td>
-			</tr>
-			<tr>
-				<td class="cat" style="vertical-align:top;">专题模板：</td>
-				<td class="row">
-					<textarea name="topic_tpl" style="width:690px;" rows="10" need="" /><!--topic_tpl--></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -57,6 +51,14 @@
 					<div>
 						<textarea name="topic_intro" style="width:100%;height:200px;"><!--topic_intro--></textarea>
 					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="cat" colspan="2">专题模板：</td>
+			</tr>
+			<tr>
+				<td class="row" colspan="2" style="padding:0px;">
+					<textarea id="topic_tpl" name="topic_tpl" style="width:100%;" rows="20" need="" /><!--topic_tpl--></textarea>
 				</td>
 			</tr>
 			<tr class="row">
@@ -71,7 +73,7 @@
 </div>
 <div style="display:<!--show_link-->">
 	<div class="title">当前新闻专题链接维护</div>
-	<div align="center">
+	<div align="left">
 		<form name="link_edit" method="post" action="topic_link.php?method=add" onsubmit="return checkForm(this)">
 			<table id="input_area" cellspacing="0" cellpadding="0" align="center">
 				<tr>
@@ -86,11 +88,11 @@
 					<td class="row"><input name="link_name" type="text" maxlength="50" need="" value="" /> <span class="comment">（所链接文章的名称）</span></td>
 				</tr>
 				<tr>
-					<td class="cat" width="80">链接地址：</td>
+					<td class="cat">链接地址：</td>
 					<td class="row"><input name="link_url" type="text" maxlength="100" need="url" value="" /> <span class="comment">（所链接文章的网络地址）</span></td>
 				</tr>
 				<tr>
-					<td class="cat" width="80">链接分类：</td>
+					<td class="cat">链接分类：</td>
 					<td class="row">
 					<select class="normal" name="link_cat" need="">
 						<option value="">请选择</option>
@@ -192,7 +194,119 @@ function search_link(keyword) {
 		alert("请录入检索关键字");
 		$id("keyword").focus();
 	} else {
-		showPop('searchArticle','网站文章检索','url','topic_link.php?method=search&topic_id=<!--topic_id-->&keyword='+keyword,600, 400);
+		showPop('searchArticle','网站文章检索','url','topic_link.php?method=search&topic_id=<!--topic_id-->&keyword='+keyword,600, 200);
+	}
+}
+
+$.getScript("../../script/jquery.codemirror.js", setIt);
+var editor = null;
+var hlLine = null;
+function setIt() {
+	if(editor == null) {
+		$('#topic_tpl').codemirror({
+				lineWrapping: false,
+				height: 400,
+				ext_css: "\
+					.CodeMirror-fullscreen {background-color:#fff;display:block;position:absolute;top:0;left:0;width:100%;height:100%;z-index:9999;margin:0;padding:0;border:0px solid #BBBBBB;opacity:1;}\
+					.activeline {background: #e8f2ff !important;}\
+				",
+				onCursorActivity: function () {
+					editor.setLineClass(hlLine, null, null);
+					if(editor.getSelection().length==0) {
+						hlLine = editor.setLineClass(editor.getCursor().line, "activeline");
+					}
+				},
+				extraKeys: {
+					"F11": function() {
+						var scroller = editor.getScrollerElement();
+						if (scroller.className.search(/\bCodeMirror-fullscreen\b/) === -1) {
+							$(scroller).css({"position":"absolute"});
+							$("body").css("overflow","hidden");
+							scroller.className += " CodeMirror-fullscreen";
+							scroller.style.height = "100%";
+							scroller.style.width = "100%";
+							editor.refresh();
+						} else {
+							$(scroller).css({"position":"static"});
+							$("body").css("overflow","auto");
+							scroller.className = scroller.className.replace(" CodeMirror-fullscreen", "");
+							scroller.style.height = '';
+							scroller.style.width = '';
+							editor.refresh();
+						}
+					},
+					"Esc": function() {
+						var scroller = editor.getScrollerElement();
+						if (scroller.className.search(/\bCodeMirror-fullscreen\b/) !== -1) {
+							$(scroller).css({"position":"static"});
+							$("body").css("overflow","auto");
+							scroller.className = scroller.className.replace(" CodeMirror-fullscreen", "");
+							scroller.style.height = '';
+							scroller.style.width = '';
+							editor.refresh();
+						}
+					},
+					"Shift-Tab": function() {
+						var the_pos = editor.getCursor().line;
+						var the_selection = editor.getSelection().split("\n");
+						var the_line = editor.getLine(the_pos);
+						var line_start = 0, line_end = 0;
+						if(the_line.indexOf(the_selection[0])!=-1) {
+							line_start = the_pos;
+							line_end = the_pos + the_selection.length - 1;
+						} else {
+							line_start = the_pos - the_selection.length + 1;
+							line_end = the_pos;
+						}
+						for(var i=line_start; i<=line_end; i++) {
+							editor.setLine(i, "	" + editor.getLine(i));
+						}
+						editor.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
+					},
+					"Shift-Backspace": function() {
+						var the_pos = editor.getCursor().line;
+						var the_line = editor.getLine(the_pos);
+						var the_selection = editor.getSelection().split("\n");
+						var line_start = 0, line_end = 0;
+						if(the_line.indexOf(the_selection[0])!=-1) {
+							line_start = the_pos;
+							line_end = the_pos + the_selection.length - 1;
+						} else {
+							line_start = the_pos - the_selection.length + 1;
+							line_end = the_pos;
+						}
+						for(var i=line_start; i<=line_end; i++) {
+							editor.setLine(i, editor.getLine(i).replace(/^\s/, ""));
+						}
+						editor.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
+					}
+				}
+			}, function(){
+				if($.codemirror_error) {
+					alert("脚本载入失败！");
+				} else {
+					$('.CodeMirror').css({width:'800px','overflow':"hidden","text-align":"left"});
+					editor = $.codemirror_get_editor(0);
+					hlLine = editor.setLineClass(0, "activeline");
+				}
+			}
+		);
+	} else {
+		$('#file_content').val(editor.getValue());
+		$('.CodeMirror').remove();
+		$('#file_content').show();
+		editor = null;
+	}
+}
+function setIframe(idx) {
+	if($id("popupLayer_"+idx)) {
+		theFrame = $("#popupLayer_"+idx).find("iframe");
+		theHeight = theFrame.contents().find("body")[0].scrollHeight + 30;
+		theFrame.height(theHeight);
+		theFrame.width(theFrame.width()-10);
+		$("#popupLayer_"+idx).height($("#popupLayer_"+idx+"_title").height()+theHeight);
+		$("#popupLayer_"+idx+"_content").height(theHeight);
+		$.setPopupLayersPosition();
 	}
 }
 </script>

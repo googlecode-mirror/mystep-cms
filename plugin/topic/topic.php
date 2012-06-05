@@ -84,6 +84,7 @@ function build_page($method) {
 		$db->Query($str_sql);
 		while($record = $db->GetRS()) {
 			//HtmlTrans(&$record);
+			if(empty($record['topic_link'])) $record['topic_link'] = getUrl("topic", $record['topic_idx']);
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);

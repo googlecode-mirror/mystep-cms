@@ -33,7 +33,7 @@ $news_count_max = getData("select max(news_count) from (select count(*) as news_
 for($i=0, $m=count($news_cat); $i<$m; $i++) {
 	if($news_cat[$i]['web_id']!=$setting['info']['web']['web_id']) continue;
 	$record = array();
-	$record['url'] = getFileURL(0, $news_cat[$i]['cat_idx'], $setting['info']['web']['web_id']);
+	$record['url'] = getUrl("list", $news_cat[$i]['cat_idx'], $setting['info']['web']['web_id']);
 	$record['url'] = str_replace($from, $to, $record['url']);
 	$record['date'] = substr(getData("select max(add_date) from ".$setting['db']['pre_sub']."news_show where cat_id=".$news_cat[$i]['cat_id'], "result", 86400), 0, 10);
 	if(empty($record['date'])) $record['date'] = date("Y-m-d");

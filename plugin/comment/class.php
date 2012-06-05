@@ -115,7 +115,6 @@ mystep;
 		if(!isset($att_list['order'])) $att_list['order'] = "id desc";
 		if(!isset($att_list['count'])) $att_list['count'] = false;
 	
-	
 		$webInfo = getSubSetting($att_list['web_id']);
 		$pre_sub = $webInfo['db']['name'].".".$webInfo['db']['pre'];
 		if($att_list['count']) {
@@ -149,7 +148,7 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record['style'] = \$n++%2 ? "{$att_list['css1']}" : "{$att_list['css2']}";
 	\$record['subject_org'] = \$record['subject'];
 	\$record['describe'] = \$record['comment'];
-	if(empty(\$record['link'])) \$record['link'] = getFileURL(\$record['news_id'], \$record['cat_id'], \$record['web_id']);
+	if(empty(\$record['link'])) \$record['link'] = getUrl("read", array(\$record['news_id'], \$record['cat_id']), 1, \$record['web_id']);
 	\$record['add_date'] = "";
 	\$record['catalog'] = "";
 	echo <<<content

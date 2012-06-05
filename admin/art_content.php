@@ -196,7 +196,7 @@ switch($method) {
 			for($i=0,$m=count($cid_list);$i<$m;$i++) {
 				if(is_numeric($cid_list[$i]) && $theCat!=$cid_list[$i]) {
 					$_POST['cat_id'] = $cid_list[$i];
-					$_POST['link'] = getFileURL($news_id, $_POST['cat_id'], $_POST['web_id']);
+					$_POST['link'] = getUrl("read", array($news_id, $_POST['cat_id']), 1, $_POST['web_id']);
 					$_POST['add_date'] = "now()";
 					$sql_list[] = $db->buildSQL($setting['db']['pre_sub']."news_show", $_POST, "insert");
 				}
@@ -262,7 +262,7 @@ function build_page($method) {
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if(empty($record['link'])) {
-				$record['link'] = getFileURL($record['news_id'], "", $record['web_id']);
+				$record['link'] = getUrl("read", $record['news_id'], 1, $record['web_id']);
 			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}

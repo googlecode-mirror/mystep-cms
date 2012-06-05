@@ -22,6 +22,7 @@ class MyStep extends class_common {
 		$module = array(),
 		$language = array(),
 		$content = array(),
+		$url = array(),
 		$css = array(),
 		$js = array();
 	
@@ -239,7 +240,7 @@ mystep;
 		$tpl->Set_Variable('web_title', $setting['web']['title']);
 		$tpl->Set_Variable('web_url', $setting['web']['url']);
 		$tpl->Set_Variable('web_email', $setting['web']['email']);
-		$tpl->Set_Variable('rss_link', $setting['gen']['rewrite']?"rss.xml":"rss.php?cat=".$cat_idx);
+		$tpl->Set_Variable('rss_link', $setting['rewrite']['enable']?"rss.xml":"rss.php?cat=".$cat_idx);
 		$tpl->Set_Variable('page_keywords', $setting['web']['keyword']);
 		$tpl->Set_Variable('page_description', $setting['web']['description']);
 		$tpl->Set_Variable('charset', $setting['gen']['charset']);
@@ -249,7 +250,7 @@ mystep;
 		for($i=0; $i<$max_count; $i++) {
 			if($news_cat[$i]['cat_layer']==1 && $news_cat[$i]['web_id']==$setting['info']['web']['web_id']) {
 				if(($news_cat[$i]['cat_show'] & 1) != 1) continue;
-				if(empty($news_cat[$i]['cat_link'])) $news_cat[$i]['cat_link'] = getFileURL(0, $news_cat[$i]['cat_idx'], $setting['info']['web']['web_id']);
+				if(empty($news_cat[$i]['cat_link'])) $news_cat[$i]['cat_link'] = getUrl("list", $news_cat[$i]['cat_idx'], 1, $setting['info']['web']['web_id']);
 				$tpl->Set_Loop('news_cat', $news_cat[$i]);
 			}
 		}
@@ -304,6 +305,22 @@ mystep;
 		if(is_file($page)) {
 			$this->module[$module] = $page;
 		}
+	}
+	
+	public function regUrl($mode, $func) {
+		if(is_callable($func)) {
+			$this->url[$mode] = $func;
+		}
+	}
+	
+	public function getUrl($mode) {
+		$url = "#";
+		if(isset($this->url[$mode])) {
+			$argList = func_get_args();
+			array_shift($argList);
+			$url = call_user_func_array($this->url[$mode], $argList);
+		}
+		return $url;
 	}
 	
 	public function module($module) {

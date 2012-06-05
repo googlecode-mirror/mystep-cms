@@ -60,6 +60,7 @@ INSERT INTO `{pre}admin_cat` VALUES
 		(0, 3, '友情链接', 'func_link.php', '', 255, 0, '友情链接管理'),
 		(0, 3, '子站管理', 'web_subweb.php', '', 255, 0, '子站管理'),
 		(0, 3, '数据维护', 'func_backup.php', '', 0, 0, '数据维护'),
+		(0, 3, '网址重写', 'web_rewrite.php', '', 0, 0, 'URL Rewrite 规则管理'),
 		
 		(0, 4, '文章分类', 'art_catalog.php', '', 255, 0, '文章分类管理'),
 		(0, 4, '文章内容', 'art_content.php', '', 255, 0, '文章内容管理'),

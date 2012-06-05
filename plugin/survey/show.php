@@ -46,5 +46,5 @@ if(isset($_GET['show'])) {
 		$goto_url = "/";
 	}
 }
-$mystep->pageEnd(false);
+if(!empty($goto_url)) $setting['gen']['show_info'] = false;
 ?>

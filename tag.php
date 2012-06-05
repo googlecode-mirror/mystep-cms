@@ -2,6 +2,8 @@
 require("inc.php");
 
 $tag = $req->getGet("tag");
+if($tag=="index") $tag = "";
+$tag = getSafeCode($tag, $setting['gen']['charset']);
 $tag = mysql_real_escape_string($tag);
 if(get_magic_quotes_gpc()) $tag = addslashes($tag);
 $page = $req->getGet("page");

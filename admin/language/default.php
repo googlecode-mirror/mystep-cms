@@ -134,6 +134,9 @@ $language = array (
   'admin_web_cache_clean' => '清空缓存',
   'admin_web_cache_title' => '网站缓存设置',
   
+  'admin_web_rewrite_update' => '更新网址重写规则',
+  'admin_web_rewrite_title' => '网址重写规则管理',
+  
   'admin_web_language_update' => '更新语言设置',
   'admin_web_language_title' => '语言设置',
   

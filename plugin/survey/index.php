@@ -5,6 +5,7 @@ $mystep->regTag("survey", "plugin_survey::survey");
 $mystep->regTag("survey_list", "plugin_survey::survey_list");
 $mystep->regAjax("vote", "plugin_survey::ajax_vote");
 
+$mystep->regUrl("survey", "plugin_survey::getUrl");
 $mystep->regModule("survey", dirname(__FILE__)."/show.php");
 
 $mystep->addJS('plugin/'.basename(realpath(dirname(__FILE__))).'/survey.js');

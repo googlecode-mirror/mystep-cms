@@ -12,6 +12,10 @@ $info_default = array(
 <b>topic_list: </b>用于显示现有专题列表，可控属性包括 order, limit, loop, template, condition, show_date 等
 <b>topic: </b>用于显示对应专题的相关链接，可控属性包括 id, cat, order, limit, loop, template, condition, show_date, show_catalog 等",
 );
+$rewrite = array(
+	array("topic/(\d+)", "module.php?m=topic&id=$1"),
+	array("topic/([^\.]+)", "module.php?m=topic&idx=$1"),
+);
 
 if(isset($setting['gen']['language'])) {
 	if(is_file(realpath(dirname(__FILE__))."/info/".$setting['gen']['language'].".php")) {

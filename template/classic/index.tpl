@@ -4,7 +4,7 @@
 		</div>
 
 		<div class="fr page_r" style="margin-top:0px;">
-			<div class="pic_ole fl">
+			<div class="pic_ole fl" style="height:200px;overflow-y:hidden;">
 				<div id="news_image">
 <!--news limit="5" template="mix" show_image="1" show_date="Y-m-d H:i:s" setop1="img"-->
 				</div>

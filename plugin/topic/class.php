@@ -160,6 +160,21 @@ mytpl;
 		return $content;
 	}
 	
+	public static function getUrl($idx="", $page=1, $web_id=1) {
+		global $setting;
+		if(!is_numeric($page)) $page = 1;
+		$webInfo = getParaInfo("website", "web_id", $web_id);
+		$url = "http://".$webInfo['host'];
+		if($setting['rewrite']['enable']) {
+			$url .= "/topic/".$idx;
+		} else {
+			$url .= "/module.php?m=topic&id=".$idx;
+		}
+		$url = str_replace("//", "/", $url);
+		$url = str_replace("http:/", "http://", $url);
+		return $url;
+	}
+	
 	public static function topic_list(MyTPL $tpl, $att_list = array()) {
 		global $setting;
 		$result = "";
@@ -193,7 +208,7 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
 	HtmlTrans(&\$record);
 	if(empty(\$record['topic_link'])) {
-		\$record['link'] = "module.php?m=topic&idx=".\$record['topic_idx'];
+		\$record['link'] = getUrl("topic", \$record['topic_idx']);
 	} else {
 		\$record['link'] = \$record['topic_link'];
 	}

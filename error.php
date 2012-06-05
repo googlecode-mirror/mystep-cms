@@ -69,7 +69,7 @@ if(isset($error[$errType])) {
 var url_req = document.location.toString();
 document.writeln("您请求地址是: <a href=\"" + url_req + "\">" + url_req + "</a><br />");
 var url_new = "http://<?=$_SERVER['HTTP_HOST']>";
-Document.writeln("系统自动转向: <a href=\"" + url_new + "\">" + url_new + "</a><br />");
+document.writeln("系统自动转向: <a href=\"" + url_new + "\">" + url_new + "</a><br />");
 setTimeout("location.href='" + url_new +"'", 2000);
 </script>
 </div>

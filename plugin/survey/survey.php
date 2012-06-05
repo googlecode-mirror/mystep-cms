@@ -189,6 +189,7 @@ function build_page($method) {
 					default:
 						$record['max_select'] = sprintf($setting['language']['plugin_survey_select_2'], $record['max_select']);
 				}
+				$record['link'] = getUrl("survey", $record['id']);
 				$record['add_date'] = date("Y-m-d", $record['add_date']);
 				$record['expire'] = ceil((int)$record['expire']/(60*60*24));
 				$record['expire'] = $record['expire']==0?$setting['language']['plugin_survey_expire_1']:($record['expire'].$setting['language']['plugin_survey_expire_2']);

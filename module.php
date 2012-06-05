@@ -10,7 +10,6 @@ if($setting['gen']['cache']) {
 } else {
 	$cache_info = false;
 }
-$setting['gen']['show_info'] = false;
 $mystep->module($module);
 $mystep->pageEnd($setting['gen']['show_info']);
 ?>

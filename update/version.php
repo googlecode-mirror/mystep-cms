@@ -2025,16 +2025,6 @@ $setting = $cur_setting;
 				'plugin/custom_form/language/default.php',
 				'plugin/custom_form/language/en.php',
 				'plugin/custom_form/setting',
-				'plugin/custom_form/setting/2.php',
-				'plugin/custom_form/setting/2_cf_list_cn.tpl',
-				'plugin/custom_form/setting/2_cf_list_en.tpl',
-				'plugin/custom_form/setting/2_cf_submit_cn.tpl',
-				'plugin/custom_form/setting/2_cf_submit_en.tpl',
-				'plugin/custom_form/setting/2_edit_data.tpl',
-				'plugin/custom_form/setting/2_ext_script.php',
-				'plugin/custom_form/setting/2_list_data.tpl',
-				'plugin/custom_form/setting/2_mail_cn.tpl',
-				'plugin/custom_form/setting/2_mail_en.tpl',
 				'plugin/custom_form/setting/default.php',
 				'plugin/custom_form/setting/ext_script.php',
 				'plugin/custom_form/setting/main.tpl',
@@ -2043,9 +2033,7 @@ $setting = $cur_setting;
 				'plugin/custom_form/tpl',
 				'plugin/custom_form/tpl/add.tpl',
 				'plugin/custom_form/tpl/block_cf_list_cn.tpl',
-				'plugin/custom_form/tpl/block_cf_list_cn_tbl.tpl',
 				'plugin/custom_form/tpl/block_cf_list_en.tpl',
-				'plugin/custom_form/tpl/block_cf_list_en_tbl.tpl',
 				'plugin/custom_form/tpl/default_cf_list_cn.tpl',
 				'plugin/custom_form/tpl/default_cf_list_en.tpl',
 				'plugin/custom_form/tpl/default_cf_submit_cn.tpl',
@@ -2075,6 +2063,151 @@ $setting = $cur_setting;
 						'etag' => '20120521',
 					),
 			),
+	),
+	'0.99.9.8.5' => array(
+		'info' => '
+			V0.99.9.8.5
+			1.Rewrite Rule Management module added
+			2.Enhance getUrl function, plugins can regist it\'s own rewrite rule with mystep class
+			3.Enhance gotoPage function to match rewrite rules
+			4.Fix a bug in add_slash function
+			5.Fix a bug in cache management template
+			6.Add base-url tag to match rewrite need
+			7.Fix a bug in search template
+			Some other adjusts...
+			',
+		'file' => array(
+				'.htaccess',
+				'admin/art_content.php',
+				'admin/language/chs.php',
+				'admin/language/default.php',
+				'admin/language/en.php',
+				'admin/style.css',
+				'admin/web_cache.php',
+				'admin/web_rewrite.php',
+				'admin/web_setting.php',
+				'error.php',
+				'include/config.php',
+				'include/config/chs.php',
+				'include/config/default.php',
+				'include/config/en.php',
+				'include/parameter.php',
+				'install/install.sql',
+				'list.php',
+				'module.php',
+				'plugin/comment/class.php',
+				'plugin/comment/comment.php',
+				'plugin/custom_form/class.php',
+				'plugin/custom_form/config.php',
+				'plugin/custom_form/custom_form.php',
+				'plugin/custom_form/index.php',
+				'plugin/custom_form/info.php',
+				'plugin/custom_form/setting/2.php',
+				'plugin/custom_form/setting/2_cf_list_cn.tpl',
+				'plugin/custom_form/setting/2_cf_list_en.tpl',
+				'plugin/custom_form/setting/2_cf_submit_cn.tpl',
+				'plugin/custom_form/setting/2_cf_submit_en.tpl',
+				'plugin/custom_form/setting/2_edit_data.tpl',
+				'plugin/custom_form/setting/2_ext_script.php',
+				'plugin/custom_form/setting/2_list_data.tpl',
+				'plugin/custom_form/setting/2_mail_cn.tpl',
+				'plugin/custom_form/setting/2_mail_en.tpl',
+				'plugin/custom_form/show.php',
+				'plugin/custom_form/tpl/add.tpl',
+				'plugin/custom_form/tpl/block_cf_list_cn.tpl',
+				'plugin/custom_form/tpl/block_cf_list_cn_tbl.tpl',
+				'plugin/custom_form/tpl/block_cf_list_en.tpl',
+				'plugin/custom_form/tpl/block_cf_list_en_tbl.tpl',
+				'plugin/custom_form/tpl/edit.tpl',
+				'plugin/custom_form/tpl/list.tpl',
+				'plugin/news_mark/class.php',
+				'plugin/news_mark/news_mark.php',
+				'plugin/news_visit/class.php',
+				'plugin/offical/class.php',
+				'plugin/offical/info.php',
+				'plugin/offical/show.php',
+				'plugin/search/class.php',
+				'plugin/search/index.php',
+				'plugin/search/info.php',
+				'plugin/search/show.php',
+				'plugin/search/tpl/block_keyword.tpl',
+				'plugin/survey/class.php',
+				'plugin/survey/index.php',
+				'plugin/survey/info.php',
+				'plugin/survey/show.php',
+				'plugin/survey/survey.php',
+				'plugin/survey/tpl/block_survey_classic.tpl',
+				'plugin/survey/tpl/list.tpl',
+				'plugin/topic/class.php',
+				'plugin/topic/index.php',
+				'plugin/topic/info.php',
+				'plugin/topic/show.php',
+				'plugin/topic/topic.php',
+				'plugin/topic/topic_link.php',
+				'plugin/topic/tpl/input.tpl',
+				'plugin/topic/tpl/search.tpl',
+				'read.php',
+				'rewrite_nginx.txt',
+				'rss.php',
+				'sitemap.php',
+				'source/class/myajax.class.php',
+				'source/class/myapi.class.php',
+				'source/class/mysql.class.php',
+				'source/class/mystep.class.php',
+				'source/function/global.php',
+				'source/function/web.php',
+				'tag.php',
+				'template/admin/web_cache.tpl',
+				'template/admin/web_rewrite.tpl',
+				'template/classic/index.tpl',
+				'template/classic/main.tpl',
+				'template/classic/search.tpl',
+				'update/version.php',
+			),
+		'sql' => array(
+				'INSERT INTO `{pre}admin_cat` VALUES (0, 3, "网址重写", "web_rewrite.php", "", 0, 0, "URL Rewrite 规则管理")',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120605',
+					),
+			),
+		'code' => '
+$rewrite_list = array (
+  array ("article/[^\\/]+/(\\d+)(_(\\d+))?\\.html","read.php?id=$1&page=$3"),
+  array ("catalog/([^\\/]+)/(index(_(\\d+))?\\.html)?","list.php?cat=$1&page=$4"),
+  array ("catalog/([^\\/]+)/([^\\/]+)/(index(_(\\d+))?\\.html)?","list.php?cat=$1&pre=$2&page=$5"),
+  array ("tag/(.+?)(_(\\d+))?\\.html","tag.php?tag=$1&page=$3"),
+  array ("article(/)?","list.php"),
+  array ("catalog(/)?","list.php"),
+  array ("tag(/)?","tag.php"),
+  array ("rss.xml","rss.php"),
+  array ("(.+?)/rss.xml","rss.php?cat=$1"),
+  array ("api/(.+?)/(.+?)(/(.+))?","api.php?$1|$2|$4"),
+  array ("ajax/(.+?)(/(.+))?","ajax.php?func=$1&return=$3"),
+);
+$cur_setting = $setting;
+unset($setting);
+include(ROOT_PATH."/include/config.php");
+$rewrite_list = var_export($rewrite_list, true);
+$expire_list = var_export($expire_list, true);
+$ignore_list = var_export($ignore_list, true);
+$content = <<<mystep
+<?php
+\$setting = array();
+
+/*--settings--*/
+\$rewrite_list = {$rewrite_list};
+\$expire_list = {$expire_list};
+\$ignore_list = {$ignore_list};
+\$authority = "{$authority}";
+?>
+mystep;
+$content = str_replace("/*--settings--*/", makeVarsCode($setting, "\$setting"), $content);
+WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+unset($setting);
+$setting = $cur_setting;
+		',
 	),
 );
 ?>

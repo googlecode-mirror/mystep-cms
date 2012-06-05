@@ -37,7 +37,7 @@ switch($method) {
 	default:
 		$goto_url = "/";
 }
-$mystep->pageEnd();
+if(!empty($goto_url)) $setting['gen']['show_info'] = false;
 
 function build_page($method) {
 	global $setting, $mystep, $req, $db, $tpl_info;

@@ -88,6 +88,8 @@ switch($method) {
 		if(empty($_POST["tpl_cf_submit_en"])) $_POST["tpl_cf_submit_en"] = GetFile("tpl/default_cf_submit_en.tpl");
 		if(empty($_POST["tpl_cf_list_cn"])) $_POST["tpl_cf_list_cn"] = GetFile("tpl/default_cf_list_cn.tpl");
 		if(empty($_POST["tpl_cf_list_en"])) $_POST["tpl_cf_list_en"] = GetFile("tpl/default_cf_list_en.tpl");
+		if(empty($_POST["tpl_block_cf_list_cn"])) $_POST["tpl_block_cf_list_cn"] = GetFile("tpl/block_cf_list_cn.tpl");
+		if(empty($_POST["tpl_block_cf_list_en"])) $_POST["tpl_block_cf_list_en"] = GetFile("tpl/block_cf_list_en.tpl");
 		if(empty($_POST["tpl_mail_cn"])) $_POST["tpl_mail_cn"] = GetFile("tpl/default_mail_cn.tpl");
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_data"])) $_POST["tpl_edit_data"] = GetFile("tpl/edit_data.tpl");
@@ -109,6 +111,14 @@ switch($method) {
 		$_POST["tpl_cf_list_en"] = str_replace("&#160; ","	",$_POST["tpl_cf_list_en"]);
 		$_POST["tpl_cf_list_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_list_en"]);
 		WriteFile("setting/{$mid}_cf_list_en.tpl", $_POST["tpl_cf_list_en"], "wb");
+		
+		$_POST["tpl_block_cf_list_cn"] = str_replace("&#160; ","	",$_POST["tpl_block_cf_list_cn"]);
+		$_POST["tpl_block_cf_list_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_block_cf_list_cn"]);
+		WriteFile("setting/{$mid}_block_cf_list_cn.tpl", $_POST["tpl_block_cf_list_cn"], "wb");
+		
+		$_POST["tpl_block_cf_list_en"] = str_replace("&#160; ","	",$_POST["tpl_block_cf_list_en"]);
+		$_POST["tpl_block_cf_list_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_block_cf_list_en"]);
+		WriteFile("setting/{$mid}_block_cf_list_en.tpl", $_POST["tpl_block_cf_list_en"], "wb");
 		
 		$_POST["tpl_mail_cn"] = str_replace("&#160; ","	",$_POST["tpl_mail_cn"]);
 		$_POST["tpl_mail_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_mail_cn"]);
@@ -187,7 +197,7 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 		$db->Query($str_sql);
 		break;
 	case "edit_ok":
-		$log_info = "编辑问卷";
+		$log_info = "编辑表单";
 		$sql_item = array();
 		$sql_item['web_id'] = $_POST['web_id'];
 		$sql_item['name'] = $_POST['name'];
@@ -201,6 +211,8 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 		if(empty($_POST["tpl_cf_submit_en"])) $_POST["tpl_cf_submit_en"] = GetFile("tpl/default_cf_submit_en.tpl");
 		if(empty($_POST["tpl_cf_list_cn"])) $_POST["tpl_cf_list_cn"] = GetFile("tpl/default_cf_list_cn.tpl");
 		if(empty($_POST["tpl_cf_list_en"])) $_POST["tpl_cf_list_en"] = GetFile("tpl/default_cf_list_en.tpl");
+		if(empty($_POST["tpl_block_cf_list_cn"])) $_POST["tpl_block_cf_list_cn"] = GetFile("tpl/block_cf_list_cn.tpl");
+		if(empty($_POST["tpl_block_cf_list_en"])) $_POST["tpl_block_cf_list_en"] = GetFile("tpl/block_cf_list_en.tpl");
 		if(empty($_POST["tpl_mail_cn"])) $_POST["tpl_mail_cn"] = GetFile("tpl/default_mail_cn.tpl");
 		if(empty($_POST["tpl_mail_en"])) $_POST["tpl_mail_en"] = GetFile("tpl/default_mail_en.tpl");
 		if(empty($_POST["tpl_edit_data"])) $_POST["tpl_edit_data"] = GetFile("tpl/edit_data.tpl");
@@ -222,6 +234,14 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 		$_POST["tpl_cf_list_en"] = str_replace("&#160; ","	",$_POST["tpl_cf_list_en"]);
 		$_POST["tpl_cf_list_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_list_en"]);
 		WriteFile("setting/{$mid}_cf_list_en.tpl", $_POST["tpl_cf_list_en"], "wb");
+		
+		$_POST["tpl_block_cf_list_cn"] = str_replace("&#160; ","	",$_POST["tpl_block_cf_list_cn"]);
+		$_POST["tpl_block_cf_list_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_block_cf_list_cn"]);
+		WriteFile("setting/{$mid}_block_cf_list_cn.tpl", $_POST["tpl_block_cf_list_cn"], "wb");
+		
+		$_POST["tpl_block_cf_list_en"] = str_replace("&#160; ","	",$_POST["tpl_block_cf_list_en"]);
+		$_POST["tpl_block_cf_list_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_block_cf_list_en"]);
+		WriteFile("setting/{$mid}_block_cf_list_en.tpl", $_POST["tpl_block_cf_list_en"], "wb");
 		
 		$_POST["tpl_mail_cn"] = str_replace("&#160; ","	",$_POST["tpl_mail_cn"]);
 		$_POST["tpl_mail_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_mail_cn"]);
@@ -323,7 +343,7 @@ $para = '.var_export($para, true).';
 			$log_info = "删除表单信息";
 			$db->Query("delete from ".$setting['db']['pre']."custom_form_{$mid} where id = '{$id}'");
 		} else {
-			$log_info = "删除问卷";
+			$log_info = "删除表单";
 			include("config.php");
 			$db->query("truncate table ".$setting['db']['pre']."custom_form_".$mid);
 			$db->query("drop table ".$setting['db']['pre']."custom_form_".$mid);
@@ -333,6 +353,8 @@ $para = '.var_export($para, true).';
 			unlink("setting/{$mid}_cf_submit_en.tpl");
 			unlink("setting/{$mid}_cf_list_cn.tpl");
 			unlink("setting/{$mid}_cf_list_en.tpl");
+			unlink("setting/{$mid}_block_cf_list_cn.tpl");
+			unlink("setting/{$mid}_block_cf_list_en.tpl");
 			unlink("setting/{$mid}_mail_cn.tpl");
 			unlink("setting/{$mid}_mail_en.tpl");
 			unlink("setting/{$mid}_edit_data.tpl");
@@ -463,7 +485,6 @@ function build_page($method) {
 		$db->Query("select * from ".$setting['db']['pre']."custom_form order by mid desc");
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
-			if(function_exists("ext_func")) ext_func();
 			if($record['web_id']==0) {
 				$record['web_id'] = "仅管理面板";
 			} elseif($record['web_id']==255) {
@@ -472,9 +493,11 @@ function build_page($method) {
 				$webinfo = getParaInfo("website", "web_id", $record['web_id']);
 				$record['web_id'] = $webinfo['name'];
 			}
+			$record['link_submit'] = getUrl("cf_submit", $record['mid']);
+			$record['link_list'] = getUrl("cf_list", $record['mid']);
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('title', '问卷浏览');
+		$tpl_tmp->Set_Variable('title', '表单浏览');
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);
 		$order_type = $order_type=="asc"?"desc":"asc";
 		$tpl_tmp->Set_Variable('order_type', $order_type);
@@ -489,7 +512,7 @@ function build_page($method) {
 		}
 		if(function_exists("ext_func")) ext_func();
 		$tpl_tmp->Set_Variables($record);
-		$tpl_tmp->Set_Variable('title', '修改问卷项目');
+		$tpl_tmp->Set_Variable('title', '修改表单项目');
 		$tpl_tmp->Set_Variable('method', 'edit');
 		$max_count = count($GLOBALS['website']);
 		for($i=0; $i<$max_count; $i++) {
@@ -502,13 +525,15 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('tpl_cf_submit_en', htmlspecialchars(GetFile("setting/{$mid}_cf_submit_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_cf_list_cn', htmlspecialchars(GetFile("setting/{$mid}_cf_list_cn.tpl")));
 		$tpl_tmp->Set_Variable('tpl_cf_list_en', htmlspecialchars(GetFile("setting/{$mid}_cf_list_en.tpl")));
+		$tpl_tmp->Set_Variable('tpl_block_cf_list_cn', htmlspecialchars(GetFile("setting/{$mid}_block_cf_list_cn.tpl")));
+		$tpl_tmp->Set_Variable('tpl_block_cf_list_en', htmlspecialchars(GetFile("setting/{$mid}_block_cf_list_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("setting/{$mid}_mail_cn.tpl")));
 		$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("setting/{$mid}_mail_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_edit_data', htmlspecialchars(GetFile("setting/{$mid}_edit_data.tpl")));
 		$tpl_tmp->Set_Variable('tpl_list_data', htmlspecialchars(GetFile("setting/{$mid}_list_data.tpl")));
 		$tpl_tmp->Set_Variable('ext_script', htmlspecialchars(GetFile("setting/{$mid}_ext_script.php")));
 	} elseif($method == "add") {
-		$tpl_tmp->Set_Variable('title', '添加问卷');
+		$tpl_tmp->Set_Variable('title', '添加表单');
 		$tpl_tmp->Set_Variable('method', 'add');
 		$max_count = count($GLOBALS['website']);
 		for($i=0; $i<$max_count; $i++) {
@@ -521,6 +546,8 @@ function build_page($method) {
 			$tpl_tmp->Set_Variable('tpl_cf_submit_en', htmlspecialchars(GetFile("setting/".$mid."_cf_submit_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_list_cn', htmlspecialchars(GetFile("setting/".$mid."_cf_list_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_list_en', htmlspecialchars(GetFile("setting/".$mid."_cf_list_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_block_cf_list_cn', htmlspecialchars(GetFile("setting/".$mid."_block_cf_list_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_block_cf_list_en', htmlspecialchars(GetFile("setting/".$mid."_block_cf_list_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("setting/".$mid."_mail_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("setting/".$mid."_mail_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_edit_data', htmlspecialchars(GetFile("setting/".$mid."_edit_data.tpl")));
@@ -532,6 +559,8 @@ function build_page($method) {
 			$tpl_tmp->Set_Variable('tpl_cf_submit_en', htmlspecialchars(GetFile("tpl/default_cf_submit_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_list_cn', htmlspecialchars(GetFile("tpl/default_cf_list_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_list_en', htmlspecialchars(GetFile("tpl/default_cf_list_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_block_cf_list_cn', htmlspecialchars(GetFile("tpl/block_cf_list_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_block_cf_list_en', htmlspecialchars(GetFile("tpl/block_cf_list_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_mail_cn', htmlspecialchars(GetFile("tpl/default_mail_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_mail_en', htmlspecialchars(GetFile("tpl/default_mail_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_edit_data', htmlspecialchars(GetFile("tpl/edit_data.tpl")));

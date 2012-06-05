@@ -66,7 +66,7 @@ $web_id = $setting['info']['web']['web_id'];
 $tpl_info['idx'] = "read";
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 
-if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', ' - <a href="'.getFileURL(0, $cat_idx, $setting['info']['web']['web_id']).'">'.$cat_name.'</a>');
+if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', ' - <a href="'.getUrl("list", $cat_idx, 1, $setting['info']['web']['web_id']).'">'.$cat_name.'</a>');
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 $tpl_tmp->Set_Variable('page_list', PageList($page, $page_count));
 $tpl_tmp->Set_Variable('title', $setting['web']['title']);
@@ -93,7 +93,7 @@ if($page_count==1) {
 	$result = getData("select sub_title, page from ".$setting['db']['pre_sub']."news_detail where news_id='{$news_id}' order by page", "all", 1200);
 	$max_count = count($result);
 	for($i=0; $i<$max_count; $i++) {
-		$result[$i]['url'] = getFileURL($news_id, $cat_idx, $setting['info']['web']['web_id'], $result[$i]['page']);
+		$result[$i]['url'] = getUrl("read", array($news_id, $cat_idx), $result[$i]['page'], $setting['info']['web']['web_id']);
 		if($result[$i]['page']==$page) $result[$i]['selected'] = "selected";
 		$result[$i]['txt'] = sprintf($setting['language']['page_no'], $result[$i]['page']);
 		if(!empty($result[$i]['sub_title'])) $result[$i]['txt'] .= " - ".$result[$i]['sub_title'];
@@ -109,7 +109,7 @@ if($article = getData("select news_id, cat_id, subject, add_date from ".$setting
 	} else {
 		$cat_idx = "";
 	}
-	$tpl_tmp->Set_Variable('article_prev_link', getFileURL($article['news_id'], $cat_idx, $setting['info']['web']['web_id']));
+	$tpl_tmp->Set_Variable('article_prev_link', getUrl("read", array($article['news_id'], $cat_idx), 1, $setting['info']['web']['web_id']));
 	$tpl_tmp->Set_Variable('article_prev_text', $article['subject']);
 } else {
 	$tpl_tmp->Set_Variable('article_prev_link', "###");
@@ -123,7 +123,7 @@ if($article = getData("select news_id, cat_id, subject, add_date from ".$setting
 	} else {
 		$cat_idx = "";
 	}
-	$tpl_tmp->Set_Variable('article_next_link', getFileURL($article['news_id'], $cat_idx, $setting['info']['web']['web_id']));
+	$tpl_tmp->Set_Variable('article_next_link', getUrl("read", array($article['news_id'], $cat_idx), 1, $setting['info']['web']['web_id']));
 	$tpl_tmp->Set_Variable('article_next_text', $article['subject']);
 } else {
 	$tpl_tmp->Set_Variable('article_next_link', "###");
@@ -134,7 +134,7 @@ if($article = getData("select news_id, cat_id, subject, add_date from ".$setting
 $tag = explode(",", $detail['tag']);
 $max_count = count($tag);
 for($i=0; $i<$max_count; $i++) {
-	if($setting['gen']['rewrite']) {
+	if($setting['rewrite']['enable']) {
 		$tpl_tmp->Set_Loop('tag_list', array("link"=>$setting['web']['url']."/tag/".urlencode($tag[$i]).$setting['gen']['cache_ext'], "tag"=>$tag[$i]));
 	} else {
 		$tpl_tmp->Set_Loop('tag_list', array("link"=>"tag.php?tag=".urlencode($tag[$i]), "tag"=>$tag[$i]));

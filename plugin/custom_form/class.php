@@ -55,6 +55,8 @@ mystep;
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_cf_submit_en.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_cf_list_cn.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_cf_list_en.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_block_cf_list_cn.tpl");
+			unlink(dirname(__FILE__)."/setting/{$record['mid']}_block_cf_list_en.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_mail_cn.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_mail_en.tpl");
 			unlink(dirname(__FILE__)."/setting/{$record['mid']}_edit_data.tpl");
@@ -122,28 +124,55 @@ $catid = 0;
 		return $result;
 	}
 	
+	public static function getUrl($mode="", $idx="", $page=1, $web_id=1) {
+		global $setting;
+		if(!is_numeric($page)) $page = 1;
+		$webInfo = getParaInfo("website", "web_id", $web_id);
+		$url = "http://".$webInfo['host'];
+		if($setting['rewrite']['enable']) {
+			if($mode=="list") {
+				$url .= "/cform/list/".$idx;
+			} else {
+				$url .= "/cform/submit/".$idx;
+			}
+		} else {
+			if($mode=="list") {
+				$url .= "/module.php?m=cf_list&mid=".$idx;
+			} else {
+				$url .= "/module.php?m=cf_submit&mid=".$idx;
+			}
+		}
+		$url = str_replace("//", "/", $url);
+		$url = str_replace("http:/", "http://", $url);
+		return $url;
+	}
+	
+	public static function getUrl_list($idx="", $page=1, $web_id=1) {
+		return self::getUrl("list", $idx, $page, $web_id);
+	}
+	
+	public static function getUrl_submit($idx="", $page=1, $web_id=1) {
+		return self::getUrl("submit", $idx, $page, $web_id);
+	}
+	
 	public static function tag_list(MyTPL $tpl, $att_list = array()) {
 		global $setting;
 		$result = "";
 		if(!isset($att_list['mid'])) return "";
+		$mid = $att_list['mid'];
+		if(!is_numeric($att_list['mid'])) eval('$mid = '.$mid.";");
 		if(!isset($att_list['lng'])) $att_list['lng'] = "cn";
 		if(!isset($att_list['order'])) $att_list['order'] = "id desc";
 		if(!isset($att_list['limit'])) $att_list['limit'] = 0;
 		if(!isset($att_list['loop'])) $att_list['loop'] = 0;
 		if(!isset($att_list['condition'])) $att_list['condition'] = "";
-		if(!isset($att_list['template'])) $att_list['template'] = "";
 		
-		$str_sql = "select * from ".$setting['db']['pre']."custom_form_".$att_list['mid']." where 1=1";
+		$str_sql = "select * from ".$setting['db']['pre']."custom_form_".$mid." where 1=1";
 		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
 		$str_sql .= " order by ".$att_list['order'];
 		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
 		
-		$tpl_file = dirname(__FILE__)."/tpl/block_cf_list".($att_list['lng']=="en"?"_en":"_cn");
-		if(!empty($att_list['template']) && is_file($tpl_file."_".$att_list['template'].".tpl")) {
-			$tpl_file .= "_".$att_list['template'].".tpl";
-		} else {
-			$tpl_file .= ".tpl";
-		}
+		$tpl_file = dirname(__FILE__)."/setting/".$mid."_block_cf_list".($att_list['lng']=="en"?"_en":"_cn").".tpl";
 		
 		$cur_content = $tpl->Get_TPL($tpl_file);
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
@@ -156,20 +185,12 @@ $catid = 0;
 		$result = <<<mytpl
 <?php
 \$db->Query("{$str_sql}");
-\$country_dic = array(
-	"ÖÐ¹ú" => "China",
-	"Ó¡¶È" => "India",
-);
 while(\$record=\$db->getRS()) {
 	HtmlTrans(&\$record);
-	if("{$att_list['lng']}"=="cn" && \$record['company']=="") {
-		\$record['company'] = \$record['company_en'];
+	if("{$att_list['lng']}"=="cn" && \$record['name']=="") {
 		\$record['name'] = \$record['name_en'];
 	} elseif("{$att_list['lng']}"=="en") {
-		\$record['country'] = strtr(\$record['country'], \$country_dic);
 		\$record['name_en'] = ucwords(strtolower(\$record['name_en']));
-		if(strlen(\$record['company_en'])>10) \$record['company_en'] = ucwords(strtolower(\$record['company_en']));
-		\$record['duty_en'] = ucwords(strtolower(\$record['duty_en']));
 	}
 	echo <<<content
 {$unit}

@@ -137,7 +137,12 @@ for(\$i=0; \$i<\$m; \$i++) {
 	\$vote_list[\$i]['type'] = \$theType;
 	\$vote_list[\$i]['rate'] = ceil((int)\$vote_list[\$i]['vote']*100/\$vote_sum);
 	if(empty(\$vote_list[\$i]['vote'])) \$vote_list[\$i]['vote'] = "0";
-	if(empty(\$vote_list[\$i]['url'])) \$vote_list[\$i]['url'] = "###";
+	if(empty(\$vote_list[\$i]['url'])) {
+		\$vote_list[\$i]['url'] = "###";
+		\$vote_list[\$i]['link_text'] = "";
+	} else {
+		\$vote_list[\$i]['link_text'] = "[Link]";
+	}
 	echo <<<content
 {$unit}
 content;
@@ -192,7 +197,7 @@ mytpl;
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
 	HtmlTrans(&\$record);
-	\$record['link'] = "module.php?m=survey&id=".\$record['id'];
+	\$record['link'] = getUrl("survey", \$record['id']);
 	\$record['add_date'] = ("{$att_list['show_date']}"!="") ? date("{$att_list['show_date']}", strtotime(\$record['add_date'])) : "";
 	\$record['catalog'] = "";
 	echo <<<content
@@ -211,6 +216,21 @@ for(; \$n<{$att_list['loop']}; \$n++) {
 mytpl;
 		$result = str_replace($block, $result, $content);
 		return $result;
+	}
+	
+	public static function getUrl($idx="", $page=1, $web_id=1) {
+		global $setting;
+		if(!is_numeric($page)) $page = 1;
+		$webInfo = getParaInfo("website", "web_id", $web_id);
+		$url = "http://".$webInfo['host'];
+		if($setting['rewrite']['enable']) {
+			$url .= "/survey/".$idx;
+		} else {
+			$url .= "/module.php?m=survey&id=".$idx;
+		}
+		$url = str_replace("//", "/", $url);
+		$url = str_replace("http:/", "http://", $url);
+		return $url;
 	}
 	
 	public static function ajax_vote($id, $vote_list) {

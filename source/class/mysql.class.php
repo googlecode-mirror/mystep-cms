@@ -97,6 +97,7 @@ class MySQL extends class_common {
 	
 	public function setCharset($charset="") {
 		if(empty($charset)) $charset = $this->DB_charset;
+		if(strtolower($charset)=="utf-8") $charset = "utf8";
 		if(substr(mysql_get_server_info(),0,1)>=5) {
 			mysql_query("SET CHARACTER SET '".$charset."'", $this->DB_conn);
 			mysql_query("SET NAMES '".$charset."'", $this->DB_conn);
