@@ -2171,6 +2171,12 @@ $setting = $cur_setting;
 				'gen' => array(
 						'etag' => '20120605',
 					),
+					'rewrite' => array(
+						'enable' => false,
+						'read' => 'article',
+						'list' => 'catalog',
+						'tag' => 'tag',
+					),
 			),
 		'code' => '
 $rewrite_list = array (
@@ -2189,6 +2195,7 @@ $rewrite_list = array (
 $cur_setting = $setting;
 unset($setting);
 include(ROOT_PATH."/include/config.php");
+unset($setting["gen"]["rewrite"]);
 $rewrite_list = var_export($rewrite_list, true);
 $expire_list = var_export($expire_list, true);
 $ignore_list = var_export($ignore_list, true);

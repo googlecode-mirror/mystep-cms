@@ -28,7 +28,6 @@ $setting['gen']['charset'] = 'gbk';
 $setting['gen']['gzip_level'] = 4;
 $setting['gen']['cache'] = false;
 $setting['gen']['cache_ext'] = '.html';
-$setting['gen']['rewrite'] = '';
 $setting['gen']['template'] = 'classic';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
 $setting['gen']['update'] = 'http://www.mysteps.cn/update/';
