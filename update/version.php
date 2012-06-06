@@ -2093,7 +2093,6 @@ $setting = $cur_setting;
 				'include/config/default.php',
 				'include/config/en.php',
 				'include/parameter.php',
-				'install/install.sql',
 				'list.php',
 				'module.php',
 				'plugin/comment/class.php',
@@ -2163,7 +2162,6 @@ $setting = $cur_setting;
 				'template/classic/index.tpl',
 				'template/classic/main.tpl',
 				'template/classic/search.tpl',
-				'update/version.php',
 			),
 		'sql' => array(
 				'INSERT INTO `{pre}admin_cat` VALUES (0, 3, "网址重写", "web_rewrite.php", "", 0, 0, "URL Rewrite 规则管理")',
