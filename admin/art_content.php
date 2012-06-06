@@ -262,7 +262,7 @@ function build_page($method) {
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if(empty($record['link'])) {
-				$record['link'] = getUrl("read", $record['news_id'], 1, $record['web_id']);
+				$record['link'] = getUrl("read", array($record['news_id'], $record['cat_id']), 1, $record['web_id']);
 			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
