@@ -274,7 +274,7 @@ function getParaInfo($idx, $col, $value) {
 		$max_count = count($GLOBALS['news_cat']);
 		for($i=0; $i<$max_count; $i++) {
 			if(!isset($GLOBALS['news_cat'][$i][$col])) continue;
-			if(strtolower($GLOBALS['news_cat'][$i][$col]) == strtolower($value) && $GLOBALS['news_cat'][$i]['web_id']==$setting['info']['web']['web_id']) {
+			if(strtolower($GLOBALS['news_cat'][$i][$col]) == strtolower($value) && ($col=='cat_id' || ($col!='cat_id' && $GLOBALS['news_cat'][$i]['web_id']==$setting['info']['web']['web_id']))) {
 				return $GLOBALS['news_cat'][$i];
 			} 
 		}
