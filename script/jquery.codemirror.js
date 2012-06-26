@@ -133,9 +133,9 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 	type_list.xmlpure = ["/mode/xmlpure/xmlpure.js"];
 	type_list.yaml = ["/mode/yaml/yaml.js"];
 	
-	if(typeof(loaded)=="undefined") loaded = new Array();
+	if(typeof(cm_loaded)=="undefined") cm_loaded = new Array();
 	var script_list = new Array();
-	if(settings.runmode && loaded.indexOf('/lib/util/runmode.js')==-1) script_list.push("/lib/util/runmode.js");
+	if(settings.runmode && cm_loaded.indexOf('/lib/util/runmode.js')==-1) script_list.push("/lib/util/runmode.js");
 	var the_type = "", the_type_list = ",";
 	for(var n=0, m=this.length;n<m;n++) {
 		the_type = $(this.get(n)).attr('type');
@@ -148,36 +148,36 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 	if(script_list.length==0) script_list = script_list.concat(type_list[settings.type]);
 	m = script_list.length;
 	
-	if(loaded.indexOf('/lib/codemirror.css')==-1) {
+	if(cm_loaded.indexOf('/lib/codemirror.css')==-1) {
 		$("head").append($('<link rel="stylesheet" href="'+settings.base_path+'/lib/codemirror.css" type="text/css" media="screen" />'));
-		loaded.push('/lib/codemirror.css');
+		cm_loaded.push('/lib/codemirror.css');
 	}
 	if(typeof(type_list[settings.type].css)!="undefined") {
-		if(loaded.push(type_list[settings.type].css)==-1) {
+		if(cm_loaded.push(type_list[settings.type].css)==-1) {
 			$("head").append($('<link rel="stylesheet" href="' + settings.base_path + type_list[settings.type].css + '" type="text/css" media="screen" />'));
-			loaded.push(type_list[settings.type].css);
+			cm_loaded.push(type_list[settings.type].css);
 		}
 	}
 	if(settings.theme!=null) {
-		if(loaded.indexOf('/theme/'+settings.theme+'.css')==-1) {
+		if(cm_loaded.indexOf('/theme/'+settings.theme+'.css')==-1) {
 			$("head").append($('<link rel="stylesheet" href="'+settings.base_path+'/theme/'+settings.theme+'.css" type="text/css" media="screen" />'));
-			loaded.push('/theme/'+settings.theme+'.css');
+			cm_loaded.push('/theme/'+settings.theme+'.css');
 		}
 	}
 	if(settings.ext_css!=null) $("head").append($('<style type="text/css">' + settings.ext_css + '</style>'));
 	
-	if(loaded.indexOf("/lib/codemirror.js")==-1) {
-		loaded.push("/lib/codemirror.js");
+	if(cm_loaded.indexOf("/lib/codemirror.js")==-1) {
+		cm_loaded.push("/lib/codemirror.js");
 		$.getScript(settings.base_path + "/lib/codemirror.js", function() {
 			for(var i=0;i<m;i++) {
-				loaded.push(script_list[i]);
+				cm_loaded.push(script_list[i]);
 				$.getScript(settings.base_path + script_list[i], function(){n++;});
 			}
 		});
 	} else {
 		for(var i=0;i<m;i++) {
-			if(loaded.push(script_list[i])==-1) {
-				loaded.push(script_list[i]);
+			if(cm_loaded.push(script_list[i])==-1) {
+				cm_loaded.push(script_list[i]);
 				$.getScript(settings.base_path + script_list[i], function(){n++;});
 			} else {
 				n++;

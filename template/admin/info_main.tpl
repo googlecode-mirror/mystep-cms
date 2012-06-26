@@ -8,7 +8,7 @@
 				V<?=$ms_version['ver']?> （<?=$ms_version['language']?>/<?=$ms_version['charset']?>/<?=$ms_version['date']?>）
 				<a href="###" onclick="checkUpdate()">检查升级</a>
 				<a href="###" onclick="checkModify()">检查文件改动</a>
-				<a href="###" onclick="updateModify()">更新文件校验</a>
+				<a href="###" onclick="updateModify()">更新本地校验</a>
 <!--
 				 |
 				<a href="###" onclick="emptyUpdate()">清空升级信息</a>
@@ -120,7 +120,11 @@ function emptyUpdate() {
 }
 function checkModify() {
 	loadingShow("正在检测系统文件的变更情况，请等待！");
-	$.get("update.php?check", function(info){
+	var url = "update.php?check_server";
+	if(confirm("通过本地校验文件检测请按“确定”，\n\n通过服务器校验请按“取消”。")) {
+		url = "update.php?check";
+	}
+	$.get(url, function(info){
 		loadingShow();
 		if(info=="error") {
 			alert("校验失败，请确认校验信息是否已成功建立！");

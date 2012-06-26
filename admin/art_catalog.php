@@ -90,7 +90,11 @@ switch($method) {
 			$notice_org = $_POST['notice_org'];
 			unset($_POST['notice_org']);
 			$merge = $_POST['merge'];
-			unset( $_POST['merge']);
+			unset($_POST['merge']);
+			$template = "";
+			if($_POST['cat_type']==3) $template = $_POST['template'];
+			unset($_POST['template']);
+			if($_POST['cat_type']==3 && $template=="") $_POST['cat_type'] = 1;
 			if($method=="add_ok") {
 				$log_info = $setting['language']['admin_art_catalog_add'];
 				$_POST['cat_order'] = 1 + $db->GetSingleResult("select max(cat_order) from ".$setting['db']['pre']."news_cat");
@@ -135,11 +139,20 @@ switch($method) {
 				}
 			}
 			$db->Query($str_sql);
-			if($method=="add_ok" && $group['power_cat']!="all") {
-				$db->Query("update ".$setting['db']['pre']."user_group set power_cat = concat(power_cat, ',".$db->GetInsertId()."') where group_id='".$usergroup."'");
-				deleteCache("user_group");
+			if($method=="add_ok") {
+				$cat_id = $db->GetInsertId();
+				if($group['power_cat']!="all") {
+					$db->Query("update ".$setting['db']['pre']."user_group set power_cat = concat(power_cat, ',".$cat_id."') where group_id='".$usergroup."'");
+					deleteCache("user_group");
+				}
 			}
 			deleteCache("news_cat");
+			$the_file = ROOT_PATH."/".$setting['path']['template']."/default/list_cat_".$cat_id.".tpl";
+			if(!empty($template)) {
+				WriteFile($the_file, $template, "wb");
+			} else {
+				@unlink($the_file);
+			}
 		}
 		break;
 	default:
@@ -195,8 +208,11 @@ function build_page($method) {
 			$record['cat_type_0'] = ($record['cat_type']==0) ? "selected" : "";
 			$record['cat_type_1'] = ($record['cat_type']==1) ? "selected" : "";
 			$record['cat_type_2'] = ($record['cat_type']==2) ? "selected" : "";
-			//$web_disabled = ($record['cat_main']==0)?"":"disabled";
+			$record['cat_type_3'] = ($record['cat_type']==3) ? "selected" : "";
+			$record['template'] = "";
 			$web_disabled = "disabled";
+			$the_file = ROOT_PATH."/".$setting['path']['template']."/default/list_cat_".$cat_id.".tpl";
+			if(file_exists($the_file)) $record['template'] = GetFile($the_file);
 		} else {
 			$show_merge = "none";
 			$record = array();
@@ -214,6 +230,7 @@ function build_page($method) {
 			$record['view_lvl_org'] = 0;
 			$record['notice'] = "";
 			$record['notice_org'] = "";
+			$record['cat_type'] = 0;
 			$web_disabled = "";
 			$record['cat_show_1'] = "checked";
 			$record['cat_show_2'] = "checked";
@@ -221,6 +238,8 @@ function build_page($method) {
 			$record['cat_type_0'] = "selected";
 			$record['cat_type_1'] = "";
 			$record['cat_type_2'] = "";
+			$record['cat_type_3'] = "";
+			$record['template'] = "";
 			if(!$GLOBALS['op_mode']) $record['web_id'] = $setting['info']['web']['web_id'];
 		}
 		

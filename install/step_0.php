@@ -33,7 +33,7 @@
 		<DIV class="btnbox marginbot">
 			<FORM method="post" action="index.php">
 				<INPUT value=1 type="hidden" name="step">
-				<INPUT value="我同意" type="submit"> &nbsp; &nbsp; &nbsp; &nbsp; 
+				<INPUT value="我同意" type="button" onclick="location.href='index.php?step=1'"> &nbsp; &nbsp; &nbsp; &nbsp; 
 				<INPUT onclick="javascript:window.close();" value="我不同意" type="button"> 
 			</FORM>
 		</DIV>

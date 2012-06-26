@@ -51,14 +51,22 @@ if($cat_info === false) {
 	$cat_name = $cat_info['cat_name'];
 	$cat_keyword = $cat_info['cat_keyword'];
 	$cat_comment = $cat_info['cat_comment'];
-	$page_size = $list_limit[$cat_info['cat_type']];
+	if(isset($list_limit[$cat_info['cat_type']]))	{
+		$page_size = $list_limit[$cat_info['cat_type']];
+	} else {
+		$page_size = $list_limit[0];
+	}
 	$cat_main = $cat_info['cat_main'];
 	$sub_list = $cat_info['cat_sub'];
 }
 $menu_cat_id = $cat_id;
 
 if(isset($cat_info['cat_type'])) {
-	$tpl_info['idx'] = "list_".$cat_info['cat_type'];
+	if($cat_info['cat_type']==3) {
+		$tpl_info['idx'] = "list_cat_".$cat_id;
+	} else {
+		$tpl_info['idx'] = "list_".$cat_info['cat_type'];
+	}
 } else {
 	$tpl_info['idx'] = "list";
 }

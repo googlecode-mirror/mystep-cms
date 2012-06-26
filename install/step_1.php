@@ -35,6 +35,7 @@
 <?php
 	$ver = phpversion();
 	$sign = $ver>"5.2" ? "w" : "nw";
+	if($sign=="nw") $ver .= '<span id="error"></span>';
 ?>
 		<td class="<?=$sign?> pdleft1"><?=$ver?></td>
 		</tr>
@@ -55,20 +56,25 @@
 		$ver = preg_replace("/^.+?([\d\.]+).+?$/", "\\1", $ver['GD Version']);
 	}
 	$sign = $ver>"2.0" ? "w" : "nw";
+	if($sign=="nw") $ver .= '<span id="error"></span>';
 ?>
 		<td class="<?=$sign?> pdleft1"><?=$ver?></td>
 		</tr>
 		<tr>
-		<td>磁盘空间</td>
-		<td class="padleft">10M</td>
-		<td class="padleft">不限制</td>
+		<td>短标签</td>
+		<td class="padleft">开启</td>
+		<td class="padleft">开启</td>
 <?php
-$dir = explode("/", str_replace("\\", "/", dirname(__FILE__)));
-if(empty($dir[0])) $dir[0] = "/";
-$free = ceil(disk_free_space($dir[0])/1024/1024);
-$sign = $free>10 ? "w" : "nw";
+	$short_tag = strtolower(ini_get("short_open_tag"));
+	if($short_tag==1 || $short_tag=="on") {
+		$sign = "w";
+		$ver = "开启";
+	} else {
+		$sign = "nw";
+		$ver = "关闭".'<span id="error"></span>';
+	}
 ?>
-		<td class="<?=$sign?> pdleft1"><?=$free."MB"?></td>
+		<td class="<?=$sign?> pdleft1"><?=$ver?></td>
 		</tr>
 		</table>
 		
@@ -91,11 +97,11 @@ $theList = array(
 
 foreach($theList as $cur) {
 	echo "<tr>\n";
-	echo "<td>{$cur}</td><td class=\"w pdleft1\">可写</td>";
+	echo "<td>{$cur}</td><td class=\"pdleft1\">可写</td>";
 	if(isWriteable(ROOT_PATH."/".$cur)) {
 		echo '<td class="w pdleft1">可写</td>';
 	} else {
-		echo '<td class="nw pdleft1">不可写</td>';
+		echo '<td class="nw pdleft1">不可写<span id="error"></span></td>';
 	}
 	echo "\n</tr>\n";
 }
@@ -106,8 +112,8 @@ foreach($theList as $cur) {
 		<table class="tb" style="margin:20px 0 20px 55px;width:90%;">
 		<tr>
 			<th>函数名称</th>
-			<th class="padleft">检查结果</th>
 			<th class="padleft">建议</th>
+			<th class="padleft">检查结果</th>
 		</tr>
 <?php
 $theList = array(
@@ -122,21 +128,39 @@ $theList = array(
 foreach($theList as $cur) {
 	echo "<tr>\n";
 	echo "<td>{$cur}</td>";
+	echo "<td class=\"padleft\">支持</td>\n";
 	if(function_exists($cur)) {
 		echo '<td class="w pdleft1">支持</td>';
 	} else {
-		echo '<td class="nw pdleft1">不支持</td>';
+		echo '<td class="nw pdleft1">不支持<span id="error"></span></td>';
 	}
-	echo "<td class=\"padleft\">无</td>\n</tr>\n";
+	echo "</tr>\n";
 }
 ?>
 		</table>
 		
+		<div id="err_info" style="text-align:center;color:#ff0000;">由于未能完全通过检测，当前插件有可能无法正确安装，请根据检测信息提示修正相关问题后，点击“复查”按钮！</div>
 		<form action="index.php" method="post">
 			<div class="btnbox marginbot">
 				<input type="hidden" name="step" value="2" />
 				<input type="button" onclick="location.href='./'" value="上一步"> &nbsp; &nbsp; &nbsp; &nbsp; 
-				<input type="submit" value="下一步">
+				<input type="submit" id="install" value="下一步"><input class="btn" id="refresh" type="button" value=" 复 查 " onclick="location.reload()" />
 			</div>
 		</form>
 	</div>
+
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+$(function(){
+	if($("#error").length==0) {
+		$("#err_info").hide();
+		$("#refresh").hide();
+		$("#install").show();
+	} else {
+		$("#err_info").show();
+		$("#refresh").show();
+		$("#install").hide();
+	}
+});
+//]]> 
+</script>

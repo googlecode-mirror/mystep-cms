@@ -89,7 +89,7 @@ $cookie_domain = $req->getServer("SERVER_NAME");
 				<tr>
 					<th class="tbopt">数据表前缀：</th>
 					<td><input type="text" name="setting[db][pre]" value="<?=$setting['db']['pre']?>" size="35" class="txt" need=""></td>
-					<td>用于区分本系统数据表与其他数据表数据表前缀</td>
+					<td>用于区分本系统数据表与其他数据表的前缀</td>
 				</tr>
 			</table>
 			<table align="center">

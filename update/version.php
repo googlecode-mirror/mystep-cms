@@ -2220,5 +2220,28 @@ unset($setting);
 $setting = $cur_setting;
 		',
 	),
+	'0.99.9.9' => array(
+		'info' => '
+				V0.99.9.9
+				1.Adjust install pack maker
+				2.Add custom template function for all catalog
+				3.Fix a bug in backup function
+				4.Add Server-site file check function
+				5.Fix a bug when link a article with a external link
+				6.Enhance request function in MyReq class
+				7.Fix some code which cause some alert in new version php
+				8.Fix a bug in MakeDir function
+				Some other adjusts...
+			',
+		'file' => array(
+				'include/parameter.php',
+				'plugin/admin_cat/admin_cat.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120625',
+					),
+			),
+	),
 );
 ?>

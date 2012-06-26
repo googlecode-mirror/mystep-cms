@@ -186,7 +186,7 @@ function WriteFile($file_name, $content, $mode="wb") {
 			fwrite($fp, $content);
 		}
 		fclose($fp);
-		chmod($file_name, 0777);
+		@chmod($file_name, 0777);
 	}
 	return $fp;
 }
@@ -215,6 +215,35 @@ function MakeDir($dir) {
 	return $flag;
 }
 
+function MultiDel($dir, $file_list=""){
+	//Coded By Windy2000 20031001 v1.0
+	if(is_dir($dir)){
+		$mydir = opendir($dir);
+		while(($file = readdir($mydir)) !== false) {
+			if($file!="." && $file!="..") {
+				$the_name = $dir."/".$file;
+				if(is_dir($the_name)) {
+					if(empty($file_list) || strpos($file_list, $file)!==false) {
+						MultiDel($the_name);
+					} else {
+						MultiDel($the_name, $file_list);
+					}
+				} else {
+					if(empty($file_list) || strpos($file_list, $file)!==false) {
+						@unlink($the_name);
+					}
+				}
+				//is_dir($the_name) ? MultiDel($the_name) : @unlink($the_name);
+			}
+		}
+		closedir($mydir);
+		@rmdir($dir);
+	}else{
+		if(is_file($dir)) unlink($dir);
+	}
+	return;
+}
+
 function chg_charset($content, $from="gbk", $to="utf-8") {
 	if(strtolower($from)==strtolower($to)) return $content;
 	$result = null;
@@ -237,5 +266,15 @@ function chg_charset($content, $from="gbk", $to="utf-8") {
 		$result = $content;
 	}
 	return $result;
+}
+
+function debug() {
+	//Coded By Windy2000 20040410 v1.5
+	echo "<pre>";
+	for($i = 0; $i < func_num_args(); $i++) {
+		var_dump(func_get_arg($i));
+	}
+	echo "</pre>";
+	exit;
 }
 ?>

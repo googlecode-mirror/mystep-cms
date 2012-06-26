@@ -274,7 +274,7 @@ $setting_type['watermark']['txt'] = array("text", "", "30");
 $setting_type['watermark']['img'] = array("text", "", "30");
 $setting_type['watermark']['position'] = array("select", array("Right-Bottom"=>1, "Right-Top"=>2, "Left-Bottom"=>3, "Left-Top"=>4, "Left-Middle"=>5, "Right-Middle"=>6, "Middle-Top"=>7, "Middle-Bottom"=>8, "Center"=>9));
 $setting_type['watermark']['img_rate'] = array("text", "digital", "2");
-$setting_type['watermark']['txt_font'] = 'font.ttc';
+$setting_type['watermark']['txt_font'] = array("text", "", "40");
 $setting_type['watermark']['txt_fontsize'] = array("text", "", "2");
 $setting_type['watermark']['txt_fontcolor'] = array("text", "", "7");
 $setting_type['watermark']['txt_bgcolor'] = array("text", "", "7");

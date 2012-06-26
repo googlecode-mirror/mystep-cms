@@ -10,7 +10,18 @@ date_default_timezone_set($setting['gen']['timezone']);
 $v = $_GET['v'];
 $cs = $_GET['cs'];
 if($cs==$setting['gen']['charset']) $cs = "";
-if($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
+if($v=="check") {
+	$the_file = ROOT_PATH."/cache/checkfile.php";
+	if(file_exists($the_file)) {
+		include($the_file);
+		$check_info['file_list'] = $file_list;
+		$check_info['file_list_md5'] = $file_list_md5;
+		unset($file_list, $file_list_md5);
+		echo toJson($check_info, $setting['gen']['charset']);
+	} else {
+		echo "";
+	}
+} elseif($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver'].$cs);
 	if(file_exists($cache_file)) {
 		$update = GetFile($cache_file);

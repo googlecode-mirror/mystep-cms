@@ -7,7 +7,7 @@ if(!is_numeric($id) || empty($id)) {
 	exit();
 }
 
-define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
+define('ROOT_PATH', str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 include(ROOT_PATH."/include/config.php");
 if($setting['web']['close'] && !isset($_COOKIE['force'])) {
 	header("HTTP/1.0 404 Not Found");

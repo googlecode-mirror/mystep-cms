@@ -116,19 +116,47 @@ class MyReq extends class_common {
 	}
 
 	public function getPara($type = "get", $para = "") {
-		$type = "_".strtoupper($type);
-		eval("\$flag = isset(\${$type});");
-		if($flag) {
-			eval("\$type = \${$type};");
-		} else {
-			return false;
+		$type = strtolower($type);
+		$var = null;
+		switch($type) {
+			case "svr":
+			case "server":
+				$var = $_SERVER;
+				break;	
+			case "env":
+				$var = $_ENV;
+				break;
+			case "get":
+				$var = $_GET;
+				break;
+			case "post":
+				$var = $_POST;
+				break;
+			case "req":
+			case "request":
+				$var = $_REQUEST;
+				break;
+			case "file":
+			case "files":
+				$var = $_FILES;
+				break;
+			case "cookie":
+				$var = $_COOKIE;
+				break;
+			case "sess":
+			case "session":
+				$var = $_SESSION;
+				break;
+			default:
+				$var = $GLOBALS;
+				break;
 		}
 		if(empty($para)) {
-			foreach($type as $key => $value) {
+			foreach($var as $key => $value) {
 				$this->setGlobal($key, $value);
 			}
 		} else {
-			return isset($type[$para])?$type[$para]:"";
+			return isset($var[$para]) ? $var[$para] : "";
 		}
 		return true;
 	}
@@ -162,11 +190,11 @@ class MyReq extends class_common {
 
 	public function getServer($para = "") {
 		if(empty($para)) return "";
-		if($this->getPara("server", $para) == "") {
-			return $this->getPara("env", $para);
-		} else {
-			return $this->getPara("server", $para);
+		$return = $this->getPara("server", $para);
+		if(empty($return)) {
+			$return = $this->getPara("env", $para);
 		}
+		return $return;
 	}
 
 	public function getGlobal($para = "") {

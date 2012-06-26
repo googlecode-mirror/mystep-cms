@@ -9,24 +9,24 @@
 <base href="<!--web_url-->" />
 <link rel="Shortcut Icon" href="favicon.ico" />
 <!--page_start-->
-<link rel="stylesheet" media="screen" type="text/css" href="images/<!--template-->/style.css" />
+<link rel="stylesheet" media="screen" type="text/css" href="/images/<!--template-->/style.css" />
 <link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 </head>
 <body>
-<div id="bar_loading"><img src="images/loading.gif" alt="<!--lang_ajax_sending-->" /><br /><span><!--lang_ajax_sending--></span></div>
+<div id="bar_loading"><img src="/images/loading.gif" alt="<!--lang_ajax_sending-->" /><br /><span><!--lang_ajax_sending--></span></div>
 <div id="page_ole">
 	<div id="page_top_nav" class="after">
 		<div class="fl">
-			<script language="JavaScript" type="text/javascript" src="script/date.js"></script><a name="top"></a>
+			<script language="JavaScript" type="text/javascript" src="/script/date.js"></script><a name="top"></a>
 		</div>
 		<div class="fr">
-			<script language="JavaScript" type="text/javascript" src="script/chs2cht.js"></script> |
+			<script language="JavaScript" type="text/javascript" src="/script/chs2cht.js"></script> |
 			<a href="#" onclick="setHomepage()">设为首页</a> |
 			<a href="#" onclick="addBookmark(this)">加入收藏</a>
 		</div>
 	</div>
 	<div id="page_top" class="after">
-		<img src="images/classic/top_text.png" alt="<!--web_title-->" />
+		<img src="/images/classic/top_text.png" alt="<!--web_title-->" />
 	</div>
 	<div id="topbar" class="after">
 		<div class="l fl"></div>

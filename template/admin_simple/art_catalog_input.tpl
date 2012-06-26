@@ -68,14 +68,18 @@
 					<span class="comment">（浏览当前分类文章需要达到的级别）</span></td>
 			</tr>
 			<tr>
-				<td class="cat">显示模式：</td>
+				<td class="cat">显示模板：</td>
 				<td class="row">
-					<select name="cat_type">
+					<select name="cat_type" onchange="showTpl(this.value)">
 						<option value="0" <!--cat_type_0-->>标题列表</option>
 						<option value="1" <!--cat_type_1-->>图片简介</option>
 						<option value="2" <!--cat_type_2-->>图片展示</option>
+						<option value="3" <!--cat_type_3-->>自定义</option>
 					</select>
 					<span class="comment">（根据栏目内容选择对应的目录页展示方式）</span>
+					<div id="tpl">
+						<textarea id="template" type="php" name="template" style="width:100%;height:400px;" wrap='off'><!--template--></textarea>
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -118,6 +122,35 @@ if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.4"
+	});
+});
+var flag = false;
+function showTpl(val) {
+	if(val==3) {
+		if(flag) {
+			$('#template').codemirror({
+						lineWrapping: false,
+						height: 350
+				}, function(){
+						if($.codemirror_error) {
+							//alert("脚本载入失败！");
+						} else {
+							$('.CodeMirror').css({width:'680px','overflow':"hidden","text-align":"left","border":"1px solid #cccccc"});
+							$('#template').parent(".row").css("padding","0px");
+						}
+				});
+			flag = false;
+		}
+		$("#tpl").show();
+	} else {
+		$("#tpl").hide();
+	}
+}
+
+$(function(){
+	$.getScript("../script/jquery.codemirror.js", function(){
+		flag=true;
+		showTpl(<!--cat_type-->);
 	});
 });
 //]]> 

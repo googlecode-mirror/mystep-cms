@@ -7,10 +7,12 @@
 	<tr>
 		<td align="center">
 		<br />
-		<div align="center"><b>填表日期：</b> <!--record_add_date--></div>
+		<div align="center"><b>填表日期：</b> <!--record_add_date--> （ID：<!--record_id-->）</div>
 		<br />
 		<div align="center">
 			【<a href="?method=confirm&mid=<!--mid-->&id=<!--record_id-->" target="_blank">发送确认邮件</a>】
+			&nbsp; &nbsp; &nbsp; 
+			【<a href="?&mid=<!--mid-->" target="_blank">返回列表页面</a>】
 		</div>
 		<br />
 		<form name="cf_<!--method-->" method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">

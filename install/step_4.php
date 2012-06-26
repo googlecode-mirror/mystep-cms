@@ -24,6 +24,6 @@
 			<p style="color:red;font-weight:bold;">安装已经完成，请您删除 install 目录！</p>
 		</div>
 		<div class="btnbox marginbot">
-			<input type="button" onclick="location.href='./?step=5'" value="完 成">
+			<input type="button" onclick="location.href='./?done'" value="完 成">
 		</div>
 	</div>

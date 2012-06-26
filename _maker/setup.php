@@ -11,11 +11,12 @@ ini_set('memory_limit', '512M');
 ini_set('magic_quotes_runtime', 0);
 $pack_file = "mystep.pack";
 $unpack_dir = "./";
-WriteFile($pack_file, base64_decode($content));
 $mypack = new MyPack($unpack_dir, $pack_file);
 $mypack->DoIt("unpack");
 echo $mypack->GetResult();
 unset($mypack);
+mkdir("./cache");
+mkdir("./template/cache");
 @unlink($pack_file);
 @unlink(__FILE__);
 ?>

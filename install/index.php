@@ -1,13 +1,19 @@
 <?php
-if(is_file("../include/install.lock")) {
-	header("location: ../");
-	exit();
-}
-define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
+define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__FILE__)."/../")));
 require(ROOT_PATH."/include/config.php");
 require(ROOT_PATH."/include/parameter.php");
 require(ROOT_PATH."/source/function/global.php");
 require(ROOT_PATH."/source/function/web.php");
+
+if($_SERVER['QUERY_STRING']=="done") {
+	MultiDel(ROOT_PATH."/error.log");
+	MultiDel(ROOT_PATH."/".$setting['path']['cache']);
+	MultiDel(dirname(__FILE__));
+}
+if(is_file("../include/install.lock")) {
+	header("location: ../");
+	exit();
+}
 
 header("Expires: Tue, 1 Jan 1980 00:00:00 GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
@@ -35,19 +41,18 @@ switch($step) {
 		$setting = arrayMerge($setting, $_POST['setting']);
 		$setting['web']['s_pass'] = md5($setting['web']['s_pass']);
 		unset($_POST);
+		$rewrite_list = var_export($rewrite_list, true);
+		$expire_list = var_export($expire_list, true);
+		$ignore_list = var_export($ignore_list, true);
 		$result = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
-
-\$expire_list = array(
-	"default" => 60*10,
-	"index" => 60*30,
-	"list" => 60*60,
-	"tag" => 60*60*24,
-	"read" => 60*60*24*7,
-);
+\$rewrite_list = {$rewrite_list};
+\$expire_list = {$expire_list};
+\$ignore_list = {$ignore_list};
+\$authority = "{$authority}";
 ?>
 mystep;
 		$result = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $result);
@@ -63,10 +68,6 @@ mystep;
 	case 4:
 		WriteFile("../include/install.lock", date("Y-m-d H:i:s"));
 		break;
-	case 5:
-		MultiDel(ROOT_PATH."/error.log");
-		MultiDel(ROOT_PATH."/".$setting['path']['cache']);
-		MultiDel(dirname(__FILE__));
 	default:
 		break;
 }

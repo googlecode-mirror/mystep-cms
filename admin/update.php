@@ -60,6 +60,7 @@ switch($method) {
 \$authority = "{$authority}";
 ?>
 mystep;
+			$update_info['setting']['gen']['etag'] = date("Ymd");
 			$content = str_replace("/*--settings--*/", makeVarsCode($update_info['setting'], '$setting'), $content);
 			WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
 			$setting = $setting_org;
@@ -80,7 +81,6 @@ mystep;
 		if($check_file_list==false) $check_file_list = array();
 		$list = array();
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
-			//if($update_info['file'][$i]=="include/config.php") continue;
 			if(strpos(strtolower($update_info['file'][$i]), "config.php")!==false) continue;
 			if($method=="update" && isWriteable(ROOT_PATH."/".$update_info['file'][$i]) && array_search("/".$update_info['file'][$i], $check_file_list)===false) {
 				if(empty($update_info['content'][$i])) {
@@ -160,6 +160,31 @@ mystep;
 	case "check":
 		if(($result = checkFile())!==false) {
 			echo implode("\n", $result);
+		} else {
+			echo "error";
+		}
+		break;
+	case "check_server":
+		$check_info = GetRemoteContent($setting['gen']['update']."?v=check");
+		if(!empty($check_info)) {
+			$check_info = json_decode($check_info);
+			$the_file = ROOT_PATH."/cache/checkfile.php";
+			if(file_exists($the_file)) rename($the_file, $the_file.".bak");
+			$file_list = $check_info->file_list;
+			$file_list_md5 = $check_info->file_list_md5;
+			unset($check_info);
+			$content = "<?php\n";
+			$content .= '$file_list = '.var_export($file_list, true).";\n";
+			$content .= '$file_list_md5 = '.var_export($file_list_md5, true).";\n";
+			$content .= "?>";
+			WriteFile($the_file, $content, "wb");
+			if(($result = checkFile())!==false) {
+				echo implode("\n", $result);
+			} else {
+				echo "error";
+			}
+			@unlink($the_file);
+			if(file_exists($the_file.".bak")) rename($the_file.".bak", $the_file);
 		} else {
 			echo "error";
 		}

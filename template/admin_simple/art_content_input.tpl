@@ -48,7 +48,7 @@
 					<input style="width:60px" class="btn" type="button" onClick="showPop('uploadImage','新闻图示上传','url','upload_img.php?image|240|180',420, 100)" value="上传" />
 					<input style="width:60px" class="btn" type="button" onClick="showPop('newsImage','常用新闻图示选择','id','newsImage',570)" value="选择" />
 					<input style="width:60px" class="btn" type="button" onClick="insertImg()" value="插入" />
-					<span class="comment">（用于推荐文章的图形显示）</span>
+					<span class="comment">（文章标题图形显示）</span>
 				</td>
 			</tr>
 			<tr>

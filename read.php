@@ -6,9 +6,13 @@ if(!is_numeric($news_id)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
 }
-list($cat_id, $add_date, $page_count, $subject, $view_lvl)=array_values(getData("select cat_id, add_date, pages, subject, view_lvl from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record", 1200));
+list($cat_id, $add_date, $page_count, $subject, $view_lvl, $link)=array_values(getData("select cat_id, add_date, pages, subject, view_lvl, link from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record", 1200));
 if(is_null($cat_id) || is_null($add_date)) {
 	$goto_url = "/";
+	$mystep->pageEnd();
+}
+if(!empty($link)) {
+	$goto_url = $link;
 	$mystep->pageEnd();
 }
 

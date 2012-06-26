@@ -560,7 +560,7 @@ function WriteFile($file_name, $content, $mode="wb") {
 			fwrite($fp, $content);
 		}
 		fclose($fp);
-		chmod($file_name, 0777);
+		@chmod($file_name, 0777);
 	}
 	return $fp;
 }
@@ -592,6 +592,7 @@ function MakeDir($dir) {
 	$flag = true;
 	if(!is_dir($dir)) {
 		$dir_list = explode("/", $dir);
+		if($dir_list[0]=="") $dir_list[0]="/";
 		$this_dir = "";
 		$oldumask=umask(0);
 		$max_count = count($dir_list);
@@ -955,6 +956,10 @@ function GetTimeDiff($time_start, $decimal = 3, $micro = true) {
 	if($micro) $time *= 1000;
 	$time = preg_replace("/^([\d]+.[\d]{".$decimal."})[\d]*$/","\\1",(string)$time);
 	return $time;
+}
+
+function GetTinyUrl($url) {
+	return file_get_contents("http://tinyurl.com/api-create.php?url=".urlencode($url));
 }
 
 function debug() {

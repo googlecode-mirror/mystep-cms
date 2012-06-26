@@ -61,8 +61,9 @@ function buildCache($idx, $cache_para) {
 	$detail = "<?php";
 	getArrayDetail($cache_para, &$detail);
 	$detail .= "?>";
-	WriteFile(ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php", $detail, "wb");
-	chmod(ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php", 0666);
+	$theFile = str_replace("//", "/", ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php");
+	WriteFile($theFile, $detail, "wb");
+	@chmod($theFile, 0666);
 	return true;
 }
 
@@ -84,6 +85,7 @@ function includeCache($idx, $show_error = true) {
 		return true;
 	} else {
 		if($show_error) {
+			if(!isset($setting['language']['page_error'])) $setting['language']['page_error'] = "Error occurred...";
 			printf($setting['language']['page_error'], $setting['web']['email']);
 			exit();
 		}

@@ -3,6 +3,8 @@
 	<!--custom_form_name-->
 </div>
 <div class="nav">
+	<a href="?mid=<!--mid-->">显示全部</a>
+ |
 	<a href="?method=export&mid=<!--mid-->">导出数据</a>
  |
 	新用户：<input type="text" size="10" value="<!--keyword-->" onkeypress="if(window.event.keyCode==13)location.href='?method=add_data_ok&mid=<!--mid-->&name='+this.value" /><input type="button" value="添加" onclick="location.href='?method=add_data_ok&mid=<!--mid-->&name='+this.previousSibling.value" />

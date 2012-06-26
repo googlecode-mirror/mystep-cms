@@ -273,7 +273,7 @@ $setting_type['watermark']['txt'] = array("text", "", "30");
 $setting_type['watermark']['img'] = array("text", "", "30");
 $setting_type['watermark']['position'] = array("select", array("右下"=>1, "右上"=>2, "左下"=>3, "左上"=>4, "左中"=>5, "右中"=>6, "中上"=>7, "中下"=>8, "正中"=>9));
 $setting_type['watermark']['img_rate'] = array("text", "digital", "2");
-$setting_type['watermark']['txt_font'] = 'font.ttc';
+$setting_type['watermark']['txt_font'] = array("text", "", "40");
 $setting_type['watermark']['txt_fontsize'] = array("text", "", "2");
 $setting_type['watermark']['txt_fontcolor'] = array("text", "", "7");
 $setting_type['watermark']['txt_bgcolor'] = array("text", "", "7");

@@ -96,7 +96,7 @@ if(count($_POST)>0) {
 			$files = array();
 			for($i=0; $i<$max_count; $i++) {
 				$content = "DROP TABLE IF EXISTS `{$tbl_list[$i]}`;\n\n";
-				$content .= $db->GetTabSetting($setting_sub['db']['name'].".".$tbl_list[$i])."\n".$db->GetTabData($setting_sub['db']['name'].".".$tbl_list[$i]);
+				$content .= $db->GetTabSetting($tbl_list[$i], $setting_sub['db']['name'])."\n".$db->GetTabData($setting_sub['db']['name'].".".$tbl_list[$i]);
 				$files[$i] = $dir.$setting_sub['db']['name']."_".$tbl_list[$i].".sql";
 				WriteFile($files[$i], $content);
 			}

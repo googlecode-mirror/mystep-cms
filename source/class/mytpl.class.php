@@ -102,7 +102,6 @@ class MyTpl extends class_common {
 
 	public function Set_Variables($values, $key="", $reset = false) {
 		global $tpl_para;
-		
 		if($reset) {
 			$tpl_para[$this->hash]['para'] = $values;
 		} else {
@@ -367,19 +366,22 @@ mytpl;
 			if(headers_sent()) $this->Error("Headers have already been sent, content create failed....");
 			if(count(ob_list_handlers())==0) {
 				ob_start();
-				include($this->Get_TPL_Cache());
+				$theCache = $this->Get_TPL_Cache();
+				include($theCache);
 				$content = ob_get_contents();
 				if(count(ob_list_handlers())>0) ob_end_clean();	
 			} else {
 				if(ob_get_length()) {
 					$temp = ob_get_contents();
 					if(count(ob_list_handlers())>0) ob_clean();
-					include($this->Get_TPL_Cache());
+					$theCache = $this->Get_TPL_Cache();
+					include($theCache);
 					$content = ob_get_contents();
 					if(count(ob_list_handlers())>0) ob_clean();
 					echo $temp;
 				} else {
-					include($this->Get_TPL_Cache());
+					$theCache = $this->Get_TPL_Cache();
+					include($theCache);
 					$content = ob_get_contents();
 					if(count(ob_list_handlers())>0) ob_clean();
 				}

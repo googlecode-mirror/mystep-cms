@@ -20,7 +20,7 @@
 		</tr>
 		<tr>
 			<td class="cat" width="250">服务器时间</td>
-			<td class="row"><?=date("Y年m月d日 H:i:s",$_SERVER['REQUEST_TIME'])?></td>
+			<td class="row"><?=date("Y年m月d日 H:i:s",$req->getServer('REQUEST_TIME'))?></td>
 		</tr>
 		<tr>
 			<td class="cat" width="250">服务器系统</td>
@@ -43,8 +43,8 @@
 			<td class="row"><?=get_current_user()?></td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">本文件路径</td>
-			<td class="row"><?=$req->getServer("PATH_TRANSLATED")?></td>
+			<td class="cat" width="250">网站存放路径</td>
+			<td class="row"><?=ROOT_PATH?></td>
 		</tr>
 	</table>
 </div>
