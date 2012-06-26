@@ -192,6 +192,7 @@ $file_list_md5 = '.var_export($file_list_md5, true).';
 		include($the_file);
 		$result = array();
 		for($i=0,$m=count($file_list);$i<$m;$i++) {
+			if(strpos($file_list[$i], "/plugin/")===0 || strpos($file_list[$i], "/config")!==false) continue;
 			if(!is_file(ROOT_PATH.$file_list[$i])) {
 				$result[] = $file_list[$i];
 			} elseif(md5_file(ROOT_PATH.$file_list[$i])!=$file_list_md5[$i]) {

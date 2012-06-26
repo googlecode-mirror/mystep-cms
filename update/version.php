@@ -2250,6 +2250,7 @@ $setting = $cur_setting;
 				'script/jquery.codemirror.js',
 				'source/class/myreq.class.php',
 				'source/class/mytpl.class.php',
+				'source/function/admin.php',
 				'source/function/global.php',
 				'source/function/web.php',
 				'template/admin/art_catalog_input.tpl',
@@ -2266,6 +2267,30 @@ $setting = $cur_setting;
 						'etag' => '20120625',
 					),
 			),
+		'code' => '
+$cur_setting = $setting;
+unset($setting);
+include(ROOT_PATH."/include/config.php");
+$ignore_list[] = "install";
+$rewrite_list = var_export($rewrite_list, true);
+$expire_list = var_export($expire_list, true);
+$ignore_list = var_export($ignore_list, true);
+$content = <<<mystep
+<?php
+\$setting = array();
+
+/*--settings--*/
+\$rewrite_list = {$rewrite_list};
+\$expire_list = {$expire_list};
+\$ignore_list = {$ignore_list};
+\$authority = "{$authority}";
+?>
+mystep;
+$content = str_replace("/*--settings--*/", makeVarsCode($setting, "\$setting"), $content);
+WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+unset($setting);
+$setting = $cur_setting;
+		',
 	),
 );
 ?>

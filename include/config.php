@@ -188,6 +188,7 @@ $ignore_list = array (
   17 => 'news_show',
   18 => 'apple',
   19 => '_archive',
+  20 => 'install',
 );
 $authority = "mystep";
 ?>
