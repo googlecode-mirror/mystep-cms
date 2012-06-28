@@ -69,6 +69,11 @@ class myPack {
 							$file_content = chs2cht($file_content, $this->charset['from']);
 						}
 					}
+					if(strpos($dir, "include/config.php")) {
+						$file_content = preg_replace("/\\\$setting\['web'\]\['s_pass'\].+?;/", "\$setting['web']['s_pass'] = '';", $file_content);
+						$file_content = preg_replace("/\\\$setting\['db'\]\['pass'\].+?;/", "\$setting['db']['pass'] = '';", $file_content);
+						$file_content = preg_replace("/\\\$setting\['email'\]\['password'\].+?;/", "\$setting['email']['password'] = '';", $file_content);
+					}
 					$result = chg_charset($file_content, $this->charset['from'], $this->charset['to']);
 					$content  =  "file".$separator.str_replace($this->pack_dir, "", $dir).$separator.strlen($result).$separator.filemtime($dir)."\n";
 					$file_content = $result;
