@@ -37,12 +37,6 @@
 <script language="JavaScript" type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
-	$.setupJMPopups({
-		screenLockerBackground: "#000",
-		screenLockerOpacity: "0.4"
-	});
-});
 tinyMCE.init({
 	mode : "textareas",
 	language : "zh",

@@ -75,7 +75,7 @@
         </div>
       </div>
 			<div class="box box_r">
-				<div class="title"><a href="read.html">联系办法</a></div>
+				<div class="title">联系办法</div>
 				<div class="content" style="height:144px; overflow:hidden;">
 <!--info title="contact"-->
 				</div>
@@ -187,9 +187,6 @@ $(function(){
 			$("#login").find("div").eq(3).html('<a href="admin/" target="_blank">管理</a> | ' + $("#login").find("div").eq(3).html());
 		}
 	}, "json");
-	//Misc
-	setSwitch();
-	setList();
 });
 //]]> 
 </script> 

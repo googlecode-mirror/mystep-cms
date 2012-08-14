@@ -61,6 +61,10 @@ String.prototype.Tlength = function() {
 	return this.length+(arr==null?0:arr.length);
 }
 
+String.prototype.trim= function(){
+	return this.replace(/^\s+|\s+$/g, "");
+}
+
 Date.prototype.format = function(format){  //eg:format="YYYY-MM-dd hh:mm:ss";
  	var o = {
 		"M+" :  this.getMonth()+1,  //month
@@ -296,13 +300,35 @@ function setHomepage() {
 	}
 }
 
+function UrlEncode(s) {
+	var img = document.createElement("img");
+	function escapeDBC(s) {
+		if (!s) return ""
+		if (window.ActiveXObject) {
+			execScript('SetLocale "zh-cn"', 'vbscript');
+			return s.replace(/[\d\D]/g, function($0) {
+				window.vbsval = "";
+				execScript('window.vbsval=Hex(Asc("' + $0 + '"))', "vbscript");
+				return "%" + window.vbsval.slice(0,2) + "%" + window.vbsval.slice(-2);
+			});
+		} else {
+			img.src = "nothing.action?separator=" + s;
+			return img.src.split("?separator=").pop();
+		}
+	}
+	return s.replace(/([^\x00-\xff]+)|([\x00-\xff]+)/g, function($0, $1, $2) {
+		return escapeDBC($1) + encodeURIComponent($2||'');
+	});
+}
+
 function reportError(msg, url, line) {
 	var str = "You have found an error as below: \n\n";
 	str += "Err: " + msg + "\n\non line: " + line;
-	if(typeof(ms_setting)!="undefined" && ms_setting.debug) alert(str);
+	if(typeof(ms_setting)!="undefined" && ms_setting.debug) alert(str, true);
 	return true;
 }
 window.onerror = reportError;
+
 var ms_setting =  new Object();
 var language = new Object();
 $.getScript(rlt_path + "script/setting.js.php");

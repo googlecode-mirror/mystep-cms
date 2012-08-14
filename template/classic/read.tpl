@@ -69,6 +69,8 @@ $(function() {
 	}
 	$("#content").powerImage();
 	
+	if($(".title_img").attr("src").indexOf("dummy")!=-1) $(".title_img").remove();
+	
 	if($('.source_code').length>0) {
 		$.getScript("script/jquery.codemirror.js", function(){
 			$('.source_code').codemirror({
@@ -81,3 +83,6 @@ $(function() {
 });
 //]]> 
 </script>
+<!-- JiaThis Button BEGIN -->
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0" charset="utf-8"></script>
+<!-- JiaThis Button END -->

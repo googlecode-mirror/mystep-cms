@@ -121,6 +121,18 @@ class MySQL extends class_common {
 		if($this->DB_conn == NULL) return false;
 		$this->DB_count++;
 		$this->Free();
+		if(strpos($sql, "1=")!==false) {
+			$sql = str_replace("1=1 and", "", $sql);
+			$sql = str_replace("and 1=1", "", $sql);
+			$sql = str_replace("1=0 or", "", $sql);
+			$sql = str_replace("or 1=0", "", $sql);
+		}
+		if(strpos($sql, "0=")!==false) {
+			$sql = str_replace("0=0 and", "", $sql);
+			$sql = str_replace("and 0=0", "", $sql);
+			$sql = str_replace("0=1` or", "", $sql);
+			$sql = str_replace("or 0=1", "", $sql);
+		}
 		if($this->DB_Qtype) {
 			$this->DB_result = mysql_query($sql, $this->DB_conn);
 		} else {

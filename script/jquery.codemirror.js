@@ -169,6 +169,16 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 	if(cm_loaded.indexOf("/lib/codemirror.js")==-1) {
 		cm_loaded.push("/lib/codemirror.js");
 		$.getScript(settings.base_path + "/lib/codemirror.js", function() {
+			CodeMirror.htmlEscape = function (text){
+				return text.replace(/[<>"&]/g, function(match, pos, originalText){
+					switch(match){
+						case "<" : return "&lt;";
+						case ">" : return "&gt;";
+						case "&" : return "&amp;";
+						case "\"" : return "&quot;";
+					 }
+				});
+			}
 			for(var i=0;i<m;i++) {
 				cm_loaded.push(script_list[i]);
 				$.getScript(settings.base_path + script_list[i], function(){n++;});
@@ -208,7 +218,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 				var the_content = obj.val();
 				if(the_content.length==0) the_content = obj.text();
 				the_content += "\n";
-				CodeMirror.runMode(the_content.replace(/\t/g, String.fromCharCode(160)+" "), settings.mode, callback);
+				CodeMirror.runMode(the_content.replace(/\t/g, String.fromCharCode(160)+String.fromCharCode(160)).replace(/ /g, String.fromCharCode(160)), settings.mode, callback);
 				var new_obj = $('<div class="CodeMirror">'+(settings.lineNumbers?('<div class="CodeMirror-gutter"><div class="CodeMirror-gutter-text">'+gutter.join('')+'</div></div>'):'<!--gutter-->')+'<div class="CodeMirror-lines">'+(settings.lineNumbers?'<div style="position: relative; margin-left: '+size.toString().length+'em;">':'<div>')+'<pre class="cm-s-default">'+accum.join('')+'</pre></div></div></div><div class="CodeMirror_scroll"></div>').insertAfter(obj);
 				$(".CodeMirror").css({"position":"relative"});
 				if(the_type=="mysql") {
@@ -226,7 +236,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 				$(this).html($(this).prev().find(".CodeMirror-lines").find("pre:first").html());
 				$(this).css({"width":($(this).prev().css("width")+3),"height":"16px","overflow-x":"scroll","overflow-y":"hidden"});
 				$(this).css({"white-space":"nowrap"});
-				if(this.scrollWidth==this.offsetWidth) {
+				if(this.scrollWidth<=this.offsetWidth) {
 					$(this).remove();
 				} else {
 					$(this).scroll(function(){

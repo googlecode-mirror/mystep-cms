@@ -8,10 +8,6 @@ if(count(debug_backtrace())<1) {
 }
 define('ROOT_PATH', str_replace("\\", "/", dirname(__file__)));
 require(ROOT_PATH."/include/config.php");
-if($setting['web']['close'] && !isset($_COOKIE['force'])) {
-	header("location: ".$setting['web']['close_page']);
-	exit();
-}
 require(ROOT_PATH."/include/parameter.php");
 require(ROOT_PATH."/source/function/global.php");
 require(ROOT_PATH."/source/function/web.php");
@@ -20,7 +16,12 @@ require(ROOT_PATH."/source/class/mystep.class.php");
 
 $mystep = new MyStep();
 $mystep->pageStart(true);
+if($setting['web']['close'] && $req->getCookie("force")=="") {
+	$goto_url = $setting['web']['close_page'];
+	$mystep->pageEnd(false);
+}
 $cache_path = ROOT_PATH."/".$setting['path']['cache']."/html/".$setting['info']['web']['idx']."/";
+if($req->getCookie("template", false)!="") $setting['gen']['template'] = $req->getCookie("template", false);
 $tpl_info = array(
 		"idx" => "main",
 		"style" => $setting['gen']['template'],

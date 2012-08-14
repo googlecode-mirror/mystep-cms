@@ -135,21 +135,15 @@
 <script language="JavaScript" type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
-	$.setupJMPopups({
-		screenLockerBackground: "#000",
-		screenLockerOpacity: "0.4"
-	});
-});
 tinyMCE.init({
 	mode : "exact",
 	elements : "content",
 	language : "zh",
 	theme : "advanced",
-	plugins : "quote,bbscode,source_code,advlink,advimage,subtitle,safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
+	plugins : "quote,bbscode,source_code,style,table,advlink,advimage,subtitle,safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
 
-	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,format",
-	theme_advanced_buttons2 : "pagebreak,Subtitle,upload,|,cut,copy,paste,pastetext,pasteword,bbscode,source_code,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
+	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,tablecontrols",
+	theme_advanced_buttons2 : "pagebreak,Subtitle,upload,|,hr,styleprops,sub,sup,|,cut,copy,paste,pastetext,pasteword,bbscode,source_code,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,change,format,code",
 	theme_advanced_buttons3 : "",
 	theme_advanced_toolbar_location : "top",
 	theme_advanced_toolbar_align : "left",
@@ -363,12 +357,19 @@ function checkForm_append(theForm) {
 
 function setIframe(idx) {
 	if($id("popupLayer_"+idx)) {
-		theFrame = $("#popupLayer_"+idx).find("iframe");
-		theHeight = theFrame.contents().find("body")[0].scrollHeight + 20;
-		//if(theHeight>650) theHeight = 650;
+		var theFrame = $("#popupLayer_"+idx).find("iframe");
+		var theWidth = $("#popupLayer_"+idx).width()-20;
+		var theHeight = theFrame.contents().find("body")[0].scrollHeight;
 		theFrame.height(theHeight);
-		$("#popupLayer_"+idx).height($("#popupLayer_"+idx+"_title").height()+theHeight);
-		$("#popupLayer_"+idx+"_content").height(theHeight);
+		if(theHeight>600) {
+			theHeight = 600;
+			$("#popupLayer_"+idx+"_content").css("overflow-y","scroll");
+		}
+		$("#popupLayer_"+idx).height($("#popupLayer_"+idx+"_title").height()+theHeight+16);
+		$("#popupLayer_"+idx+"_content").height(theHeight - 16);
+		$("#popupLayer_"+idx).width(theWidth+20);
+		$("#popupLayer_"+idx+"_content").width(theWidth);
+		$.setPopupLayersPosition();
 	}
 }
 

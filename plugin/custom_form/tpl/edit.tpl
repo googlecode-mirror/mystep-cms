@@ -210,6 +210,7 @@
 		</tr>
 	</table>
 	<div style="text-align:center;margin-top:10px;">
+		<input type="checkbox" class="item" name="search" /> 是否用于检索<br /><br />
 		<input type="hidden" name="item" value="" /><input class="btn" type="button" onClick="confirmItem(this.previousSibling.value)" value=" 确 定 " />
 	</div>
 </div>
@@ -280,6 +281,7 @@ function editItem(item) {
 	$("#popupLayer_editItem input[name='title_en']").val(cf_item[item]['title_en']);
 	$("#popupLayer_editItem input[name='comment']").val(cf_item[item]['comment']);
 	$("#popupLayer_editItem input[name='comment_en']").val(cf_item[item]['comment_en']);
+	$("#popupLayer_editItem input[name='search']").attr("checked", cf_item[item]['search']=="true");
 	return;
 }
 function removeItem(item) {
@@ -385,6 +387,9 @@ function confirmItem(mode) {
 						objs[i].value = objs[i].value.replace(/[\r\n\s]*$/, "");
 						new_item["value"].en = objs[i].value.split("\n");
 						break;
+					case "search":
+						new_item[objs[i].name] = objs[i].checked?"true":"false";
+						break;
 					default:
 						new_item[objs[i].name] = objs[i].value;
 						break;
@@ -425,6 +430,9 @@ function confirmItem(mode) {
 						objs[i].value = objs[i].value.replace(/^[\r\n\s]*/, "");
 						objs[i].value = objs[i].value.replace(/[\r\n\s]*$/, "");
 						new_item["value"].en = objs[i].value.split("\n");
+						break;
+					case "search":
+						new_item[objs[i].name] = objs[i].checked?"true":"false";
 						break;
 					default:
 						new_item[objs[i].name] = objs[i].value;

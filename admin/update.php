@@ -41,7 +41,6 @@ switch($method) {
 		$update_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver']."&cs=".$setting['gen']['charset'], $header);
 		$update_info = base64_decode($update_info);
 		$update_info = unserialize($update_info);
-
 		if(count($update_info['setting'])>0) {
 			$setting_org = $setting;
 			require(ROOT_PATH."/include/config.php");
@@ -62,23 +61,35 @@ switch($method) {
 mystep;
 			$update_info['setting']['gen']['etag'] = date("Ymd");
 			$content = str_replace("/*--settings--*/", makeVarsCode($update_info['setting'], '$setting'), $content);
-			WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+			if($method=="update") WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
 			$setting = $setting_org;
 		}
 	
 		$strFind = array("{db_name}", "{pre}", "{charset}");
 		$strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset']);
+		$sql_list = array();
 		for($i=0,$m=count($update_info['sql']); $i<$m; $i++) {
-			$db->Query(str_replace($strFind, $strReplace, $update_info['sql'][$i]));
+			if($method=="update") {
+				$db->Query(str_replace($strFind, $strReplace, $update_info['sql'][$i]));
+			} else {
+				$sql_list[] = str_replace($strFind, $strReplace, $update_info['sql'][$i]);
+			}
 		}
-		if($m>0) {
+		if($method=="update" && $m>0) {
 			$result['info'] = sprintf($setting['language']['admin_update_sql'], $m);
 		} else {
 			$result['info'] = "";
 		}
 		
+		if($method=="update") {
+			for($i=0,$m=count($update_info['code']); $i<$m; $i++) {
+				@eval($update_info['code'][$i]);
+			}
+		}
+		
 		$check_file_list = checkFile();
 		if($check_file_list==false) $check_file_list = array();
+		$check_file_list= $check_file_list['mod'];
 		$list = array();
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
 			if(strpos(strtolower($update_info['file'][$i]), "config.php")!==false) continue;
@@ -100,6 +111,7 @@ mystep;
 			require(ROOT_PATH."/source/class/myzip.class.php");
 			$dir = ROOT_PATH."/".$setting['path']['upload']."/tmp/";
 			$zipfile = $dir."update_".date("Ymd").".zip";
+			@unlink($zipfile);
 			$dir = $dir."update/".date("Ymd/");
 			$files = array();
 			for($i=0; $i<$m; $i++) {
@@ -107,6 +119,47 @@ mystep;
 				$files[$i] = $dir.$update_info['file'][$list[$i]];
 				WriteFile($files[$i], $update_info['content'][$list[$i]], "wb");
 			}
+			if(isset($content)) {
+				$files[] = $dir."include/config.php";
+				WriteFile($dir."include/config.php", $content, "wb");
+			}
+			$script_update = <<<mystep
+<?php
+define('ROOT_PATH', str_replace("\\\\", "/", realpath(dirname(__file__)."/../")));
+include(ROOT_PATH."/include/config.php");
+include(ROOT_PATH."/include/parameter.php");
+include(ROOT_PATH."/source/function/global.php");
+include(ROOT_PATH."/source/function/web.php");
+include(ROOT_PATH."/source/class/abstract.class.php");
+include(ROOT_PATH."/source/class/mystep.class.php");
+\$mystep = new MyStep();
+\$mystep->pageStart();
+mystep;
+			if(count($sql_list)>0) {
+				$files[] = $dir."_update/run.sql";
+				WriteFile($dir."_update/run.sql", join(";\n", $sql_list).";", "wb");
+				$script_update .= <<<mystep
+\$db->ExeSqlFile("run.sql");
+
+\\\\------------------------------
+mystep;
+			}
+			if(count($update_info['code'])>0) {
+				$script_update .= "\n\n".join("\n\\\\------------------------------\n", $update_info['code'])."\n\n";
+			}
+			$script_update .= <<<mystep
+\\\\------------------------------
+
+MultiDel(ROOT_PATH."/_update");
+\$goto_url = "{$setting['web']['url']}/{$setting['path']['admin']}";
+\$mystep->pageEnd(false);
+?>
+mystep;
+			if(count($sql_list)>0 || count($update_info['code'])>0) {
+				$files[] = $dir."_update/index.php";
+				WriteFile($dir."_update/index.php", $script_update, "wb");
+			}
+			
 			if(zip($files, $zipfile, $dir)) {
 				$result['link'] = $setting['web']['url']."/".$setting['path']['upload']."/tmp/".basename($zipfile);
 			}
@@ -116,14 +169,10 @@ mystep;
 			$result['info'] .= "\n". sprintf($setting['language']['admin_update_file'], count($update_info['file']));
 		}
 		
-		for($i=0,$m=count($update_info['code']); $i<$m; $i++) {
-			@eval($update_info['code'][$i]);
-		}
-		
 		write_log($setting['language']['admin_update_done']);
 		echo toJson($result, $setting['db']['charset']);
 		
-		checkFile(ROOT_PATH);
+		checkFile(ROOT_PATH, 0, "y");
 		$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
 		if($handle = opendir($cache_path)) {
 			while (false !== ($file = readdir($handle))) {
@@ -153,16 +202,13 @@ mystep;
 		}
 		break;
 	case "build":
-		if(!checkFile(ROOT_PATH)) {
+		if(!checkFile(ROOT_PATH, 0, "y")) {
 			echo "error";
 		}
 		break;
 	case "check":
-		if(($result = checkFile())!==false) {
-			echo implode("\n", $result);
-		} else {
-			echo "error";
-		}
+		$result = checkFile();
+		echo toJson($result, $setting['gen']['charset']);
 		break;
 	case "check_server":
 		$check_info = GetRemoteContent($setting['gen']['update']."?v=check");
@@ -178,11 +224,8 @@ mystep;
 			$content .= '$file_list_md5 = '.var_export($file_list_md5, true).";\n";
 			$content .= "?>";
 			WriteFile($the_file, $content, "wb");
-			if(($result = checkFile())!==false) {
-				echo implode("\n", $result);
-			} else {
-				echo "error";
-			}
+			$result = checkFile();
+			echo toJson($result, $setting['gen']['charset']);
 			@unlink($the_file);
 			if(file_exists($the_file.".bak")) rename($the_file.".bak", $the_file);
 		} else {
@@ -190,7 +233,7 @@ mystep;
 		}
 		break;
 	default:
-		$check_info = GetRemoteContent($setting['gen']['update']);
+		$check_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver']."&cs=".$setting['gen']['charset']."&check=yes");
 		$check_info = chg_charset($check_info, "utf-8", $setting['gen']['charset']);
 		echo $check_info;
 		break;

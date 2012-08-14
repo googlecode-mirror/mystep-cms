@@ -9,7 +9,6 @@ $version = array(
 	),
 	'0.98' => array(
 		'info' => '
-				V0.98.12
 				1.JavaScript Parameter Settings added
 				2.Online update module added
 				3.Some other adjusts...
@@ -42,7 +41,6 @@ $version = array(
 	),
 	'0.99' => array(
 		'info' => '
-				V0.99
 				1.Add Survey Plugin which can generate custom survey for the website
 				2.Fix error record page
 				3.Add CSS and JS merge function which can merge and minify all CSS or JS file into one files
@@ -164,7 +162,6 @@ $version = array(
 	),
 	'0.99.1' => array(
 		'info' => '
-				V0.99.1
 				1.Enhance Database backup module, add repair function
 				2.Enhance Update module
 				3.Update jQuery to 1.7
@@ -197,7 +194,6 @@ $version = array(
 	),
 	'0.99.2' => array(
 		'info' => '
-				V0.99.2
 				1.Fix a bug in multi-web script cache function
 				2.Adjust plugin template mode
 				3.Fix a bug in search engine plugin
@@ -278,7 +274,6 @@ $version = array(
 	),
 	'0.99.3' => array(
 		'info' => '
-				V0.99.3
 				1.Fix a bug in database import function
 				2.Fix a problem in input page with TinyMCE
 				3.Enhance update function
@@ -300,7 +295,6 @@ $version = array(
 	),
 	'0.99.4' => array(
 		'info' => '
-				V0.99.4
 				1.Fix a bug in MultiDel function
 				2.Update information export and empty function add
 				3.Fix a problem in MyDB module
@@ -317,7 +311,6 @@ $version = array(
 	),
 	'0.99.5' => array(
 		'info' => '
-				V0.99.5
 				1.Disable html code minify in admin panle
 				2.Disable session in merge.php
 				3.Add update referer
@@ -337,7 +330,6 @@ $version = array(
 	),
 	'0.99.5.1' => array(
 		'info' => '
-				V0.99.5.1
 				Fix a language bug in update function
 			',
 		'file' => array(
@@ -348,7 +340,6 @@ $version = array(
 	),
 	'0.99.5.2' => array(
 		'info' => '
-				V0.99.5.2
 				1.Fix a plugin template path bug
 				2.Fix a update referer bug
 				3.Some other adjusts...
@@ -368,7 +359,6 @@ $version = array(
 	),
 	'0.99.6' => array(
 		'info' => '
-				V0.99.6
 				1.Plugin script file adjusts
 				2.Update function time zone fixed
 				3.Fix a variant bug in merger script
@@ -470,7 +460,6 @@ $version = array(
 	),
 	'0.99.6.1' => array(
 		'info' => '
-				V0.99.6.1
 				1.Fix a bug in language.js.php
 				2.Fix a directory bug in update function
 				3.Fix a custom link bug in topic plugin
@@ -486,7 +475,6 @@ $version = array(
 	),
 	'0.99.7' => array(
 		'info' => '
-				V0.99.7
 				1.Fix a link bug in admin catalog list with multi subweb
 				2.Fix a bug in multi subweb cache delete
 				3.Fix a bug in file cache clear function
@@ -629,7 +617,6 @@ $version = array(
 	),
 	'0.99.7.1' => array(
 		'info' => '
-				V0.99.7.1
 				1.Fix a bug in update function
 				2.Fix a bug in get remote picture function
 				3.Some adjust in meeting plugin
@@ -657,7 +644,6 @@ $version = array(
 	),
 	'0.99.7.2' => array(
 		'info' => '
-				V0.99.7.2
 				1.Enhance meeting plugin
 				2.Fix a bug in news_visit plugin
 				3.Fix a bug in news_parse tag when it has a variant value in tag attribute
@@ -690,7 +676,6 @@ $version = array(
 	),
 	'0.99.8.1' => array(
 		'info' => '
-				V0.99.8.1
 				1.Pack all file into one php installation file
 				2.Enhance catalog reorder function
 				3.Enhance cache clear function
@@ -797,7 +782,6 @@ $version = array(
 	
 	'0.99.8.2' => array(
 		'info' => '
-				V0.99.8.2
 				1.Crontab plugin added, you can run any code in schedule with it
 				2.Email plugin added, you can send mass email with it
 				3.Fix a bug in tag page
@@ -929,7 +913,6 @@ $version = array(
 	),
 	'0.99.8.3' => array(
 		'info' => '
-				V0.99.8.3
 				1.Fix a bug in plugin install
 				2.Add authority mode for advance user (Check detail from checkUser() function, authority varaint can be set in parameter.php)
 				3.Fix date_input script
@@ -953,7 +936,6 @@ $version = array(
 	),
 	'0.99.9' => array(
 		'info' => '
-				V0.99.9
 				1.Advertisement plugin added
 				2.Delete data cache when article has been edited
 				3.Fix a bug in attachment multi-upload
@@ -1154,7 +1136,6 @@ $version = array(
 	),
 	'0.99.9.1' => array(
 		'info' => '
-				V0.99.9.1
 				1.Enhance setup pack maker module
 				2.Enhance chs2cht function
 				3.Adjust automatic update funtion, now you can choose to download update pack, and update manually
@@ -1190,7 +1171,6 @@ $version = array(
 	),
 	'0.99.9.2' => array(
 		'info' => '
-				V0.99.9.2
 				1.Fix a bug in attachment downloading
 				2.Enhance Crontab plugin
 				3.Add just-download option to update module
@@ -1229,7 +1209,6 @@ $version = array(
 	),
 	'0.99.9.3' => array(
 		'info' => '
-				V0.99.9.3
 				1.Allow custom regist list to meeting plugin
 				2.Fix a bug in downloading local attachment
 				3.Add background music setting in offical plugin
@@ -1266,7 +1245,6 @@ $version = array(
 	),
 	'0.99.9.4' => array(
 		'info' => '
-				V0.99.9.4
 				1.Enhance image loading function in article read page
 				2.Exhance password input method in plugin setting function
 				3.Fix a bug in comment plugin
@@ -1321,7 +1299,6 @@ $version = array(
 	),
 	'0.99.9.5' => array(
 		'info' => '
-				V0.99.9.5
 				1.Plugin online update added
 				2.Fix a plugin data bug
 				3.Enhance meeting plugin
@@ -1373,7 +1350,6 @@ $version = array(
 	),
 	'0.99.9.5.1' => array(
 		'info' => '
-				V0.99.9.5.1
 				1.Fix a bug in update function
 				2.Move "ignore list" and "authority" parameter from parameter.php to config.php
 				3.Fix a bug in powerImage function (javascript)
@@ -1418,7 +1394,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.5.2' => array(
 		'info' => '
-				V0.99.9.5.2
 				1.Fix a bug in plugin import function
 				2.Add visual mode for template edit function
 				Some other adjusts...
@@ -1468,7 +1443,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.5.3' => array(
 		'info' => '
-				V0.99.9.5.3
 				1.Fix a bug in Multi-page article submit function
 				2.Add source code plugin for TinyMCE and show with codemirror module
 				Some other adjusts...
@@ -1528,7 +1502,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.5.4' => array(
 		'info' => '
-				V0.99.9.5.4
 				1.Fix some tpl display bug
 				2.Enhance codemirror module
 				3.Add codemirror module to meeting plugin
@@ -1561,7 +1534,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.5.5' => array(
 		'info' => '
-				V0.99.9.5.5
 				1.Fix a bug that admin cannot edit locked articles
 				2.Allow user edit css file of every template
 				3.Add textara mode from all setting functions
@@ -1593,7 +1565,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.5.6' => array(
 		'info' => '
-				V0.99.9.5.6
 				1.Adjust templates to match xhtml standard
 				2.Adjust css W3C standard
 				3.Enhance content format function for TinyMCE
@@ -1666,7 +1637,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.5.7' => array(
 		'info' => '
-				V0.99.9.5.7
 				1.Fix a bug in multi_catalog post
 				2.Fix a mistake in html tag
 				3.Fix a bug in format function of TinyMCE
@@ -1686,7 +1656,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.5.8' => array(
 		'info' => '
-				V0.99.9.5.8
 				1.Fix a bug in meeting plugin
 				2.Fix a bug in format function of TinyMCE
 				Some other adjusts...
@@ -1705,7 +1674,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.6' => array(
 		'info' => '
-				V0.99.9.6
 				1.Enhance resume function for crontab plugin
 				2.Fix a bug in crontab schedule calculate
 				3.Add extend script method for all of the functions of meeting plugin
@@ -1769,7 +1737,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.7' => array(
 		'info' => '
-				V0.99.9.7
 				1.Add switch for page information display
 				2.Fix a bug in search keyword display
 				3.Adjust power image function
@@ -1805,7 +1772,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.8' => array(
 		'info' => '
-				V0.99.9.8
 				1.Article title image will be resize to a small size when upload
 				2.Enhance image watermark function and add more settings
 				3.Fix a bug in page information show when page cache enabled
@@ -1849,7 +1815,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.8.1' => array(
 		'info' => '
-				V0.99.9.8.1
 				1.Adjust resume code of crontab plugin
 				2.Fix a multi-website bug in news_visit plugin
 				3.Fix a bug in format function of TinyMCE
@@ -1874,7 +1839,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.8.2' => array(
 		'info' => '
-				V0.99.9.8.2
 				1.Optimize resume code of crontab plugin
 				2.Fix a bug in news visit plugin
 				Some other adjusts...
@@ -1911,7 +1875,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.8.3' => array(
 		'info' => '
-				V0.99.9.8.3
 				1.Enhance Database Module, repair and optimize function added
 				2.Enhance Plugin Module, install check and remote update mode added
 				3.Improve installation function
@@ -2000,7 +1963,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.8.4' => array(
 		'info' => '
-				V0.99.9.8.4
 				1.New plugin custom_form as a alias of meeting plugin added
 				2.Meeting plugin enhanced
 				3.Fix a bug in admin_cat plugin
@@ -2066,7 +2028,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.8.5' => array(
 		'info' => '
-			V0.99.9.8.5
 			1.Rewrite Rule Management module added
 			2.Enhance getUrl function, plugins can regist it\'s own rewrite rule with mystep class
 			3.Enhance gotoPage function to match rewrite rules
@@ -2222,7 +2183,6 @@ $setting = $cur_setting;
 	),
 	'0.99.9.9' => array(
 		'info' => '
-				V0.99.9.9
 				1.Adjust install pack maker
 				2.Add custom template function for all catalog
 				3.Fix a bug in backup function
@@ -2291,6 +2251,124 @@ WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
 unset($setting);
 $setting = $cur_setting;
 		',
+	),
+	'0.99.9.9.1' => array(
+		'info' => '
+				1.Every sub-web can be closed individually
+				2.Make all html dom obj which inline to the html page before inject by javascript in real time
+				3.Enhance update function
+				4.Adjust and enhance javascript
+				5.Change alert,confirm,prompt dialog to PopUp mode
+				6.Autocomplete plugin for jQuery added, put dictionaries in "script\jquery.autocomplete" folder
+				7.Update jQuery to the lastest version
+				8.Remove some useless files
+				9.Some template error fixed
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/art_content.php',
+				'admin/attachment.php',
+				'admin/images/div.png',
+				'admin/language/chs.php',
+				'admin/language/default.php',
+				'admin/language/en.php',
+				'admin/style.css',
+				'admin/update.php',
+				'images/arrow.gif',
+				'images/classic/style.css',
+				'images/default/style.css',
+				'images/style.css',
+				'inc.php',
+				'include/config.php',
+				'include/parameter.php',
+				'plugin/admin_cat/tpl/input.tpl',
+				'plugin/admin_cat/tpl/list.tpl',
+				'plugin/comment/tpl/list.tpl',
+				'plugin/crontab/tpl/input.tpl',
+				'plugin/crontab/tpl/list.tpl',
+				'plugin/custom_form/custom_form.php',
+				'plugin/custom_form/setting',
+				'plugin/custom_form/setting/default.php',
+				'plugin/custom_form/setting/main.tpl',
+				'plugin/custom_form/tpl/add.tpl',
+				'plugin/custom_form/tpl/default_mail_cn.tpl',
+				'plugin/custom_form/tpl/default_mail_en.tpl',
+				'plugin/custom_form/tpl/edit.tpl',
+				'plugin/custom_form/tpl/edit_data.tpl',
+				'plugin/custom_form/tpl/list.tpl',
+				'plugin/custom_form/tpl/list_data.tpl',
+				'plugin/custom_form/tpl/main.tpl',
+				'plugin/custom_sql/custom_sql.php',
+				'plugin/custom_sql/tpl/input.tpl',
+				'plugin/custom_sql/tpl/list.tpl',
+				'plugin/custom_sql/tpl/view.tpl',
+				'plugin/db_info/tpl/db.tpl',
+				'plugin/db_info/tpl/tbl.tpl',
+				'plugin/email/tpl/attachment.tpl',
+				'plugin/email/tpl/input.tpl',
+				'plugin/email/tpl/list.tpl',
+				'plugin/news_mark/tpl/news_mark.tpl',
+				'plugin/news_visit/news_visit.tpl',
+				'plugin/offical/class.php',
+				'plugin/offical/index.php',
+				'plugin/search/tpl/block_search.tpl',
+				'script/addon.js',
+				'script/date_input.css',
+				'script/global.js',
+				'script/jquery.addon.js',
+				'script/jquery.autocomplete',
+				'script/jquery.autocomplete.css',
+				'script/jquery.autocomplete.js',
+				'script/jquery.autocomplete/country.php',
+				'script/jquery.autocomplete/location.php',
+				'script/jquery.autocomplete/province.php',
+				'script/jquery.autocomplete/shadow.png',
+				'script/jquery.codemirror.js',
+				'script/jquery.date_input.css',
+				'script/jquery.date_input.js',
+				'script/jquery.jmpopups.css',
+				'script/jquery.jmpopups.js',
+				'script/jquery.js',
+				'script/tinymce/plugins/source_code/js/source_code.js',
+				'source/class/mysql.class.php',
+				'source/class/mystep.class.php',
+				'source/function/admin.php',
+				'template/admin/art_catalog_input.tpl',
+				'template/admin/art_content_input.tpl',
+				'template/admin/art_image_input.tpl',
+				'template/admin/art_info_input.tpl',
+				'template/admin/func_link_input.tpl',
+				'template/admin/index.tpl',
+				'template/admin/info_main.tpl',
+				'template/admin/main.tpl',
+				'template/admin/web_plugin_list.tpl',
+				'template/admin/web_rewrite.tpl',
+				'template/admin/web_subweb_input.tpl',
+				'template/admin/web_template_input.tpl',
+				'template/admin_simple/art_catalog_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/admin_simple/art_content_list.tpl',
+				'template/admin_simple/art_image_input.tpl',
+				'template/admin_simple/art_info_input.tpl',
+				'template/admin_simple/func_link_input.tpl',
+				'template/admin_simple/index.tpl',
+				'template/admin_simple/main.tpl',
+				'template/classic/index.tpl',
+				'template/classic/main.tpl',
+				'template/classic/read.tpl',
+				'template/default/index.tpl',
+				'template/default/list.tpl',
+				'template/default/list_0.tpl',
+				'template/default/list_1.tpl',
+				'template/default/list_2.tpl',
+				'template/default/main.tpl',
+				'template/default/read.tpl',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120814',
+					),
+			),
 	),
 );
 ?>

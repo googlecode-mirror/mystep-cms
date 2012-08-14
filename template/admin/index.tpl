@@ -7,9 +7,12 @@
 <meta http-equiv="windows-Target" contect="_top" />
 <meta http-equiv="Content-Type" content="text/html; charset=<!--charset-->" />
 <link rel="stylesheet" type="text/css" media="all" href="style.css" />
-<script language="JavaScript" type="text/javascript" src="/script/global.js"></script>
 <script language="JavaScript" type="text/javascript" src="/script/jquery.js"></script>
 <script language="JavaScript" type="text/javascript" src="/script/jquery.addon.js"></script>
+<script language="JavaScript" type="text/javascript" src="/script/global.js"></script>
+<script language="JavaScript" type="text/javascript" src="/script/admin.js"></script>
+<script language="JavaScript" type="text/javascript" src="/script/addon.js"></script>
+<script language="JavaScript" type="text/javascript" src="/script/jquery.jmpopups.js"></script>
 <base target="main" />
 </head>
 <body style="overflow:hidden;">
@@ -58,12 +61,6 @@
 </body>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
-	$.setupJMPopups({
-		screenLockerBackground: "#000",
-		screenLockerOpacity: "0.4"
-	});
-});
 function reset_psw(theForm) {
 	if(theForm.psw_org.value=="" || theForm.psw_new.value=="" || theForm.psw_rep.value=="") {
 		alert("ÇëÌîÐ´Ïà¹ØÃÜÂëÏî£¡");
@@ -139,8 +136,8 @@ function showCat(theOle, theObjs, renew) {
 	return;
 }
 function setPos() {
-	var theWidth = $(window).width() - 200;
-	var theHeight = $(window).height() - 120;
+	var theWidth = $(document.body).width() - 200;
+	var theHeight = $(document.body).height() - 120;
 	$("#main").width(theWidth);
 	$("#main").height(theHeight);
 	$("#cat_tree").height(theHeight - 50);

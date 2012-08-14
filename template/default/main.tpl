@@ -13,9 +13,15 @@
 <link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 </head>
 <body>
-<div id="bar_loading"><img src="/images/loading.gif" alt="<!--lang_ajax_sending-->"><br / ><!--lang_ajax_sending--></div>
 <div id="page_ole">
 	<div id="page_top" class="after">
+		<div style="position:relative;top:10px;left:880px;">
+			<select onchange="$.cookie('template', this.value, {expires:1});window.location.reload();">
+				<option value="<!--template-->">ÍøÕ¾ÑùÊ½</option>
+				<option value="default">default</option>
+				<option value="classic">classic</option>
+			</select>
+		</div>
 		<div class="l fl">
 			<img src="/images/default/logo.png" width="280" /><a name="top"></a>
 		</div>

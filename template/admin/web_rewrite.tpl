@@ -120,6 +120,7 @@ function createRule(type) {
 				result += '\n\
 		<rule name="rule_'+i+'" stopProcessing="true">\n\
 			<match url="'+rules[i][0]+'$" ignoreCase="true" />\n\
+			<conditions logincalGrouping="MatchAll" trackAllCaptures="false" />\n\
 			<action type="Rewrite" url="'+rules[i][1].replace(/\/(\d+)/g, "{R:$1}").replace(/&/g,"&amp;")+'" appendQueryString="true" />\n\
 		</rule>';
 			}

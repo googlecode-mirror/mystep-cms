@@ -106,6 +106,7 @@ function build_page($method) {
 			}
 			$tpl->Set_Loop('record', $record);
 		}
+		$setting['web']['title'] = $the_sql['name']." - ".$setting['language']['plugin_custom_sql_title'];
 		$tpl->Set_Variable('title', $setting['language']['plugin_custom_sql_title']);
 		$tpl->Set_Variable('title_2', $the_sql['name']);
 		$tpl->Set_Variable('id', $id);

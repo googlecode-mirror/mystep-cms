@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title><!--web_title--> - 后台管理</title>
@@ -17,13 +17,12 @@
 	<div id="page_main">
 
 <div class="title"><!--title--></div>
-<div align="left">
-所属网站：
-<select name="web_id" onchange="location.href='?keyword=<!--keyword-->&web_id='+this.value">
+<div class="nav">
+	<select name="web_id" onchange="location.href='?keyword=<!--keyword-->&web_id='+this.value">
 <!--loop:start key="website"-->
-	<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
+		<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
 <!--loop:end-->
-</select>
+	</select>
 </div>
 <div class="nav">
 	共有 <!--page_total--> 条记录，当前为第 <!--page_cur-->/<!--page_count--> 页，

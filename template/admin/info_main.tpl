@@ -7,14 +7,16 @@
 			<td class="row">
 				V<?=$ms_version['ver']?> （<?=$ms_version['language']?>/<?=$ms_version['charset']?>/<?=$ms_version['date']?>）
 				<a href="###" onclick="checkUpdate()">检查升级</a>
-				<a href="###" onclick="checkModify()">检查文件改动</a>
-				<a href="###" onclick="updateModify()">更新本地校验</a>
-<!--
 				 |
-				<a href="###" onclick="emptyUpdate()">清空升级信息</a>
+				<a href="###" onclick="confirm('请选择校验方式：\n\n本机校验：通过本地生成的校验信息校验网站文件\n\n网络校验：通过更新服务器上的校验文件校验', 'checkModify', ['本机校验','网络校验'], '文件校验')">检查文件改动</a>
 				 |
-				<a href="###" onclick="exportUpdate()">导出升级信息</a>
--->
+				<a href="###" onclick="confirm('更新校验信息会造成自动升级时将已改动文件错误覆盖！\n&nbsp;\n是否继续？', 'updateModify', ['确 定','取 消'], '更新本地校验')">更新本地校验</a>
+				<span style="display:<?=(file_exists("../update/")?"inline":"none")?>">
+					 |
+					<a href="###" onclick="emptyUpdate()">清空升级信息</a>
+					 |
+					<a href="###" onclick="exportUpdate()">导出升级信息</a>
+				</span>
 			</td>
 		</tr>
 		<tr>
@@ -78,28 +80,42 @@ function checkUpdate() {
 	loadingShow("正在连接服务器，检测更新。。。");
 	$.get("update.php?"+Math.random(), function(ver_info){
 		loadingShow();
+		if(ver_info==null) {
+			alert("系统当前版本已为最新，无需更新！");
+			retrun;
+		}
+		var result = "";
+		result += '\
+<div align="center">\
+	<span style="font-weight:bold;font-size:16px;">更新详情</span><br /><br />\
+</div>\
+<hr />\
+';
 		try {
-			if(ver_info.ver>cur_ver.ver) {
-				if(confirm("目前更新服务器的最新版本为： v" + ver_info.ver + "(" + ver_info.date + ")\n\n按“确定”自动更新，按“取消”下载更新程序！\n" + ver_info.update)) {
-					applyUpdate(1);
-				} else {
-					applyUpdate(0);
-				}
-			} else {
-				alert("系统当前版本已为最新，无需更新！");
+			for(var ver in ver_info) {
+				result += '\
+<div>\
+	<div style="font-weight:bold;">Version: '+ver+'</div>\
+	<div>'+ver_info[ver].info.replace(/[\r\n]+/g, "<br />")+'</div>\
+	<div>&nbsp;</div>\
+	<div><a href="###" onclick="$(this).next().toggle()">[查看更新文件]</a><div style="display:none;">'+ver_info[ver].file.join("<br />")+'</div></div>\
+</div>\
+<hr />\
+';
 			}
+			confirm(result, "applyUpdate", [" 下载更新 ", " 自动更新 "], "系统更新", false);
 		} catch(e) {
 			alert("获取更新服务器信息失败，请检查相关设置！");
 		}
 	}, "json");
 }
 function applyUpdate(mode) {
-	loadingShow("系统正在更新，请等待！");
+	loadingShow("系统正在获取更新，请耐心等待！");
 	mode = (mode==1?"update":"download");
 	$.get("update.php?"+mode, function(info){
 		loadingShow();
 		try {
-			alert(info.info);
+			alert_org(info.info);
 			if(info.link.length>2) {
 				window.open(info.link);
 			}
@@ -118,25 +134,41 @@ function emptyUpdate() {
 		}
 	});
 }
-function checkModify() {
+function checkModify(mode) {
 	loadingShow("正在检测系统文件的变更情况，请等待！");
 	var url = "update.php?check_server";
-	if(confirm("通过本地校验文件检测请按“确定”，\n\n通过服务器校验请按“取消”。")) {
-		url = "update.php?check";
-	}
+	if(mode==0) url = "update.php?check";
 	$.get(url, function(info){
 		loadingShow();
-		if(info=="error") {
+		if(info==false) {
 			alert("校验失败，请确认校验信息是否已成功建立！");
-		} else if(info.length==0) {
+		} else {
+			var result = "";
+			if(info['new']!=null) {
+				result += "<b>发现 " + info['new'].length + " 个新增文件：</b>\n";
+				result += info['new'].join("\n");
+				result += "\n&nbsp;\n";
+			}
+			if(info['mod']!=null) {
+				result += "<b>发现 " + info['mod'].length + " 个文件发生改变：</b>\n";
+				result += info['mod'].join("\n");
+				result += "\n&nbsp;\n";
+			}
+			if(info['miss']!=null) {
+				result += "<b>发现 " + info['miss'].length + " 个文件被删除：</b>\n";
+				result += info['miss'].join("\n");
+				result += "\n&nbsp;\n";
+			}
+		}
+		if(result.length==0) {
 			alert("未发现改变的文件！");
 		} else {
-			alert("发现如下文件发生改变：\n\n"+info);
+			alert(result, true);
 		}
-	});
+	}, "json");
 }
-function updateModify() {
-	if(confirm("更新校验信息会造成自动升级时将已改动文件错误覆盖，是否继续？")==false) return;
+function updateModify(mode) {
+	if(mode==1) return;
 	loadingShow("正在更新系统文件校验信息，请等待！");
 	$.get("update.php?build", function(info){
 		loadingShow();

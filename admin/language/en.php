@@ -10,13 +10,13 @@ $language = array (
   'admin_update_done' => 'Online Update',
   'admin_update_sql' => '%d SQL query has been executed!',
   'admin_update_file' => '%d files has been updated!',
-  'admin_update_error' => 'Because of below reasons, auto update cannot be apply:
+  'admin_update_error' => 'Because one of the reasons below, auto update cannot be apply:
   
-  1.Power limit - some files is unwritable.
-  2.You prefer to manual update.
+  1.You prefer to manual update.
+  2.Power limit - some files is unwritable.
   3.Some files haves been modified after last update.
   
-  Download the update file and uncompres to the root of your website!',
+  Download the update file and uncompres to the root of your website, and execute the script in the "_update" folder!',
 
   'admin_psw' => 'Password repeat',
   'admin_psw_desc' => 'Reinput the previous password please',

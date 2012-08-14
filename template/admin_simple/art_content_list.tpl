@@ -25,7 +25,7 @@
 			<td class="cat"><a href="?keyword=<!--keyword-->&order=subject&order_type=<!--order_type-->&cat_id=<!--cat_id-->&web_id=<!--web_id-->"><font color="#000000">文章标题</font></a></td>
 			<td class="cat" width="80"><a href="?keyword=<!--keyword-->&order=add_user&order_type=<!--order_type-->&cat_id=<!--cat_id-->&web_id=<!--web_id-->"><font color="#000000">录入人</font></a></td>
 			<td class="cat" width="120"><a href="?keyword=<!--keyword-->&order=add_date&order_type=<!--order_type-->&cat_id=<!--cat_id-->&web_id=<!--web_id-->"><font color="#000000">录入日期</font></a></td>
-			<td class="cat" width="90"><font color="#000000">相关操作</font></td>
+			<td class="cat" width="90"><a href="?keyword=<!--keyword-->&order=setop&order_type=<!--order_type-->&cat_id=<!--cat_id-->&web_id=<!--web_id-->"><font color="#000000">相关操作</font></a></td>
 		</tr>
 <!--loop:start key="record" time="20"-->
 		<tr align="center">

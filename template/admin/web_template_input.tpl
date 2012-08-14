@@ -17,7 +17,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat" colspan="2">模板内容：<span class="comment">（高级模式中按 F11 - 全屏 , Shift+Tab - 缩进, Shift+Backspace - 反缩进）</span></td>
+				<td class="cat" colspan="2">模板内容：<span class="comment">（高级模式中按 Shift+Tab - 缩进, Shift+Backspace - 反缩进）</span></td>
 			</tr>
 			<tr>
 				<td colspan="2" style="width:800px;overflow:hidden;">
@@ -42,7 +42,7 @@ var editor = null;
 var hlLine = null;
 function setIt() {
 	if(editor == null) {
-		loadingShow("脚本载入中，请稍候");
+		//loadingShow("脚本载入中，请稍候");
 		$('#file_content').codemirror({
 				lineWrapping: false,
 				height: 400,
@@ -129,7 +129,7 @@ function setIt() {
 					editor = $.codemirror_get_editor(0);
 					hlLine = editor.setLineClass(0, "activeline");
 				}
-				loadingShow();
+				//loadingShow();
 			}
 		);
 	} else {

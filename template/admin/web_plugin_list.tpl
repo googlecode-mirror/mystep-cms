@@ -99,12 +99,6 @@
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopups.js", function(){
-	$.setupJMPopups({
-		screenLockerBackground: "#000",
-		screenLockerOpacity: "0.4"
-	});
-});
 var dp_list = "<!--dp_list-->";
 if(dp_list.length>1) {
 	alert("发现如下插件文件存在管理文件名重复，这将影响网站权限的分配，请确认并修正：\n\n" + dp_list);

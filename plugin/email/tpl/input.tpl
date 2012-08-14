@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title><!--web_title--> - 后台管理</title>
@@ -19,7 +19,7 @@
 <div class="title"><!--title--></div>
 <div align="left">
 	<script type="text/javascript" src="../../script/checkForm.js" Language="JavaScript1.2"></script>
-	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(!checkForm(this)){loadingShow();return false}">
+	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(!checkForm(this)){loadingShow('正在发送邮件，请耐心等待！');return false}">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="cat" width="80">邮件主题：</td>

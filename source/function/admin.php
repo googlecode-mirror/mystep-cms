@@ -156,51 +156,81 @@ function delTplCache($tpl="", $file="") {
 	}
 }
 
-$file_list = array();
-$file_list_md5 = array();
-function checkFile($dir="", $layer=0) {
+function checkFile($dir="", $layer=0, $check="") {
+	global $file_list, $file_list_md5, $ignore_list;
+	if($layer==0) {
+		$file_list = array();
+		$file_list_md5 = array();
+	}
 	$the_file = ROOT_PATH."/cache/checkfile.php";
-	if(!empty($dir)) {
+	if(empty($dir)) $dir = ROOT_PATH;
+	if(($handle = opendir($dir))===false) return false;
+	if($check!="") {
 		if(!is_dir($dir)) return false;
-		global $file_list, $file_list_md5, $ignore_list;
-		if($handle = opendir($dir)) {
-			while (false !== ($file = readdir($handle))) {
-				if(array_search($file, $ignore_list)===false) {
-					$the_name = $dir."/".$file;
-					if(is_dir($the_name)) {
-						checkFile($the_name, $layer+1);
-					} else {
-						$file_list[] = str_replace(ROOT_PATH, "", $the_name);
-						$file_list_md5[] = md5_file($the_name);
-					}
+		while (false !== ($file = readdir($handle))) {
+			if(array_search($file, $ignore_list)===false) {
+				$the_name = $dir."/".$file;
+				if(is_dir($the_name)) {
+					checkFile($the_name, $layer+1, "y");
+				} else {
+					$file_list[] = str_replace(ROOT_PATH, "", $the_name);
+					$file_list_md5[] = md5_file($the_name);
 				}
 			}
-			closedir($handle);
-			if($layer==0) {
-				$content = '<?php
+		}
+		if($layer==0) {
+			$content = '<?php
 $file_list = '.var_export($file_list, true).';
 $file_list_md5 = '.var_export($file_list_md5, true).';
 ?>';
-				WriteFile($the_file, $content, "wb");
-			}
-			return true;
-		} else {
-			return false;
+			WriteFile($the_file, $content, "wb");
 		}
+		$result = true;
 	} else {
-		if(!is_file($the_file)) return false;
-		include($the_file);
-		$result = array();
-		for($i=0,$m=count($file_list);$i<$m;$i++) {
-			if(strpos($file_list[$i], "/plugin/")===0 || strpos($file_list[$i], "/config")!==false) continue;
-			if(!is_file(ROOT_PATH.$file_list[$i])) {
-				$result[] = $file_list[$i];
-			} elseif(md5_file(ROOT_PATH.$file_list[$i])!=$file_list_md5[$i]) {
-				$result[] = $file_list[$i];
+		if($layer==0) {
+			if(!is_file($the_file)) return false;
+			include($the_file);
+		}
+		$result = array(
+			"new" => array(),
+			"mod" => array(),
+			"miss" => array()
+		);
+		$info = array();
+		while (false !== ($file = readdir($handle))) {
+			$the_name = $dir."/".$file;
+			if(array_search($file, $ignore_list)===false) {
+				if(is_dir($the_name)) {
+					$result_new = checkFile($the_name, $layer+1);
+					$result['new'] = array_merge($result['new'], $result_new['new']);
+					$result['mod'] = array_merge($result['mod'], $result_new['mod']);
+					$result['miss'] = array_merge($result['miss'], $result_new['miss']);
+				} else {
+					$the_name = str_replace(ROOT_PATH, "", $the_name);
+					if(strpos($the_name, "/config")!==false) continue;
+					if(strpos($the_name, "/plugin/")===0) {
+						if(strpos(str_replace("/plugin/", "", $the_name), "/")!==false && strpos($the_name, "/plugin/offical/")!==0) continue;
+					}
+					if(false !== ($key = array_search($the_name, $file_list))) {
+						if(md5_file(ROOT_PATH.$the_name)!=$file_list_md5[$key]) {
+							$result['mod'][] = $the_name;
+						}
+						unset($file_list[$key]);
+					} else {
+						$result['new'][] = $the_name;
+					}
+				}
 			}
 		}
-		return $result;
+		if($layer==0) {
+			foreach($file_list as $the_name) {
+				if(strpos($the_name, "/plugin/")===0 || strpos($the_name, "/config")!==false) continue;
+				$result['miss'][] = $the_name;
+			}
+		}
 	}
+	closedir($handle);
+	return $result;
 }
 /*--------------------------------Website Functions End-----------------------------------------*/
 ?>

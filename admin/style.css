@@ -30,7 +30,6 @@ body a:hover {color:#FF0084;}
 .nomargin {margin:0px;}
 
 BODY {font-size:12px; text-align:left; padding:0px; margin:auto; cursor:default; overflow-x:hidden;}
-#bar_loading{top:0px;left:0px;display:none;color:#333333;font-size:24px;font-weight:bold;line-height:48px;position:absolute;border:1px #999999 solid;padding:20px 30px 10px 30px;z-index:999;background-color:#eeeeee;z-index:999;text-align:center;}
 
 #page_ole {margin:auto; text-align:left; width:100%; min-width:980px;}
 
@@ -87,10 +86,3 @@ H1 {font-size:16px;font-weight:bold;text-align:center;margin:10px auto 0px auto;
 #list_area td {word-wrap:break-word;word-break:break-all;}
 
 #page_bottom {position:absolute; bottom:0px; background-color:#fff; clear:both; line-height:20px; text-align:center; margin:0px auto 0px auto; padding:10px 0px 10px 0px; width:100%; border-top:2px solid #739ace;}
-
-.popshow {position:absolute; border:1px #000 solid; display:none; overflow:hidden;}
-.popshow .title {text-align:left; border:1px solid #629DC5; padding:5px 5px 5px 25px; font-weight:bold; color:#fff; background-color:#3275AB; background-image:url("images/arrow.gif"); background-repeat:no-repeat; background-position:5px center;}
-.popshow .content {padding:10px 10px 10px 10px; background-color:#fff; text-align:left;}
-.popshow DL {float:left; margin: 0px 5px 10px 5px;}
-.popshow DT IMG {border:1px #dddddd solid; width:120px; height:90px; cursor:pointer;}
-.popshow DD {font-size:14px; font-weight:bold; padding:5px 0px 0px 0px; text-align:center;}

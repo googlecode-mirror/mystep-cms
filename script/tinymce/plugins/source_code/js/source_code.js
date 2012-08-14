@@ -4,7 +4,7 @@ var SourceCodeDialog = {
 	init : function() {
 		var f = document.forms[0];
 		var content = tinyMCEPopup.editor.selection.getContent();
-		if(content.match(/^<fieldset[\w\W]+?<textarea.+?type\="(\w+)">([\w\W]+)<\/textarea>[\w\W]+<\/fieldset>$/im)) {
+		if(content.match(/^<fieldset[\w\W]+?<textarea.+?type\="(\w+)">([\w\W]+)<\/textarea>[\w\W]*<\/fieldset>$/im)) {
 			document.forms[0].code_type.value = RegExp.$1;
 			content = HTMLDecode(RegExp.$2);
 		}
@@ -12,12 +12,13 @@ var SourceCodeDialog = {
 	},
 
 	insert : function() {
-		var result = '<fieldset class="source">\n';
+		var result = "\n";
+		result += '<fieldset class="source">\n';
 		result += "<legend>" + document.forms[0].code_type.options[document.forms[0].code_type.selectedIndex].text +"</legend>\n";
 		result += '<textarea class="source_code" type="'+document.forms[0].code_type.value+'">';
 		result += HTMLEncode(document.forms[0].content.value);
 		result += '</textarea>\n';
-		result += '</fieldset>\n';
+		result += '</fieldset>\n\n';
 		tinyMCEPopup.editor.execCommand('mceInsertContent', false, result);
 		var content = tinyMCE.get('content').getContent();
 		content = content.replace(/<p.*?>.*?<fieldset(.+?)fieldset>.*?<\/p>/ig, "<fieldset$1fieldset>");

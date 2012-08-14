@@ -189,6 +189,7 @@ $ignore_list = array (
   18 => 'apple',
   19 => '_archive',
   20 => 'install',
+  21 => 'xcache',
 );
 $authority = "mystep";
 ?>

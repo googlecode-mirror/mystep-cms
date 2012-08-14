@@ -118,12 +118,6 @@
 </div>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
-	$.setupJMPopups({
-		screenLockerBackground: "#000",
-		screenLockerOpacity: "0.4"
-	});
-});
 var flag = false;
 function showTpl(val) {
 	if(val==3) {

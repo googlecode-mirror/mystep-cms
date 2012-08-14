@@ -103,26 +103,30 @@ class MyStep extends class_common {
 	
 	public function setPlugin() {
 		includeCache("plugin");
-		global $plugin_setting, $setting;
+		global $plugin_setting, $setting, $op_mode;
 		$web_id = $setting['info']['web']['web_id'];
-		$plugin_idx = ROOT_PATH."/cache/plugin/".$setting['info']['web']['idx'].".php";
 		$plugins = array();
-		if(file_exists($plugin_idx)) {
-			include($plugin_idx);
+		if($op_mode==true) {
+			$plugins = $GLOBALS['plugin'];
 		} else {
-			$max_count = count($GLOBALS['plugin']);
-			for($i=0; $i<$max_count; $i++) {
-				if($GLOBALS['plugin'][$i]['subweb']=="" || strpos($GLOBALS['plugin'][$i]['subweb'], ",".$web_id.",")!==false) {
-					$plugins[] = $GLOBALS['plugin'][$i];
+			$plugin_idx = ROOT_PATH."/cache/plugin/".$setting['info']['web']['idx'].".php";
+			if(file_exists($plugin_idx)) {
+				include($plugin_idx);
+			} else {
+				$max_count = count($GLOBALS['plugin']);
+				for($i=0; $i<$max_count; $i++) {
+					if($GLOBALS['plugin'][$i]['subweb']=="" || strpos($GLOBALS['plugin'][$i]['subweb'], ",".$web_id.",")!==false) {
+						$plugins[] = $GLOBALS['plugin'][$i];
+					}
 				}
-			}
-			$result = var_export($plugins, true);
-			$result = <<<mystep
+				$result = var_export($plugins, true);
+				$result = <<<mystep
 <?php
 \$plugins = {$result};
 ?>
 mystep;
-			WriteFile($plugin_idx, $result, "w");
+				WriteFile($plugin_idx, $result, "w");
+			}
 		}
 		$mystep = $this;
 		$plugin_setting = array();
@@ -170,6 +174,7 @@ mystep;
 		includeCache("user_type");
 		
 		$setting['info'] = array();
+		$setting['info']['time'] = $_SERVER['REQUEST_TIME'];
 		$setting['info']['time_start'] = GetMicrotime();
 		$setting['info']['self'] = strtolower(basename($req->getServer("PHP_SELF")));
 		$host = $req->getServer("HTTP_HOST");

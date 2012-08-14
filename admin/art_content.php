@@ -244,10 +244,10 @@ function build_page($method) {
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
 		$condition = "1=1";
-		$condition .= ($web_id==="")?"":" and a.web_id ='{$web_id}'";
-		$condition .= empty($cat_id)?"":" and a.cat_id ='{$cat_id}'";
-		$condition .= empty($keyword)?"":" and (a.subject like '%$keyword%' or a.tag like '%$keyword%')";
-		$condition .= $group['power_cat']=="all"?"":" and a.cat_id in (".$group['power_cat'].")";
+		if($web_id!=="") $condition .= " and a.web_id ='{$web_id}'";
+		if(!empty($cat_id))$condition .= " and a.cat_id ='{$cat_id}'";
+		if(!empty($keyword)) $condition .= " and (a.subject like '%$keyword%' or a.tag like '%$keyword%')";
+		if($group['power_cat']!="all") $condition .= " and a.cat_id in (".$group['power_cat'].")";
 
 		//navigation
 		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre_sub']."news_show a where {$condition}");
@@ -256,8 +256,11 @@ function build_page($method) {
 		
 		//main list
 		$str_sql = "select a.*, b.cat_idx, b.cat_name from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where {$condition}";
-		$str_sql.= " order by `order` desc, ".(empty($order)?"":"a.{$order} {$order_type}, ")."a.news_id {$order_type}";
-		$str_sql.= " limit {$page_start}, {$page_size}";
+		$str_sql.= " order by ";
+		if(!empty($cat_id)) $str_sql.= "`order` desc, ";
+		if(!empty($order)) $str_sql.= "a.{$order} {$order_type}, ";
+		$str_sql.= "a.news_id {$order_type} ";
+		$str_sql.= "limit {$page_start}, {$page_size}";
 		$db->Query($str_sql);
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);

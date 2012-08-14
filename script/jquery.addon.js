@@ -305,85 +305,95 @@ jQuery.fn.outerHTML = function(s) {
 	return (s) ? this.before(s).remove() : $('<p>').append(this.eq(0).clone()).html();
 };
 
+jQuery.fn.cssText = function(css) {
+	var css_list = css.trim().split(";");
+	var cur_style = null;
+	for(var i=0,m=css_list.length;i<m;i++) {
+		css_list[i] = css_list[i].trim();
+		if(css_list[i].length<3) continue;
+		cur_style = css_list[i].split(":");
+		if(cur_style.length==2) $(this).css(cur_style[0].trim(), cur_style[1].trim());
+	}
+	return this;
+};
+
 /*!
  * jquery.powerImage.js
  * Mixture image enhance function by windy2000
 */
-(function($) {
-	$.fn.powerImage = function(options) {
-		var defaults = {
-			image: "images/loading_img.gif",
-			width: 600,
-			zoom: true
-		};
-		var params = $.extend({}, defaults, options || {});
-		params.imgs = [];
-		$(this).find("img").each(function(i) {
-			if($(this).hasClass("title_img")) return;
-			var url = $(this).attr("src");
-			if(!url) return;
-			this.src = params.image;
-			$(this).css({"width":32,"height":32});
-			if(this.title=="" && this.alt!="") this.title = this.alt;
-			if(params.zoom) {
-				if(this.title!="") this.title += "\n";
-				this.title += "Press ALT button, wheel the mouse to zoom in or zoom out the image.";
-				$(this).mousewheel(function(objEvent, intDelta){
-					if(objEvent.altKey) {
-						var zoom = parseInt(this.style.zoom, 10) || 100;
-						zoom += intDelta * 10;
-						if(zoom > 0) {
-							this.style.zoom = zoom + '%';
-						}
-						if(objEvent.preventDefault){
-							objEvent.preventDefault();
-						} else {
-							objEvent.returnValue = false;
-						}
-						return false;
-					} else {
-						return true;
+jQuery.fn.powerImage = function(options) {
+	var defaults = {
+		image: "/images/loading_img.gif",
+		width: 600,
+		zoom: true
+	};
+	var params = $.extend({}, defaults, options || {});
+	params.imgs = [];
+	$(this).find("img").each(function(i) {
+		if($(this).hasClass("title_img")) return;
+		var url = $(this).attr("src");
+		if(!url) return;
+		this.src = params.image;
+		$(this).css({"width":32,"height":32});
+		if(this.title=="" && this.alt!="") this.title = this.alt;
+		if(params.zoom) {
+			if(this.title!="") this.title += "\n";
+			this.title += "Press ALT button, wheel the mouse to zoom in or zoom out the image.";
+			$(this).mousewheel(function(objEvent, intDelta){
+				if(objEvent.altKey) {
+					var zoom = parseInt(this.style.zoom, 10) || 100;
+					zoom += intDelta * 10;
+					if(zoom > 0) {
+						this.style.zoom = zoom + '%';
 					}
-				});
-			}
-			var data = {
-				obj: $(this),
-				url: url
-			};
-			params.imgs.push(data);
-		});
-		var doit = function() {
-			var win_top_1 = $(window).scrollTop(), win_top_2 = win_top_1 + $(window).height();
-			$.each(params.imgs, function(i, data) {
-				if(data.obj==null) return;
-				var obj = data.obj, url = data.url;
-				var img_top_1 = obj.offset().top; img_top_2 = img_top_1 + obj.height();
-				if((img_top_1 > win_top_1 && img_top_1 < win_top_2) || (img_top_2 > win_top_1 && img_top_2 < win_top_2)) {
-					var cur_img = $("<img>");
-					cur_img.load(function() {
-						obj.hide();
-						obj.attr("src", url);
-						var the_width = obj.attr("width");
-						var the_height = obj.attr("height");
-						if(typeof(the_width)=="undefined") the_width = "auto";
-						if(typeof(the_height)=="undefined") the_height = "auto";
-						obj.css({"width":the_width,"height":the_height});
-						obj.fadeIn("slow");
-						if(obj.width()>params.width) obj.width(params.width);
-						$(this).remove();
-					});
-					cur_img.error(function(){
-						$(this).remove();
-						obj.remove();
-					});
-					cur_img.attr("src", url);
-					data.obj = null;
+					if(objEvent.preventDefault){
+						objEvent.preventDefault();
+					} else {
+						objEvent.returnValue = false;
+					}
+					return false;
+				} else {
+					return true;
 				}
 			});
-			return false;
+		}
+		var data = {
+			obj: $(this),
+			url: url
 		};
-		setTimeout(doit, 1000);
-		$(window).bind("resize", doit);
-		$(window).bind("scroll", doit);
+		params.imgs.push(data);
+	});
+	var showIt = function() {
+		var win_top_1 = $(window).scrollTop(), win_top_2 = win_top_1 + $(window).height();
+		$.each(params.imgs, function(i, data) {
+			if(data.obj==null) return;
+			var obj = data.obj, url = data.url;
+			var img_top_1 = obj.offset().top; img_top_2 = img_top_1 + obj.height();
+			if((img_top_1 > win_top_1 && img_top_1 < win_top_2) || (img_top_2 > win_top_1 && img_top_2 < win_top_2)) {
+				var cur_img = $("<img>");
+				cur_img.load(function() {
+					obj.hide();
+					obj.attr("src", url);
+					var the_width = obj.attr("width");
+					var the_height = obj.attr("height");
+					if(typeof(the_width)=="undefined") the_width = "auto";
+					if(typeof(the_height)=="undefined") the_height = "auto";
+					obj.css({"width":the_width,"height":the_height});
+					obj.fadeIn("slow");
+					if(obj.width()>params.width) obj.css({"width":params.width,"height":"auto"});
+					$(this).remove();
+				});
+				cur_img.error(function(){
+					$(this).remove();
+					obj.remove();
+				});
+				cur_img.attr("src", url);
+				data.obj = null;
+			}
+		});
+		return false;
 	};
-})(jQuery); 
+	setTimeout(showIt, 1000);
+	$(window).bind("resize", showIt);
+	$(window).bind("scroll", showIt);
+};

@@ -9,13 +9,13 @@
 			<div class="box box_1">
 				<div class="title">本月热贴</div>
 				<div class="content after">
-<!--news_month web_id='$web_id' limit="10"-->
+<!--news_month web_id='$web_id' limit="9"-->
 				</div>
 			</div>
 			<div class="box box_1">
 				<div class="title">好评推荐</div>
 				<div class="content after">
-<!--news_mark web_id='$web_id' limit="10"-->
+<!--news_mark web_id='$web_id' limit="9"-->
 				</div>
 			</div>
 		</div>

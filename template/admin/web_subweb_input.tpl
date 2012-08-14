@@ -33,7 +33,6 @@ include(ROOT_PATH."/include/config-detail.php");
 $setting_skip = array();
 $setting_skip['web'] = array();
 $setting_skip['web']['url'] = '';
-$setting_skip['web']['email'] = '';
 $setting_skip['web']['title'] = '';
 $setting_skip['web']['s_user'] = '';
 $setting_skip['web']['s_pass'] = '';

@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title><!--web_title--> - 后台管理</title>
@@ -33,13 +33,12 @@
 					<td class="row"><!--record_subject--></td>
 					<td class="row"><!--record_from--></td>
 					<td class="row"><!--record_send_date--></td>
-					<td class="row" align="center"><a href="?method=send&id=<!--record_id-->" onclick="loadingShow()">发送</a> <a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('请按确定继续。')">删除</a></td>
+					<td class="row" align="center"><a href="?method=send&id=<!--record_id-->" onclick="loadingShow('正在发送邮件，请耐心等待！')">发送</a> <a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('请按确定继续。')">删除</a></td>
 				</tr>
 		<!--loop:end-->
 			</table>
 		</div>
 	</div>
 </div>
-<div id="bar_loading"><img src="../../images/loading.gif" alt="邮件发送" width="400" height="10" /><br / >正在发送邮件，请耐心等待！</div>
 </body>
 </html>

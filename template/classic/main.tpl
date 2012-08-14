@@ -9,13 +9,13 @@
 <base href="<!--web_url-->" />
 <link rel="Shortcut Icon" href="favicon.ico" />
 <!--page_start-->
+<script language="JavaScript" type="text/javascript" src="/script/jquery.jmpopups.js"></script>
 <link rel="stylesheet" media="screen" type="text/css" href="/images/<!--template-->/style.css" />
 <link rel="alternate" title="<!--web_title-->" href="<!--rss_link-->" type="application/rss+xml" />
 </head>
 <body>
-<div id="bar_loading"><img src="/images/loading.gif" alt="<!--lang_ajax_sending-->" /><br /><span><!--lang_ajax_sending--></span></div>
 <div id="page_ole">
-	<div id="page_top_nav" class="after">
+	<div id="page_top_bar" class="after">
 		<div class="fl">
 			<script language="JavaScript" type="text/javascript" src="/script/date.js"></script><a name="top"></a>
 		</div>
@@ -27,8 +27,15 @@
 	</div>
 	<div id="page_top" class="after">
 		<img src="/images/classic/top_text.png" alt="<!--web_title-->" />
+		<div style="position:relative;top:-140px;left:880px;">
+			<select onchange="$.cookie('template', this.value, {expires:1});window.location.reload();">
+				<option value="<!--template-->">ÍøÕ¾ÑùÊ½</option>
+				<option value="default">default</option>
+				<option value="classic">classic</option>
+			</select>
+		</div>
 	</div>
-	<div id="topbar" class="after">
+	<div id="page_top_nav" class="after">
 		<div class="l fl"></div>
 		<div class="m fl">
 			<ul>

@@ -11,6 +11,7 @@ $para = array(
 		"title_en" => "",
 		"comment" => "中文姓名",
 		"comment_en" => "",
+		"search" => "true",
 	),
 	"name_en" => array(
 		"type" => "text",
@@ -23,6 +24,7 @@ $para = array(
 		"title_en" => "Full Name",
 		"comment" => "请录入姓名的英文拼写或拼音",
 		"comment_en" => "What's your name?",
+		"search" => "true",
 	),
 	"gender" => array(
 		"type" => "radio",
@@ -62,6 +64,7 @@ $para = array(
 		"title_en" => "",
 		"comment" => "公司中文名称",
 		"comment_en" => "",
+		"search" => "true",
 	),
 	"company_en" => array(
 		"type" => "text",
@@ -74,6 +77,7 @@ $para = array(
 		"title_en" => "Company",
 		"comment" => "公司英文名称",
 		"comment_en" => "What's your company's name?",
+		"search" => "true",
 	),
 	"duty" => array(
 		"type" => "text",
@@ -110,6 +114,7 @@ $para = array(
 		"title_en" => "",
 		"comment" => "您公司的详细地址",
 		"comment_en" => "",
+		"search" => "true",
 	),
 	"address_en" => array(
 		"type" => "text",
@@ -122,6 +127,7 @@ $para = array(
 		"title_en" => "Address",
 		"comment" => "公司英文地址",
 		"comment_en" => "Where is your company?",
+		"search" => "true",
 	),
 	"zipcode" => array(
 		"type" => "text",
@@ -272,6 +278,7 @@ $para = array(
 		"title_en" => "Note",
 		"comment" => "请填写您的其它要求",
 		"comment_en" => "Your requirements to the conference.",
+		"search" => "true",
 	),
 );
 ?>

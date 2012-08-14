@@ -110,7 +110,7 @@ TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0
 .page_lst .pic_news IMG {float:left; width:180px; height:120px; margin:0px 20px 0px 0px; border:1px #999999 dotted;}
 .page_lst .pic_news .describe {word-wrap:break-word; word-break:break-all;}
 
-.page_lst .main {min-height:1000px; height:auto!important;}
+.page_lst .main {min-height:840px; height:auto!important;}
 .page_lst .main H1 {font-weight:bold; font-size:20px; margin:30px 0px 0px 0px; text-align:center;}
 .page_lst .main H3 {margin:20px 0px 20px 0px; padding:10px 0px 10px 0px; text-align:center; border-top:1px #ddcf7f solid; border-bottom:1px #ddcf7f solid; color:#999933;}
 .page_lst .main .bottom {border-top:1px #ddcf7f solid; clear:both; text-align:left; line-height:24px;padding:10px 0px 0px 0px; font-weight:bold;}

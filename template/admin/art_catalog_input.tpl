@@ -129,12 +129,6 @@
 </div>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-if(typeof($.setupJMPopups)=="undefined") $.getScript("../script/jquery.jmpopups.js", function(){
-	$.setupJMPopups({
-		screenLockerBackground: "#000",
-		screenLockerOpacity: "0.4"
-	});
-});
 function changeCata(idx) {
 	var web_id=$id("cat_main").options[idx].getAttribute("webid");
 	if(web_id!=null) {

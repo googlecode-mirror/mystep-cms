@@ -193,6 +193,35 @@ class plugin_offical implements plugin {
 		return $result;
 	}
 	
+	public static function ajax_autocomplete($mode, $keyword) {
+		global $req, $setting;
+		$keyword = getSafeCode($keyword, $setting['gen']['charset']);
+		$result = array(
+			query => $keyword,
+			suggestions => array(),
+			data => array()
+		);
+		$dataFile = ROOT_PATH."/script/jquery.autocomplete/".$mode.".php";
+		if(file_exists($dataFile)) {
+			include($dataFile);
+			$data = $$mode;
+			unset($$mode);
+			$keyword = strtolower($keyword);
+			for($i=0,$m=count($data);$i<$m;$i++) {
+				if(strpos(strtolower(implode("|", $data[$i])), $keyword)!==false) {
+					if($setting['gen']['language']=="en") {
+						$result['suggestions'][] = $data[$i][1];
+						$result['data'][] = $data[$i][1];
+					} else {
+						$result['suggestions'][] = $data[$i][0];
+						$result['data'][] = $data[$i][1];
+					}
+				}
+			}
+		}
+		return $result;
+	}
+	
 	public static function login($user_name, $user_psw) {
 		global $db, $setting, $req;
 		$result = "";
@@ -228,7 +257,13 @@ class plugin_offical implements plugin {
 		if(!isset($att_list['template'])) $att_list['template'] = "classic";
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = "";
 		if(!isset($att_list['cat_id'])) $att_list['cat_id'] = "";
-		if(!isset($att_list['order'])) $att_list['order'] = " `order` desc, news_id desc";
+		if(!isset($att_list['order'])) {
+			if(empty($att_list['cat_id'])) {
+				$att_list['order'] = " news_id desc";
+			} else {
+				$att_list['order'] = " `order` desc, news_id desc";
+			}
+		}
 		if(!isset($att_list['setop'])) $att_list['setop'] = "";
 		if(!empty($att_list['setop'])) {
 			$show_list = array(

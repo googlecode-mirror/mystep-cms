@@ -1,6 +1,6 @@
 <div class="title">用户确认信发送</div>
 <div align="left">
-<form method="post" action="?method=mail">
+<form method="post" action="?method=mail" onsubmit="return send_mail()">
 <TABLE BORDER="0" WIDTH="700" CELLSPACING="1" CELLPADDING="2" ALIGN="center">
 	<TR>
 		<TD>
@@ -13,32 +13,30 @@
 			<input type="hidden" name="subject" value="<!--name-->" />
 			<input type="hidden" name="email" value="<!--record_email-->" />
 			<TEXTAREA name="content" COLS="110" ROWS="40" id="content">
-尊敬的 <span style="font-weight:bold;color:#aa0000"><!--record_name--></span> ：
- 
-欢迎您参加<b>“<!--name-->”</b>！
- 
-您填表信息已经收到。请确认下列表单信息正确无误：
- 
+尊敬的 <span style="font-weight:bold;color:#aa0000"><!--record_name--></span><br />
+欢迎您参加<b>“<!--name-->”</b>！<br />
+您填表信息已经收到。请确认下列表单信息正确无误：<br />
 <?php
 global $record;
 foreach($para as $key => $value) {
 	if(empty($value['title'])) continue;
-	echo "<b>".$value['title']."：</b> ".$record[$key]."\n";
+	echo "<b>".$value['title']."：</b> ".$record[$key]."<br />";
 }
 ?>
- 
-<span style="font-weight:bold;color:#aa0000"><!--name--></span>
-<b>Tel:</b> +86-10-87109800
-<b>Fax:</b> +86-10-87109800
-<b>Email:</b> cccfna@cccfna.org.cn
-<b>website:</b> <?=$setting['web']['url']?>
+<br />
+<span style="font-weight:bold;color:#aa0000"><!--name--></span><br />
+<b>Tel:</b> +86-10-87109800<br />
+<b>Fax:</b> +86-10-87109800<br />
+<b>Email:</b> windy2006@gmail.com<br />
+<b>website:</b> <?=$setting['web']['url']?><br />
 			</TEXTAREA>
 		</TD>
 	</TR>
 	<TR>
 		<TD HEIGHT="30" ALIGN="CENTER">
-			<input style="padding:10px;margin:10px;" type="submit" value="使用系统程序发送" />
-			<input style="padding:10px;margin:10px;" type="button" value="使用邮件程序发送" onclick="formmail('<!--record_email--> ', '<!--name-->', tinyMCE.get('content').getContent());" />
+			<input style="padding:10px;margin:10px;" type="submit" value="系统程序发送" />
+			<input style="padding:10px;margin:10px;" type="button" value="邮件程序发送" onclick="send_mail_app('<!--record_email--> ', '<!--name-->', tinyMCE.get('content').getContent());" />
+			<input style="padding:10px;margin:10px;" type="button" class="normal" value="返回列表页面" name="return" onClick="history.go(-1)" />
 		</TD>
 	</TR>
 </TABLE>
@@ -48,7 +46,12 @@ foreach($para as $key => $value) {
 <script type="text/javascript" language="JavaScript" src="../../script/tinymce/tiny_mce.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 //<![CDATA[
-function formmail(email, subject, content)	{
+var the_email = "<?=$record['email']?>";
+function send_mail_app(email, subject, content)	{
+	if(the_email.length<5) {
+		alert("无可用 Email，请核实数据！");
+		return;
+	}
 	//content = content.replace(/<(\/)?\w+[^>]+>/g, "");
 	content = content.replace(/&/g, "%26");
 	content = content.replace(/\n/g, "%0D%0A");
@@ -60,10 +63,19 @@ function formmail(email, subject, content)	{
 	subject = subject.replace(/#/g, "%23");
 	subject = UrlEncode(subject);
 	if(content.length>1900) {
-		window.location="mailto:"+email+"?subject="+subject+"&body="+UrlEncode("由于邮件内容过长，无法自动调用邮件程序！<br><br>请将内容直接复制到邮件程序，或通过系统程序发送！");
+		window.location="mailto:"+email+"?subject="+subject+"&body="+UrlEncode("由于邮件内容过长，无法自动调用邮件程序！<br /><br />请将内容直接复制到邮件程序，或通过系统程序发送！");
 	} else {
 		window.location="mailto:"+email+"?subject="+subject+"&body="+content;
 	}
+}
+
+function send_mail() {
+	if(the_email.length<5) {
+		alert("无可用 Email，请核实数据！");
+		return false;	
+	}
+	loadingShow("正在发送邮件，稍后会返回列表页面！");
+	return true;
 }
 
 tinyMCE.init({

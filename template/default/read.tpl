@@ -3,7 +3,7 @@
 			<div class="box box_1">
 				<div class="title">最新文章</div>
 				<div class="content after">
-<!--news limit="10"-->
+<!--news limit="9"-->
 				</div>
 			</div>
 			<div class="box box_1">
@@ -12,24 +12,12 @@
 <!--news cat_id='$cat_id' show_image="1" limit="4" template="picture"-->
 				</div>
 			</div>
-			<div class="box box_1">
-				<div class="title">本月热贴</div>
-				<div class="content after">
-<!--news_month cat_id='$cat_id' limit="10"-->
-				</div>
-			</div>
-			<div class="box box_1">
-				<div class="title">好评推荐</div>
-				<div class="content after">
-<!--news_mark cat_id='$cat_id' limit="10"-->
-				</div>
-			</div>
 		</div>
 		<div class="fr">
 			<div class="box box_2">
 				<div class="title"><span class="bar">当前位置： <a href="<!--web_url-->"><!--web_title--></a> <!--catalog_txt--> - 正文<input type="hidden" id="news_id" value="<!--record_news_id-->"></span></div>
 				<div class="content after">
-					<div class="main">
+					<div class="main" style="min-height:700px;">
 						<div>
 							<h1><!--record_subject--></h1>
 							<h3>来源：<!--record_original--> &nbsp; | &nbsp; 时间：<!--record_add_date--> &nbsp; | &nbsp; 浏览：<!--record_views--></h3>
@@ -78,6 +66,8 @@ $(function() {
 	} else {
 		$("#page_sel").parent().remove();
 	}
+	$("#content").powerImage();
+	if($(".title_img").attr("src").indexOf("dummy")!=-1) $(".title_img").remove();
 });
 //]]> 
 </script>

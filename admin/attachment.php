@@ -57,8 +57,8 @@ switch($method) {
 		$script .= <<<mystep
 					window.onload = parent.setIframe;
 					parent.attach_add('{$add_str}');
-					alert("{$err_msg}");
 					parent.\$.closePopupLayer();
+					parent.alert("{$err_msg}", true);
 
 mystep;
 		$tpl_info['idx'] = "script";
@@ -138,7 +138,6 @@ mystep;
 		$script = "";
 		if($att_more) {
 			$script = "
-				alert('".$setting['language']['admin_attachment_edit_err']."');
 				if(parent==null){
 					self.opener = null;
 					self.close();
@@ -146,6 +145,7 @@ mystep;
 				} else {
 					parent.\$.closePopupLayer();
 				}
+				parent.alert('".$setting['language']['admin_attachment_edit_err']."', true);
 			";
 		}
 		$tpl_tmp->Set_Variable('script', $script);
@@ -193,7 +193,6 @@ mystep;
 		$script = "";
 		if($att_more) {
 			$script = "
-				alert('".$setting['language']['admin_attachment_edit_err']."');
 				if(parent==null){
 					self.opener = null;
 					self.close();
@@ -201,6 +200,7 @@ mystep;
 				} else {
 					parent.\$.closePopupLayer();
 				}
+				parent.alert('".$setting['language']['admin_attachment_edit_err']."', true);
 			";
 		}
 		$tpl_tmp->Set_Variable('script', $script);

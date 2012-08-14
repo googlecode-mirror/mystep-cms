@@ -21,6 +21,19 @@ if($v=="check") {
 	} else {
 		echo "";
 	}
+} elseif($v=="all") {
+	array_shift($version);
+	echo toJson($version, $setting['gen']['charset']);
+} elseif($v!="" && isset($_GET['check'])) {
+	$version_info = $version;
+	foreach($version as $key => $value) {
+		if($key<=$v) {
+			array_shift($version_info);
+		} else {
+			break;
+		}
+	}
+	echo toJson($version_info, $setting['gen']['charset']);
 } elseif($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver'].$cs);
 	if(file_exists($cache_file)) {
@@ -92,13 +105,8 @@ if($v=="check") {
 	$mydb->closeTBL();
 	echo $update;
 } else {
-	if(isset($_GET['all'])) {
-		array_shift($version);
-		echo toJson($version, $setting['gen']['charset']);
-	} else {
-		$last_update = array_pop($version);
-		$ms_version['update'] = preg_replace("/[\r\n]+\s+/", "\n", $last_update['info']);
-		echo toJson($ms_version, $setting['gen']['charset']);
-	}
+	$last_update = array_pop($version);
+	$ms_version['update'] = preg_replace("/[\r\n]+\s+/", "\n", $last_update['info']);
+	echo toJson($ms_version, $setting['gen']['charset']);
 }
 ?>
