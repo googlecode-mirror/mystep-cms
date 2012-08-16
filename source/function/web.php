@@ -466,8 +466,9 @@ function getCacheExpire() {
 	return isset($expire_list[$the_file]) ? $expire_list[$the_file] : $expire_list["default"];
 }
 
-function showInfo($msg = "", $mode = true) {
+function showInfo($msg = "", $mode = true, $link = "") {
 	global $setting;
+	if(empty($link)) $link = "javascript:history.go(-1)";
 	$result = <<<windy2000
 <div style="margin-top:40px;">
   <table align="center" border="0" width="80%" cellspacing="0" cellpadding="0">
@@ -476,7 +477,7 @@ function showInfo($msg = "", $mode = true) {
         <tr><td align="center" style="padding:40px;font-weight:bold;font-size:14px;color:black">{$msg}</td></tr>
       </table>
       <div style="text-align:center; margin-top:20px;">
-      	<a href="javascript:history.go(-1)" style="font-size:12px;color:black;text-decoration:none;">[ {$setting['language']['link_back']} ]</a>
+      	<a href="{$link}" style="font-size:12px;color:black;text-decoration:none;">[ {$setting['language']['link_back']} ]</a>
       </div>
     </td></tr>
   </table>

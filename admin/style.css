@@ -85,4 +85,11 @@ H1 {font-size:16px;font-weight:bold;text-align:center;margin:10px auto 0px auto;
 #list_area tr:hover {background-color:#eef;}
 #list_area td {word-wrap:break-word;word-break:break-all;}
 
+#img_lst{width:800px;margin:20px auto 20px auto;clear:both;}
+#img_lst dl {float:left;width:190px;height:220px;overflow:hidden;margin:10px 5px 10px 5px;}
+#img_lst dl:hover {background-color:#eef;}
+#img_lst dl img {width:160px;height:160px;border:1px #666666 solid;}
+#img_lst dt {text-align:center;font-size:14px;line-height:24px;font-weight:bold;}
+#img_lst dd {text-align:center;margin-top:10px;}
+
 #page_bottom {position:absolute; bottom:0px; background-color:#fff; clear:both; line-height:20px; text-align:center; margin:0px auto 0px auto; padding:10px 0px 10px 0px; width:100%; border-top:2px solid #739ace;}

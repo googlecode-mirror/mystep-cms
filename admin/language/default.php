@@ -163,10 +163,17 @@ $language = array (
   'admin_web_subweb_title' => '网站列表',
   'admin_web_subweb_error' => '指定 ID 的网站不存在！',
   
-  'admin_web_template_delete' => '删除模板',
+  'admin_web_template_delete' => '删除模板文件',
   'admin_web_template_add' => '模板添加',
   'admin_web_template_edit' => '编辑模板',
   'admin_web_template_title' => '网站模板管理',
+  'admin_web_template_set' => '设置模板',
+  'admin_web_template_export' => '导出模板',
+  'admin_web_template_export_error' => '模板导出失败',
+  'admin_web_template_upload' => '上传模板',
+  'admin_web_template_upload_error' => '模板上传失败',
+  'admin_web_template_remove' => '移除模板',
+  'admin_web_template_remove_error' => '不可移除默认模板或管理模板',
   
   'admin_upload_img_ok' => '图像已成功上传！',
   'admin_attachment_upload_done' => '上传成功！',

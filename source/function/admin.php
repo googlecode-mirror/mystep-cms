@@ -14,7 +14,7 @@
 /*--------------------------------Website Functions Start-----------------------------------------*/
 function write_log($comment="", $q_str_addon="") {
 	global $db, $setting, $req;
-	$link = "http://".$req->getServer("SERVER_NAME").$req->getServer("SCRIPT_NAME")."?".$req->getServer("QUERY_STRING");
+	$link = "http://".$req->getServer("SERVER_NAME").$req->getServer("SCRIPT_NAME");
 	$q_str = $req->getServer("QUERY_STRING");
 	if(!empty($q_str)) $link .= "?".$q_str;
 	if(!empty($q_str_addon)) $link .= (empty($q_str)?"?":"&").$q_str_addon;

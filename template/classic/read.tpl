@@ -68,9 +68,7 @@ $(function() {
 		$("#page_sel").parent().remove();
 	}
 	$("#content").powerImage();
-	
 	if($(".title_img").attr("src").indexOf("dummy")!=-1) $(".title_img").remove();
-	
 	if($('.source_code').length>0) {
 		$.getScript("script/jquery.codemirror.js", function(){
 			$('.source_code').codemirror({

@@ -30,3 +30,6 @@
 <!--loop:end-->
 	</table>
 </div>
+<div class="nav">
+	<input type="button" value=" ·µ »Ø " onclick="location.href='?'" />
+</div>

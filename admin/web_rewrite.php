@@ -18,17 +18,17 @@ if($method=="update" && count($_POST)>0) {
 		if(empty($_POST['rule'][$i])) continue;
 		$rewrite_list[] = array($_POST['rule'][$i], $_POST['jump'][$i]);
 	}
-	$rewrite_list = var_export($rewrite_list, true);
-	$expire_list = var_export($expire_list, true);
-	$ignore_list = var_export($ignore_list, true);
+	$rewrite_list_str = var_export($rewrite_list, true);
+	$expire_list_str = var_export($expire_list, true);
+	$ignore_list_str = var_export($ignore_list, true);
 	$content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
-\$rewrite_list = {$rewrite_list};
-\$expire_list = {$expire_list};
-\$ignore_list = {$ignore_list};
+\$rewrite_list = {$rewrite_list_str};
+\$expire_list = {$expire_list_str};
+\$ignore_list = {$ignore_list_str};
 \$authority = "{$authority}";
 ?>
 mystep;

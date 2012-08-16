@@ -58,7 +58,6 @@ INSERT INTO `{pre}admin_cat` VALUES
 		
 		(0, 3, '附件管理', 'func_attach.php', '', 0, 0, '附件管理'),
 		(0, 3, '友情链接', 'func_link.php', '', 255, 0, '友情链接管理'),
-		(0, 3, '子站管理', 'web_subweb.php', '', 255, 0, '子站管理'),
 		(0, 3, '数据维护', 'func_backup.php', '', 0, 0, '数据维护'),
 		(0, 3, '网址重写', 'web_rewrite.php', '', 0, 0, 'URL Rewrite 规则管理'),
 		
@@ -73,6 +72,7 @@ INSERT INTO `{pre}admin_cat` VALUES
 		(0, 5, '流量统计', 'info_count.php', '', 0, 0, '简单网站访问统计'),
 		
 		(0, 6, '参数设定', 'web_setting.php', '', 0, 0, '参数设定'),
+		(0, 6, '子站管理', 'web_subweb.php', '', 255, 0, '子站管理'),
 		(0, 6, '缓存管理', 'web_cache.php', '', 0, 0, '网站缓存'),
 		(0, 6, '语言管理', 'web_language.php', '', 0, 0, '语言管理'),
 		(0, 6, '模板管理', 'web_template.php', '', 0, 0, '模板管理'),

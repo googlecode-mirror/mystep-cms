@@ -27,7 +27,7 @@
 	</div>
 	<div id="page_top" class="after">
 		<img src="/images/classic/top_text.png" alt="<!--web_title-->" />
-		<div style="position:relative;top:-140px;left:880px;">
+		<div style="position:relative;top:-140px;left:880px;width:100px;">
 			<select onchange="$.cookie('template', this.value, {expires:1});window.location.reload();">
 				<option value="<!--template-->">ÍøÕ¾ÑùÊ½</option>
 				<option value="default">default</option>

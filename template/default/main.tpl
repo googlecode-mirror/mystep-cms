@@ -15,7 +15,7 @@
 <body>
 <div id="page_ole">
 	<div id="page_top" class="after">
-		<div style="position:relative;top:10px;left:880px;">
+		<div style="position:relative;top:10px;left:880px;width:100px;"">
 			<select onchange="$.cookie('template', this.value, {expires:1});window.location.reload();">
 				<option value="<!--template-->">ÍøÕ¾ÑùÊ½</option>
 				<option value="default">default</option>

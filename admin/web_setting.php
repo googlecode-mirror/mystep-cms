@@ -16,17 +16,17 @@ if($method=="update") {
 		$_POST['setting']['db']['pass'] = $setting['db']['pass'];
 	}
 	unset($_POST['setting']['web']['s_pass_r'], $_POST['setting']['db']['pass_r']);
-	$rewrite_list = var_export($rewrite_list, true);
-	$expire_list = var_export($expire_list, true);
-	$ignore_list = var_export($ignore_list, true);
+	$rewrite_list_str = var_export($rewrite_list, true);
+	$expire_list_str = var_export($expire_list, true);
+	$ignore_list_str = var_export($ignore_list, true);
 	$content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
-\$rewrite_list = {$rewrite_list};
-\$expire_list = {$expire_list};
-\$ignore_list = {$ignore_list};
+\$rewrite_list = {$rewrite_list_str};
+\$expire_list = {$expire_list_str};
+\$ignore_list = {$ignore_list_str};
 \$authority = "{$authority}";
 ?>
 mystep;

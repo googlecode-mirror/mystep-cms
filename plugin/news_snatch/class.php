@@ -14,8 +14,8 @@ class plugin_news_snatch implements plugin {
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_news_snatch", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 4, '".$info['cat_name_1']."', 'news_snatch.php?method=rule', '../plugin/news_snatch/', 0, 0, '".$info['cat_desc_1']."')");
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 4, '".$info['cat_name_2']."', 'news_snatch.php?method=news', '../plugin/news_snatch/', 0, 0, '".$info['cat_desc_2']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 3, '".$info['cat_name_1']."', 'news_snatch.php?method=rule', '../plugin/news_snatch/', 0, 0, '".$info['cat_desc_1']."')");
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 3, '".$info['cat_name_2']."', 'news_snatch.php?method=news', '../plugin/news_snatch/', 0, 0, '".$info['cat_desc_2']."')");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_install']."

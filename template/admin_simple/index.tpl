@@ -134,8 +134,8 @@ function showCat(theOle, theObjs, renew) {
 	return;
 }
 function setPos() {
-	var theWidth = $(window).width() - 200;
-	var theHeight = $(window).height() - 120;
+	var theWidth = $(document).width() - 200;
+	var theHeight = $(document).height() - 120;
 	$("#main").width(theWidth);
 	$("#main").height(theHeight);
 	$("#cat_tree").height(theHeight - 50);

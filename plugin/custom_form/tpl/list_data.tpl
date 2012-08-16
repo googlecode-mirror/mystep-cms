@@ -74,12 +74,6 @@
 </div>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopups.js", function(){
-	$.setupJMPopups({
-		screenLockerBackground: "#000",
-		screenLockerOpacity: "0.4"
-	});
-});
 function check(){
 	if ($("#popupLayer_import").find("form").get(0).the_file.value==0){
 		alert("上传文件不能为空！");

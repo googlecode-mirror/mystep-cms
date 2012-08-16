@@ -219,12 +219,6 @@
 	<div style="text-align:center;margin-top:10px;"><input class="btn" type="button" onClick="confirmExport()" value=" ¸´ ÖÆ " /> &nbsp; <input class="btn" type="button" onClick="$.closePopupLayer();" value=" ¹Ø ±Õ " /></div>
 </div>
 <script language="JavaScript">
-if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopups.js", function(){
-	$.setupJMPopups({
-		screenLockerBackground: "#000",
-		screenLockerOpacity: "0.4"
-	});
-});
 var cf_item=<!--cf_item-->;
 $(function(){
 	refreshItem();

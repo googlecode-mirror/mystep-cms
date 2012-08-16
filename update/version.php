@@ -1374,15 +1374,16 @@ $version = array(
 $cur_setting = $setting;
 unset($setting);
 include(ROOT_PATH."/include/config.php");
-$expire_list = var_export($expire_list, true);
-$ignore_list = var_export($ignore_list, true);
+$rewrite_list_str = var_export($rewrite_list, true);
+$expire_list_str = var_export($expire_list, true);
+$ignore_list_str = var_export($ignore_list, true);
 $content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
-\$expire_list = {$expire_list};
-\$ignore_list = {$ignore_list};
+\$expire_list = {$expire_list_str};
+\$ignore_list = {$ignore_list_str};
 \$authority = "{$authority}";
 ?>
 mystep;
@@ -2161,17 +2162,17 @@ $setting["rewrite"]["enable"] = false;
 $setting["rewrite"]["read"] = "article";
 $setting["rewrite"]["list"] = "catalog";
 $setting["rewrite"]["tag"] = "tag";
-$rewrite_list = var_export($rewrite_list, true);
-$expire_list = var_export($expire_list, true);
-$ignore_list = var_export($ignore_list, true);
+$rewrite_list_str = var_export($rewrite_list, true);
+$expire_list_str = var_export($expire_list, true);
+$ignore_list_str = var_export($ignore_list, true);
 $content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
-\$rewrite_list = {$rewrite_list};
-\$expire_list = {$expire_list};
-\$ignore_list = {$ignore_list};
+\$rewrite_list = {$rewrite_list_str};
+\$expire_list = {$expire_list_str};
+\$ignore_list = {$ignore_list_str};
 \$authority = "{$authority}";
 ?>
 mystep;
@@ -2232,17 +2233,17 @@ $cur_setting = $setting;
 unset($setting);
 include(ROOT_PATH."/include/config.php");
 $ignore_list[] = "install";
-$rewrite_list = var_export($rewrite_list, true);
-$expire_list = var_export($expire_list, true);
-$ignore_list = var_export($ignore_list, true);
+$rewrite_list_str = var_export($rewrite_list, true);
+$expire_list_str = var_export($expire_list, true);
+$ignore_list_str = var_export($ignore_list, true);
 $content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
-\$rewrite_list = {$rewrite_list};
-\$expire_list = {$expire_list};
-\$ignore_list = {$ignore_list};
+\$rewrite_list = {$rewrite_list_str};
+\$expire_list = {$expire_list_str};
+\$ignore_list = {$ignore_lis_str};
 \$authority = "{$authority}";
 ?>
 mystep;
@@ -2368,6 +2369,58 @@ $setting = $cur_setting;
 				'gen' => array(
 						'etag' => '20120814',
 					),
+			),
+	),
+	'0.99.9.9.2' => array(
+		'info' => '
+				1.Enhance template mamagerment module
+				2.Fix a bug in file check function when execute after update function
+				3.Fix a bug in zip file function
+				4.Fix a bug in operation log function
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/language/chs.php',
+				'admin/language/default.php',
+				'admin/language/en.php',
+				'admin/style.css',
+				'admin/update.php',
+				'admin/web_cache.php',
+				'admin/web_rewrite.php',
+				'admin/web_setting.php',
+				'admin/web_template.php',
+				'images/classic/style.css',
+				'images/default/style.css',
+				'images/style.css',
+				'include/parameter.php',
+				'plugin/custom_form/tpl/add.tpl',
+				'plugin/custom_form/tpl/edit.tpl',
+				'plugin/custom_form/tpl/list_data.tpl',
+				'plugin/custom_form/tpl/main.tpl',
+				'plugin/news_snatch/class.php',
+				'plugin/news_snatch/tpl/main.tpl',
+				'plugin/news_snatch/tpl/rule_input.tpl',
+				'source/class/myzip.class.php',
+				'source/function/admin.php',
+				'source/function/web.php',
+				'template/admin/index.tpl',
+				'template/admin/web_template.tpl',
+				'template/admin/web_template_list.tpl',
+				'template/admin_simple/index.tpl',
+				'template/classic/main.tpl',
+				'template/classic/read.tpl',
+				'template/default/main.tpl',
+				'template/default/read.tpl',
+				'template/classic/sample.jpg',
+				'template/default/sample.jpg',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120816',
+					),
+			),
+		'sql' => array(
+				'update `{pre}admin_cat` set `pid`=6 where `file`="web_subweb.php"',
 			),
 	),
 );

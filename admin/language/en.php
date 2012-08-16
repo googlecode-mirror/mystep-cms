@@ -70,7 +70,7 @@ $language = array (
   
   'admin_func_backup_import' => 'Data Import',
   'admin_func_backup_import_done' => 'All Data has been imported successfully!',
-  'admin_func_backup_import_failed' => 'Error occurs in data import!',
+  'admin_func_backup_import_failed' => 'Error occurs in data importing!',
   'admin_func_backup_upload_failed' => 'Upload failed: ',
   'admin_func_backup_upload_failed_msg1' => 'Upload file missing!',
   'admin_func_backup_export' => 'Data Export',
@@ -163,15 +163,22 @@ $language = array (
   'admin_web_subweb_title' => 'Sub-website List',
   'admin_web_subweb_error' => 'The specified Sub-website cannot be found!',
   
-  'admin_web_template_delete' => 'Delete Template',
+  'admin_web_template_delete' => 'Delete Template File',
   'admin_web_template_add' => 'Add Template',
   'admin_web_template_edit' => 'Edit Template',
   'admin_web_template_title' => 'Template Management',
+  'admin_web_template_set' => 'Set Active Template',
+  'admin_web_template_export' => 'Export Template',
+  'admin_web_template_export_error' => 'Error occurs in exporting template!',
+  'admin_web_template_upload' => 'Upload Template',
+  'admin_web_template_upload_error' => 'Error occurs in uploading!',
+  'admin_web_template_remove' => 'Remove Template',
+  'admin_web_template_remove_error' => 'Can\'t remove dafault template or admin template!',
   
   'admin_upload_img_ok' => 'Image has been uploaded!',
   'admin_attachment_upload_done' => 'Upload succeed!',
-  'admin_attachment_upload_failed' => 'Error occurs in upload!',
-  'admin_attachment_upload_dberr' => 'Error occurs in database!',
+  'admin_attachment_upload_failed' => 'Error occurs in uploading!',
+  'admin_attachment_upload_dberr' => 'Error occurs in writing into database!',
   'admin_attachment_edit_err' => 'There is no any attachment in the article!',
 );
 ?>

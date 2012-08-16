@@ -31,13 +31,13 @@
 			<tr>
 				<td class="cat" valign="top">采集规则：</td>
 				<td class="row">
-					<textarea name="rule_snatch" style="width:690px;" rows="10" need="" /><!--rule_snatch--></textarea>
+					<textarea name="rule_snatch" class="source_code" type="php" style="width:690px;" rows="10" need="" /><!--rule_snatch--></textarea>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat" valign="top">导入规则：</td>
 				<td class="row">
-					<textarea name="rule_import" style="width:690px;" rows="10" need="" /><!--rule_import--></textarea>
+					<textarea name="rule_import" class="source_code" type="php" style="width:690px;" rows="10" need="" /><!--rule_import--></textarea>
 				</td>
 			</tr>
 			<tr class="row">
@@ -51,12 +51,6 @@
 	</form>
 </div>
 <script type="text/javascript" language="javascript">
-if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopups.js", function(){
-	$.setupJMPopups({
-		screenLockerBackground: "#000",
-		screenLockerOpacity: "0.4"
-	});
-});
 var newRule = null;
 function importRule() {
 	if(typeof(newRule)=="object" && newRule!=null) {
@@ -72,4 +66,17 @@ function importRule() {
 	}
 	newRule = null;
 }
+$.getScript("../../script/jquery.codemirror.js", function(){
+	$('.source_code').codemirror({
+				lineWrapping: false,
+				height: 250
+		}, function(){
+				if($.codemirror_error) {
+					//alert("脚本载入失败！");
+				} else {
+					$('.CodeMirror').css({width:'710px','overflow':"hidden","text-align":"left"});
+					$('.source_code').parent(".row").css("padding","0px");
+				}
+			});
+});
 </script>

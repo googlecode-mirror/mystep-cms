@@ -117,6 +117,7 @@ TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0
 .page_lst #content {color:#666600; line-height:24px; font-size:14px;}
 .page_lst #content .title_img {float:right; padding:10px 10px 10px 10px; width:120px;}
 .page_main #content UL, .page_main #content OL {padding-left:24px;}
+.source{width:660px;}
 
 .regist {padding:20px 0px 20px 0px; font-size:14px;}
 .regist H3 {font-weight:bold; font-size:20px; margin:0px 0px 10px 0px; text-align:center;}

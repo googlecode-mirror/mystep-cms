@@ -169,9 +169,6 @@
 .page_main #content pre{white-space:nowrap;word-break:keep-all;word-break:keep-all;overflow-x:auto;overflow-y:hidden;}
 .page_main #content pre.wrap{white-space:normal;word-wrap:break-word;break-word:break-all;overflow:hidden;}
 .page_main #content div{clear:both;}
-
-.page_main #content .source{font-weight:normal;background-color:#fff;padding:0px 10px 10px 10px;width:710px;overflow:hidden;}
-.page_main #content .source legend{font-weight:bold;padding:0px 10px 0px 10px;background-color:#eee;border:1px #ccc solid;border-bottom:0px;}
-.page_main #content .source textarea{width:100%;height:100px;font-weight:normal;}
+.source{width:710px;}
 
 #page_bottom{line-height:20px;text-align:center;margin:10px auto 10px auto;padding-top:10px;width:100%;border-top:1px solid #CBCBCB;}

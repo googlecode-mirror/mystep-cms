@@ -1,4 +1,4 @@
-	<div class="page_lst after">
+		<div class="page_lst after">
 		<div class="fl">
 			<div class="box box_1">
 				<div class="title">вНпбндуб</div>
@@ -28,6 +28,7 @@
 						<div id="content">
 <img src="<!--record_image-->" class="title_img" />
 <!--record_content-->
+							<div class="notice"><!--record_notice--></div>
 						</div>
 						<div class="page after"><!--page_list--></div>
 						<div>
@@ -68,6 +69,15 @@ $(function() {
 	}
 	$("#content").powerImage();
 	if($(".title_img").attr("src").indexOf("dummy")!=-1) $(".title_img").remove();
+	if($('.source_code').length>0) {
+		$.getScript("script/jquery.codemirror.js", function(){
+			$('.source_code').codemirror({
+					runmode : true,
+					height : 200,
+					ext_css : ".CodeMirror{border:1px #ccc solid;}"
+				});
+		});
+	}
 });
 //]]> 
 </script>

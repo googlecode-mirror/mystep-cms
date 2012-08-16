@@ -20,6 +20,7 @@ class MyZip extends ZipArchive {
 function zip($file, $zipfile="", $basedir="") {
 	$zip = new MyZip;
 	$res = false;
+	MakeDir(dirname($zipfile));
 	if(is_dir($file)) {
 		if(empty($zipfile)) $zipfile = basename(rtrim($file, '/')).".zip";
 		$res = $zip->open($zipfile, ZIPARCHIVE::CREATE);
@@ -53,11 +54,13 @@ function zip($file, $zipfile="", $basedir="") {
 		$zip->open($zipfile);
 		for($i=0; $i<$zip->numFiles; $i++) {
 			$theName = $zip->getNameIndex($i);
-			$zip->renameName($theName, str_replace($basedir, "", $theName));
-		} 
+			$newName = str_replace($basedir, "", $theName);
+			$newName = preg_replace("/\/+/", "/", $newName);
+			$zip->renameName($theName, $newName);
+		}
 		$zip->close();
 	}
-	return $res;
+	return $res ? $zipfile : false;
 }
 
 function unzip($file, $dir="./") {

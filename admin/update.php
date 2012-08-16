@@ -45,17 +45,17 @@ switch($method) {
 			$setting_org = $setting;
 			require(ROOT_PATH."/include/config.php");
 			$update_info['setting'] = arrayMerge($setting, $update_info['setting']);
-			$rewrite_list = var_export($rewrite_list, true);
-			$expire_list = var_export($expire_list, true);
-			$ignore_list = var_export($ignore_list, true);
+			$rewrite_list_str = var_export($rewrite_list, true);
+			$expire_list_str = var_export($expire_list, true);
+			$ignore_list_str = var_export($ignore_list, true);
 			$content = <<<mystep
 <?php
 \$setting = array();
 
 /*--settings--*/
-\$rewrite_list = {$rewrite_list};
-\$expire_list = {$expire_list};
-\$ignore_list = {$ignore_list};
+\$rewrite_list = {$rewrite_list_str};
+\$expire_list = {$expire_list_str};
+\$ignore_list = {$ignore_list_str};
 \$authority = "{$authority}";
 ?>
 mystep;
@@ -134,6 +134,7 @@ include(ROOT_PATH."/source/class/abstract.class.php");
 include(ROOT_PATH."/source/class/mystep.class.php");
 \$mystep = new MyStep();
 \$mystep->pageStart();
+
 mystep;
 			if(count($sql_list)>0) {
 				$files[] = $dir."_update/run.sql";
@@ -169,10 +170,6 @@ mystep;
 			$result['info'] .= "\n". sprintf($setting['language']['admin_update_file'], count($update_info['file']));
 		}
 		
-		write_log($setting['language']['admin_update_done']);
-		echo toJson($result, $setting['db']['charset']);
-		
-		checkFile(ROOT_PATH, 0, "y");
 		$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
 		if($handle = opendir($cache_path)) {
 			while (false !== ($file = readdir($handle))) {
@@ -200,6 +197,10 @@ mystep;
 			}
 			closedir($handle);
 		}
+		if($method=="update") checkFile(ROOT_PATH, 0, "y");
+		
+		write_log($setting['language']['admin_update_done']);
+		echo toJson($result, $setting['db']['charset']);
 		break;
 	case "build":
 		if(!checkFile(ROOT_PATH, 0, "y")) {
