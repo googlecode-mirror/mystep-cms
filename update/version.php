@@ -2404,6 +2404,7 @@ $setting = $cur_setting;
 				'source/function/admin.php',
 				'source/function/web.php',
 				'template/admin/index.tpl',
+				'template/admin/info_main.tpl',
 				'template/admin/web_template.tpl',
 				'template/admin/web_template_list.tpl',
 				'template/admin_simple/index.tpl',

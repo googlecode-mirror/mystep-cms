@@ -98,7 +98,7 @@ function checkUpdate() {
 	<div style="font-weight:bold;">Version: '+ver+'</div>\
 	<div>'+ver_info[ver].info.replace(/[\r\n]+/g, "<br />")+'</div>\
 	<div>&nbsp;</div>\
-	<div><a href="###" onclick="$(this).next().toggle()">[查看更新文件]</a><div style="display:none;">'+ver_info[ver].file.join("<br />")+'</div></div>\
+	<div><a href="###" onclick="showFiles($(this).next())">[查看更新文件]</a><div style="display:none;">'+ver_info[ver].file.join("<br />")+'</div></div>\
 </div>\
 <hr />\
 ';
@@ -108,6 +108,17 @@ function checkUpdate() {
 			alert("获取更新服务器信息失败，请检查相关设置！");
 		}
 	}, "json");
+}
+function showFiles(obj) {
+	var theObj=$("#popupLayer_info_show_content").find(".info");
+	if(theObj.css("overflow-y")!="scroll") {
+		if(obj.is(":visible")) {
+			theObj.css({"height":"auto","width":theObj.width()+10});
+		} else {
+			theObj.css({"height":theObj.height()+20,"width":theObj.width()-10});
+		}
+	}
+	obj.toggle();
 }
 function applyUpdate(mode) {
 	loadingShow("系统正在获取更新，请耐心等待！");
