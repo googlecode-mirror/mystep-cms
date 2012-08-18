@@ -20,6 +20,7 @@ $mystep->regApi("newslist", "plugin_offical::api_newslist");
 
 $mystep->regAjax("login", "plugin_offical::ajax_login");
 $mystep->regAjax("autocomplete", "plugin_offical::ajax_autocomplete");
+$mystep->regAjax("subcat", "plugin_offical::ajax_subcat");
 
 $mystep->addJS("script/jquery.js");
 $mystep->addJS("script/jquery.addon.js");

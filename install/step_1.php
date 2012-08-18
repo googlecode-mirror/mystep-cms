@@ -89,6 +89,7 @@
 $theList = array(
 	"include/config.php",
 	"include/",
+	"images/",
 	"template/",
 	"plugin/",
 	"files/",

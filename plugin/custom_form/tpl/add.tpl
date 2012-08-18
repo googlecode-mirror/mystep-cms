@@ -215,7 +215,7 @@
 	</div>
 </div>
 <div id="item_import" class="popshow">
-	<textarea style="width:96%;height:600px;"></textarea>
+	<textarea style="width:96%;height:500px;"></textarea>
 	<div style="text-align:center;margin-top:10px;"><input class="btn" type="button" onClick="confirmImport()" value=" 确 定 " /></div>
 </div>
 <script language="JavaScript">
@@ -235,17 +235,17 @@ function refreshItem() {
 }
 function addItem() {
 	showPop('addItem','添加表单项目','id','item_edit',500);
-	$("#popupLayer_addItem input[name='item']").val("add");
+	$("#popupLayer_addItem_content input[name='item']").val("add");
 	return;
 }
 function importItem() {
 	showPop('importItem','导入表单项目','id','item_import',500);
-	$("#popupLayer_importItem textarea").val($.toJSON(cf_item));
+	$("#popupLayer_importItem_content textarea").val($.toJSON(cf_item));
 	return;
 }
 function confirmImport() {
-	$id("itemlist").value = $("#popupLayer_importItem textarea").val();
-	cf_item = $.secureEvalJSON($("#popupLayer_importItem textarea").val());
+	$id("itemlist").value = $("#popupLayer_importItem_content textarea").val();
+	cf_item = $.secureEvalJSON($("#popupLayer_importItem_content textarea").val());
 	refreshItem();
 	$.closePopupLayer();
 	return;

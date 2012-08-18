@@ -235,20 +235,20 @@ function refreshItem() {
 }
 function addItem() {
 	showPop('addItem','添加表单项目','id','item_edit',500);
-	$("#popupLayer_addItem input[name='item']").val("add");
+	$("#popupLayer_addItem_content input[name='item']").val("add");
 	return;
 }
 function exportItem() {
 	showPop('exportItem','导出表单项目','id','item_export',500);
-	$("#popupLayer_exportItem textarea").val($.toJSON(cf_item));
+	$("#popupLayer_exportItem_content textarea").val($.toJSON(cf_item));
 	return;
 }
 function confirmExport() {
-	if(copyStr($('#popupLayer_exportItem textarea').val())) {
-		alert("复制成功！")
+	if(copyStr($('#popupLayer_exportItem_content textarea').val())) {
+		alert_org("复制成功！")
 	} else {
-		alert("复制失败，请按“Ctrl + C”复制设置内容！");
-		$('#popupLayer_exportItem textarea').focus().select();
+		alert_org("复制失败，请按“Ctrl + C”复制设置内容！");
+		$('#popupLayer_exportItem_content textarea').focus().select();
 	}
 }
 function editItem(item) {

@@ -76,7 +76,7 @@
 //<![CDATA[
 function check(){
 	if ($("#popupLayer_import").find("form").get(0).the_file.value==0){
-		alert("上传文件不能为空！");
+		alert_org("上传文件不能为空！");
 		$("#popupLayer_import").find("form").get(0).the_file.focus();
 	}else{
 		$id("load").style.display = "none";

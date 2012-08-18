@@ -233,7 +233,7 @@ function addItem() {
 }
 function exportItem() {
 	showPop('exportItem','导出表单项目','id','item_export',500);
-	$("#popupLayer_exportItem textarea").val($.toJSON(cf_item));
+	$("#popupLayer_exportItem textarea").val($.toJSON(reg_item));
 	return;
 }
 function confirmExport() {

@@ -222,6 +222,17 @@ class plugin_offical implements plugin {
 		return $result;
 	}
 	
+	public static function ajax_subcat($cat_id) {
+		global $news_cat;
+		$result = array();
+		foreach($news_cat as $cur_cat) {
+			if($cur_cat['cat_main']==$cat_id) {
+				$result[] = array("name"=>$cur_cat['cat_name'], "link"=>getUrl("list", $cur_cat['cat_idx'], 1, $cur_cat['web_id']));
+			}
+		}
+		return $result;
+	}
+	
 	public static function login($user_name, $user_psw) {
 		global $db, $setting, $req;
 		$result = "";

@@ -84,7 +84,7 @@ function setList() {
 function loadingShow(info) {
 	if($("#bar_loading").length==0) {
 		var cssText = "top:0px;left:0px;display:none;color:#333333;font-size:24px;font-weight:bold;line-height:48px;position:absolute;border:1px #999999 solid;padding:20px 30px 10px 30px;z-index:999;background-color:#eeeeee;z-index:999;text-align:center;";
-		$("<div>").attr("id", "bar_loading").cssText(cssText).append($("<img>").attr("src",rlt_path + "images/loading.gif").css({"width":400,"height":10})).append("<br />").append($("<span>")).appendTo("body");
+		$("<div>").attr("id", "bar_loading").cssText(cssText).append($("<img>").attr("src","/images/loading.gif").css({"width":400,"height":10})).append("<br />").append($("<span>")).appendTo("body");
 	}
 	if($("#screenLocker").length>0) {
 		$("#screenLocker").remove();
@@ -113,8 +113,34 @@ function loadingShow(info) {
 	return true;
 }
 
+function showSubMenu(theObj) {
+	$(theObj).find("a[catid]").each(function(){
+		var cur_obj = $(this);
+		var cat_id = cur_obj.attr("catid");
+		$.post("/ajax.php?func=subcat&return=json", {'id':cat_id}, function(result) {
+			if(result!=null) {
+				var listObj = $("<ul>").attr("id", "subcat_"+cat_id).addClass("subcat");
+				for(var i=0,m=result.length;i<m;i++) {
+					listObj.append($('<li><a href="'+result[i].link+'">'+result[i].name+'</a></li>'));
+				}
+				cur_obj.after(listObj);
+				cur_obj.parent().hover(function(){
+					var pos = cur_obj.position();
+					cur_obj.addClass("highlight");
+					$(this).children("ul").css({"top":(pos.top+$(this).height()),"left":pos.left}).show();
+				},function(){
+					cur_obj.removeClass("highlight");
+					$(this).children("ul").hide();
+				});
+			}
+		}, 'json');
+		
+	});
+}
+
 $(function() {
 	setSlide();
 	setSwitch();
 	setList();
+	showSubMenu($("#top_nav"));
 });

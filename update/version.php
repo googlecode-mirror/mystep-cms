@@ -1377,6 +1377,9 @@ include(ROOT_PATH."/include/config.php");
 $rewrite_list_str = var_export($rewrite_list, true);
 $expire_list_str = var_export($expire_list, true);
 $ignore_list_str = var_export($ignore_list, true);
+if(empty($rewrite_list_str)) $rewrite_list_str = "array()";
+if(empty($expire_list_str)) $expire_list_str = "array()";
+if(empty($ignore_list_str)) $ignore_list_str = "array()";
 $content = <<<mystep
 <?php
 \$setting = array();
@@ -2165,6 +2168,9 @@ $setting["rewrite"]["tag"] = "tag";
 $rewrite_list_str = var_export($rewrite_list, true);
 $expire_list_str = var_export($expire_list, true);
 $ignore_list_str = var_export($ignore_list, true);
+if(empty($rewrite_list_str)) $rewrite_list_str = "array()";
+if(empty($expire_list_str)) $expire_list_str = "array()";
+if(empty($ignore_list_str)) $ignore_list_str = "array()";
 $content = <<<mystep
 <?php
 \$setting = array();
@@ -2236,6 +2242,9 @@ $ignore_list[] = "install";
 $rewrite_list_str = var_export($rewrite_list, true);
 $expire_list_str = var_export($expire_list, true);
 $ignore_list_str = var_export($ignore_list, true);
+if(empty($rewrite_list_str)) $rewrite_list_str = "array()";
+if(empty($expire_list_str)) $expire_list_str = "array()";
+if(empty($ignore_list_str)) $ignore_list_str = "array()";
 $content = <<<mystep
 <?php
 \$setting = array();
@@ -2422,6 +2431,38 @@ $setting = $cur_setting;
 			),
 		'sql' => array(
 				'update `{pre}admin_cat` set `pid`=6 where `file`="web_subweb.php"',
+			),
+	),
+	'0.99.9.9.3' => array(
+		'info' => '
+				1.Add pull down menu function for news catalog
+				2.Fix a template bug in custom_form plugin
+				3.Fix a template bug in subweb setting function
+				Some other adjusts...
+			',
+		'file' => array(
+				'images/classic/style.css',
+				'images/default/style.css',
+				'include/parameter.php',
+				'install/step_1.php',
+				'plugin/custom_form/setting/main.tpl',
+				'plugin/custom_form/tpl/add.tpl',
+				'plugin/custom_form/tpl/edit.tpl',
+				'plugin/custom_form/tpl/list_data.tpl',
+				'plugin/meeting/tpl/add.tpl',
+				'plugin/meeting/tpl/edit.tpl',
+				'plugin/offical/class.php',
+				'plugin/offical/index.php',
+				'script/addon.js',
+				'template/admin_simple/web_subweb_input.tpl',
+				'template/classic/main.tpl',
+				'template/default/main.tpl',
+				'update/version.php',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120818',
+					),
 			),
 	),
 );

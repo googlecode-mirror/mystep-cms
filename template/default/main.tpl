@@ -33,10 +33,10 @@
 	<div id="topbar" class="after">
 		<div class="l fl"></div>
 		<div class="m fl tc">
-			<ul>
+			<ul id="top_nav">
 				<li class="first"><a href="<!--web_url-->"><!--lang_page_main--></a></li>
 <!--loop:start key="news_cat"-->
-				<li><a href="<!--news_cat_cat_link-->"><!--news_cat_cat_name--></a></li>
+				<li><a href="<!--news_cat_cat_link-->" catid="<!--news_cat_cat_id-->"><!--news_cat_cat_name--></a></li>
 <!--loop:end-->
 			</ul>
 		</div>

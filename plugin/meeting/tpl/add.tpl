@@ -233,12 +233,12 @@ function addItem() {
 }
 function importItem() {
 	showPop('importItem','导入表单项目','id','item_import',500);
-	$("#popupLayer_importItem textarea").val($.toJSON(cf_item));
+	$("#popupLayer_importItem textarea").val($.toJSON(reg_item));
 	return;
 }
 function confirmImport() {
 	$id("itemlist").value = $("#popupLayer_importItem textarea").val();
-	cf_item = $.secureEvalJSON($("#popupLayer_importItem textarea").val());
+	reg_item = $.secureEvalJSON($("#popupLayer_importItem textarea").val());
 	refreshItem();
 	$.closePopupLayer();
 	return;

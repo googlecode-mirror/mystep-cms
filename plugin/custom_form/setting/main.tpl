@@ -12,6 +12,7 @@
 <script language="JavaScript" src="../../script/global.js"></script>
 <script language="JavaScript" src="../../script/admin.js"></script>
 <script language="JavaScript" src="../../script/addon.js"></script>
+<script language="JavaScript" src="../../script/jquery.jmpopups.js"></script>
 </head>
 <body>
 <div id="page_ole">
