@@ -2457,7 +2457,6 @@ $setting = $cur_setting;
 				'template/admin_simple/web_subweb_input.tpl',
 				'template/classic/main.tpl',
 				'template/default/main.tpl',
-				'update/version.php',
 			),
 		'setting' => array(
 				'gen' => array(
