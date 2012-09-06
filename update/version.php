@@ -1378,6 +1378,7 @@ $content = <<<mystep
 \$setting = array();
 
 /*--settings--*/
+\$rewrite_list = {$rewrite_list_str};
 \$expire_list = {$expire_list_str};
 \$ignore_list = {$ignore_list_str};
 \$authority = "{$authority}";
@@ -2449,6 +2450,126 @@ $setting = $cur_setting;
 						'etag' => '20120818',
 					),
 			),
+	),
+	'0.99.9.9.4' => array(
+		'info' => '
+				1.Add three url_rewrite rules which are missing before.
+				2.Add print function to custom_form plugin when submit
+				3.Fix a bug in set type data of custom_form plugin
+				4.Add manager tag to each item of custom_form plugin
+				5.Fix a charset bug in visit_analysis plugin
+				6.Fix a bug in file check function
+				Some other adjusts...
+			',
+		'file' => array(
+				'include/config.php',
+				'include/parameter.php',
+				'plugin/custom_form/custom_form.php',
+				'plugin/custom_form/show.php',
+				'plugin/custom_form/tpl/add.tpl',
+				'plugin/custom_form/tpl/default_cf_print_cn.tpl',
+				'plugin/custom_form/tpl/default_cf_print_en.tpl',
+				'plugin/custom_form/tpl/default_cf_submit_cn.tpl',
+				'plugin/custom_form/tpl/default_cf_submit_en.tpl',
+				'plugin/custom_form/tpl/default_mail_cn.tpl',
+				'plugin/custom_form/tpl/default_mail_en.tpl',
+				'plugin/custom_form/tpl/edit.tpl',
+				'plugin/visit_analysis/class.php',
+				'script/addon.js',
+				'script/jquery.autocomplete.js',
+				'script/jquery.date_input.js',
+				'script/jquery.jmpopups.js',
+				'source/class/mystep.class.php',
+				'source/class/mytpl.class.php',
+				'source/function/admin.php',
+				'template/classic/list.tpl',
+				'update/version.php',
+		),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20120905',
+					),
+			),
+		'code' => '
+$cur_setting = $setting;
+unset($setting);
+include(ROOT_PATH."/include/config.php");
+$rewrite_list = array (
+  array (
+    0 => "article/[^\\/]+/(\\d+)(_(\\d+))?\\.html",
+    1 => "read.php?id=$1&page=$3",
+  ),
+  array (
+    0 => "article(/)?",
+    1 => "list.php",
+  ),
+  array (
+    0 => "article/(index(_(\\d+))?\\.html)?",
+    1 => "list.php?page=$3",
+  ),
+  array (
+    0 => "catalog(/)?",
+    1 => "list.php",
+  ),
+  array (
+    0 => "catalog/(index(_(\\d+))?\\.html)?",
+    1 => "list.php?page=$3",
+  ),
+  array (
+    0 => "catalog/([^\\/]+)/(index(_(\\d+))?\\.html)?",
+    1 => "list.php?cat=$1&page=$4",
+  ),
+  array (
+    0 => "catalog/([^\\/]+)/([^\\/]+)/(index(_(\\d+))?\\.html)?",
+    1 => "list.php?cat=$1&pre=$2&page=$5",
+  ),
+  array (
+    0 => "tag/(.+?)(_(\\d+))?\\.html",
+    1 => "tag.php?tag=$1&page=$3",
+  ),
+  array (
+    0 => "tag(/)?",
+    1 => "tag.php",
+  ),
+  array (
+    0 => "rss.xml",
+    1 => "rss.php",
+  ),
+  array (
+    0 => "(.+?)/rss.xml",
+    1 => "rss.php?cat=$1",
+  ),
+  array (
+    0 => "api/(.+?)/(.+?)(/(.+))?",
+    1 => "api.php?$1|$2|$4",
+  ),
+  array (
+    0 => "ajax/(.+?)(/(.+))?",
+    1 => "ajax.php?func=$1&return=$3",
+  ),
+);
+$rewrite_list_str = var_export($rewrite_list, true);
+$expire_list_str = var_export($expire_list, true);
+$ignore_list_str = var_export($ignore_list, true);
+if(empty($rewrite_list_str)) $rewrite_list_str = "array()";
+if(empty($expire_list_str)) $expire_list_str = "array()";
+if(empty($ignore_list_str)) $ignore_list_str = "array()";
+$content = <<<mystep
+<?php
+\$setting = array();
+
+/*--settings--*/
+\$rewrite_list = {$rewrite_list_str};
+\$expire_list = {$expire_list_str};
+\$ignore_list = {$ignore_lis_str};
+\$authority = "{$authority}";
+?>
+mystep;
+$content = str_replace("/*--settings--*/", makeVarsCode($setting, "\$setting"), $content);
+WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+unset($setting);
+$setting = $cur_setting;
+		',
 	),
 );
 ?>

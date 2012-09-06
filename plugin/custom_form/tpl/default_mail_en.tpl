@@ -21,6 +21,7 @@ Your online submit information has been received. Please confirm the following i
 <?php
 global $record;
 foreach($para as $key => $value) {
+	if($value['manager']=='true') continue;
 	if(empty($value['title_en'])) continue;
 	if(is_array($value['value'])) {
 		$idx = array_search($record[$key], $value['value']['cn']);

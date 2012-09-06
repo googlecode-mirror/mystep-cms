@@ -208,6 +208,8 @@ $file_list_md5 = '.var_export($file_list_md5, true).';
 				} else {
 					$the_name = str_replace(ROOT_PATH, "", $the_name);
 					if(strpos($the_name, "/config")!==false) continue;
+					if(strpos($the_name, "/template")===0 && stripos($the_name, ".php")===false) continue;
+					if(strpos($the_name, "/images")===0 && stripos($the_name, ".php")===false) continue;
 					if(strpos($the_name, "/plugin/")===0) {
 						if(strpos(str_replace("/plugin/", "", $the_name), "/")!==false && strpos($the_name, "/plugin/offical/")!==0) continue;
 					}
@@ -224,7 +226,12 @@ $file_list_md5 = '.var_export($file_list_md5, true).';
 		}
 		if($layer==0) {
 			foreach($file_list as $the_name) {
-				if(strpos($the_name, "/plugin/")===0 || strpos($the_name, "/config")!==false) continue;
+				if(strpos($the_name, "/config")!==false) continue;
+				if(strpos($the_name, "/template")===0 && stripos($the_name, ".php")===false) continue;
+				if(strpos($the_name, "/images")===0 && stripos($the_name, ".php")===false) continue;
+				if(strpos($the_name, "/plugin/")===0) {
+					if(strpos(str_replace("/plugin/", "", $the_name), "/")!==false && strpos($the_name, "/plugin/offical/")!==0) continue;
+				}
 				$result['miss'][] = $the_name;
 			}
 		}

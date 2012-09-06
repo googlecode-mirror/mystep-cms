@@ -63,6 +63,18 @@
 							</td>
 						</tr>
 						<tr>
+							<td class="cat" width="100">中文打印页面：</td>
+							<td class="row">
+								<textarea class="source_code" type="php" name="tpl_cf_print_cn" style="width:100%; height:200px;"><!--tpl_cf_print_cn--></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td class="cat">英文打印页面：</td>
+							<td class="row">
+								<textarea class="source_code" type="php" name="tpl_cf_print_en" style="width:100%; height:200px;"><!--tpl_cf_print_en--></textarea>
+							</td>
+						</tr>
+						<tr>
 							<td class="cat">中文列表页面：</td>
 							<td class="row">
 								<textarea class="source_code" type="php" name="tpl_cf_list_cn" style="width:100%; height:200px;"><!--tpl_cf_list_cn--></textarea>
@@ -210,7 +222,10 @@
 		</tr>
 	</table>
 	<div style="text-align:center;margin-top:10px;">
-		<input type="checkbox" class="item" name="search" /> 是否用于检索<br /><br />
+		<input type="checkbox" class="item" name="search" /> 用于检索
+		&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+		<input type="checkbox" class="item" name="manager" /> 管理项目
+		<br /><br />
 		<input type="hidden" name="item" value="" /><input class="btn" type="button" onClick="confirmItem(this.previousSibling.value)" value=" 确 定 " />
 	</div>
 </div>
@@ -275,6 +290,7 @@ function editItem(item) {
 	$("#popupLayer_editItem input[name='comment']").val(cf_item[item]['comment']);
 	$("#popupLayer_editItem input[name='comment_en']").val(cf_item[item]['comment_en']);
 	$("#popupLayer_editItem input[name='search']").attr("checked", cf_item[item]['search']=="true");
+	$("#popupLayer_editItem input[name='manager']").attr("checked", cf_item[item]['manager']=="true");
 	return;
 }
 function removeItem(item) {
@@ -368,6 +384,7 @@ function confirmItem(mode) {
 						new_item["value"].en = objs[i].value.split("\n");
 						break;
 					case "search":
+					case "manager":
 						new_item[objs[i].name] = objs[i].checked?"true":"false";
 						break;
 					default:
@@ -411,6 +428,7 @@ function confirmItem(mode) {
 						new_item["value"].en = objs[i].value.split("\n");
 						break;
 					case "search":
+					case "manager":
 						new_item[objs[i].name] = objs[i].checked?"true":"false";
 						break;
 					default:

@@ -5,12 +5,13 @@
 <br />
 <script src="script/checkForm.js" Language="JavaScript1.2"></script>
 <script src="script/jquery.date_input.js" Language="JavaScript1.2"></script>
-<form name="cf_submit" method="post" ACTION="?m=cf_submit" ENCTYPE="multipart/form-data" onsubmit="return checkForm(this)">
+<form name="cf_submit" method="post" ACTION="/module.php?m=cf_submit" ENCTYPE="multipart/form-data" onsubmit="return checkForm(this)">
 	<input name="id" type="hidden" value="0" />
 	<input name="mid" type="hidden" value="<!--mid-->" />
 	<table width="780" border="0" class="cf_form" align="center" cellpadding="2" cellspacing="1">
 <?php
 foreach($para as $key => $value) {
+	if($value['manager']=='true') continue;
 	if(empty($value['title_en']) && !empty($value['comment_en'])) continue;
 	if(empty($value['title'])) continue;
 	if(empty($value['comment'])) $value['comment'] = "无注释";
@@ -75,6 +76,9 @@ mystep;
 }
 ?>
 		<TR CLASS="row">
+			<TD colspan="2"><center><input type="checkbox" name="print" value="y" id="print" /><label for="print"> 打印</label></center></TD>
+		</TR>
+		<TR CLASS="row">
 			<TD colspan="2"><center><input type="submit" value=" 提 交 " /> &nbsp; <input type="reset" value=" 复 位 " /></center></TD>
 		</TR>
 	</table>
@@ -83,5 +87,6 @@ mystep;
 var uTime = (new Date()).getTime();
 var date = new Date();
 date.setTime(uTime+10*60*1000);
-$.cookie('cf_time', Math.round(date.getTime()/1000), {expires: date});
+$.cookie('cf_time', null);
+$.cookie('cf_time', Math.round(date.getTime()/1000), {expires: date, path: '/', domain: '<?=$setting['cookie']['domain']?>'});
 </script>

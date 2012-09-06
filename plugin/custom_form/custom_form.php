@@ -117,6 +117,8 @@ switch($method) {
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, {$catid}, '".mysql_real_escape_string($sql_item['name'])."', 'custom_form.php?mid={$mid}', '../plugin/custom_form/', {$sql_item['web_id']}, 0, '".$info['intro']."')");
 		if(empty($_POST["tpl_cf_submit_cn"])) $_POST["tpl_cf_submit_cn"] = GetFile("tpl/default_cf_submit_cn.tpl");
 		if(empty($_POST["tpl_cf_submit_en"])) $_POST["tpl_cf_submit_en"] = GetFile("tpl/default_cf_submit_en.tpl");
+		if(empty($_POST["tpl_cf_print_cn"])) $_POST["tpl_cf_print_cn"] = GetFile("tpl/default_cf_print_cn.tpl");
+		if(empty($_POST["tpl_cf_print_en"])) $_POST["tpl_cf_print_en"] = GetFile("tpl/default_cf_print_en.tpl");
 		if(empty($_POST["tpl_cf_list_cn"])) $_POST["tpl_cf_list_cn"] = GetFile("tpl/default_cf_list_cn.tpl");
 		if(empty($_POST["tpl_cf_list_en"])) $_POST["tpl_cf_list_en"] = GetFile("tpl/default_cf_list_en.tpl");
 		if(empty($_POST["tpl_block_cf_list_cn"])) $_POST["tpl_block_cf_list_cn"] = GetFile("tpl/block_cf_list_cn.tpl");
@@ -134,6 +136,14 @@ switch($method) {
 		$_POST["tpl_cf_submit_en"] = str_replace("&#160; ","	",$_POST["tpl_cf_submit_en"]);
 		$_POST["tpl_cf_submit_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_submit_en"]);
 		WriteFile("setting/{$mid}_cf_submit_en.tpl", $_POST["tpl_cf_submit_en"], "wb");
+		
+		$_POST["tpl_cf_print_cn"] = str_replace("&#160; ","	",$_POST["tpl_cf_print_cn"]);
+		$_POST["tpl_cf_print_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_print_cn"]);
+		WriteFile("setting/{$mid}_cf_print_cn.tpl", $_POST["tpl_cf_print_cn"], "wb");
+		
+		$_POST["tpl_cf_print_en"] = str_replace("&#160; ","	",$_POST["tpl_cf_print_en"]);
+		$_POST["tpl_cf_print_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_print_en"]);
+		WriteFile("setting/{$mid}_cf_print_en.tpl", $_POST["tpl_cf_print_en"], "wb");
 		
 		$_POST["tpl_cf_list_cn"] = str_replace("&#160; ","	",$_POST["tpl_cf_list_cn"]);
 		$_POST["tpl_cf_list_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_list_cn"]);
@@ -200,11 +210,13 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 				case "radio":
 				case "select":
 					add_slash($value['value']['cn']);
+					$value['value']['cn'] = str_replace(",", "£¬", $value['value']['cn']);
 					$list = "'".implode("', '", $value['value']['cn'])."'";
 					$str_sql .= "\n	`".$key."` Enum(".$list.")";
 					break;
 				case "checkbox":
 					add_slash($value['value']['cn']);
+					$value['value']['cn'] = str_replace(",", "£¬", $value['value']['cn']);
 					$list = "'".implode("', '", $value['value']['cn'])."'";
 					$str_sql .= "\n	`".$key."` Set(".$list.")";
 					break;
@@ -240,6 +252,8 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 		$db->query("update ".$setting['db']['pre']."admin_cat set name='".mysql_real_escape_string($sql_item['name'])."', web_id='".$sql_item['web_id']."' where file='custom_form.php?mid={$mid}' and pid={$catid}");
 		if(empty($_POST["tpl_cf_submit_cn"])) $_POST["tpl_cf_submit_cn"] = GetFile("tpl/default_cf_submit_cn.tpl");
 		if(empty($_POST["tpl_cf_submit_en"])) $_POST["tpl_cf_submit_en"] = GetFile("tpl/default_cf_submit_en.tpl");
+		if(empty($_POST["tpl_cf_print_cn"])) $_POST["tpl_cf_print_cn"] = GetFile("tpl/default_cf_print_cn.tpl");
+		if(empty($_POST["tpl_cf_print_en"])) $_POST["tpl_cf_print_en"] = GetFile("tpl/default_cf_print_en.tpl");
 		if(empty($_POST["tpl_cf_list_cn"])) $_POST["tpl_cf_list_cn"] = GetFile("tpl/default_cf_list_cn.tpl");
 		if(empty($_POST["tpl_cf_list_en"])) $_POST["tpl_cf_list_en"] = GetFile("tpl/default_cf_list_en.tpl");
 		if(empty($_POST["tpl_block_cf_list_cn"])) $_POST["tpl_block_cf_list_cn"] = GetFile("tpl/block_cf_list_cn.tpl");
@@ -257,6 +271,14 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 		$_POST["tpl_cf_submit_en"] = str_replace("&#160; ","	",$_POST["tpl_cf_submit_en"]);
 		$_POST["tpl_cf_submit_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_submit_en"]);
 		WriteFile("setting/{$mid}_cf_submit_en.tpl", $_POST["tpl_cf_submit_en"], "wb");
+		
+		$_POST["tpl_cf_print_cn"] = str_replace("&#160; ","	",$_POST["tpl_cf_print_cn"]);
+		$_POST["tpl_cf_print_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_print_cn"]);
+		WriteFile("setting/{$mid}_cf_print_cn.tpl", $_POST["tpl_cf_print_cn"], "wb");
+		
+		$_POST["tpl_cf_print_en"] = str_replace("&#160; ","	",$_POST["tpl_cf_print_en"]);
+		$_POST["tpl_cf_print_en"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_print_en"]);
+		WriteFile("setting/{$mid}_cf_print_en.tpl", $_POST["tpl_cf_print_en"], "wb");
 		
 		$_POST["tpl_cf_list_cn"] = str_replace("&#160; ","	",$_POST["tpl_cf_list_cn"]);
 		$_POST["tpl_cf_list_cn"] = str_replace(hexToStr("c2a0"),"	",$_POST["tpl_cf_list_cn"]);
@@ -325,11 +347,13 @@ $para = '.str_replace("\r", "", $para).';
 					case "radio":
 					case "select":
 						add_slash($value['value']['cn']);
+						$value['value']['cn'] = str_replace(",", "£¬", $value['value']['cn']);
 						$list = "'".implode("', '", $value['value']['cn'])."'";
 						$item_type .= "`".$key."` Enum(".$list.")";
 						break;
 					case "checkbox":
 						add_slash($value['value']['cn']);
+						$value['value']['cn'] = str_replace(",", "£¬", $value['value']['cn']);
 						$list = "'".implode("', '", $value['value']['cn'])."'";
 						$item_type .= "`".$key."` Set(".$list.")";
 						break;
@@ -382,6 +406,8 @@ $para = '.var_export($para, true).';
 			$db->query("delete from ".$setting['db']['pre']."admin_cat where file='custom_form.php?mid={$mid}' and pid={$catid}");
 			unlink("setting/{$mid}_cf_submit_cn.tpl");
 			unlink("setting/{$mid}_cf_submit_en.tpl");
+			unlink("setting/{$mid}_cf_print_cn.tpl");
+			unlink("setting/{$mid}_cf_print_en.tpl");
 			unlink("setting/{$mid}_cf_list_cn.tpl");
 			unlink("setting/{$mid}_cf_list_en.tpl");
 			unlink("setting/{$mid}_block_cf_list_cn.tpl");
@@ -583,6 +609,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('cf_item', toJson($para, $setting['gen']['charset']));
 		$tpl_tmp->Set_Variable('tpl_cf_submit_cn', htmlspecialchars(GetFile("setting/{$mid}_cf_submit_cn.tpl")));
 		$tpl_tmp->Set_Variable('tpl_cf_submit_en', htmlspecialchars(GetFile("setting/{$mid}_cf_submit_en.tpl")));
+		$tpl_tmp->Set_Variable('tpl_cf_print_cn', htmlspecialchars(GetFile("setting/{$mid}_cf_print_cn.tpl")));
+		$tpl_tmp->Set_Variable('tpl_cf_print_en', htmlspecialchars(GetFile("setting/{$mid}_cf_print_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_cf_list_cn', htmlspecialchars(GetFile("setting/{$mid}_cf_list_cn.tpl")));
 		$tpl_tmp->Set_Variable('tpl_cf_list_en', htmlspecialchars(GetFile("setting/{$mid}_cf_list_en.tpl")));
 		$tpl_tmp->Set_Variable('tpl_block_cf_list_cn', htmlspecialchars(GetFile("setting/{$mid}_block_cf_list_cn.tpl")));
@@ -604,6 +632,8 @@ function build_page($method) {
 			include("setting/".$mid.".php");
 			$tpl_tmp->Set_Variable('tpl_cf_submit_cn', htmlspecialchars(GetFile("setting/".$mid."_cf_submit_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_submit_en', htmlspecialchars(GetFile("setting/".$mid."_cf_submit_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_cf_print_cn', htmlspecialchars(GetFile("setting/".$mid."_cf_print_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_cf_print_en', htmlspecialchars(GetFile("setting/".$mid."_cf_print_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_list_cn', htmlspecialchars(GetFile("setting/".$mid."_cf_list_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_list_en', htmlspecialchars(GetFile("setting/".$mid."_cf_list_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_block_cf_list_cn', htmlspecialchars(GetFile("setting/".$mid."_block_cf_list_cn.tpl")));
@@ -617,6 +647,8 @@ function build_page($method) {
 			include("setting/default.php");
 			$tpl_tmp->Set_Variable('tpl_cf_submit_cn', htmlspecialchars(GetFile("tpl/default_cf_submit_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_submit_en', htmlspecialchars(GetFile("tpl/default_cf_submit_en.tpl")));
+			$tpl_tmp->Set_Variable('tpl_cf_print_cn', htmlspecialchars(GetFile("tpl/default_cf_print_cn.tpl")));
+			$tpl_tmp->Set_Variable('tpl_cf_print_en', htmlspecialchars(GetFile("tpl/default_cf_print_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_list_cn', htmlspecialchars(GetFile("tpl/default_cf_list_cn.tpl")));
 			$tpl_tmp->Set_Variable('tpl_cf_list_en', htmlspecialchars(GetFile("tpl/default_cf_list_en.tpl")));
 			$tpl_tmp->Set_Variable('tpl_block_cf_list_cn', htmlspecialchars(GetFile("tpl/block_cf_list_cn.tpl")));

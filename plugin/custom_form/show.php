@@ -11,28 +11,36 @@ if(count($_POST)>0) {
 			</script>
 			';
 		} else {
-			unset($_POST['mid']);
+			$print = $_POST['print'];
+			unset($_POST['mid'], $_POST['print']);
+			$_POST_org = $_POST;
 			foreach($_POST as $key => $value) {
 				if(is_array($value)) {
 					if(is_numeric($value[0])) {
-						$value = array_sum($value);
+						$_POST[$key] = array_sum($value);
 					} else {
-						$value = implode(",", $value);
+						$_POST[$key] = implode(",", $value);
 					}
 				}
 			}
 			$_POST['add_date'] = date("Y-m-d H:i:s");
 			$str_sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $_POST, "insert", "a");
 			$db->Query($str_sql);
-			echo '
-			<script>
-				alert("'.$setting['language']['plugin_custom_form_done'].'");
-				location.href="/";
-			</script>
-			';
+			$_POST = $_POST_org;
+			//debug($_POST);
+			if(empty($print)) {
+				echo '
+				<script>
+					alert("'.$setting['language']['plugin_custom_form_done'].'");
+					location.href="/";
+				</script>
+				';
+			} else {
+				$module = "cf_print";
+			}
 			unset($_COOKIE['cf_time']);
 			$req->setCookie("cf_done", time()+300, 300);
-			$mystep->pageEnd(false);
+			if(empty($print)) $mystep->pageEnd(false);
 		}
 	} else {
 		echo '
@@ -46,7 +54,6 @@ if(count($_POST)>0) {
 
 if(!empty($mid) && is_numeric($mid)) {
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
-		
 	$tpl_info['idx'] = $mid."_".$module."_".($setting['gen']['language']=="en"?"en":"cn");
 	$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/setting/";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
@@ -69,16 +76,25 @@ if(!empty($mid) && is_numeric($mid)) {
 		$tpl_tmp->Set_Variable('page_list', PageList($page, ceil($count/$page_size)));
 		$limit = (($page-1)*$page_size).", ".$page_size;
 		$GLOBALS['mid'] = $mid;
+	} elseif($module=="cf_print") {
+		unset($tpl_tmp);
+		$tpl->init($tpl_info, $cache_info, true);
+		$tpl->Set_Variable('custom_form_name', $the_name);
+		$tpl->Set_Variable('path_admin', $setting['path']['admin']);
+		$setting['gen']['show_info'] = false;
+		global $para;
+		include("setting/{$mid}.php");
 	}
 	
 	$GLOBALS['web_id'] = $setting['info']['web']['web_id'];
-	$tpl_tmp->Set_Variable('mid', $mid);
-	$tpl_tmp->Set_Variable('custom_form_name', $the_name);
-	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting,$db,$para'));
-	unset($tpl_tmp);
+	if(isset($tpl_tmp)) {
+		$tpl_tmp->Set_Variable('mid', $mid);
+		$tpl_tmp->Set_Variable('custom_form_name', $the_name);
+		$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$setting,$db,$para'));
+		unset($tpl_tmp);
+	}
 	
 	$mystep->show($tpl);
-	$setting['gen']['show_info'] = true;
 } else {
 	$goto_url = "/";
 }

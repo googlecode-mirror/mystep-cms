@@ -36,7 +36,7 @@
 			<div class="box box_list" style="margin-top:0px;">
 				<div class="title">м╪ф╛пбне</div>
 				<div class="content">
-<!--news show_image="1" limit="1,6" template="picture"-->
+<!--news show_image="1" limit="2,6" template="picture"-->
 				</div>
 			</div>
 		</div>

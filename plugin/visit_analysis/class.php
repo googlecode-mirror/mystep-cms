@@ -105,13 +105,15 @@ mystep;
 				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
 				if(strpos($url_info['host'],"google")>0) $referer = "http://".$url_info['host']."/search?q=".urlencode($query['q']);
 				if(strpos($url_info['host'],"baidu")>0) $referer = "http://".$url_info['host']."/s?wd=".urlencode($query['wd']);
-				$referer = mysql_real_escape_string($referer);
 				$referer = getSafeCode($referer, $setting['gen']['charset']);
+				$referer = mysql_real_escape_string($referer);
 				if(strlen($referer)>250) $referer = substrPro($referer, 0, 250);
 				if(!empty($keyword)) {
 					if(preg_match("/(%[\w]{2})+/", $keyword)) $keyword = urldecode($keyword);
 					$keyword = getSafeCode($keyword, $setting['gen']['charset']);
 					$url = "http://".$req->getServer("HTTP_HOST").$req->getServer("REQUEST_URI");
+					$url = getSafeCode($url, $setting['gen']['charset']);
+					$url = mysql_real_escape_string($url);
 					if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_keyword where keyword='".mysql_real_escape_string($keyword)."'")) {
 						$db->Query("update ".$setting['db']['pre']."visit_keyword set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP(), `url`='".$url."', `referer`='".$referer."' where keyword='".mysql_real_escape_string($keyword)."'");
 					} else {

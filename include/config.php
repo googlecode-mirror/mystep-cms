@@ -104,57 +104,54 @@ $setting['memcache']['min_savings'] = 0.5;
 
 
 $rewrite_list = array (
-  0 => 
   array (
     0 => 'article/[^\\/]+/(\\d+)(_(\\d+))?\\.html',
     1 => 'read.php?id=$1&page=$3',
   ),
-  1 => 
-  array (
-    0 => 'catalog/([^\\/]+)/(index(_(\\d+))?\\.html)?',
-    1 => 'list.php?cat=$1&page=$4',
-  ),
-  2 => 
-  array (
-    0 => 'catalog/([^\\/]+)/([^\\/]+)/(index(_(\\d+))?\\.html)?',
-    1 => 'list.php?cat=$1&pre=$2&page=$5',
-  ),
-  3 => 
-  array (
-    0 => 'tag/(.+?)(_(\\d+))?\\.html',
-    1 => 'tag.php?tag=$1&page=$3',
-  ),
-  4 => 
   array (
     0 => 'article(/)?',
     1 => 'list.php',
   ),
-  5 => 
+  array (
+    0 => 'article/(index(_(\\d+))?\\.html)?',
+    1 => 'list.php?page=$3',
+  ),
   array (
     0 => 'catalog(/)?',
     1 => 'list.php',
   ),
-  6 => 
+  array (
+    0 => 'catalog/(index(_(\\d+))?\\.html)?',
+    1 => 'list.php?page=$3',
+  ),
+  array (
+    0 => 'catalog/([^\\/]+)/(index(_(\\d+))?\\.html)?',
+    1 => 'list.php?cat=$1&page=$4',
+  ),
+  array (
+    0 => 'catalog/([^\\/]+)/([^\\/]+)/(index(_(\\d+))?\\.html)?',
+    1 => 'list.php?cat=$1&pre=$2&page=$5',
+  ),
+  array (
+    0 => 'tag/(.+?)(_(\\d+))?\\.html',
+    1 => 'tag.php?tag=$1&page=$3',
+  ),
   array (
     0 => 'tag(/)?',
     1 => 'tag.php',
   ),
-  7 => 
   array (
     0 => 'rss.xml',
     1 => 'rss.php',
   ),
-  8 => 
   array (
     0 => '(.+?)/rss.xml',
     1 => 'rss.php?cat=$1',
   ),
-  9 => 
   array (
     0 => 'api/(.+?)/(.+?)(/(.+))?',
     1 => 'api.php?$1|$2|$4',
   ),
-  10 => 
   array (
     0 => 'ajax/(.+?)(/(.+))?',
     1 => 'ajax.php?func=$1&return=$3',

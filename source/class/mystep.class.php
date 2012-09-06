@@ -307,6 +307,7 @@ mystep;
 	}
 	
 	public function regModule($module, $page) {
+		$page = str_replace("\\", "/", $page);
 		if(is_file($page)) {
 			$this->module[$module] = $page;
 		}

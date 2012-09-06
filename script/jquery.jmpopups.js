@@ -415,10 +415,11 @@ function setDialog() {
 }
 
 $(function(){
-	$("head").append($('<link rel="stylesheet" href="'+rlt_path+'script/jquery.jmpopups.css" type="text/css" media="screen" />'));
+	$("head").append($('<link id="css_jmpopups" rel="stylesheet" href="'+rlt_path+'script/jquery.jmpopups.css" type="text/css" media="screen" />'));
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.4"
 	});
 	$("<div>").attr("id", "info_show").addClass("info_show").html('<div class="info"></div><div class="button"></div>').appendTo("body");
+	$("#css_jmpopups").attr("href", rlt_path+"script/jquery.jmpopups.css");
 });

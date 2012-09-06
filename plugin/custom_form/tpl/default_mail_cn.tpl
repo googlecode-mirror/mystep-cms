@@ -19,6 +19,7 @@
 <?php
 global $record;
 foreach($para as $key => $value) {
+	if($value['manager']=='true') continue;
 	if(empty($value['title'])) continue;
 	echo "<b>".$value['title']."£º</b> ".$record[$key]."<br />";
 }

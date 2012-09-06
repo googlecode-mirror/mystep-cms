@@ -392,7 +392,7 @@
 
 var ac_options = new Object();
 $(function() {
-	$("head").append($('<link rel="stylesheet" href="'+rlt_path+'script/jquery.autocomplete.css" type="text/css" media="screen" />'));
+	$("head").append($('<link id="css_autocomplete" rel="stylesheet" href="'+rlt_path+'script/jquery.autocomplete.css" type="text/css" media="screen" />'));
 	ac_options = {
     serviceUrl:'/ajax.php?func=autocomplete&return=json',
     minChars:1,
@@ -409,4 +409,5 @@ $(function() {
   	ac_options.params = {mode:$(domEle).attr("name")};
   	$(domEle).autocomplete(ac_options);
   });
+  $("#css_autocomplete").attr("href", rlt_path+"script/jquery.autocomplete.css");
 });

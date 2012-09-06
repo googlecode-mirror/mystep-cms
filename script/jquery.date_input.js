@@ -354,7 +354,7 @@ DateInput = (function($) {
 
 $(function() {
 	try {
-		$("head").append($('<link rel="stylesheet" href="'+rlt_path+'script/jquery.date_input.css" type="text/css" media="screen" />'));
+		$("head").append($('<link id="css_date_input" rel="stylesheet" href="'+rlt_path+'script/jquery.date_input.css" type="text/css" media="screen" />'));
 		var setDateInput = setInterval(function() {
 			if(typeof(language)=="undefined") return;
 			jQuery.extend(DateInput.DEFAULT_OPTS, {
@@ -369,5 +369,6 @@ $(function() {
 			clearInterval(setDateInput);
 			return;
 		}, 1000);
+		$("#css_date_input").attr("href", rlt_path+"script/jquery.date_input.css");
 	} catch(e) {}
 });

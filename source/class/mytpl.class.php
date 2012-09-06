@@ -46,7 +46,8 @@ class MyTpl extends class_common {
 		$delimiter_r = "-->",
 		$tpl_info = array();
 
-	public function init($tpl_info, $cache_setting = false){
+	public function init($tpl_info, $cache_setting = false, $allow_script = false){
+		$this->allow_script = $allow_script;
 		if(!isset($tpl_info['idx'])) $tpl_info['idx'] = "";
 		if(!isset($tpl_info['style'])) $tpl_info['style'] = "default";
 		if(!isset($tpl_info['path'])) $tpl_info['path'] = "./";
@@ -155,6 +156,7 @@ class MyTpl extends class_common {
 		global $tpl_para;
 		$tpl_cache = $this->tpl_info['content'];
 		
+		if(isset($GLOBALS['aa'])) debug($this->allow_script);
 		if(!$this->allow_script) {
 			$tpl_cache = preg_replace("/<\?php.+?\?>/is", "", $tpl_cache);
 		}
