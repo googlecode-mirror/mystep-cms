@@ -2241,7 +2241,7 @@ $content = <<<mystep
 /*--settings--*/
 \$rewrite_list = {$rewrite_list_str};
 \$expire_list = {$expire_list_str};
-\$ignore_list = {$ignore_lis_str};
+\$ignore_list = {$ignore_list_str};
 \$authority = "{$authority}";
 ?>
 mystep;
@@ -2462,7 +2462,6 @@ $setting = $cur_setting;
 				Some other adjusts...
 			',
 		'file' => array(
-				'include/config.php',
 				'include/parameter.php',
 				'plugin/custom_form/custom_form.php',
 				'plugin/custom_form/show.php',
@@ -2483,7 +2482,6 @@ $setting = $cur_setting;
 				'source/class/mytpl.class.php',
 				'source/function/admin.php',
 				'template/classic/list.tpl',
-				'update/version.php',
 		),
 		'setting' => array(
 				'gen' => array(
@@ -2561,7 +2559,7 @@ $content = <<<mystep
 /*--settings--*/
 \$rewrite_list = {$rewrite_list_str};
 \$expire_list = {$expire_list_str};
-\$ignore_list = {$ignore_lis_str};
+\$ignore_list = {$ignore_list_str};
 \$authority = "{$authority}";
 ?>
 mystep;
@@ -2570,6 +2568,21 @@ WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
 unset($setting);
 $setting = $cur_setting;
 		',
+	),
+	'0.99.9.9.5' => array(
+		'info' => '
+				1.Fix a bug in list.php when connect to a catalog with a link
+				2.Enhance custom_form plugin
+				Some other adjusts...
+			',
+		'file' => array(
+				'include/parameter.php',
+				'list.php',
+				'plugin/custom_form/custom_form.php',
+				'plugin/custom_form/setting',
+				'plugin/custom_form/setting/default.php',
+				'plugin/search/tpl/block_search.tpl',
+		),
 	),
 );
 ?>

@@ -64,12 +64,19 @@ switch($method) {
 				while($data = fgetcsv($fp,1000,",")) {
 					if(!is_numeric(trim($data[0]))) continue;
 					$record = array();
-					$record['id'] = 0;
+					$data[0] = trim($data[0]);
+					if(is_numeric($data[0])) {
+						$record['id'] = $data[0];
+					} else {
+						$record['id'] = 0;
+					}
 					$n = 1;
 					foreach($para as $key => $value) {
 						$record[$key] = trim($data[$n++]);
 					}
-					$sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $record, "insert", "a");
+					if(isset($data[$n])) $record['mailed'] = trim($data[$n++]);
+					if(isset($data[$n]) && strlen($data[$n])>10) $record['add_date'] = trim($data[$n]);
+					$sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $record, "replace");
 					unset($record);
 					$db->query($sql);
 				}
@@ -497,6 +504,7 @@ function build_page($method) {
 		$condition = "1=0";
 		if(!empty($keyword)) {
 			include("setting/{$mid}.php");
+			if(is_numeric($keyword)) $condition .= " or `id`='".$keyword."'";
 			foreach($para as $key => $value) {
 				if($para[$key]['search']=='true') {
 					switch($para[$key]['type']) {
@@ -538,6 +546,8 @@ function build_page($method) {
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if(function_exists("ext_func")) ext_func();
+			if(empty($record['name']) && !empty($record['name_en'])) $record['name'] = $record['name_en'];
+			if(empty($record['company']) && !empty($record['company_en'])) $record['company'] = $record['company_en'];
 			$record['confirm'] = "";
 			if($record['mailed']!="已发") $record['confirm'] = ' &nbsp;<a href="?method=confirm&mid='.$mid.'&id='.$record['id'].'">确认</a>';
 			$tpl_tmp->Set_Loop('record', $record);

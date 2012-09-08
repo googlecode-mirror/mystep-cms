@@ -21,6 +21,10 @@ if($cat_info===false && !empty($cat_idx)) {
 	$prefix = "";
 	$cat_idx = "";
 }
+if(!empty($cat_info['cat_link'])) {
+	$goto_url = $cat_info['cat_link'];
+	$mystep->pageEnd();
+}
 
 if($setting['gen']['cache']) {
 	$cache_info = array(

@@ -12,6 +12,7 @@ $para = array(
 		"comment" => "中文姓名",
 		"comment_en" => "",
 		"search" => "true",
+    'manager' => 'false',
 	),
 	"name_en" => array(
 		"type" => "text",
@@ -25,6 +26,7 @@ $para = array(
 		"comment" => "请录入姓名的英文拼写或拼音",
 		"comment_en" => "What's your name?",
 		"search" => "true",
+    'manager' => 'false',
 	),
 	"gender" => array(
 		"type" => "radio",
@@ -40,6 +42,8 @@ $para = array(
 		"title_en" => "Gender",
 		"comment" => "请选择您的性别",
 		"comment_en" => "Select your gender",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"country" => array(
 		"type" => "text",
@@ -52,6 +56,8 @@ $para = array(
 		"title_en" => "Country",
 		"comment" => "请录入您的国籍",
 		"comment_en" => "Where are you come from?",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"company" => array(
 		"type" => "text",
@@ -65,6 +71,7 @@ $para = array(
 		"comment" => "公司中文名称",
 		"comment_en" => "",
 		"search" => "true",
+    'manager' => 'false',
 	),
 	"company_en" => array(
 		"type" => "text",
@@ -78,6 +85,7 @@ $para = array(
 		"comment" => "公司英文名称",
 		"comment_en" => "What's your company's name?",
 		"search" => "true",
+    'manager' => 'false',
 	),
 	"duty" => array(
 		"type" => "text",
@@ -90,6 +98,8 @@ $para = array(
 		"title_en" => "",
 		"comment" => "您在公司担任的职务",
 		"comment_en" => "",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"duty_en" => array(
 		"type" => "text",
@@ -102,6 +112,8 @@ $para = array(
 		"title_en" => "Title",
 		"comment" => "公司职务的英文",
 		"comment_en" => "What's your position in your company?",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"address" => array(
 		"type" => "text",
@@ -115,6 +127,7 @@ $para = array(
 		"comment" => "您公司的详细地址",
 		"comment_en" => "",
 		"search" => "true",
+    'manager' => 'false',
 	),
 	"address_en" => array(
 		"type" => "text",
@@ -128,6 +141,7 @@ $para = array(
 		"comment" => "公司英文地址",
 		"comment_en" => "Where is your company?",
 		"search" => "true",
+    'manager' => 'false',
 	),
 	"zipcode" => array(
 		"type" => "text",
@@ -140,6 +154,8 @@ $para = array(
 		"title_en" => "",
 		"comment" => "对应公司地址的邮政编码",
 		"comment_en" => "",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"mobile" => array(
 		"type" => "text",
@@ -152,6 +168,8 @@ $para = array(
 		"title_en" => "Cellphone",
 		"comment" => "请填写本人的手机号码",
 		"comment_en" => "Your mobile phone number",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"areacode" => array(
 		"type" => "text",
@@ -164,6 +182,8 @@ $para = array(
 		"title_en" => "",
 		"comment" => "公司所在地区的电话区号",
 		"comment_en" => "",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"tel" => array(
 		"type" => "text",
@@ -176,6 +196,8 @@ $para = array(
 		"title_en" => "Telephone",
 		"comment" => "公司联络电话",
 		"comment_en" => "Telephone number of your company",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"fax" => array(
 		"type" => "text",
@@ -188,6 +210,8 @@ $para = array(
 		"title_en" => "Fax",
 		"comment" => "公司传真号码",
 		"comment_en" => "Fax number of your company",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"email" => array(
 		"type" => "text",
@@ -200,6 +224,8 @@ $para = array(
 		"title_en" => "Email",
 		"comment" => "您常用的电子邮件地址",
 		"comment_en" => "Your email",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"website" => array(
 		"type" => "text",
@@ -212,6 +238,8 @@ $para = array(
 		"title_en" => "Website",
 		"comment" => "贵公司网站地址",
 		"comment_en" => "Website of your company",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"diet_type" => array(
 		"type" => "radio",
@@ -227,6 +255,8 @@ $para = array(
 		"title_en" => "Diet Type",
 		"comment" => "您的饮食习惯",
 		"comment_en" => "Your favorite food",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"room_type" => array(
 		"type" => "select",
@@ -242,6 +272,8 @@ $para = array(
 		"title_en" => "Book Hotel",
 		"comment" => "预订房间类型",
 		"comment_en" => "Room Type of the hotel",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"date_checkin" => array(
 		"type" => "text",
@@ -254,6 +286,8 @@ $para = array(
 		"title_en" => "Check In",
 		"comment" => "您入住宾馆的时间",
 		"comment_en" => "The time your will check in.",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"date_checkout" => array(
 		"type" => "text",
@@ -266,6 +300,8 @@ $para = array(
 		"title_en" => "Check Out",
 		"comment" => "您离开宾馆的时间",
 		"comment_en" => "The time your will check out.",
+		"search" => "false",
+    'manager' => 'false',
 	),
 	"notes" => array(
 		"type" => "textarea",
@@ -279,6 +315,7 @@ $para = array(
 		"comment" => "请填写您的其它要求",
 		"comment_en" => "Your requirements to the conference.",
 		"search" => "true",
+    'manager' => 'false',
 	),
 );
 ?>
