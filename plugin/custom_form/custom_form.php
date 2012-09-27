@@ -50,7 +50,7 @@ switch($method) {
 		}
 		break;
 	case "import":
-		$log_info = "导入数据";
+		$log_info = "导入表单数据";
 		if(count($_POST) > 0){
 			$path_upload = $setting['path']['upload']."/tmp/".date("Ym")."/";
 			$upload = new MyUploader;
@@ -88,14 +88,15 @@ switch($method) {
 		break;
 	case "add_data_ok":
 		if(!empty($_GET['name'])) {
-			$log_info = "添加数据";
+			$log_info = "添加表单数据";
 			if(function_exists("ext_func")) ext_func();
 			$db->Query("insert into ".$setting['db']['pre']."custom_form_{$mid} (id, name, add_date) values(0, '".$_GET['name']."', curdate())");
-			$goto_url = $setting['info']['self']."?method=edit&mid={$mid}&id=".$db->getInsertID();
+			$id = $db->getInsertID();
+			$goto_url = $setting['info']['self']."?method=edit&mid={$mid}&id=".$id;
 		}
 		break;
 	case "edit_data_ok":
-		$log_info = "编辑数据";
+		$log_info = "编辑表单数据";
 		if(empty($_POST['date_checkin'])) unset($_POST['date_checkin']);
 		if(empty($_POST['date_checkout'])) unset($_POST['date_checkout']);
 		$keyword=$_POST['keyword'];
@@ -432,6 +433,8 @@ $para = '.var_export($para, true).';
 		break;
 	case "mail":
 		if(function_exists("ext_func")) ext_func();
+		if(!empty($_POST['sender_name'])) $setting['web']['title'] = $_POST['sender_name'];
+		if(!empty($_POST['sender_email'])) $setting['web']['email'] = $_POST['sender_email'];
 		$mail = $mystep->getInstance("MyEmail", $setting['web']['email'], $setting['gen']['charset']);
 		$mail->addEmail($setting['web']['email'], $setting['web']['title'], "reply");
 		$mail->setFrom($setting['web']['email'], $setting['web']['title'], true);

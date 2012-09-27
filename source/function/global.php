@@ -12,7 +12,7 @@
 ********************************************/
 
 /*---------------------------------------String Functions Start-------------------------------------*/
-function substrPro($Modi_Str, $start, $length, $mode = false){
+function substrPro($Modi_Str, $start, $length, $mode = false) {
 	//Coded By Windy2000 20020603 v3.0
 	/*
 	if(function_exists("mb_substr") && $mode==false) {
@@ -62,7 +62,7 @@ function cut_words($str) {
 	return $result;
 }
 
-function RndKey($lng, $scope=1){
+function RndKey($lng, $scope=1) {
 	//Coded By Windy2000 20020501 v1.0
 	$char_list	= array();
 	$char_list[]	= "1234567890";
@@ -71,13 +71,13 @@ function RndKey($lng, $scope=1){
 	$char_list[]	= "!@^()_:+\-";
 	$Rnd_Key	= "";
 	if($scope>0 && $scope<count($char_list)) {
-		for($i=1; $i<=$lng; $i++){
+		for($i=1; $i<=$lng; $i++) {
 			$Rnd_Str  = $char_list[mt_rand(1,$scope) - 1];
 			$Rnd_Key .= substr($Rnd_Str, mt_rand(0,strlen($Rnd_Str)-1), 1);
 		}
 	} else {
 		$args_num = func_num_args();
-		for($i=1; $i<=$lng; $i++){
+		for($i=1; $i<=$lng; $i++) {
 			if($args_num >= 3) {
 				$Rnd_Key .= mt_rand(1, 10)>9 ? func_get_arg(mt_rand(3, $args_num)) : chr(mt_rand(0xb0,0xe0)).chr(mt_rand(0xa0,0xff));
 			} else {
@@ -88,7 +88,7 @@ function RndKey($lng, $scope=1){
 	return($Rnd_Key);
 }
 
-function txt_watermark($code, $mode=true, $credit_str=" - Text Watermark By Windy2000", $url=""){
+function txt_watermark($code, $mode=true, $credit_str=" - Text Watermark By Windy2000", $url="") {
 	//Coded By Windy2000 20041202 v2.0
 	/*
 	Please make sure that the following style exist on your style sheet of the watermark page
@@ -203,7 +203,7 @@ function HtmlTrans(&$para) {
 	return;
 }
 
-function modi_blank($str){
+function modi_blank($str) {
 	//Coded By Windy2000 20020503 v1.0
 	return preg_replace("/(\s)+/", "\\1", trim($str));
 }
@@ -243,7 +243,7 @@ function any2str($var) {
 	return $var;
 }
 
-function html2js($str){
+function html2js($str) {
 	//Coded By Windy2000 20080721 v1.0
 	$result = "";
 	$str = str_replace("\r", "", $str);
@@ -269,7 +269,7 @@ function getSafeCode($value, $charset) {
 function chg_charset($content, $from="gbk", $to="utf-8") {
 	if(strtolower($from)==strtolower($to)) return $content;
 	$result = null;
-	if(is_string($content)){
+	if(is_string($content)) {
 		$result = iconv($from, $to.'//TRANSLIT//IGNORE', $content);
 		if($result===false && function_exists("mb_detect_encoding")) {
 			$encode = mb_detect_encoding($content, array("ASCII","GB2312","GBK","BIG5","UTF-8","EUC-CN","ISO-8859-1"));
@@ -297,7 +297,7 @@ function chg_charset_file($file_src, $file_dst, $from="gbk", $to="utf-8") {
 	return WriteFile($file_dst, $content, "wb");
 }
 
-function json_decode_js($json, $assoc = FALSE){
+function json_decode_js($json, $assoc = FALSE) {
 	$json = str_replace(array("\n","\r"),"",$json);
 	$json = preg_replace('/([{,])(\s*)([^"]+?)\s*:/','$1"$3":',$json);
 	$json = str_replace("\\\"","&#34;",$json);
@@ -452,7 +452,7 @@ if(!function_exists('gzdecode')) {
 		$headerlen = 10;
 		$extralen = 0;
 		$filenamelen = 0;
-		if ($flags & 4){
+		if ($flags & 4) {
 			$extralen = unpack('v', substr($data, 10, 2));
 			$extralen = $extralen[1];
 			$headerlen += 2 + $extralen;
@@ -521,7 +521,7 @@ function GetFileSize($para) {
 	} else {
 		$para = strtoupper($para);
 		$para = str_replace(" ","",$para);
-		switch(substr($para,-1)){
+		switch(substr($para,-1)) {
 			case "G":
 				$filesize = ((int)str_replace("G","",$para)) * 1024 * 1024 * 1024;
 				break;
@@ -537,11 +537,11 @@ function GetFileSize($para) {
 		}
 		return $filesize;
 	}
-	if($filesize <1024){
+	if($filesize <1024) {
 		$filesize = (string)$filesize . " Bytes";
-	}else if($filesize <(1024 * 1024)){
+	}else if($filesize <(1024 * 1024)) {
 		$filesize = number_format((double)($filesize / 1024), 1) . " KB";
-	}else if($filesize <(1024 * 1024 * 1024)){
+	}else if($filesize <(1024 * 1024 * 1024)) {
 		$filesize = number_format((double)($filesize / (1024 * 1024)), 1) . " MB";
 	}else{
 		$filesize = number_format((double)($filesize / (1024 * 1024 * 1024)), 1) . " GB";
@@ -572,10 +572,10 @@ function getFileList($dir, $ext="", $base_dir="") {
 	$file_list = array();
 	$mydir	= dir($dir);
 	if(!$mydir) return array();
-	while(($file = $mydir->read()) !== false){
+	while(($file = $mydir->read()) !== false) {
 		if($file=="." || $file==".." || strpos($ext, ",".$file.",")!==false) continue;
 		$theFile = $dir."/".$file;
-		if(is_dir($theFile)){
+		if(is_dir($theFile)) {
 			$file_list = array_merge($file_list, getFileList($theFile, $ext, $dir));
 		} else {
 			$file_list[] = str_replace($base_dir, "", $theFile);
@@ -610,9 +610,9 @@ function MakeDir($dir) {
 	return $flag;
 }
 
-function MultiDel($dir, $file_list=""){
+function MultiDel($dir, $file_list="") {
 	//Coded By Windy2000 20031001 v1.0
-	if(is_dir($dir)){
+	if(is_dir($dir)) {
 		$mydir = opendir($dir);
 		while(($file = readdir($mydir)) !== false) {
 			if($file!="." && $file!="..") {
@@ -639,7 +639,7 @@ function MultiDel($dir, $file_list=""){
 	return;
 }
 
-function isWriteable($file){
+function isWriteable($file) {
 	if($file{strlen($file)-1}=='/') {
 		if(!file_exists($file)) MakeDir($file);
 		return isWriteable($file.uniqid(mt_rand()).'.tmp');

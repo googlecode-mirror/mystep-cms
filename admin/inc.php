@@ -34,6 +34,7 @@ if($setting['info']['self']=="login.php") {
 } else {
 	if(empty($group['power_func']) ) {
 		$goto_url = "./login.php";
+		$req->setCookie("referer", $req->getServer("REQUEST_URI"), 1000);
 		$mystep->pageEnd(false);
 	}
 	

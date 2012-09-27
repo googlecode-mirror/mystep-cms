@@ -27,6 +27,7 @@ if($usergroup===0) {
 $group = getParaInfo("user_group", "group_id", $usergroup);
 if(empty($group['power_func']) ) {
 	$goto_url = "/".$setting['path']['admin']."login.php";
+	$req->setCookie("referer", $req->getServer("REQUEST_URI"), 1000);
 	$mystep->pageEnd(false);
 }
 

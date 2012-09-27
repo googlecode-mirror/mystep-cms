@@ -12,11 +12,11 @@
 			<input type="hidden" name="mid" value="<!--mid-->" />
 			<input type="hidden" name="subject" value="<!--name_en-->" />
 			<input type="hidden" name="email" value="<!--record_email-->" />
+			<input type="hidden" name="sender_name" value="" />
+			<input type="hidden" name="sender_email" value="" />
 			<TEXTAREA name="content" COLS="110" ROWS="40" id="content">
 Dear <span style="font-weight:bold;color:#aa0000"><!--record_name_en--></span> :<br />
-<br />
 Welcome to <b>"<!--name_en-->"</b>£¡<br />
-<br />
 Your online submit information has been received. Please confirm the following information has been recorded correctly:<br />
 <?php
 global $record;
@@ -29,7 +29,7 @@ foreach($para as $key => $value) {
 			$record[$key] = $value['value']['en'][$idx];
 		}
 	}
-	echo "<b>".$value['title_en']."£º</b>".$record[$key]."<br />\n";
+	echo "<b>".$value['title_en']."£º</b>".$record[$key]."<br />";
 }
 ?>
 <br />

@@ -1,7 +1,7 @@
 <div class="title"><!--title--></div>
 <div align="left">
 	<script src="../script/checkForm.js" language="JavaScript" type="text/javascript"></script>
-	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(checkForm(this)){$id('web_id').disabled=false;return true;}else{return false;}">
+	<form method="post" action="?method=<!--method-->_ok" onsubmit="if(checkForm(this, checkForm_append)){$id('web_id').disabled=false;return true;}else{return false;}">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="cat" width="80">所属网站：</td>
@@ -39,7 +39,7 @@
 				<td class="cat">分类索引：<span>*</span></td>
 				<td class="row">
 					<input class="input" name="cat_idx" type="text" size="20" maxlength="20" value="<!--cat_idx-->" need="" />
-					<span class="comment">（作为栏目网址路径的一部分）</span>
+					<span class="comment">（作为栏目网址路径的一部分，不能与其他分类索引相同）</span>
 				</td>
 			</tr>
 			<tr>
@@ -50,14 +50,14 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">关 键 字：<span>*</span></td>
+				<td class="cat">关 键 字：</td>
 				<td class="row">
 					<input class="input" name="cat_keyword" type="text" size="20" maxlength="150" value="<!--cat_keyword-->" need="" />
 					<span class="comment">（向搜索引擎告知当前栏目的关键词）</span>
 				</td>
 			</tr>
 			<tr>
-				<td class="cat">分类描述：<span>*</span></td>
+				<td class="cat">分类描述：</td>
 				<td class="row">
 					<input class="input" name="cat_comment" type="text" size="20" maxlength="120" value="<!--cat_comment-->" need="" />
 					<span class="comment">（向搜索引擎描述当前栏目）</span>
@@ -76,7 +76,7 @@
 				<td class="row">
 					<input name="view_lvl_org" type="hidden" value="<!--view_lvl-->" />
 					<input name="view_lvl" type="text" maxlength="2" value="<!--view_lvl-->" need="digital" />
-					<span class="comment">（浏览当前分类文章需要达到的级别）</span></td>
+					<span class="comment">（浏览当前分类文章需要达到的级别，0为不限制）</span></td>
 			</tr>
 			<tr>
 				<td class="cat">显示模板：</td>
@@ -166,6 +166,14 @@ function showTpl(val) {
 		$("#tpl").hide();
 	}
 }
+
+function checkForm_append() {
+	if(theForm.cat_idx.value=="") theForm.cat_idx.value = theForm.cat_name.value;
+	if(theForm.cat_keyword.value=="") theForm.cat_keyword.value = theForm.cat_name.value;
+	if(theForm.cat_comment.value=="") theForm.cat_comment.value = theForm.cat_name.value;
+	return true;
+}
+
 $(function(){
 	$.getScript("../script/jquery.codemirror.js", function(){
 		flag=true;

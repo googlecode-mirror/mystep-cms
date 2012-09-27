@@ -25,7 +25,7 @@
 				<div class="page after"><!--keyword limit="5" order="rand()"--></div>
 				<div class="content">
 					<div>
-<!--news limit='$limit' show_date="1" show_catalog="1" condition='$condition' loop='30'-->
+<!--news limit='$limit' show_date="1" show_catalog="1" condition='$condition' loop='30' no_expire="y"-->
 					</div>
 				</div>
 				<div class="page after"><!--page_list--></div>

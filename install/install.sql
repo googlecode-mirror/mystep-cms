@@ -144,6 +144,7 @@ CREATE TABLE `{pre}news_show` (
 	`add_user` Char(20) NOT NULL COMMENT '录入人',
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00' COMMENT '录入日期',
 	`notice` Char(255) DEFAULT '' COMMENT '文章提示',
+	`expire` DATE COMMENT '过期时间',
 	INDEX `catalog` (`web_id`, `cat_id`),
 	INDEX `order` (`order`, `news_id`),
 	PRIMARY KEY (`news_id`)

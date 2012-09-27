@@ -53,15 +53,19 @@
 			</tr>
 			<tr>
 				<td class="cat">阅读权限：<span>*</span></td>
-				<td class="row"><input name="view_lvl" id="view_lvl" type="text" maxlength="2" value="<!--record_view_lvl-->" need="digital" /> <span class="comment">（浏览当前文章需要达到的级别）</span></td>
+				<td class="row"><input name="view_lvl" id="view_lvl" type="text" maxlength="2" value="<!--record_view_lvl-->" need="digital" /> <span class="comment">（浏览当前文章需要达到的级别，0为不限制）</span></td>
 			</tr>
 			<tr>
 				<td class="cat">提示文字：</td>
-				<td class="row"><input name="notice" type="text" size="20" maxlength="150" value="<!--record_notice-->" /> <span class="comment">（显示于文章指定位置的提示文字）</span></td>
+				<td class="row"><input name="notice" type="text" size="20" maxlength="150" value="<!--record_notice-->" /> <span class="comment">（显示于文章指定位置的版权、免责、告示等提示文字）</span></td>
 			</tr>
 			<tr>
 				<td class="cat">列表排序：<span>*</span></td>
-				<td class="row"><input name="order" type="text" maxlength="3" value="<!--record_order-->" need="digital" /> <span class="comment">（文章排序，序号越大越靠前）</span></td>
+				<td class="row"><input name="order" type="text" maxlength="3" value="<!--record_order-->" need="digital" /> <span class="comment">（文章排序，序号越大越靠前，可达到文章置顶效果）</span></td>
+			</tr>
+			<tr>
+				<td class="cat">过期时间：</td>
+				<td class="row"><input name="expire" type="text" maxlength="20" value="<!--record_expire-->" need="date_" /> <span class="comment">（超过此时间的文章将不在列表中显示，可留空）</span></td>
 			</tr>
 			<tr>
 				<td class="cat" width="80">推送模式：</td>

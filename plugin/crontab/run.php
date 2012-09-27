@@ -27,6 +27,7 @@ if($flag) {
 	WriteFile($file_log, "Mission Resume at ".date("Y-m-d H:i:s")."\n", "ab");
 }
 file_put_contents($file_status, "run");
+touch($file_status, time()-$interval-10);
 $flag = true;
 if(!empty($plugin_setting['crontab']['s_pass']) && !empty($GLOBALS['authority'])) {
 	$q_str = $GLOBALS['authority']."=".urlencode($plugin_setting['crontab']['s_pass']);
@@ -36,7 +37,16 @@ if(!empty($plugin_setting['crontab']['s_pass']) && !empty($GLOBALS['authority'])
 while(true) {
 	//WriteFile($file_log, "Mission Check at ".date("Y-m-d H:i:s")."\n", "ab");
 	if(file_get_contents($file_status)!="run") break;
+	if(time()-filemtime($file_status)<$interval) {
+		$goto_url = "";
+		$mystep->pageEnd(false);
+	}
+	touch($file_status);
 	if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."crontab where next_date<now() and (expire='0000-00-00' || expire>now()) order by next_date limit 1")) {
+		$next_date = getNextTime($record['mode'], $record['schedule']);
+		WriteFile($file_log, $record['name']." - ".date("Y-m-d H:i:s")." / ".$next_date."\n", "ab");
+		echo $record['name']." - ".date("Y-m-d H:i:s")."<br />\n";
+		$db->Query("update ".$setting['db']['pre']."crontab set `exe_date`=now(), `exe_count`=`exe_count`+1, `next_date`='".$next_date."' where id=".$record['id']);
 		if(!empty($record['code'])) {
 			eval($record['code']);
 		}
@@ -45,14 +55,10 @@ while(true) {
 				$record['url'] .= (strpos($record['url'],"?")?"&":"?").$q_str;
 			}
 			if($fp = @fopen($record['url'], "r")) {
-        $buffer = fgets($fp, 4096);
+				$buffer = fgets($fp, 4096);
 				fclose($fp);
 			}
 		}
-		$next_date = getNextTime($record['mode'], $record['schedule']);
-		WriteFile($file_log, $record['name']." - ".date("Y-m-d H:i:s")." / ".$next_date."\n", "ab");
-		echo $record['name']." - ".date("Y-m-d H:i:s")."<br />\n";
-		$db->Query("update ".$setting['db']['pre']."crontab set `exe_date`=now(), `exe_count`=`exe_count`+1, `next_date`='".$next_date."' where id=".$record['id']);
 		unset($record);
 	}
 	$db->Free();

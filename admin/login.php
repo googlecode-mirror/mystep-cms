@@ -20,7 +20,8 @@ switch($method) {
 					if($groupid===0) {
 						$goto_url = "../";
 					} else {
-						$goto_url = "index.php";
+						if(empty($referer)) $referer = "index.php";
+						$goto_url = $referer;
 					}
 				} else {
 					$ms_info = $setting['language']['login_error_psw'];
@@ -48,6 +49,8 @@ function build_page() {
 	$tpl->Set_Variable('title', $setting['web']['title']);
 	$tpl_tmp->Set_Variable('err_msg', $ms_info);
 	$req->setCookie("ms_info");
+	$tpl_tmp->Set_Variable('referer', $req->getCookie("referer"));
+	$req->setCookie("referer");
 	$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 	unset($tpl_tmp);
 	$mystep->show($tpl);

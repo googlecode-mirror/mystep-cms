@@ -13,6 +13,7 @@
 <script language="JavaScript" type="text/javascript" src="../script/admin.js"></script>
 <script language="JavaScript" type="text/javascript" src="../script/addon.js"></script>
 <script language="JavaScript" type="text/javascript" src="../script/jquery.jmpopups.js"></script>
+<script language="JavaScript" type="text/javascript" src="../script/jquery.date_input.js"></script>
 </head>
 <body>
 <div id="page_ole">

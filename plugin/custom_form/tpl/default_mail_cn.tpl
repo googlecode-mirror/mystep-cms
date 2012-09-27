@@ -12,6 +12,8 @@
 			<input type="hidden" name="mid" value="<!--mid-->" />
 			<input type="hidden" name="subject" value="<!--name-->" />
 			<input type="hidden" name="email" value="<!--record_email-->" />
+			<input type="hidden" name="sender_name" value="" />
+			<input type="hidden" name="sender_email" value="" />
 			<TEXTAREA name="content" COLS="110" ROWS="40" id="content">
 ×ð¾´µÄ <span style="font-weight:bold;color:#aa0000"><!--record_name--></span><br />
 »¶Ó­Äú²Î¼Ó<b>¡°<!--name-->¡±</b>£¡<br />

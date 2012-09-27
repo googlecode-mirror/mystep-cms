@@ -121,6 +121,9 @@ class MySQL extends class_common {
 		if($this->DB_conn == NULL) return false;
 		$this->DB_count++;
 		$this->Free();
+		$sql = str_replace("  ", " ", $sql);
+		$sql = str_replace("where (1=1) order", "order", $sql);
+		$sql = str_replace("where (0=0) order", "order", $sql);
 		if(strpos($sql, "1=")!==false) {
 			$sql = str_replace("1=1 and", "", $sql);
 			$sql = str_replace("and 1=1", "", $sql);

@@ -310,6 +310,7 @@ class plugin_offical implements plugin {
 			//$att_list['web_id'] = $setting['info']['web']['web_id'];
 		}
 		$str_sql = "select a.* from {db_pre}news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1";
+		if(!isset($att_list['no_expire'])) $str_sql .= " and (a.expire is null or a.expire>now())";
 		if(!empty($att_list['web_id'])) $str_sql .= " and a.web_id='{$att_list['web_id']}'";
 		if(!empty($att_list['cat_id'])) $str_sql .= " and (a.cat_id ='{$att_list['cat_id']}' || b.cat_main='{$att_list['cat_id']}')";
 		if(!empty($att_list['show_image'])) $str_sql .= " and a.image!=''";

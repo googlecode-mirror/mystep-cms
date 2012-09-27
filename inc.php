@@ -16,7 +16,7 @@ require(ROOT_PATH."/source/class/mystep.class.php");
 
 $mystep = new MyStep();
 $mystep->pageStart(true);
-if($setting['web']['close'] && $req->getCookie("force")=="") {
+if($setting['web']['close'] && $req->getCookie("force")=="" && $setting['info']['self']!="vcode.php") {
 	$goto_url = $setting['web']['close_page'];
 	$mystep->pageEnd(false);
 }

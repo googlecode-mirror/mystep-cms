@@ -40,6 +40,7 @@
 	</tr>
 	<TR height="40">
 		<TD colspan="2" align="center">
+		<input type="hidden" name="referer" value="<!--referer-->" />
 		<input type="submit" value=" µÇ Â¼ " /> &nbsp; &nbsp;<input type="reset" value=" ¸´ Î» " />
 		</TD>
 	</TR>

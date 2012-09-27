@@ -299,7 +299,7 @@ function checkUser() {
 	$ms_user = $req->getCookie('ms_user');
 	if(!empty($ms_user)) {
 		list($user_id, $user_pwd)=explode("\t",$ms_user);
-		if($userinfo = $db->GetSingleRecord("SELECT username, group_id, type_id from ".$setting['db']['pre']."users where user_id='{$user_id}' and password='".mysql_real_escape_string($user_pwd)."'")) {
+		if($userinfo = getData("SELECT username, group_id, type_id from ".$setting['db']['pre']."users where user_id='".mysql_real_escape_string($user_id)."' and password='".mysql_real_escape_string($user_pwd)."'", "record", 1200)) {
 			$req->setSession("username", $userinfo['username']);
 			$req->setSession("usergroup", $userinfo['group_id']);
 			$req->setSession("usertype", $userinfo['type_id']);
@@ -344,7 +344,7 @@ function getData($query, $mode="all", $ttl = 600) {
 	return $result;
 }
 
-function getFuncData($func) {
+function getFuncData($func, $ttl = 600) {
 	global $cache;
 	$argList = func_get_args();
 	$key = md5(implode(",", $argList));
@@ -352,7 +352,7 @@ function getFuncData($func) {
 	if(!$result) {
 		array_shift($argList);
 		$result = call_user_func_array($func, $argList);
-		$cache->set($key, $result, 600);
+		$cache->set($key, $result, $ttl);
 	}
 	return $result;
 }
@@ -586,7 +586,7 @@ function gotoPage($page) {
 	return $the_url;
 }
 
-function CheckCanGzip(){
+function CheckCanGzip() {
 	$ENCODING = " ";
 	isset($_SERVER["HTTP_ACCEPT_ENCODING"]) ? $ENCODING.=$_SERVER["HTTP_ACCEPT_ENCODING"] : null;
 	isset($_ENV["HTTP_ACCEPT_ENCODING"]) ? $ENCODING.=$_ENV["HTTP_ACCEPT_ENCODING"] : null;
@@ -689,7 +689,7 @@ function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 	$debug_info = debug_backtrace();
 	$max_count = count($debug_info);
 	$n=0;
-	for($i=count($debug_info)-1; $i>=0; $i--){
+	for($i=count($debug_info)-1; $i>=0; $i--) {
 		if(empty($debug_info[$i]['file'])) continue;
 		$err_str .= (++$n)." - ".$debug_info[$i]['file']." (line:".$debug_info[$i]['line'].", function:".$debug_info[$i]['function'].")\n";
 	}

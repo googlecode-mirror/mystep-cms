@@ -29,6 +29,7 @@
 	$MSSQL->GetDBs()				// Get the Databases List of Current MySQL Server as an Array
 	$MSSQL->GetTabs($the_db)			// Get the Tables List of Current Selected Database as an Array
 	$MSSQL->GetQueryFields()			// Get the Columns List of Current Query
+	$MSSQL->buildSQL($table, $data, $mode = "insert", $addon = "") // Build SQL string for insert or update
 	$MSSQL->Free()					// Free the $MSSQL->DB_result in order to Release the System Resource
 	$MSSQL->Close()					// Close Current MSSQL Link
 	$MSSQL->Error($str)				// Handle the Errors
@@ -230,6 +231,55 @@ class MSSQL extends class_common {
 			if($this->GetErrorCode() != 0)	$this->Error("Error Occur in Batch Query");
 		}
 		return true;
+	}
+
+	public function buildSQL($table, $data, $mode = "insert", $addon = "") {
+		$fields = "";
+		$values = "";
+		$tmp = "||||||";
+		$table = str_replace(".", "].[", $table);
+		
+		switch($mode) {
+			case "insert":
+				$sql = "insert into [{$table}] ";
+				break;
+			case "update":
+				$sql = "update [{$table}] set ";
+				break;
+			default:
+				$sql = "update [{$table}] set ";
+		}
+
+		foreach($data as $key => $value) {
+			$value = str_replace("\\r\\n", "'+char(13)+char(10)+'", $value);
+			$value = str_replace("\\\'", "''", $value);
+			$value = str_replace("\'", "''", $value);
+			$value = str_replace("'''", "''", $value);
+			if(strtolower($key) == 'submit') continue;
+			if($mode=="insert" && $addon != "" && $value==="") continue;
+			if(!preg_match("/^\w+\(\)$/", $value)) $value = "'{$value}'";
+			if($mode=="insert") {
+				$fields .= "[{$key}], ";
+				$values .= "{$value}, ";
+			} else {
+				$values .= "[{$key}] = {$value}, ";
+			}
+		}
+
+		if($mode=="insert") {
+			$fields .= $tmp;
+			$fields = str_replace(", {$tmp}", "", $fields);
+		}
+		$values .= $tmp;
+		$values = str_replace(", {$tmp}", "", $values);
+
+		if($mode=="insert") {
+			$sql .= "({$fields}) values ({$values})";
+		} else {
+			if(empty($addon)) $addon= "1=1";
+			$sql .= $values . " where {$addon}";
+		}
+		return $sql;
 	}
 
 	public function Free() {

@@ -2584,5 +2584,53 @@ $setting = $cur_setting;
 				'plugin/search/tpl/block_search.tpl',
 		),
 	),
+	'0.99.9.9.6' => array(
+		'info' => '
+				1.System will jump to the page you linked before login
+				2.Fix a bug that vertify code cannot display when web was closed
+				3.Add expire setting for each article
+				4.Fix a multi-thread bug in crontab plugin
+				5.Add sender setting from the email function of custom_form plugin
+				6.Fix a bug in sitemap.php
+				7.Add buildSQL function for mssql.class.php
+				8.Adjust some script in mysql.class.php which make query inefficient
+				9.Add cache to checkUser function
+				10.Add ttl parameter to getFuncData function
+				Some other adjusts...
+			',
+		'sql' => array(
+				'alter table `{pre}news_show` add `expire` DATE',
+			),
+		'file' => array(
+				'admin/inc.php',
+				'admin/login.php',
+				'inc.php',
+				'include/parameter.php',
+				'list.php',
+				'plugin/crontab/run.php',
+				'plugin/custom_form/config.php',
+				'plugin/custom_form/custom_form.php',
+				'plugin/custom_form/tpl/default_mail_cn.tpl',
+				'plugin/custom_form/tpl/default_mail_en.tpl',
+				'plugin/custom_sql/sql.php',
+				'plugin/inc.php',
+				'plugin/offical/class.php',
+				'sitemap.php',
+				'source/class/mssql.class.php',
+				'source/class/mysql.class.php',
+				'source/function/global.php',
+				'source/function/web.php',
+				'template/admin/art_catalog_input.tpl',
+				'template/admin/art_content_input.tpl',
+				'template/admin/login.tpl',
+				'template/admin/main.tpl',
+				'template/admin_simple/art_catalog_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/admin_simple/login.tpl',
+				'template/admin_simple/main.tpl',
+				'template/classic/search.tpl',
+				'template/default/search.tpl',
+		),
+	),
 );
 ?>
