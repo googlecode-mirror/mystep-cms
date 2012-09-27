@@ -30,7 +30,7 @@
 				<div class="title"><span class="bar">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 文章检索 - <!--keyword--></div>
 				<div class="content after">
 					<div class="main">
-<!--news limit='$limit' show_date="1" show_catalog="1" condition='$condition' loop='30' no_expire="y"-->
+<!--news limit='$limit' show_date="1" show_catalog="1" condition='$condition' loop='30'-->
 					</div>
 				</div>
 				<div class="page after"><!--page_list--></div>

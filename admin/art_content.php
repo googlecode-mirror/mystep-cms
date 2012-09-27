@@ -85,6 +85,7 @@ switch($method) {
 		} elseif(!$op_mode && $web_id!=$_POST['web_id']) {
 			$goto_url = $setting['info']['self'];
 		} else {
+			if(empty($_POST['expire'])) unset($_POST['expire']);
 			$multi_cata = $_POST['multi_cata'];
 			$_POST['style'] = implode(",", $_POST['style']);
 			$_POST['content'] = preg_replace("/ mso(\-\w+)+\:[^;]+?;/", "", $_POST['content']);
