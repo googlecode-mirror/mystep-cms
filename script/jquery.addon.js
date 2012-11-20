@@ -334,7 +334,7 @@ jQuery.fn.powerImage = function(options) {
 		var url = $(this).attr("src");
 		if(!url) return;
 		this.src = params.image;
-		$(this).css({"width":32,"height":32});
+		$(this).css({"width":32,"height":32,"margin-bottom":"400px"});
 		if(this.title=="" && this.alt!="") this.title = this.alt;
 		if(params.zoom) {
 			if(this.title!="") this.title += "\n";
@@ -368,7 +368,7 @@ jQuery.fn.powerImage = function(options) {
 		$.each(params.imgs, function(i, data) {
 			if(data.obj==null) return;
 			var obj = data.obj, url = data.url;
-			var img_top_1 = obj.offset().top; img_top_2 = img_top_1 + obj.height();
+			var img_top_1 = obj.offset().top+300; img_top_2 = img_top_1 + obj.height();
 			if((img_top_1 > win_top_1 && img_top_1 < win_top_2) || (img_top_2 > win_top_1 && img_top_2 < win_top_2)) {
 				var cur_img = $("<img>");
 				cur_img.load(function() {
@@ -378,7 +378,7 @@ jQuery.fn.powerImage = function(options) {
 					var the_height = obj.attr("height");
 					if(typeof(the_width)=="undefined") the_width = "auto";
 					if(typeof(the_height)=="undefined") the_height = "auto";
-					obj.css({"width":the_width,"height":the_height});
+					obj.css({"width":the_width,"height":the_height,"margin-bottom":"10px"});
 					obj.fadeIn("slow");
 					if(obj.width()>params.width) obj.css({"width":params.width,"height":"auto"});
 					$(this).remove();
@@ -396,4 +396,106 @@ jQuery.fn.powerImage = function(options) {
 	setTimeout(showIt, 1000);
 	$(window).bind("resize", showIt);
 	$(window).bind("scroll", showIt);
+};
+
+/*!
+ * jquery.showImage.js
+ * Image Marquee show by windy2000
+*/
+jQuery.fn.showImage = function(options) {
+	var defaults = {
+		ole_width: 640,
+		img_show_height: 420,
+		img_width: 120,
+		img_height: 80,
+		ole_id: "showImage",
+		pos_adjust: 1,
+		step_adjust: -10,
+		interval: 5,
+		remove_org: false
+	};
+	var params = $.extend({}, defaults, options || {});
+	var obj_ole = $("#"+params.ole_id);
+	var obj_ole_show = null;
+	var obj_ole_list = null;
+	var obj_ole_wrapper = null;
+	var img_list = $(this).find("img");
+	var the_width = 0;
+	var repeat_times = 4;
+	var act_img = null;
+	var if_over = false;
+	if(img_list.length<2) return;
+	obj_ole.addClass("showImage");
+	obj_ole.css("width",params.ole_width);
+	var swich_img = function(step) {
+		if(step==null) step = -1;
+		var the_left = obj_ole_wrapper.position().left;
+		var the_step = the_left + step * (params.img_width+12);
+		obj_ole_wrapper.find("img").css("opacity", "0.3");
+		obj_ole_wrapper.find("img").attr("active", "n");
+		if(the_step>0) {
+			obj_ole_wrapper.css("left", the_step-the_width-(params.img_width+12));
+			the_step -= the_width;
+		} else if(-the_step>the_width) {
+			obj_ole_wrapper.css("left", the_width+the_step+(params.img_width+12));
+			the_step += the_width;
+		}
+		obj_ole_wrapper.animate({"left":the_step},1000,function(){
+			var the_idx = Math.ceil(-the_step/(params.img_width+12));
+			act_img = obj_ole_wrapper.find("img").get(the_idx+params.pos_adjust);
+			$(act_img).css("opacity", "1");
+			$(act_img).attr("active", "y");
+			obj_ole_show.find("a").attr("href", act_img.src).attr("title", act_img.title);
+			obj_ole_show.find("img").attr("src", act_img.src);
+			return;
+		});
+		return;
+	}
+	obj_ole.bind("contextmenu",function(){return false;}).bind("selectstart",function(){return false;});  
+	obj_ole.show();
+	$("<div/>").addClass("ole_show").html('<a href="###" target="_blank" title="Click to show the image in a new window."><img src="/images/dummy.png" /></a>').appendTo(obj_ole);
+	$("<div/>").addClass("ole_list").html('<a class="arrow back">&lt;</a><div class="wrapper"></div><a class="arrow forward">&gt;</a>').appendTo(obj_ole);
+	obj_ole_show = obj_ole.find(".ole_show");
+	obj_ole_show.find("img").css({"height":params.img_show_height,"max-width":(params.ole_width-20)});
+	obj_ole_list = obj_ole.find(".ole_list");
+	obj_ole_wrapper = obj_ole_list.find(".wrapper");
+	obj_ole_wrapper.css("left",params.step_adjust);
+	obj_ole_list.find("a").css("z-index",999);
+	obj_ole_list.find("a").first().click(function(){swich_img(-1)});
+	obj_ole_list.find("a").last().click(function(){swich_img(1)});
+	var cur_img = "";
+	var cur_title = "";
+	for(var i=0,m=img_list.length;i<m;i++) {
+			cur_img = img_list.get(i).src;
+			cur_title = img_list.get(i).alt;
+			if(cur_title.length==0) cur_title = img_list.get(i).title;
+			$("<img/>").attr("src", cur_img).attr("title", cur_title).css({"width":params.img_width,"height":params.img_height}).appendTo(obj_ole_wrapper);
+			if(params.remove_org) $(img_list.get(i)).remove();
+	}
+	the_width = (params.img_width+12) * m;
+	repeat_times = Math.ceil(obj_ole_wrapper.width()*2/the_width);
+	if(repeat_times<2) repeat_times = 2;
+	obj_ole_wrapper.html((new Array(repeat_times+1)).join(obj_ole_wrapper.html()));
+	obj_ole_wrapper.width(the_width*repeat_times);
+	obj_ole_wrapper.find("img").hover(
+		function () {
+			if($(this).attr("active")!="y") $(this).css("opacity", "0.8");
+		},
+		function () {
+			if($(this).attr("active")!="y") $(this).css("opacity", "0.3");
+		}
+	).click(function(){
+		if($(this).attr("active")=="y") return;
+		var the_step = Math.ceil(($(act_img).position().left-$(this).position().left)/(params.img_width+12));
+		swich_img(the_step);
+	});
+	swich_img(1 - m + params.pos_adjust);
+	if(params.interval>0) {
+		obj_ole.hover(
+			function () {if_over = true;},
+			function () {if_over = false;}
+		);
+		setInterval(function(){if(!if_over) swich_img();}, params.interval*1000);
+	}
+	return;
 };

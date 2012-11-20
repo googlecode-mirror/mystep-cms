@@ -30,3 +30,6 @@ th{padding:5px 5px 5px 5px;text-align:center;background-color:#ddd;font-weight:b
 .source {font-weight:normal;padding:0px 10px 10px 10px;border:0px;}
 .source legend {font-weight:bold;padding:0px 10px 0px 10px;background-color:#eee;border:1px #999999 solid;border-bottom:0px;}
 .source textarea {width:100%;height:100px;font-weight:normal;}
+
+#ms_showImage {background-color:#efefef;display:block;margin:10px auto 10px auto;padding:5px 5px 5px 5px;border:1px #dddddd solid;}
+#ms_showImage img {width:120px;height:90;margin-right:5px;}

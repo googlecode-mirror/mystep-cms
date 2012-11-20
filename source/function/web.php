@@ -40,7 +40,6 @@ function makeVarsCode($var, $var_name='') {
 	}
 	return $result;
 }
-
 function getArrayDetail($array, &$detail, $layer = 0) {
 	if(is_array($array)) {
 		foreach($array as $key => $value) {
@@ -55,7 +54,6 @@ function getArrayDetail($array, &$detail, $layer = 0) {
 	}
 	return;
 }
-
 function buildCache($idx, $cache_para) {
 	global $setting;
 	$detail = "<?php";
@@ -66,17 +64,14 @@ function buildCache($idx, $cache_para) {
 	@chmod($theFile, 0666);
 	return true;
 }
-
 function deleteCache($idx) {
 	global $setting;
 	return unlink(ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php");
 }
-
 function checkCache($idx) {
 	global $setting;
 	return is_file(ROOT_PATH."/".$setting['path']['cache']."/para/{$idx}.php");
 }
-
 function includeCache($idx, $show_error = true) {
 	global $setting;
 	if(!checkCache($idx)) buildParaList($idx);
@@ -92,7 +87,6 @@ function includeCache($idx, $show_error = true) {
 		return false;
 	}
 }
-
 function getSubSetting($web_id=1) {
 	$setting_sub = null;
 	$theWeb = getParaInfo("website", "web_id", $web_id);
@@ -113,7 +107,6 @@ function getSubSetting($web_id=1) {
 	$setting_sub['info'] = $theWeb;
 	return $setting_sub;
 }
-
 function getSetting($para_1="", $para_2="", $idx="") {
 	if(!empty($idx) && file_exists(ROOT_PATH."/include/config_".$idx.".php")) {
 		include(ROOT_PATH."/include/config_".$idx.".php");
@@ -130,7 +123,6 @@ function getSetting($para_1="", $para_2="", $idx="") {
 	}
 	return $result;
 }
-
 function getList($layer = 1, $cat_main = 0) {
 	global $catalog, $max_layer;
 	if($layer>$max_layer || !is_array($GLOBALS["catalog_{$layer}"])) return;
@@ -143,7 +135,6 @@ function getList($layer = 1, $cat_main = 0) {
 	}
 	return;
 }
-
 function buildParaList($idx) {
 	global $db, $setting;
 	if(empty($db)) {
@@ -269,7 +260,6 @@ function buildParaList($idx) {
 	}
 	return $cache_para ? true : false;
 }
-
 function getParaInfo($idx, $col, $value) {
 	if($idx=="news_cat_sub") {
 		global $setting;
@@ -315,7 +305,6 @@ function checkUser() {
 	}
 	return;
 }
-
 function getData($query, $mode="all", $ttl = 600) {
 	global $db, $cache;
 	$key = md5($query);
@@ -343,7 +332,6 @@ function getData($query, $mode="all", $ttl = 600) {
 	}
 	return $result;
 }
-
 function getFuncData($func, $ttl = 600) {
 	global $cache;
 	$argList = func_get_args();
@@ -356,12 +344,14 @@ function getFuncData($func, $ttl = 600) {
 	}
 	return $result;
 }
-
 function getUrl($mode, $idx="", $page=1, $web_id=0) {
 	global $setting;
-	if($web_id == 0) $web_id = $setting['info']['web']['web_id'];
+	if($web_id == 0) {
+		$webInfo = $setting['info']['web'];
+	} else {
+		$webInfo = getParaInfo("website", "web_id", $web_id);
+	}
 	if(!is_numeric($page)) $page = 1;
-	$webInfo = getParaInfo("website", "web_id", $web_id);
 	if($webInfo===false) return "#";
 	$url = $webInfo['host'];
 	switch($mode) {
@@ -443,7 +433,6 @@ function getUrl($mode, $idx="", $page=1, $web_id=0) {
 	$url = str_replace("http:/", "http://", $url);
 	return $url;
 }
-
 function delCacheFile($news_id, $web_id=0) {
 	global $db, $setting;
 	if(!$setting['gen']['cache']) return false;
@@ -459,13 +448,11 @@ function delCacheFile($news_id, $web_id=0) {
 	}
 	return true;
 }
-
 function getCacheExpire() {
 	global $expire_list, $setting;
 	$the_file = str_replace(".php", "", $setting['info']['self']);
 	return isset($expire_list[$the_file]) ? $expire_list[$the_file] : $expire_list["default"];
 }
-
 function showInfo($msg = "", $mode = true, $link = "") {
 	global $setting;
 	if(empty($link)) $link = "javascript:history.go(-1)";
@@ -498,7 +485,6 @@ windy2000;
 	}
 	return $result;
 }
-
 function PageList($page, $page_count, $show=6) {
 	global $setting;
 	$list = "";
@@ -554,7 +540,6 @@ function PageList($page, $page_count, $show=6) {
 	}
 	return $list;
 }
-
 function gotoPage($page) {
 	global $req, $setting;
 	$script = $req->getServer("HTTP_X_ORIGINAL_URL");
@@ -585,7 +570,6 @@ function gotoPage($page) {
 	}
 	return $the_url;
 }
-
 function CheckCanGzip() {
 	$ENCODING = " ";
 	isset($_SERVER["HTTP_ACCEPT_ENCODING"]) ? $ENCODING.=$_SERVER["HTTP_ACCEPT_ENCODING"] : null;
@@ -595,7 +579,6 @@ function CheckCanGzip() {
 	if (strpos($ENCODING, 'gzip')) return "gzip";
 	return 0;
 }
-
 function GzDocOut($level = 3, $show = false) {
 	global $setting;
 	$ENCODING = CheckCanGzip();
@@ -639,7 +622,6 @@ function GzDocOut($level = 3, $show = false) {
 	}
 	return; 
 }
-
 function __autoload($class_name) {
 	if($class_name=="parent") return;
 	global $class_list;
@@ -653,6 +635,10 @@ function __autoload($class_name) {
 /*--------------------------------Functions For Web End--------------------------------------------*/
 
 /*--------------------------------Functions For Error Start------------------------------------------*/
+function getString($value) {
+	global $setting;
+	return getSafeCode($setting['gen']['charset']);
+}
 function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 	$err_type = array(
 		E_ERROR => 'Fatal Error',
@@ -700,13 +686,11 @@ function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 	$GLOBALS['errMsg'] = $err_str;
 	return;
 }
-
 function WriteError($err) {
 	$err_file = ROOT_PATH."/error.log";
 	WriteFile($err_file, $err, "ab");
 	return;
 }
-
 function outputErrMsg() {
 	if(!isset($GLOBALS['errMsg'])) return false;
 	$lines = explode("\n", $GLOBALS['errMsg']);

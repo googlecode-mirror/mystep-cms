@@ -167,7 +167,9 @@ function setNav() {
 	newItem.append("<a href=\"javascript:\" class=\"nav\">所属网站</a>");
 	newSubItem = $("<ul/>");
 	$("#website").append('<option value="">全部默认网站</option>');
+	var the_host = "";
 	for(i=0; i<website.length; i++) {
+		the_host = website[i].host.split(",");
 		newSubItem.append("<li><a href=\"http://"+website[i].host+"\" target=\"_blank\">"+website[i].name+"</a></li>");
 		if(group.power_web==",all," || group.power_web.indexOf(","+website[i].web_id+",")!=-1)	$("#website").append("<option value=\""+website[i].web_id+"\">"+website[i].name+"</option>");
 	}

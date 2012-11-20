@@ -177,13 +177,24 @@ mystep;
 		$setting['info']['time'] = $_SERVER['REQUEST_TIME'];
 		$setting['info']['time_start'] = GetMicrotime();
 		$setting['info']['self'] = strtolower(basename($req->getServer("PHP_SELF")));
+		$setting['info']['web'] = null;
 		$host = $req->getServer("HTTP_HOST");
-		$setting['info']['web'] = getParaInfo("website", "host", $host);
+		//$setting['info']['web'] = getParaInfo("website", "host", $host);
+		for($i=0,$m=count($GLOBALS['website']);$i<$m;$i++) {
+			if(strpos($GLOBALS['website'][$i]['host'], $host)!==false) {
+				$GLOBALS['website'][$i]['host'] = $host;
+				$setting['web']['url'] = "http://".$host;
+				$setting['info']['web'] = $GLOBALS['website'][$i];
+				break;
+			}
+		}
+		if(is_null($setting['info']['web'])) $setting['info']['web'] = $GLOBALS['website'][0];
 		if($setting['info']['web']===false) $setting['info']['web'] = getParaInfo("website", "web_id", 1);
 		$setting_sub = getSubSetting($setting['info']['web']['web_id']);
+		$setting_sub['web']['url'] = $setting['web']['url'];
 		$setting['db_sub'] = $setting_sub['db'];
 		if($setting['db']['name']==$setting_sub['db']['name']) {
-			$setting['db']['pre_sub'] = $setting_sub['db']['pre'];	
+			$setting['db']['pre_sub'] = $setting_sub['db']['pre'];
 		} else {
 			$setting['db']['pre_sub'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];	
 		}

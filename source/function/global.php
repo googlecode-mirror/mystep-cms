@@ -12,19 +12,21 @@
 ********************************************/
 
 /*---------------------------------------String Functions Start-------------------------------------*/
-function substrPro($Modi_Str, $start, $length, $mode = false) {
-	//Coded By Windy2000 20020603 v3.0
-	/*
-	if(function_exists("mb_substr") && $mode==false) {
-		mb_internal_encoding("gb2312");
-		return mb_substr($Modi_Str, $start, $length);
+function cutString($string) {
+	//Coded By Windy2000 201201012 v1.0
+	if(preg_match("/[\xE0-\xEF][\x80-\xBF]{2}/xs", $string)) {
+		preg_match_all("/([\xE0-\xEF][\x80-\xBF]{2})|./", $string, $arr);
+	} else {
+		preg_match_all("/[\xa0-\xff]?./", $string, $arr);
 	}
-	*/
-	preg_match_all("/[\xa0-\xff]?./", $Modi_Str, $arr);
-	$arr	= $arr[0];
+	return $arr[0];
+}
+function substrPro($string, $start, $length, $mode = false) {
+	//Coded By Windy2000 20020603 v3.0
+	$arr	= cutString($string);
 	if($mode && $start>0) return implode("", array_slice($arr, $start, $length));
-	if($start<0) $start += strlen($Modi_Str);
-	if($length<0) $length += strlen($Modi_Str) - $start;
+	if($start<0) $start += strlen($string);
+	if($length<0) $length += strlen($string) - $start;
 	$str = "";
 	$sub_start = false;
 	$max_count = count($arr);
@@ -39,29 +41,33 @@ function substrPro($Modi_Str, $start, $length, $mode = false) {
 	}
 	return $str;
 }
-
-function cut_words($str) {
+function cut_words($string) {
 	//Coded By Windy2000 20030805 v1.0
-	$str = str_replace("\r\n","\n",trim($str));
-	$str = preg_replace("/\s+/"," ",$str);
-	preg_match_all("/[\xa0-\xff]?./", $str, $arr);
-	$arr	= $arr[0];
+	$string = str_replace("\r\n","\n",trim($string));
+	$string = preg_replace("/\s+/"," ",$string);
+	$arr	= cutString($string);
 	$result	= array();
 	$n = 0;
 	$max_count = count($arr);
+	$flag = false;
 	for($i=0; $i<$max_count; $i++) {
 		if(ord($arr[$i])>=0xa0) {
 			$result[++$n] = $arr[$i];
+			$flag = false;
 		} elseif(preg_match("/[a-z0-9]/i", $arr[$i])) {
-			$result[$n] .= $arr[$i];
+			if($flag) {
+				$result[$n] .= $arr[$i];
+			} else {
+				$result[++$n] = $arr[$i];
+				$flag = true;
+			}
 		} else {
-		$result[++$n] = $arr[$i];
-			$result[++$n] = "";
+			$result[++$n] = $arr[$i];
+			$flag = false;
 		}
 	}
 	return $result;
 }
-
 function RndKey($lng, $scope=1) {
 	//Coded By Windy2000 20020501 v1.0
 	$char_list	= array();
@@ -87,7 +93,6 @@ function RndKey($lng, $scope=1) {
 	}
 	return($Rnd_Key);
 }
-
 function txt_watermark($code, $mode=true, $credit_str=" - Text Watermark By Windy2000", $url="") {
 	//Coded By Windy2000 20041202 v2.0
 	/*
@@ -123,7 +128,6 @@ function txt_watermark($code, $mode=true, $credit_str=" - Text Watermark By Wind
 	}
 	return join("<br />\n", $file_line);
 }
-
 function add_slash(&$para) {
 	//Coded By Windy2000 20030805 v1.0
 	if(is_array($para)) {
@@ -140,7 +144,6 @@ function add_slash(&$para) {
 	}
 	return;
 }
-
 function strip_slash(&$para) {
 	//Coded By Windy2000 20030805 v1.0
 	if(is_array($para)) {
@@ -157,7 +160,6 @@ function strip_slash(&$para) {
 	}
 	return;
 }
-
 function arrayMerge($arr_1, $arr_2) {
 	if(!is_array($arr_1)) return false;
 	if(!is_array($arr_2)) {
@@ -188,7 +190,6 @@ function arrayMerge($arr_1, $arr_2) {
 	}
 	return $arr_1;
 }
-
 function HtmlTrans(&$para) {
 	//Coded By Windy2000 20030805 v1.0
 	$search = array("'", "\"", "<", ">", "  ", "\t");
@@ -202,12 +203,10 @@ function HtmlTrans(&$para) {
 	}
 	return;
 }
-
 function modi_blank($str) {
 	//Coded By Windy2000 20020503 v1.0
 	return preg_replace("/(\s)+/", "\\1", trim($str));
 }
-
 function txt2html($content) {
 	//Coded By Windy2000 20020503 v1.0
 	$content = str_replace("  ", "&nbsp; ", $content);
@@ -216,7 +215,6 @@ function txt2html($content) {
 	$content = str_replace("\t", " &nbsp; &nbsp; &nbsp; &nbsp;", $content);
 	return $content;
 }
-
 function str2any($var) {
 	if($var=="true") {
 		$var = true;
@@ -229,7 +227,6 @@ function str2any($var) {
 	}
 	return $var;
 }
-
 function any2str($var) {
 	if(is_bool($var)) {
 		$var = $var?"true":"false";
@@ -242,7 +239,6 @@ function any2str($var) {
 	}
 	return $var;
 }
-
 function html2js($str) {
 	//Coded By Windy2000 20080721 v1.0
 	$result = "";
@@ -254,7 +250,6 @@ function html2js($str) {
 	}
 	return $result;
 }
-
 function getSafeCode($value, $charset) {
 	$value_1 = $value;
 	$value_2 = chg_charset($value_1, "utf-8", $charset);
@@ -265,7 +260,6 @@ function getSafeCode($value, $charset) {
 		return $value_1;
 	}
 }
-
 function chg_charset($content, $from="gbk", $to="utf-8") {
 	if(strtolower($from)==strtolower($to)) return $content;
 	$result = null;
@@ -289,26 +283,22 @@ function chg_charset($content, $from="gbk", $to="utf-8") {
 	}
 	return $result;
 }
-
 function chg_charset_file($file_src, $file_dst, $from="gbk", $to="utf-8") {
 	if(!is_file($file_src) || strtolower($from)==strtolower($to)) return;
 	$content = file_get_contents($file_src);
 	$content = iconv($from, $to.'//TRANSLIT//IGNORE',$content);
 	return WriteFile($file_dst, $content, "wb");
 }
-
 function json_decode_js($json, $assoc = FALSE) {
 	$json = str_replace(array("\n","\r"),"",$json);
 	$json = preg_replace('/([{,])(\s*)([^"]+?)\s*:/','$1"$3":',$json);
 	$json = str_replace("\\\"","&#34;",$json);
 	return json_decode($json, $assoc);
 }
-
 function toJson($var, $charset="") {
 	if(!empty($charset)) $var = chg_charset($var, $charset, "utf-8");
 	return json_encode($var);
 }
-
 function toXML($var) {
 	$result = "";
 	if(is_array($var)) {
@@ -330,7 +320,6 @@ function toXML($var) {
 	}
 	return $result;
 }
-
 function toString($var) {
 	$result = "";
 	switch(true) {
@@ -357,7 +346,6 @@ function toString($var) {
 	}
 	return $result;
 }
-
 function strToHex($string) {
 	$hex='';
 	for ($i=0, $m=strlen($string); $i<$m; $i++) {
@@ -372,6 +360,18 @@ function hexToStr($hex) {
 	}
 	return $string;
 }
+function is_utf8($string) {
+	return preg_match('%^(?:
+	[\x09\x0A\x0D\x20-\x7E] # ASCII
+	| [\xC2-\xDF][\x80-\xBF] # non-overlong 2-byte
+	| \xE0[\xA0-\xBF][\x80-\xBF] # excluding overlongs
+	| [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2} # straight 3-byte
+	| \xED[\x80-\x9F][\x80-\xBF] # excluding surrogates
+	| \xF0[\x90-\xBF][\x80-\xBF]{2} # planes 1-3
+	| [\xF1-\xF3][\x80-\xBF]{3} # planes 4-15
+	| \xF4[\x80-\x8F][\x80-\xBF]{2} # plane 16
+	)*$%xs', $string);
+}
 /*---------------------------------------String Functions End-------------------------------------*/
 
 
@@ -382,8 +382,7 @@ function RemoveHeader($content) {
 	$content = preg_replace("/^\w+[\r\n]+/", "", $content);
 	return $content;
 }
-
-function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $timeout=10) {
+function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $timeout=10, $fake_ip="") {
 	//Coded By Windy2000 20080320 v1.4
 	$errno = "";
 	$errmsg = "";
@@ -409,6 +408,10 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 		$output .= "User-Agent:".$header['User-Agent']."\r\n";
 	} else {
 		$output .= "User-Agent:Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/534.16 (KHTML, like Gecko) Chrome/10.0.648.204 Safari/534.16\r\n";
+	}
+	if(!empty($fake_ip)) {
+		$output .= "HTTP_X_FORWARDED_FOR:".$fake_ip."\r\n";
+		$output .= "HTTP_CLIENT_IP:".$fake_ip."\r\n";
 	}
 	if($method=="POST") $output .= "Content-Type:application/x-www-form-urlencoded\r\n";
 	if(is_string($header) && strlen($header)>0) {
@@ -445,7 +448,6 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	//if($gzip) $content = gzinflate(substr($content,10));
 	return $content;
 }
-
 if(!function_exists('gzdecode')) {
 	function gzdecode($data) {
 		$flags = ord(substr($data, 3, 1 ));
@@ -469,7 +471,6 @@ if(!function_exists('gzdecode')) {
 		return $unpacked;
 	}
 }
-
 function GetRemoteFile($remote_file, $local_file) {
 	//Coded By Windy2000 20080402 v1.3
 	MakeDir(dirname($local_file));
@@ -491,7 +492,6 @@ function GetRemoteFile($remote_file, $local_file) {
 	}
 	return $fp_r && $fp_w;
 }
-
 function GetFile($file, $length=0, $offset=0) {
 	//Coded By Windy2000 20020503 v1.5
 	if(!is_file($file)) return "";
@@ -507,12 +507,10 @@ function GetFile($file, $length=0, $offset=0) {
 	if(get_magic_quotes_runtime()) $data = stripcslashes($data);
 	return $data;
 }
-
 function GetFileExt($file) {
 	return strtolower(pathinfo($file, PATHINFO_EXTENSION));
 	//return strtolower(str_replace(".", "", strrchr($file, ".")));
 }
-
 function GetFileSize($para) {
 	if(is_file($para)) {
 		$filesize = filesize($para);
@@ -548,7 +546,6 @@ function GetFileSize($para) {
 	}
 	return $filesize;
 }
-
 function WriteFile($file_name, $content, $mode="wb") {
 	//Coded By Windy2000 20040410 v1.0
 	MakeDir(dirname($file_name));
@@ -564,7 +561,6 @@ function WriteFile($file_name, $content, $mode="wb") {
 	}
 	return $fp;
 }
-
 function getFileList($dir, $ext="", $base_dir="") {
 	if(!is_dir($dir)) return;
 	$ext = ",".$ext.",";
@@ -584,7 +580,6 @@ function getFileList($dir, $ext="", $base_dir="") {
 	$mydir->close();
 	return $file_list;
 }
-
 function MakeDir($dir) {
 	//Coded By Windy2000 20031001 v1.0
 	$dir = str_replace("\\", "/", $dir);
@@ -609,7 +604,6 @@ function MakeDir($dir) {
 	}
 	return $flag;
 }
-
 function MultiDel($dir, $file_list="") {
 	//Coded By Windy2000 20031001 v1.0
 	if(is_dir($dir)) {
@@ -638,7 +632,6 @@ function MultiDel($dir, $file_list="") {
 	}
 	return;
 }
-
 function isWriteable($file) {
 	if($file{strlen($file)-1}=='/') {
 		if(!file_exists($file)) MakeDir($file);
@@ -769,7 +762,6 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 			} elseif($position==6) {
 				$img_txt->rotateImage(90);
 			}
-
 			switch($position) {
 				case 1:
 				case 2:
@@ -850,7 +842,6 @@ function img_watermark($img_src, $watermark, $img_dst="", $position=1, $para=arr
 	if(file_exists($img_dst)) readfile($img_dst);
 	return;
 }
-
 function img_thumb($img_src, $dstW, $dstH, $img_dst="") {
 	if(!class_exists("imageCreator_file")) {
 		if(!empty($img_dst)) copy($img_src, $img_dst);
@@ -868,7 +859,6 @@ function img_thumb($img_src, $dstW, $dstH, $img_dst="") {
 	} else {
 		MakeDir(dirname($img_dst));
 	}
-
 	$srcW = $img->width;
 	$srcH = $img->height;
 	$rate = min($dstW/$srcW, $dstH/$srcH);
@@ -886,7 +876,6 @@ function img_thumb($img_src, $dstW, $dstH, $img_dst="") {
 	$img_out->destroyImage();
 	return;
 }
-
 function vertify_img($str, $font = "font.ttc", $fontsize = 16) {
 	if(!class_exists("imageCreator")) return;
 	$img = new imageCreator();
@@ -899,8 +888,7 @@ function vertify_img($str, $font = "font.ttc", $fontsize = 16) {
 	$img->setColor("vertify", rand(220, 255), rand(220, 255), rand(220, 255));
 	$img->setLine(1);
 	$img->drawRectangle(array(0,0), $img->width-2, $img->height-2, "black", "vertify");
-	preg_match_all("/[\xa0-\xff]?./", $str, $char_lst);
-	$char_lst = $char_lst[0];
+	$char_lst = cutString($str);
 	$top = 0;
 	$left = 0;
 	$max_count = count($char_lst);
@@ -922,22 +910,22 @@ function vertify_img($str, $font = "font.ttc", $fontsize = 16) {
 	$img->makeImage("jpg");
 	return;
 }
-
 /*--------------------------------Functions 4 Picture End---------------------------------------*/
 
 /*---------------------------------------Misc Functions Start-------------------------------------*/
 function GetIp() {
 	//Modified By Windy2000 20020601
+	$ip_org = $_SERVER["REMOTE_ADDR"];
 	if(isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
 		$ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+		$ip_list = explode(",", $ip);
+		if(count($ip_list)>1) $ip = $ip_list[0];
 	} elseif(isset($_SERVER["HTTP_CLIENT_IP"])) {
 		$ip = $_SERVER["HTTP_CLIENT_IP"];
-	} else {
-		$ip = $_SERVER["REMOTE_ADDR"];
 	}
+	if($ip!=$ip_org) $ip = $ip_org.",".$ip;
 	return $ip;
 }
-
 function GetMicrotime($rate = 3) {
 	//Modified By Windy2000 20020601
 	if(function_exists("microtime")) {
@@ -948,7 +936,6 @@ function GetMicrotime($rate = 3) {
 		return $_SERVER['REQUEST_TIME'];
 	}
 }
-
 function GetTimeDiff($time_start, $decimal = 3, $micro = true) {
 	//Coded By Windy2000 20020503 v1.0
 	$time_end = GetMicrotime();
@@ -957,11 +944,9 @@ function GetTimeDiff($time_start, $decimal = 3, $micro = true) {
 	$time = preg_replace("/^([\d]+.[\d]{".$decimal."})[\d]*$/","\\1",(string)$time);
 	return $time;
 }
-
 function GetTinyUrl($url) {
 	return file_get_contents("http://tinyurl.com/api-create.php?url=".urlencode($url));
 }
-
 function debug() {
 	//Coded By Windy2000 20040410 v1.5
 	echo "<pre>";

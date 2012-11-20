@@ -67,6 +67,11 @@ $(function() {
 	} else {
 		$("#page_sel").parent().remove();
 	}
+	if($("#ms_showImage").length>0) {
+		$("#content").after('<div id="showImage"></div>');
+		$("#ms_showImage").showImage({"remove_org":true});
+		$("#ms_showImage").remove();
+	}
 	$("#content").powerImage();
 	if($(".title_img").attr("src").indexOf("dummy")!=-1) $(".title_img").remove();
 	if($('.source_code').length>0) {

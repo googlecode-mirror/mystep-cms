@@ -14,7 +14,7 @@ CREATE TABLE `{pre}website` (
 	`web_id` TINYINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '网站索引',
 	`name` Char(200) DEFAULT '' NOT NULL COMMENT '网站名称',
 	`idx` Char(20) DEFAULT '' NOT NULL COMMENT '字符索引（二级域名或目录）',
-	`host` Char(30) DEFAULT '' NOT NULL COMMENT '网站主机',
+	`host` Char(150) DEFAULT '' NOT NULL COMMENT '网站主机',
 	PRIMARY KEY (`web_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='网站列表';
 

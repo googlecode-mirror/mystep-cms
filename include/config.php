@@ -33,7 +33,7 @@ $setting['gen']['timezone'] = 'Etc/GMT-8';
 $setting['gen']['update'] = 'http://www.mysteps.cn/update/';
 $setting['gen']['minify'] = false;
 $setting['gen']['etag'] = 20120601;
-$setting['gen']['show_info'] = true;
+$setting['gen']['show_info'] = false;
 
 $setting['rewrite'] = array();
 $setting['rewrite']['enable'] = false;
@@ -104,54 +104,67 @@ $setting['memcache']['min_savings'] = 0.5;
 
 
 $rewrite_list = array (
+  0 => 
   array (
     0 => 'article/[^\\/]+/(\\d+)(_(\\d+))?\\.html',
     1 => 'read.php?id=$1&page=$3',
   ),
+  1 => 
   array (
     0 => 'article(/)?',
     1 => 'list.php',
   ),
+  2 => 
   array (
     0 => 'article/(index(_(\\d+))?\\.html)?',
     1 => 'list.php?page=$3',
   ),
+  3 => 
   array (
     0 => 'catalog(/)?',
     1 => 'list.php',
   ),
+  4 => 
   array (
     0 => 'catalog/(index(_(\\d+))?\\.html)?',
     1 => 'list.php?page=$3',
   ),
+  5 => 
   array (
     0 => 'catalog/([^\\/]+)/(index(_(\\d+))?\\.html)?',
     1 => 'list.php?cat=$1&page=$4',
   ),
+  6 => 
   array (
     0 => 'catalog/([^\\/]+)/([^\\/]+)/(index(_(\\d+))?\\.html)?',
     1 => 'list.php?cat=$1&pre=$2&page=$5',
   ),
+  7 => 
   array (
     0 => 'tag/(.+?)(_(\\d+))?\\.html',
     1 => 'tag.php?tag=$1&page=$3',
   ),
+  8 => 
   array (
     0 => 'tag(/)?',
     1 => 'tag.php',
   ),
+  9 => 
   array (
     0 => 'rss.xml',
     1 => 'rss.php',
   ),
+  10 => 
   array (
     0 => '(.+?)/rss.xml',
     1 => 'rss.php?cat=$1',
   ),
+  11 => 
   array (
     0 => 'api/(.+?)/(.+?)(/(.+))?',
     1 => 'api.php?$1|$2|$4',
   ),
+  12 => 
   array (
     0 => 'ajax/(.+?)(/(.+))?',
     1 => 'ajax.php?func=$1&return=$3',

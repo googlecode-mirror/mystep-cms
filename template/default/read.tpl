@@ -67,6 +67,8 @@ $(function() {
 	} else {
 		$("#page_sel").parent().remove();
 	}
+	$("#content").after('<div id="showImage"></div>');
+	$("#content").showImage({"img_width":120,"img_height":80,"ole_id":"showImage","interval":5,"pos_adjust":1,"remove_org":false,"ole_width":640,"img_show_height":420,"step_adjust":-10});
 	$("#content").powerImage();
 	if($(".title_img").attr("src").indexOf("dummy")!=-1) $(".title_img").remove();
 	if($('.source_code').length>0) {

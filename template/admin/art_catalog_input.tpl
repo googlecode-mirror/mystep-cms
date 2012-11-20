@@ -167,7 +167,7 @@ function showTpl(val) {
 	}
 }
 
-function checkForm_append() {
+function checkForm_append(theForm) {
 	if(theForm.cat_idx.value=="") theForm.cat_idx.value = theForm.cat_name.value;
 	if(theForm.cat_keyword.value=="") theForm.cat_keyword.value = theForm.cat_name.value;
 	if(theForm.cat_comment.value=="") theForm.cat_comment.value = theForm.cat_name.value;

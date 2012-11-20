@@ -8,18 +8,21 @@
 				<td class="row">
 					<input name="web_id" type="hidden" value="<!--web_id-->" />
 					<input type="text" name="name" value="<!--name-->" need="" />
+					<span class="comment">（将显示在浏览器标题栏的网站名称）</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">网站索引：<span>*</span></td>
 				<td class="row">
-					<input type="text" name="idx" value="<!--idx-->" need="" />
+					<input type="text" name="idx" value="<!--idx-->" need="word" />
+					<span class="comment">（网站内部索引，只能为英文或数字）</span>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">网站域名：<span>*</span></td>
 				<td class="row">
 					<input type="text" name="host" value="<!--host-->" need="" />
+					<span class="comment">（多个域名请用半角逗号间隔）</span>
 				</td>
 			</tr>
 			<tr>

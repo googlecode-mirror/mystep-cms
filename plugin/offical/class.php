@@ -195,7 +195,7 @@ class plugin_offical implements plugin {
 	
 	public static function ajax_autocomplete($mode, $keyword) {
 		global $req, $setting;
-		$keyword = getSafeCode($keyword, $setting['gen']['charset']);
+		$keyword = getString($keyword);
 		$result = array(
 			query => $keyword,
 			suggestions => array(),

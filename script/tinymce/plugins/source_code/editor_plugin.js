@@ -31,19 +31,21 @@
 			
 			ed.onClick.add(function(ed, e) {
 				e = e.target;
-				if (e.nodeName.toLocaleLowerCase() === 'fieldset' && ed.dom.hasClass(e, "source")) {
-					ed.selection.select(e);
-				} else {
-					e = e.parentElement;
+				try {
 					if (e.nodeName.toLocaleLowerCase() === 'fieldset' && ed.dom.hasClass(e, "source")) {
 						ed.selection.select(e);
 					} else {
 						e = e.parentElement;
 						if (e.nodeName.toLocaleLowerCase() === 'fieldset' && ed.dom.hasClass(e, "source")) {
 							ed.selection.select(e);
+						} else {
+							e = e.parentElement;
+							if (e.nodeName.toLocaleLowerCase() === 'fieldset' && ed.dom.hasClass(e, "source")) {
+								ed.selection.select(e);
+							}
 						}
 					}
-				}
+				} catch(e) {}
 			});
 		},
 

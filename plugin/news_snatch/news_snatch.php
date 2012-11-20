@@ -151,7 +151,6 @@ $rules = '.var_export($rules, true).';
 		$news_show['add_user'] = $setting['info']['user']['name'];
 		$news_show['add_date'] = date("Y-m-d H:i:s");
 		$news_show['notice'] = "";
-		$news_show['ctype'] = 1;
 		
 		$news_detail = array();
 		$news_detail['id'] = 0;

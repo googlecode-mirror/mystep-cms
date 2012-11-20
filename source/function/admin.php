@@ -115,6 +115,7 @@ function localPicture($img_list, &$content, $zoom=700) {
 			$ext = ".jpg";
 			$old_name .= $ext;
 		}
+		if(strlen($old_name)>120) $old_name = substr($old_name, -120);
 		$new_name = $the_time.$ext;
 		$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/");
 		MakeDir($the_path);

@@ -29,7 +29,7 @@
 			<tr>
 				<td colspan="2" align="center">
 					<div>
-						<textarea name="content" style="width:100%; height:400px;"><!--content--></textarea>
+						<textarea name="content" id="content" style="width:100%; height:400px;"><!--content--></textarea>
 					</div>
 				</td>
 			</tr>
@@ -45,108 +45,166 @@
 		</table>
 	</form>
 </div>
-<script language="JavaScript" type="text/javascript" src="../script/tinymce/tiny_mce.js"></script>
+<script type="text/javascript" language="JavaScript" src="../script/tinymce/jquery.tinymce.js"></script>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-tinyMCE.init({
-	mode : "textareas",
-	language : "zh",
-	theme : "advanced",
-	plugins : "safari,bbscode,source_code,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
+$(function() {
+	$('textarea').tinymce({
+		// Location of TinyMCE script
+		script_url : '../script/tinymce/tiny_mce.js',
 
-	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,format",
-	theme_advanced_buttons2 : "upload,|,cut,copy,paste,pastetext,pasteword,bbscode,source_code,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
-	theme_advanced_buttons3 : "",
-	theme_advanced_toolbar_location : "top",
-	theme_advanced_toolbar_align : "left",
-	theme_advanced_statusbar_location : "bottom",
-	theme_advanced_resizing : false,
-	content_css : "css/content.css",
+		// General options
+		language : "cn",
+		theme : "advanced",
+		plugins : "bbscode,source_code,style,table,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
 
-	template_external_list_url : "lists/template_list.js",
-	external_link_list_url : "lists/link_list.js",
-	external_image_list_url : "lists/image_list.js",
-	media_external_list_url : "lists/media_list.js",
-	
-	preformatted : false,
-	remove_linebreaks : false,
-	apply_source_formatting : true,
-	convert_fonts_to_spans : true,
-	verify_html : true,
-	paste_auto_cleanup_on_paste : true,
-	forced_root_block : "div",
-	
-	setup : function(ed) {
-		ed.addButton('upload', {
-			title : '附件上传',
-			image : 'images/file.gif',
-			onclick : function() {
-				showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
+		// Theme options
+		theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,tablecontrols",
+		theme_advanced_buttons2 : "upload,|,hr,styleprops,sub,sup,|,cut,copy,paste,pastetext,pasteword,bbscode,source_code,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,showImage,|,insertdate,inserttime,charmap,|,format,code,change",
+		theme_advanced_toolbar_location : "top",
+		theme_advanced_toolbar_align : "left",
+		theme_advanced_statusbar_location : "bottom",
+		theme_advanced_resizing : false,
+		
+		// Custom settings
+		preformatted : false,
+		remove_linebreaks : false,
+		apply_source_formatting : true,
+		convert_fonts_to_spans : true,
+		verify_html : true,
+		paste_auto_cleanup_on_paste : true,
+		dialog_type : "modal",
+		relative_urls : true,
+		invalid_elements : "script",
+		extended_valid_elements : "form[action|method|name],"+
+															"textarea[class|type|title|name|rows|cols],"+
+															"input[type|name|value|checked|src|alt|size|maxlength],"+
+															"button[name|value|type],"+
+															"select[name|size|multiple|onchange],"+
+															"iframe[src|frameborder=0|width|height|align|scrolling|name],"+
+															"center,"+
+															"script[charset|defer|language|src|type]",
+		forced_root_block : "div",
+		flash_wmode : "transparent",
+		flash_quality : "high",
+		flash_menu : "false",
+
+		// Example content CSS (should be your site CSS)
+		content_css : "../images/editor.css",
+		entity_encoding : "raw",
+		add_unload_trigger : false,
+
+		// Drop lists for link/image/media/template dialogs
+		template_external_list_url : "lists/template_list.js",
+		external_link_list_url : "lists/link_list.js",
+		external_image_list_url : "lists/image_list.js",
+		media_external_list_url : "lists/media_list.js",
+
+		// Custom Functions
+		handle_event_callback : function(e) {
+			if(e.ctrlKey && e.keyCode==13) {
+				if(checkForm(document.forms[0], checkForm_append)) document.forms[0].submit();
 			}
-		});
-		ed.addButton('change', {
-			title : 'Div/P 模式切换',
-			image : 'images/div.png',
-			onclick : function() {
-				var content = tinyMCE.get('content').getContent();
-				if(content.indexOf("<div")==-1) {
-					content = content.replace(/<p(.*?)>([\w\W]+?)<\/p>/ig, "<div$1>$2</div>");
-				} else {
-					content = content.replace(/<div(.*?)>([\w\W]+?)<\/div>/ig, "<p$1>$2</p>");
+		},
+		oninit : function() {
+			var content = tinyMCE.get('content').getContent();
+			content = content.replace(/mce\:script/g, "script");
+			content = content.replace(/_mce_src/g, "src");
+			tinyMCE.get('content').setContent(content);
+		},
+
+		setup : function(ed) {
+			ed.addButton('upload', {
+				title : '附件上传',
+				image : 'images/file.gif',
+				onclick : function() {
+					showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
 				}
-				tinyMCE.get('content').setContent(content);
-			}
-		});
-		ed.addButton('format', {
-			title : '代码清理',
-			image : 'images/format.png',
-			onclick : function() {
-				var content = tinyMCE.get('content').getContent();
-				if(content.indexOf("<div")==-1) {
-					content = content.replace(/(<br(\s\/)?>)+/ig, "</p><p>");
-					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
-					content = content.replace(/<\/p><p/g, "<\/p>\n<p");
-				} else {
-					content = content.replace(/(<br(\s\/)?>)+/ig, "</div><div>");
-					content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
-					content = content.replace(/<\/div><div/g, "<\/div>\n<div");
+			});
+			ed.addButton('change', {
+				title : 'Div/P 模式切换',
+				image : 'images/div.png',
+				onclick : function() {
+					var content = tinyMCE.get('content').getContent();
+					if(content.indexOf("<div")==-1) {
+						content = content.replace(/<p(.*?)>([\w\W]+?)<\/p>/ig, "<div$1>$2</div>");
+					} else {
+						content = content.replace(/<div(.*?)>([\w\W]+?)<\/div>/ig, "<p$1>$2</p>");
+					}
+					tinyMCE.get('content').setContent(content);
 				}
-				content = content.replace(/mso\-[^;]+?;/ig, "");
-				content = content.replace(/[\xa0]/g, "");
-				content = content.replace(/<\/td>/g, "&nbsp;</td>");
-				while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "<!-- pagebreak -->");
-				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
-				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
-				content = content.replace(/  /g, String.fromCharCode(160)+" ");
-				tinyMCE.get('content').setContent(content);
-			}
-		});
-	},
+			});
+			ed.addButton('format', {
+				title : '代码清理',
+				image : 'images/format.png',
+				onclick : function() {
+					var content = tinyMCE.get('content').getContent();
+					if(content.indexOf("<div")==-1) {
+						content = content.replace(/(<br(\s\/)?>)+/ig, "</p><p>");
+						content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
+						content = content.replace(/<\/p><p/g, "<\/p>\n<p");
+					} else {
+						content = content.replace(/(<br(\s\/)?>)+/ig, "</div><div>");
+						content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
+						content = content.replace(/<\/div><div/g, "<\/div>\n<div");
+					}
+					content = content.replace(/mso\-[^;]+?;/ig, "");
+					content = content.replace(/[\xa0]/g, "");
+					content = content.replace(/<\/td>/g, "&nbsp;</td>");
+					while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "<!-- pagebreak -->");
+					while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
+					while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
+					content = content.replace(/  /g, String.fromCharCode(160)+" ");
+					tinyMCE.get('content').setContent(content);
+				}
+			});
+			ed.addButton('showImage', {
+				title : '图片展示',
+				image : 'images/show.png',
+				onclick : function() {
+					var theContent = ed.selection.getContent();
+					var result = "";
+					if(theContent.length<10) return;
+					var img_list = theContent.match(/<img.+?src=('|")?.+?\1.*?>/ig);
+					if(img_list == null) return;
+					for(var i=0,m=img_list.length;i<m;i++) {
+						if(img_list[i].match(/src=('|")?(.+?)\1/i)) {
+							theContent = theContent.replace(img_list[i], "");
+							result += '<img src="' + RegExp.$2 + '" />';
+						}
+					}
+					ed.execCommand('mceReplaceContent', false, theContent);
+					theContent = ed.getContent().match(/<div id\="ms_showImage">.+?<\/div>/);
+					if(theContent!=null) {
+						result = theContent[0].replace("</div>", result + "</div>");
+						theContent = ed.getContent().replace(theContent[0], "") + result;
+					} else {
+						theContent = ed.getContent() + '\n<div id="ms_showImage">' + result + '</div>';
+					}
+					theContent = theContent.replace(/<(\w+)(.*?)>[\xa0\r\n\s\u3000]+<\/\1>[\r\n]*/ig, "");
+					ed.setContent(theContent);
+				}
+			});
+			ed.onDblClick.add(function(ed, e) {
+				e = e.target;
+				if(e.nodeName === 'IMG') {
+					if(confirm("是否将 "+e.src+" 设定为新闻标题图?")) {
+						$id("image").value = e.src;
+					}
+				} else if(e.nodeName === 'A') {
+					if(confirm("是否将 "+e.href+" 设定为跳转网址?")) {
+						$id("link").value = e.href;
+					}
+				}
+			});
+		},
 
-	dialog_type : "modal",
-	relative_urls : true,
-	remove_linebreaks : false,
-	invalid_elements : "",
-	event_elements : "a,img,span,div",
-	extended_valid_elements : "iframe[src|frameborder=0|width|height|align|scrolling|name],"+
-							"script[src|type|language],"+
-							"form[action|method|name],"+
-							"center,"+
-							"input[type|name|value|checked|src|alt|size|maxlength],"+
-							"button[name|value|type],"+
-							"select[name|size|multiple|onchange],"+
-							"textarea[name|rows|cols]",
-	
-	flash_wmode : "transparent",
-	flash_quality : "high",
-	flash_menu : "false",
-	
-	handle_event_callback : "myHandleEvent",
-
-	template_replace_values : {
-		username : "mystep",
-		staffid : "31415926"
-	}
+		// Replace values for the template plugin
+		template_replace_values : {
+			username : "mystep",
+			staffid : "31415926"
+		}
+	});
 });
 
 function myHandleEvent(e) {

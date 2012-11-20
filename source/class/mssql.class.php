@@ -30,6 +30,7 @@
 	$MSSQL->GetTabs($the_db)			// Get the Tables List of Current Selected Database as an Array
 	$MSSQL->GetQueryFields()			// Get the Columns List of Current Query
 	$MSSQL->buildSQL($table, $data, $mode = "insert", $addon = "") // Build SQL string for insert or update
+	$MSSQL->ConvertLimit($sql)					// convert sql query string include limit grammar of mysql to mssql sql query string
 	$MSSQL->Free()					// Free the $MSSQL->DB_result in order to Release the System Resource
 	$MSSQL->Close()					// Close Current MSSQL Link
 	$MSSQL->Error($str)				// Handle the Errors
@@ -278,6 +279,37 @@ class MSSQL extends class_common {
 		} else {
 			if(empty($addon)) $addon= "1=1";
 			$sql .= $values . " where {$addon}";
+		}
+		return $sql;
+	}
+	
+	public function ConvertLimit($sql, $the_order="id") {
+		if(stripos($sql, "select")!==0 || stripos($sql, "limit")!==false) {
+			if(preg_match("/limit\s+(\d+)$/i", $sql, $matches)) {
+				$sql = preg_replace("/limit\s+(\d+)$/i", "", $sql);
+				$sql = str_ireplace("select", "select top ".$matches[1], $sql);
+			} elseif(preg_match("/limit\s+(\d+)[\s,]+(\d+)$/i", $sql, $matches)) {
+				$start = $matches[1]+1;
+				$size = $matches[2];
+				if(preg_match("/order by\s+(.+?)\s+limit/i", $sql, $matches)) {
+					$the_order = $matches[1];
+					$the_order = preg_replace("/\s*,\s*/", ",", $the_order);
+					$order_list = explode(",", $the_order);
+					for($i=0,$m=count($order_list);$i<$m;$i++) {
+						if(strpos($order_list[$i], " ")===false) $order_list[$i] .= " asc";
+					}
+					$the_order = implode(",", $order_list);
+					$the_order_2 = str_ireplace("desc", "[xxxx]", $the_order);
+					$the_order_2 = str_ireplace("asc", "desc", $the_order_2);
+					$the_order_2 = str_ireplace("[xxxx]", "asc", $the_order_2);
+				} else {
+					$the_order_2 = $the_order." desc";
+				}
+				$sql = preg_replace("/limit\s+(\d+)[\s,]+(\d+)$/i", "", $sql);
+				$sql = str_ireplace("select", "select top ".($start+$size), $sql);
+				$sql = "select top ".$size." * from (".$sql.") order by ".$the_order_2;
+				$sql = "select * from (".$sql.") order by ".$the_order;
+			}
 		}
 		return $sql;
 	}

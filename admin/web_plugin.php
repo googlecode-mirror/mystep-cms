@@ -252,9 +252,9 @@ function build_page($method) {
 			foreach($plugin_info as $key => $value) {
 				$update_info[$key] = array();
 				$update_info[$key]['idx'] = $key;
-				$update_info[$key]['name'] = getSafeCode($value->name, $setting['gen']['charset']);
+				$update_info[$key]['name'] = getString($value->name);
 				$update_info[$key]['ver'] = $value->ver;
-				$update_info[$key]['intro'] = getSafeCode($value->intro, $setting['gen']['charset']);
+				$update_info[$key]['intro'] = getString($value->intro);
 			}
 			unset($plugin_info);
 		} else {
@@ -281,9 +281,9 @@ function build_page($method) {
 					if(isset($plugin_info_remote->$info['idx'])) {
 						$update_info[$info['idx']] = array();
 						$update_info[$info['idx']]['idx'] = $info['idx'];
-						$update_info[$info['idx']]['name'] = getSafeCode($plugin_info_remote->$info['idx']->name, $setting['gen']['charset']);
+						$update_info[$info['idx']]['name'] = getString($plugin_info_remote->$info['idx']->name);
 						$update_info[$info['idx']]['ver'] = $plugin_info_remote->$info['idx']->ver;
-						$update_info[$info['idx']]['intro'] = getSafeCode($plugin_info_remote->$info['idx']->intro, $setting['gen']['charset']);
+						$update_info[$info['idx']]['intro'] = getString($plugin_info_remote->$info['idx']->intro);
 					}
 				}
 				if(isset($update_info[$info['idx']]) && $info['ver']<$update_info[$info['idx']]['ver']) {

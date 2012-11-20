@@ -2,7 +2,7 @@
 require("inc.php");
 $page = $req->getGet("page");
 $prefix = $req->getGet("pre");
-if(!empty($prefix)) $prefix = getSafeCode($prefix, $setting['gen']['charset']);
+if(!empty($prefix)) $prefix = getString($prefix);
 if(!is_numeric($page) || $page < 1) $page = 1;
 if($page>65535) $page=65535;
 $cat_idx = $req->getGet("cat");
@@ -14,7 +14,7 @@ if(is_numeric($cat_idx)) {
 		$cat_idx = "";
 	}
 } else {
-	$cat_idx = getSafeCode($cat_idx, $setting['gen']['charset']);
+	$cat_idx = getString($cat_idx);
 }
 $cat_info = getParaInfo("news_cat_sub", "cat_idx", $cat_idx);
 if($cat_info===false && !empty($cat_idx)) {
