@@ -1,9 +1,0 @@
-.tbl_reg {border:1px #629DC5 solid;}
-.tbl_reg .cat {font-weight:bold; background-color:#F2F9FD; border:1px solid #629DC5; padding:5px 10px; vertical-align:middle;}
-.tbl_reg .row {border:1px solid #629DC5; background-color:#FFFFFF; padding:5px 10px; vertical-align:middle;}
-.tbl_reg .row td {border:1px solid #629DC5; background-color:#FFFFFF; padding:5px 10px; vertical-align:middle;}
-.tbl_reg .comment {color:#666666;}
-
-.reg_list {border:1px #629DC5 solid;}
-.reg_list th {background-color:#F2F9FD;text-align:center;padding:2px 4px 2px 4px;}
-.reg_list td {padding:2px 4px 2px 4px;}

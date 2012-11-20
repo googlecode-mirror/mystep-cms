@@ -637,7 +637,7 @@ function __autoload($class_name) {
 /*--------------------------------Functions For Error Start------------------------------------------*/
 function getString($value) {
 	global $setting;
-	return getSafeCode($setting['gen']['charset']);
+	return getSafeCode($value, $setting['gen']['charset']);
 }
 function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 	$err_type = array(
