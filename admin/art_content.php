@@ -315,10 +315,12 @@ function build_page($method) {
 		while($record = $db->GetRS()) {
 			$record['content'] = str_replace("&", "&#38;", $record['content']);
 			HtmlTrans(&$record);
-			$record['content'] = "<p><span class=\"mceSubtitle\">".$record['sub_title']."</span></p>\n".$record['content'];
+			$record['content'] = "<span class=\"mceSubtitle\">".$record['sub_title']."</span>\n".$record['content'];
 			$content[] = $record['content'];
 		}
 		
+		$Max_size = round(GetFileSize(ini_get('upload_max_filesize'))/1024/1024,2);
+		$tpl_tmp->Set_Variable('MaxSize', $Max_size);
 		$tpl_tmp->Set_Variable('record_content', implode("\n<p><img src=\"../script/tinymce/plugins/pagebreak/img/trans.gif\" class=\"mcePageBreak mceItemNoResize\" /></p>\n", $content));
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_edit']);
 	} else {
@@ -353,6 +355,8 @@ function build_page($method) {
 			$record['view_lvl'] = 0;
 			$record['notice'] = "";
 		}
+		$Max_size = round(GetFileSize(ini_get('upload_max_filesize'))/1024/1024,2);
+		$tpl_tmp->Set_Variable('MaxSize', $Max_size);
 		$tpl_tmp->Set_Variables($record, "record");
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_add']);
 	}

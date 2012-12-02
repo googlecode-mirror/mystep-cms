@@ -16,11 +16,11 @@ body {font-size:12px;}
 a{text-decoration:underline;color:#0000ff;}
 a:hover{text-decoration:none;color:#ff0000;}
 
-p {text-indent:28px;margin-bottom:10px;clear:both;}
+p {text-indent:28px;margin-bottom:10px;clear:both;line-height:20px;}
 blockquote{padding:5px;background-color:#eeeeee;border:1px #ccc solid;}
 ul, ol {padding-left:24px;}
 pre{white-space:nowrap;word-break:keep-all;overflow-x:auto;overflow-y:hidden;}
-div{clear:both;}
+div{clear:both;line-height:20px;}
 
 table{border:1px #000 solid;font-size:12px;clear:both;}
 table p{text-indent:0px;margin-bottom:0px;}

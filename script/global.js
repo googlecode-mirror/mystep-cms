@@ -321,6 +321,12 @@ function UrlEncode(s) {
 	});
 }
 
+function checkObj(obj, func_show) {
+	if(typeof(func_show)!="function") func_show = alert;
+	for(var x in obj) func_show(x + " : " + obj[x]);
+	return;
+}
+
 function reportError(msg, url, line) {
 	var str = "You have found an error as below: \n\n";
 	str += "Err: " + msg + "\n\non line: " + line;

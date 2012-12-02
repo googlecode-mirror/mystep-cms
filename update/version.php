@@ -2053,7 +2053,6 @@ $setting = $cur_setting;
 				'plugin/comment/class.php',
 				'plugin/comment/comment.php',
 				'plugin/custom_form/class.php',
-				'plugin/custom_form/config.php',
 				'plugin/custom_form/custom_form.php',
 				'plugin/custom_form/index.php',
 				'plugin/custom_form/info.php',
@@ -2896,6 +2895,40 @@ $setting = $cur_setting;
 				'template/admin_simple/web_subweb_input.tpl',
 				'template/classic/read.tpl',
 				'template/default/read.tpl',
+		),
+	),
+	'0.99.9.9.8' => array(
+		'info' => '
+				1.Add Drop upload function to TinyMCE Editor for webkit explorers
+				2.Add paragraph indent/outdent function to TinyMCE Editor with Tab/Backspace button
+				3.Fix a bug in codemirror module
+				4.Fix a bug in substrPro function
+				5.Fix a bug a getUrl function when a subweb with multi-url
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/art_content.php',
+				'admin/art_info.php',
+				'admin/attachment.php',
+				'images/editor.css',
+				'include/parameter.php',
+				'plugin/source/show.php',
+				'script/admin.js',
+				'script/global.js',
+				'script/jquery.codemirror.js',
+				'script/jquery.powerupload.css',
+				'script/jquery.powerupload.js',
+				'script/tinymce/plugins/paste/editor_plugin.js',
+				'script/tinymce/plugins/source_code/js/source_code.js',
+				'script/tinymce/themes/advanced/skins/default/dialog.css',
+				'script/tinymce/themes/advanced/skins/default/ui.css',
+				'source/function/global.php',
+				'source/function/web.php',
+				'template/admin/art_content_input.tpl',
+				'template/admin/art_info_input.tpl',
+				'template/admin_simple/art_content_input.tpl',
+				'template/admin_simple/art_info_input.tpl',
+				'admin/upload.php',
 		),
 	),
 );

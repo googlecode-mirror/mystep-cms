@@ -21,6 +21,8 @@ var SourceCodeDialog = {
 		result += '</fieldset>\n\n';
 		tinyMCEPopup.editor.execCommand('mceInsertContent', false, result);
 		var content = tinyMCE.get('content').getContent();
+		content = content.replace('<fieldset class="source"><fieldset class="source">', '<fieldset class="source">');
+		content = content.replace('</fieldset></fieldset>', '</fieldset>');
 		content = content.replace(/<p.*?>.*?<fieldset(.+?)fieldset>.*?<\/p>/ig, "<fieldset$1fieldset>");
 		tinyMCE.get('content').setContent(content);
 		tinyMCEPopup.close();

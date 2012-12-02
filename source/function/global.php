@@ -21,16 +21,19 @@ function cutString($string) {
 	}
 	return $arr[0];
 }
-function substrPro($string, $start, $length, $mode = false) {
+function substrPro($string, $start, $length = 0, $mode = false) {
 	//Coded By Windy2000 20020603 v3.0
-	$arr	= cutString($string);
-	if($mode && $start>0) return implode("", array_slice($arr, $start, $length));
-	if($start<0) $start += strlen($string);
-	if($length<0) $length += strlen($string) - $start;
+	$arr = cutString($string);
+	$m = $mode?count($arr):strlen($string);
+	if($start<0) $start += $m;
+	if($start<0) $start = 0;
+	if($start>$m) return "";
+	if($length<=0) $length += $m - $start;
+	if($length<=0) return "";
+	if($mode) return implode("", array_slice($arr, $start, $length));
 	$str = "";
 	$sub_start = false;
-	$max_count = count($arr);
-	for($i=0; $i<$max_count; $i++) {
+	for($i=0; $i<$m; $i++) {
 		if(strlen($str)>=$start && $sub_start==false) {
 			$str = $arr[$i];
 			$sub_start = true;

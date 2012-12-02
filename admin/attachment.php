@@ -16,7 +16,7 @@ switch($method) {
 		$max_count = count($upload->upload_result);
 		for($i=0; $i<$max_count; $i++) {
 			if($upload->upload_result[$i]['error'] == 0) {
-				$ext = strrchr($upload->upload_result[$i]['name'], ".");
+				$ext = strtolower(strrchr($upload->upload_result[$i]['name'], "."));
 				$name = str_replace($ext, "", $upload->upload_result[$i]['name']);
 				$upload->upload_result[$i]['name'] = substrPro($name, 0, 80).$ext;
 				$upload->upload_result[$i]['new_name'] = str_replace(".upload", "", $upload->upload_result[$i]['new_name']);
@@ -30,7 +30,7 @@ switch($method) {
 						$the_width = $img_info[0];
 						$the_height = $img_info[1];
 						$zoom = $req->getPost('zoom');
-						if(empty($zoom)) $zoom = 240;
+						if(empty($zoom)) $zoom = 400;
 						if($the_width > $zoom) {
 							$the_height *= $zoom/$the_width;
 							$the_width = (INT)$zoom;
@@ -38,9 +38,9 @@ switch($method) {
 						} else {
 							copy($path_upload."/".$upload->upload_result[$i]['new_name'], $path_upload."/preview/".$upload->upload_result[$i]['new_name']);
 						}
-						$add_str[] = "<br /><a id=\"att_{$new_id}\" href=\"{$setting['web']['url']}/files/show.htm?{$new_id}\" target=\"_blank\"><img src=\"{$setting['web']['url']}/files/?{$new_id}\" alt=\"".($req->getPost("comment")==""?$upload->upload_result[$i]['name']:$req->getPost("comment"))."\" /></a><br />";
+						$add_str[] = "&nbsp;<br /><a id=\"att_{$new_id}\" href=\"{$setting['web']['url']}/files/show.htm?{$new_id}\" target=\"_blank\"><img src=\"{$setting['web']['url']}/files/?{$new_id}\" alt=\"".($req->getPost("comment")==""?$upload->upload_result[$i]['name']:$req->getPost("comment"))."\" /></a><br />&nbsp;";
 					} else {
-						$add_str[] = "<br /><a id=\"att_{$new_id}\" href=\"{$setting['web']['url']}/files?{$new_id}\" target=\"_blank\">".($req->getPost("comment")==""?$upload->upload_result[$i]['name']:$req->getPost("comment"))."</a><br />";
+						$add_str[] = "&nbsp;<br /><a id=\"att_{$new_id}\" href=\"{$setting['web']['url']}/files?{$new_id}\" target=\"_blank\">".($req->getPost("comment")==""?$upload->upload_result[$i]['name']:$req->getPost("comment"))."</a><br />&nbsp;";
 					}
 					$script .= "parent.document.forms[0].attach_list.value += '{$new_id}|';\n";
 					$err_msg[] = $upload->upload_result[$i]['name']." - ".$setting['language']['admin_attachment_upload_done'];

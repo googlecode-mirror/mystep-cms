@@ -111,8 +111,8 @@
 			</tr>
 			<tr class="row">
 				<td colspan="2" align="center">
-					<input class="btn" name="attach_list" type="hidden" value="|">
-					<input class="btn" name="multi_cata" type="hidden" value="">
+					<input class="btn" type="hidden" name="attach_list" value="|">
+					<input class="btn" type="hidden" name="multi_cata" value="">
 					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 附 件 " onclick="attach_edit()" />&nbsp;&nbsp;
@@ -141,267 +141,17 @@
 	<div style="text-align:center;margin-top:10px;"><input class="btn" type="button" onClick="putMultiCata()" value=" 确 定 " /></div>
 </div>
 
-<script type="text/javascript" language="JavaScript" src="../script/tinymce/jquery.tinymce.js"></script>
+<script language="JavaScript" type="text/javascript" src="../script/tinymce/jquery.tinymce.js"></script>
+<script language="JavaScript" type="text/javascript" src="../script/jquery.powerupload.js"></script>
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
-$(function() {
-	$('#content').tinymce({
-		// Location of TinyMCE script
-		script_url : '../script/tinymce/tiny_mce.js',
-
-		// General options
-		language : "cn",
-		theme : "advanced",
-		plugins : "quote,bbscode,source_code,style,table,advlink,advimage,subtitle,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,insertdatetime,visualchars,nonbreaking,xhtmlxtras,template",
-
-		// Theme options
-		theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,tablecontrols",
-		theme_advanced_buttons2 : "pagebreak,Subtitle,upload,|,hr,styleprops,sub,sup,|,cut,copy,paste,pastetext,pasteword,bbscode,source_code,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,showImage,|,insertdate,charmap,|,change,format,code",
-		theme_advanced_toolbar_location : "top",
-		theme_advanced_toolbar_align : "left",
-		theme_advanced_statusbar_location : "bottom",
-		theme_advanced_resizing : false,
-		
-		// Custom settings
-		preformatted : false,
-		remove_linebreaks : false,
-		apply_source_formatting : true,
-		convert_fonts_to_spans : true,
-		verify_html : true,
-		paste_auto_cleanup_on_paste : true,
-		dialog_type : "modal",
-		relative_urls : true,
-		invalid_elements : "script",
-		extended_valid_elements : "form[action|method|name],"+
-															"textarea[class|type|title|name|rows|cols],"+
-															"input[type|name|value|checked|src|alt|size|maxlength],"+
-															"button[name|value|type],"+
-															"select[name|size|multiple|onchange],"+
-															"iframe[src|frameborder=0|width|height|align|scrolling|name],"+
-															"center,"+
-															"script[charset|defer|language|src|type]",
-		forced_root_block : "p",
-		flash_wmode : "transparent",
-		flash_quality : "high",
-		flash_menu : "false",
-
-		// Example content CSS (should be your site CSS)
-		content_css : "../images/editor.css",
-		entity_encoding : "raw",
-		add_unload_trigger : false,
-
-		// Drop lists for link/image/media/template dialogs
-		template_external_list_url : "lists/template_list.js",
-		external_link_list_url : "lists/link_list.js",
-		external_image_list_url : "lists/image_list.js",
-		media_external_list_url : "lists/media_list.js",
-
-		// Custom Functions
-		handle_event_callback : function(e) {
-			if(e.ctrlKey && e.keyCode==13) {
-				if(checkForm(document.forms[0], checkForm_append)) document.forms[0].submit();
-			}
-		},
-		oninit : function() {
-			var content = tinyMCE.get('content').getContent();
-			content = content.replace(/mce\:script/g, "script");
-			content = content.replace(/_mce_src/g, "src");
-			tinyMCE.get('content').setContent(content);
-		},
-
-		setup : function(ed) {
-			ed.addButton('upload', {
-				title : '附件上传',
-				image : 'images/file.gif',
-				onclick : function() {
-					showPop('upload','附件上传','url','attachment.php?method=add',560, 150);
-				}
-			});
-			ed.addButton('change', {
-				title : 'Div/P 模式切换',
-				image : 'images/div.png',
-				onclick : function() {
-					var content = tinyMCE.get('content').getContent();
-					if(content.indexOf("<div")==-1) {
-						content = content.replace(/<p(.*?)>([\w\W]+?)<\/p>/ig, "<div$1>$2</div>");
-					} else {
-						content = content.replace(/<div(.*?)>([\w\W]+?)<\/div>/ig, "<p$1>$2</p>");
-					}
-					tinyMCE.get('content').setContent(content);
-				}
-			});
-			ed.addButton('format', {
-				title : '代码清理',
-				image : 'images/format.png',
-				onclick : function() {
-					var content = tinyMCE.get('content').getContent();
-					if(content.indexOf("<div")==-1) {
-						content = content.replace(/(<br(\s\/)?>)+/ig, "</p><p>");
-						content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
-						content = content.replace(/<\/p><p/g, "<\/p>\n<p");
-					} else {
-						content = content.replace(/(<br(\s\/)?>)+/ig, "</div><div>");
-						content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
-						content = content.replace(/<\/div><div/g, "<\/div>\n<div");
-					}
-					content = content.replace(/mso\-[^;]+?;/ig, "");
-					content = content.replace(/[\xa0]/g, "");
-					content = content.replace(/<\/td>/g, "&nbsp;</td>");
-					while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "<!-- pagebreak -->");
-					while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
-					while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
-					content = content.replace(/  /g, String.fromCharCode(160)+" ");
-					tinyMCE.get('content').setContent(content);
-				}
-			});
-			ed.addButton('showImage', {
-				title : '图片展示',
-				image : 'images/show.png',
-				onclick : function() {
-					var theContent = ed.selection.getContent();
-					var result = "";
-					if(theContent.length<10) return;
-					var img_list = theContent.match(/<img.+?src=('|")?.+?\1.*?>/ig);
-					if(img_list == null) return;
-					for(var i=0,m=img_list.length;i<m;i++) {
-						if(img_list[i].match(/src=('|")?(.+?)\1/i)) {
-							theContent = theContent.replace(img_list[i], "");
-							result += '<img src="' + RegExp.$2 + '" />';
-						}
-					}
-					ed.execCommand('mceReplaceContent', false, theContent);
-					theContent = ed.getContent().match(/<div id\="ms_showImage">.+?<\/div>/);
-					if(theContent!=null) {
-						result = theContent[0].replace("</div>", result + "</div>");
-						theContent = ed.getContent().replace(theContent[0], "") + result;
-					} else {
-						theContent = ed.getContent() + '\n<div id="ms_showImage">' + result + '</div>';
-					}
-					theContent = theContent.replace(/<(\w+)(.*?)>[\xa0\r\n\s\u3000]+<\/\1>[\r\n]*/ig, "");
-					ed.setContent(theContent);
-				}
-			});
-			ed.onDblClick.add(function(ed, e) {
-				e = e.target;
-				if(e.nodeName === 'IMG') {
-					if(confirm("是否将 "+e.src+" 设定为新闻标题图?")) {
-						$id("image").value = e.src;
-					}
-				} else if(e.nodeName === 'A') {
-					if(confirm("是否将 "+e.href+" 设定为跳转网址?")) {
-						$id("link").value = e.href;
-					}
-				}
-			});
-		},
-
-		// Replace values for the template plugin
-		template_replace_values : {
-			username : "mystep",
-			staffid : "31415926"
-		}
-	});
-});
-
-function insertImg() {
-	if($id("image").value!="") {
-		attach_add('<br /><img src="'+$id("image").value+'" /><br />');
-	}
-}
-
-function putImage(obj) {
-	$id("keyword").value = obj.title;
-	$id("image").value = obj.getAttribute("src");
-	$.closePopupLayer();
-}
-
-function putMultiCata() {
-	var objs = $("#popupLayer_newsCatalog input[name='multi_cata']");
-	var theList = "";
-	for(var i=0, m=objs.length; i<m; i++) {
-		if(objs[i].checked) theList += objs[i].value;
-	}
-	document.forms[0].multi_cata.value = theList;
-	$.closePopupLayer();
-}
-
-function setMultiCata() {
-	if(document.forms[0].multi_cata.value.length>0) {
-		var objs = $("#popupLayer_newsCatalog input[name='multi_cata']");
-		var theList = "," + document.forms[0].multi_cata.value;
-		for(var i=0, m=objs.length; i<m; i++) {
-			if(theList.indexOf(","+objs[i].value)!=-1) objs[i].checked = true;
-		}
-	}
-}
-
+var news_id = "<!--news_id-->";
+var upload_limit = "<!--MaxSize-->";
+var web_url = "<!--web_url-->";
 var cat_sub_list = new Array();
 <!--loop:start key="cat_sub"-->
 cat_sub_list['<!--cat_sub_cat_id-->'] = "<!--cat_sub_cat_sub-->";
 <!--loop:end-->
-
-function attach_add(str) {
-	tinyMCE.execCommand("mceInsertContent", false, str);
-}
-
-function attach_remove(aid) {
-	var content, re;
-	content = tinyMCE.get('content').getContent();
-	re = new RegExp("<a id\\=\"att_"+aid+".+?<\\/a>", "ig");
-	content = content.replace(re, "");
-	re = new RegExp("(<br \\/>)*<img.+?files\\?"+aid+".+?>(<br \\/>)*", "ig");
-	content = content.replace(re, "");
-	re = new RegExp("<p>[\s\r\n]*<\\/p>", "ig");
-	content = content.replace(re, "");
-	re = new RegExp("<div>[\s\r\n]*<\\/div>", "ig");
-	content = content.replace(re, "");
-	tinyMCE.get('content').setContent(content);
-	return;
-}
-
-function attach_edit() {
-	showPop('attach','附件管理','url','attachment.php?news_id=<!--news_id-->&method=edit&attach_list='+document.forms[0].attach_list.value, 600, 200);
-	return;
-}
-
-function attach_mine() {
-	showPop('attach_mine','我的附件','url','attachment.php?method=mine', 600, 200);
-	return;
-}
-
-function profix_changed(cat_id) {
-	if(cat_id==null || cat_id=="") {
-		$id("profix").disabled = true;
-		return;
-	}
-	if(typeof(cat_id)=="undefined") cat_id = $id("cat_id").value;
-	var profix = $id("profix");
-	var the_list = new Array();
-	var i = 0;
-	profix.innerHTML = "";
-	profix.options.add(new Option("无前缀", "", 0, 0));
-	if(cat_sub_list[cat_id].length>0) {
-		profix.disabled = false;
-		the_list = cat_sub_list[cat_id].split(",");
-		for(i=0; i<the_list.length; i++) {
-			profix.options.add(new Option(the_list[i], the_list[i], 0, 0));
-		}
-	} else {
-		profix.disabled = true;
-	}
-	return;
-}
-
-function title_change() {
-	var obj = $id('title');
-	var theProfix = $id("profix").value;
-	obj.focus();
-	obj.value = obj.value.replace(/\[.+?\]/g, "");
-	if(theProfix.length>1) {
-		obj.value = "[" + theProfix + "]" + obj.value;
-	}
-	return;
-}
 
 function checkForm_append(theForm) {
 	if(theForm.describe.value=="") theForm.describe.value = theForm.subject.value;
@@ -417,43 +167,10 @@ function checkForm_append(theForm) {
 	return flag;
 }
 
-function setIframe(idx) {
-	if($id("popupLayer_"+idx)) {
-		var theFrame = $("#popupLayer_"+idx).find("iframe");
-		var theWidth = $("#popupLayer_"+idx).width()-20;
-		var theHeight = theFrame.contents().find("body")[0].scrollHeight;
-		theFrame.height(theHeight);
-		if(theHeight>600) {
-			theHeight = 600;
-			$("#popupLayer_"+idx+"_content").css("overflow-y","scroll");
-		}
-		$("#popupLayer_"+idx).height($("#popupLayer_"+idx+"_title").height()+theHeight+16);
-		$("#popupLayer_"+idx+"_content").height(theHeight - 16);
-		$("#popupLayer_"+idx).width(theWidth+20);
-		$("#popupLayer_"+idx+"_content").width(theWidth);
-		$.setPopupLayersPosition();
-	}
-}
-
-function add_color(obj_select, theColor){
-	if(obj_select.tagName.toLowerCase() != "select") return;
-	var color_list = new Array('', 'black','dimgray','red','orange','pink','yellow','blue','green');
-	var curIndex = 0;
-	var selIndex = 0;
-	obj_select.innerHTML = "";
-	for(var i=0; i<color_list.length; i++){
-		curIndex = obj_select.options.length;
-		obj_select.options[curIndex] = new Option(color_list[i], color_list[i]);
-		obj_select.options[curIndex].style.backgroundColor = color_list[i];
-		obj_select.options[curIndex].style.color = color_list[i];
-		if(color_list[i]==theColor) selIndex = curIndex;
-	}
-	obj_select.selectedIndex = selIndex;
-}
-
 $(function(){
 	add_color($id("color_list_title"), "<!--check_c-->");
 	profix_changed(<!--record_cat_id-->);
+	tinyMCE_init("content");
 });
 //]]> 
 </script>

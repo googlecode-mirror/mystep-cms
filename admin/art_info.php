@@ -94,9 +94,11 @@ function build_page($method) {
 			$record['attach_list'] = "|";
 		}
 		$tpl_tmp->Set_Variables($record);
+		$Max_size = round(GetFileSize(ini_get('upload_max_filesize'))/1024/1024,2);
 		
 		$tpl_tmp->Set_Variable('title', ($method=='add'?$setting['language']['admin_art_info_add']:$setting['language']['admin_art_info_edit']));
 		$tpl_tmp->Set_Variable('method', $method);
+		$tpl_tmp->Set_Variable('MaxSize', $Max_size);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}
 	

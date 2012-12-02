@@ -354,6 +354,7 @@ function getUrl($mode, $idx="", $page=1, $web_id=0) {
 	if(!is_numeric($page)) $page = 1;
 	if($webInfo===false) return "#";
 	$url = $webInfo['host'];
+	if(strpos($url, ",")!==false) $url = substr($url, 0, strpos($url, ","));
 	switch($mode) {
 		case "read":
 			if(is_array($idx)) {

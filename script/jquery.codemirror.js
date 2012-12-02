@@ -221,11 +221,8 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 				CodeMirror.runMode(the_content.replace(/\t/g, String.fromCharCode(160)+String.fromCharCode(160)).replace(/ /g, String.fromCharCode(160)), settings.mode, callback);
 				var new_obj = $('<div class="CodeMirror">'+(settings.lineNumbers?('<div class="CodeMirror-gutter"><div class="CodeMirror-gutter-text">'+gutter.join('')+'</div></div>'):'<!--gutter-->')+'<div class="CodeMirror-lines">'+(settings.lineNumbers?'<div style="position: relative; margin-left: '+size.toString().length+'em;">':'<div>')+'<pre class="cm-s-default">'+accum.join('')+'</pre></div></div></div><div class="CodeMirror_scroll"></div>').insertAfter(obj);
 				$(".CodeMirror").css({"position":"relative"});
-				if(the_type=="mysql") {
-					new_obj.find(".CodeMirror-lines").css({"margin-left":"14px"});
-				} else if(the_type=="css") {
-					new_obj.find(".CodeMirror-lines").css({"margin-left":"-14px"});
-				}
+				new_obj.find(".CodeMirror-lines > div").css("margin-left","2em");
+				if(new_obj.find(".CodeMirror-gutter-text > pre").length>=1000) new_obj.find(".CodeMirror-lines > div").css("margin-left","3em");
 				new_obj.css("overflow-x","hidden");
 				obj.hide();
 			});

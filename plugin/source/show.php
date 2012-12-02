@@ -26,7 +26,6 @@ if(empty($content)) {
 		$content = "File cannot be found!";
 	}
 }
-if($error) $content = "&nbsp;&nbsp;".$content;
 $setting['gen']['show_info'] = false;
 
 $tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
