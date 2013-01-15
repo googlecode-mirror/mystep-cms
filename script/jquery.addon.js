@@ -423,7 +423,6 @@ jQuery.fn.showImage = function(options) {
 	var the_width = 0;
 	var repeat_times = 4;
 	var act_img = null;
-	var if_over = false;
 	if(img_list.length<2) return;
 	obj_ole.addClass("showImage");
 	obj_ole.css("width",params.ole_width);
@@ -440,6 +439,7 @@ jQuery.fn.showImage = function(options) {
 			obj_ole_wrapper.css("left", the_width+the_step+(params.img_width+12));
 			the_step += the_width;
 		}
+		obj_ole_show.find("img").animate({"opacity": 0}, 1000);
 		obj_ole_wrapper.animate({"left":the_step},1000,function(){
 			var the_idx = Math.ceil(-the_step/(params.img_width+12));
 			act_img = obj_ole_wrapper.find("img").get(the_idx+params.pos_adjust);
@@ -447,15 +447,22 @@ jQuery.fn.showImage = function(options) {
 			$(act_img).attr("active", "y");
 			obj_ole_show.find("a").attr("href", act_img.src).attr("title", act_img.title);
 			obj_ole_show.find("img").attr("src", act_img.src);
+			obj_ole_show.find("img").animate({"opacity": 1}, 500);
 			return;
 		});
 		return;
 	}
 	obj_ole.bind("contextmenu",function(){return false;}).bind("selectstart",function(){return false;});  
 	obj_ole.show();
-	$("<div/>").addClass("ole_show").html('<a href="###" target="_blank" title="Click to show the image in a new window."><img src="/images/dummy.png" /></a>').appendTo(obj_ole);
-	$("<div/>").addClass("ole_list").html('<a class="arrow back">&lt;</a><div class="wrapper"></div><a class="arrow forward">&gt;</a>').appendTo(obj_ole);
+	$("<div/>").addClass("ole_show").html('<span class="jump back">&nbsp;</span><div class="main"><a href="###" target="_blank" title="Click to show the image in a new window."><img src="/images/dummy.png" /></a></div><span class="jump forward">&nbsp;</span>').appendTo(obj_ole);
+	$("<div/>").addClass("ole_list").html('<a class="arrow back">&nbsp;</a><div class="wrapper"></div><a class="arrow forward">&nbsp;</a>').appendTo(obj_ole);
 	obj_ole_show = obj_ole.find(".ole_show");
+	obj_ole_show.css("height", params.img_show_height+20);
+	obj_ole_show.find(".jump").css({"opacity":"0","height":params.img_show_height+20}).click(function(){
+		swich_img($(this).hasClass("back")?-1:1);
+		this.blur();
+		return false;
+	});
 	obj_ole_show.find("img").css({"height":params.img_show_height,"max-width":(params.ole_width-20)});
 	obj_ole_list = obj_ole.find(".ole_list");
 	obj_ole_wrapper = obj_ole_list.find(".wrapper");
@@ -491,11 +498,68 @@ jQuery.fn.showImage = function(options) {
 	});
 	swich_img(1 - m + params.pos_adjust);
 	if(params.interval>0) {
+		var marquee_interval = setInterval(swich_img, params.interval*1000);
 		obj_ole.hover(
-			function () {if_over = true;},
-			function () {if_over = false;}
+			function () {
+				clearInterval(marquee_interval);
+			},
+			function () {
+				marquee_interval = setInterval(swich_img, params.interval*1000);
+			}
 		);
-		setInterval(function(){if(!if_over) swich_img();}, params.interval*1000);
 	}
+	return;
+};
+
+/*!
+ * jquery.imageWall.js
+ * Image Marquee show by windy2000
+*/
+jQuery.fn.imageWall = function(options) {
+	var defaults = {
+		size_h: 3,
+		size_v: 2,
+		img_width: 150,
+		img_height: 60,
+		interval: 5,
+		speed: 500
+	};
+	var params = $.extend({}, defaults, options || {});
+	var obj_ole = $(this);
+	var img_cnt = params.size_h*params.size_v;
+	var img_content = obj_ole.html().replace(/\s*[\r\n]+\s*/g, "");
+	var repeat_times = Math.ceil(img_cnt/obj_ole.find("img").length)+1;
+	var show_done = true;
+	var rebuild_list = function(theOle) {
+		for(var i=0;i<img_cnt;i++) {
+			theOle.find("img").first().appendTo(theOle);
+		}
+	};
+	var setBack = function() {
+		obj_ole.find("div").last().prependTo(obj_ole);
+	}
+	params.interval *= 1000;
+	if(params.interval<params.speed*(img_cnt+1)) params.interval = params.speed*(img_cnt+2);
+	img_content = (new Array(repeat_times+1)).join(img_content);
+	obj_ole.css({"width":(params.size_h*params.img_width),"height":(params.size_v*params.img_height),"overflow":"hidden","position":"relative"});
+	obj_ole.html('<div></div><div></div>');
+	obj_ole.find("div").css({"position":"absolute","top":0,"left":0,"z-index":0}).html(img_content);
+	obj_ole.find("img").css({"display":"block","float":"left","width":params.img_width,"height":params.img_height,"border":0});
+	rebuild_list(obj_ole.find("div:eq(0)"));
+	setInterval(function(){
+		if(show_done == false) return;
+		var cur_obj = obj_ole.find("div").last();
+		var cur_idx = 0;
+		show_done = false;
+		for(var i=0;i<img_cnt;i++) {
+			setTimeout(function(){cur_obj.find("img:eq("+cur_idx+")").animate({"opacity":"0"},params.speed*3);cur_idx++;}, params.speed*i);
+		}
+		setTimeout(function(){
+			setBack();
+			rebuild_list(obj_ole.find("div").first());
+			obj_ole.find("div").first().find("img").css("opacity", "1");
+			show_done = true;
+		}, params.speed*(i+2));
+	}, params.interval);
 	return;
 };

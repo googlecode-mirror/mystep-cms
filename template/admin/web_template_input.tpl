@@ -42,7 +42,7 @@ var editor = null;
 var hlLine = null;
 function setIt() {
 	if(editor == null) {
-		//loadingShow("Ω≈±æ‘ÿ»Î÷–£¨«Î…‘∫Ú");
+		loadingShow("Ω≈±æ‘ÿ»Î÷–£¨«Î…‘∫Ú");
 		$('#file_content').codemirror({
 				lineWrapping: false,
 				height: 400,
@@ -50,46 +50,45 @@ function setIt() {
 					.CodeMirror-fullscreen {background-color:#fff;display:block;position:absolute;top:0;left:0;width:100%;height:100%;z-index:9999;margin:0;padding:0;border:0px solid #BBBBBB;opacity:1;}\
 					.activeline {background: #e8f2ff !important;}\
 				",
-				onCursorActivity: function () {
-					editor.setLineClass(hlLine, null, null);
-					if(editor.getSelection().length==0) {
-						hlLine = editor.setLineClass(editor.getCursor().line, "activeline");
-					}
-				},
 				extraKeys: {
-					"F11": function() {
-						var scroller = editor.getScrollerElement();
-						if (scroller.className.search(/\bCodeMirror-fullscreen\b/) === -1) {
-							$(scroller).css({"position":"absolute"});
-							$("body").css("overflow","hidden");
-							scroller.className += " CodeMirror-fullscreen";
+					"F11": function(cm) {
+						var wrap = cm.getWrapperElement();
+						var scroller = cm.getScrollerElement();
+						if (/\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className)) {
+							wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
+							wrap.style.height = "";
+							wrap.style.width = "";
+							scroller.style.height = "";
+							scroller.style.width = "";
+							document.documentElement.style.overflow = "";
+						} else {
+							wrap.className += " CodeMirror-fullscreen";
+							wrap.style.height = (window.innerHeight || (document.documentElement || document.body).clientHeight) + "px";
+							wrap.style.width = "100%";
 							scroller.style.height = "100%";
 							scroller.style.width = "100%";
-							editor.refresh();
-						} else {
-							$(scroller).css({"position":"static"});
-							$("body").css("overflow","auto");
-							scroller.className = scroller.className.replace(" CodeMirror-fullscreen", "");
-							scroller.style.height = '';
-							scroller.style.width = '';
-							editor.refresh();
+							document.documentElement.style.overflow = "hidden";
+						}
+						cm.refresh();
+						return;
+					},
+					"Esc": function(cm) {
+						var wrap = cm.getWrapperElement();
+						var scroller = cm.getScrollerElement();
+						if (/\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className)) {
+							wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
+							wrap.style.height = "";
+							wrap.style.width = "";
+							scroller.style.height = "";
+							scroller.style.width = "";
+							document.documentElement.style.overflow = "";
+							cm.refresh();
 						}
 					},
-					"Esc": function() {
-						var scroller = editor.getScrollerElement();
-						if (scroller.className.search(/\bCodeMirror-fullscreen\b/) !== -1) {
-							$(scroller).css({"position":"static"});
-							$("body").css("overflow","auto");
-							scroller.className = scroller.className.replace(" CodeMirror-fullscreen", "");
-							scroller.style.height = '';
-							scroller.style.width = '';
-							editor.refresh();
-						}
-					},
-					"Shift-Tab": function() {
-						var the_pos = editor.getCursor().line;
-						var the_selection = editor.getSelection().split("\n");
-						var the_line = editor.getLine(the_pos);
+					"Shift-Tab": function(cm) {
+						var the_pos = cm.getCursor().line;
+						var the_selection = cm.getSelection().split("\n");
+						var the_line = cm.getLine(the_pos);
 						var line_start = 0, line_end = 0;
 						if(the_line.indexOf(the_selection[0])!=-1) {
 							line_start = the_pos;
@@ -99,14 +98,14 @@ function setIt() {
 							line_end = the_pos;
 						}
 						for(var i=line_start; i<=line_end; i++) {
-							editor.setLine(i, "	" + editor.getLine(i));
+							cm.setLine(i, "	" + cm.getLine(i));
 						}
-						editor.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
+						cm.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
 					},
-					"Shift-Backspace": function() {
-						var the_pos = editor.getCursor().line;
-						var the_line = editor.getLine(the_pos);
-						var the_selection = editor.getSelection().split("\n");
+					"Shift-Backspace": function(cm) {
+						var the_pos = cm.getCursor().line;
+						var the_line = cm.getLine(the_pos);
+						var the_selection = cm.getSelection().split("\n");
 						var line_start = 0, line_end = 0;
 						if(the_line.indexOf(the_selection[0])!=-1) {
 							line_start = the_pos;
@@ -116,9 +115,9 @@ function setIt() {
 							line_end = the_pos;
 						}
 						for(var i=line_start; i<=line_end; i++) {
-							editor.setLine(i, editor.getLine(i).replace(/^\s/, ""));
+							cm.setLine(i, cm.getLine(i).replace(/^\s/, ""));
 						}
-						editor.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
+						cm.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
 					}
 				}
 			}, function(){
@@ -126,10 +125,17 @@ function setIt() {
 					alert("Ω≈±æ‘ÿ»Î ß∞‹£°");
 				} else {
 					$('.CodeMirror').css({width:'800px','overflow':"hidden","text-align":"left"});
-					editor = $.codemirror_get_editor(0);
-					hlLine = editor.setLineClass(0, "activeline");
+					var editor = $.codemirror_get_editor(0);
+					var hlLine = editor.addLineClass(0, "background", "activeline");
+					editor.on("cursorActivity", function() {
+					  var cur = editor.getLineHandle(editor.getCursor().line);
+					  if (cur != hlLine) {
+					    editor.removeLineClass(hlLine, "background", "activeline");
+					    hlLine = editor.addLineClass(cur, "background", "activeline");
+					  }
+					});
 				}
-				//loadingShow();
+				loadingShow();
 			}
 		);
 	} else {

@@ -64,15 +64,31 @@ mystep;
 			if($method=="update") WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
 			$setting = $setting_org;
 		}
-	
+		$pre_list = array();
+		foreach($website as $cur_web) {
+			$cur_setting = getSubSetting($cur_web['web_id']);
+			$pre_list[] = "`".$cur_setting['db']['name']."`.`".$cur_setting['db']['pre']."`";
+		}
 		$strFind = array("{db_name}", "{pre}", "{charset}");
 		$strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset']);
 		$sql_list = array();
 		for($i=0,$m=count($update_info['sql']); $i<$m; $i++) {
-			if($method=="update") {
-				$db->Query(str_replace($strFind, $strReplace, $update_info['sql'][$i]));
+			if(count($pre_list)>1 && (strpos($update_info['sql'][$i], "{pre}news_show") || strpos($update_info['sql'][$i], "{pre}news_detail") || strpos($update_info['sql'][$i], "{pre}news_tag"))) {
+				foreach($pre_list as $cur_pre) {
+					$cur_sql = str_replace("{pre}", $cur_pre, $update_info['sql'][$i]);
+					$cur_sql = str_replace($strFind, $strReplace, $cur_sql);
+					if($method=="update") {
+						$db->Query($cur_sql);
+					} else {
+						$sql_list[] = $cur_sql;
+					}
+				}
 			} else {
-				$sql_list[] = str_replace($strFind, $strReplace, $update_info['sql'][$i]);
+				if($method=="update") {
+					$db->Query(str_replace($strFind, $strReplace, $update_info['sql'][$i]));
+				} else {
+					$sql_list[] = str_replace($strFind, $strReplace, $update_info['sql'][$i]);
+				}
 			}
 		}
 		if($method=="update" && $m>0) {

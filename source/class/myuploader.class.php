@@ -80,18 +80,18 @@ class MyUploader extends class_common {
 				$this->upload_result[$this->upload_counter]['new_name'] = $this->upload_rename?($this->GetMicrotime().substr(md5($this->upload_result[$this->upload_counter]['size']),0,5).$file_ext):$this->upload_result[$this->upload_counter]['name'];
 				if(file_exists($this->upload_path.$this->upload_result[$this->upload_counter]['new_name'])) {
 					$this->upload_result[$this->upload_counter]['message']	= "The Same-name-file Has Existed In The Upload Path !";
-					$this->upload_result[$this->upload_counter]['error'] = 4;
+					$this->upload_result[$this->upload_counter]['error'] = 8;
 					unlink($this->upload_result[$this->upload_counter]['tmp_name']);
 				} else {
 					if(filesize($this->upload_result[$this->upload_counter]['tmp_name'])==0) {
 						$this->upload_result[$this->upload_counter]['message'] = "Upload File Is Zero-length !";
-						$this->upload_result[$this->upload_counter]['error'] = 6;
+						$this->upload_result[$this->upload_counter]['error'] = 9;
 					} else {
 						if(move_uploaded_file($this->upload_result[$this->upload_counter]['tmp_name'], $this->upload_path.$this->upload_result[$this->upload_counter]['new_name'])) {
 							$this->upload_result[$this->upload_counter]['message'] = "Upload Succeeded !";
 						} else {
 							$this->upload_result[$this->upload_counter]['message'] = "Upload Failed In Moving File !";
-							$this->upload_result[$this->upload_counter]['error'] = 5;
+							$this->upload_result[$this->upload_counter]['error'] = 10;
 						}
 					}
 				}
@@ -104,6 +104,18 @@ class MyUploader extends class_common {
 				break;
 			case 3:
 				$this->upload_result[$this->upload_counter]['message']	= "Upload finished incompletely !";
+				break;
+			case 4:
+				$this->upload_result[$this->upload_counter]['message']	= "No File has been upload !";
+				break;
+			case 5:
+				$this->upload_result[$this->upload_counter]['message']	= "Empty File !";
+				break;
+			case 6:
+				$this->upload_result[$this->upload_counter]['message']	= "Tempory directory error !";
+				break;
+			case 7:
+				$this->upload_result[$this->upload_counter]['message']	= "File cannot be writen !";
 				break;
 			default:
 				$this->upload_result[$this->upload_counter]['message']	= "Unknown Error !";

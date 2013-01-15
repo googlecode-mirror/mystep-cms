@@ -411,7 +411,7 @@ class MySQL extends class_common {
 				$sql = "insert into `{$table}` ";
 				break;
 			case "update":
-				$sql = "update `{$table}` set ";
+				$sql = "update LOW_PRIORITY`{$table}` set ";
 				break;
 			default:
 				$sql = "replace into `{$table}` set ";

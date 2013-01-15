@@ -77,7 +77,7 @@ $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 
-//if($setting['watermark']['mode'] & 1) $detail['content'] = txt_watermark($detail['content'], true, $setting['watermark']['credit'], $setting['web']['url']);
+//if($setting['watermark']['mode'] & 1) $detail['content'] = html_watermark($detail['content'], true, $setting['watermark']['credit'], $setting['web']['url']);
 if($setting['watermark']['mode'] & 1) {
 	$script = <<<mystep
 <script language="JavaScript">

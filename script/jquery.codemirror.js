@@ -17,7 +17,8 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 		runmode : false,
 		readOnly : false,
 		times_count : 15,
-		base_path : "http://codemirror.net"
+		//base_path : "http://codemirror.net"
+		base_path : "/script/codemirror"
 	}, options);
 	var mode_list = new Object();
 	mode_list.clike = "text/x-csrc";
@@ -219,18 +220,34 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 				if(the_content.length==0) the_content = obj.text();
 				the_content += "\n";
 				CodeMirror.runMode(the_content.replace(/\t/g, String.fromCharCode(160)+String.fromCharCode(160)).replace(/ /g, String.fromCharCode(160)), settings.mode, callback);
-				var new_obj = $('<div class="CodeMirror">'+(settings.lineNumbers?('<div class="CodeMirror-gutter"><div class="CodeMirror-gutter-text">'+gutter.join('')+'</div></div>'):'<!--gutter-->')+'<div class="CodeMirror-lines">'+(settings.lineNumbers?'<div style="position: relative; margin-left: '+size.toString().length+'em;">':'<div>')+'<pre class="cm-s-default">'+accum.join('')+'</pre></div></div></div><div class="CodeMirror_scroll"></div>').insertAfter(obj);
+				
+				var new_obj = $('\
+<div class="CodeMirror" style="height:auto;">\
+	<div class="CodeMirror-scroll">\
+		<div class="CodeMirror-sizer">\
+			<div class="CodeMirror-lines" style="margin:-4px 0px -4px 0px;">\
+				<div style="position:relative;">\
+					<div style="position:absolute;top:0px;left:0px;">\
+						<div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left:0px;width:20px;background-color:#efefef;">'+gutter.join('')+'</div>\
+					</div>\
+					<pre class="cm-s-default">'+accum.join('')+'</pre>\
+				</div>\
+			</div>\
+		</div>\
+	</div>\
+</div>\
+<div class="CodeMirror_scroll"></div>\
+				').insertAfter(obj);
 				$(".CodeMirror").css({"position":"relative"});
-				new_obj.find(".CodeMirror-lines > div").css("margin-left","2em");
-				if(new_obj.find(".CodeMirror-gutter-text > pre").length>=1000) new_obj.find(".CodeMirror-lines > div").css("margin-left","3em");
+				new_obj.find(".CodeMirror-lines > div > pre").css("margin-left","2em");
 				new_obj.css("overflow-x","hidden");
 				obj.hide();
 			});
 			$('.CodeMirror-lines pre').css("overflow","hidden");
 			$('.CodeMirror_scroll').each(function(){
 				$(this).html($(this).prev().find(".CodeMirror-lines").html());
-				$(this).prev().find(".CodeMirror-gutter").height($(this).css("height"));
-				$(this).html($(this).prev().find(".CodeMirror-lines").find("pre:first").html());
+				$(this).prev().find(".CodeMirror-gutter-elt").height($(this).css("height"));
+				$(this).html($(this).prev().find(".cm-s-default").html());
 				$(this).css({"width":($(this).prev().css("width")+3),"height":"16px","overflow-x":"scroll","overflow-y":"hidden"});
 				$(this).css({"white-space":"nowrap"});
 				if(this.scrollWidth<=this.offsetWidth) {
@@ -245,8 +262,9 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 			});
 			if(typeof(settings.height)!="undefined") {
 				$(".CodeMirror").each(function(){
-					$(this).find(".CodeMirror-gutter").css("height",$(this).height());
+					$(this).find(".CodeMirror-linenumber").css("height",$(this).height()+30);
 					if($(this).height()<settings.height) {
+						$(this).css("height",$(this).height()+20);
 						$(this).css("overflow-y","hidden");
 					} else {
 						$(this).css({"overflow-y":"auto","max-height":settings.height});
@@ -264,7 +282,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 			});
 			if(typeof(settings.height)!="undefined") {
 				$(".CodeMirror-scroll").css({"height":settings.height});
-				$(".CodeMirror-gutter").css({"height":settings.height-18});
+				$(".CodeMirror-gutter-elt").css({"height":settings.height-18});
 			}
 		}
 		if(typeof(callback_func) == "function") callback_func();

@@ -492,14 +492,14 @@ for(var i=0; i<$id("webList").options.length; i++) {
 }
 $.getScript("../../script/jquery.codemirror.js", function(){
 	$('.source_code').codemirror({
-				lineWrapping: false,
+				lineWrapping: true,
 				height: 250
 		}, function(){
 				if($.codemirror_error) {
-					//alert("½Å±¾ÔØÈëÊ§°Ü£¡");
+					alert("½Å±¾ÔØÈëÊ§°Ü£¡");
 				} else {
-					$('.CodeMirror').css({width:'680px','overflow':"hidden","text-align":"left"});
 					$('.source_code').parent(".row").css("padding","0px");
+					$('.CodeMirror').css({width:'680px',height:'auto','overflow':"hidden","text-align":"left"});
 				}
 			});
 });

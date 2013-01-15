@@ -20,6 +20,9 @@ include(ROOT_PATH."/source/function/web.php");
 include(ROOT_PATH."/source/class/abstract.class.php");
 include(ROOT_PATH."/source/class/mystep.class.php");
 
+set_time_limit(1200);
+ob_end_clean();
+
 $mystep = new MyStep();
 $db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 $cache = $mystep->getInstance("MyCache", $setting['web']['cache_mode']);
@@ -45,21 +48,59 @@ if($record=getData("select * from ".$setting['db']['pre']."attachment where id =
 	}
 	$db->Query("update ".$setting['db']['pre']."attachment set file_count = file_count + 1 where id = ".$id);
 	$db->close();
-	header("Content-type: ".$record['file_type']);
-	header("Accept-Ranges: bytes");
-	header("Accept-Length: ".$record['file_size']);
-	header("Content-Disposition: attachment; filename=".getSafeCode($record['file_name'], "utf-8"));
-	if(strpos($record['file_type'],"image")===0 && ($setting['watermark']['mode'] & 2)==2 && $record['watermark']==1) {
-		img_watermark($the_file, ROOT_PATH."/".$setting['watermark']['img'], dirname($the_file)."/cache/".basename($the_file), $setting['watermark']['position'], array(
-			'rate'=>$setting['watermark']['img_rate'],
-			'alpha'=>$setting['watermark']['alpha'],
-			'font'=>ROOT_PATH."/".$setting['watermark']['txt_font'],
-			'fontsize'=>$setting['watermark']['txt_fontsize'],
-			'fontcolor'=>$setting['watermark']['txt_fontcolor'],
-			'bgcolor'=>$setting['watermark']['txt_bgcolor'],
-		));
+	
+	
+	if(isset($_SERVER['HTTP_RANGE'])) {
+		preg_match("/^bytes=(\d*)-(\d*)$/i", $_SERVER['HTTP_RANGE'], $match);
+		$pos_start = $match[1];
+		$pos_end = $match[2];
+		$pos_current = $pos_start;
+		$block_size = 4096;
+		$buffer = "";
+		if(empty($pos_end) || $pos_end>$record['file_size']-1) $pos_end = $record['file_size']-1;
+		if(empty($pos_start)) $pos_start = $record['file_size']-1-$pos_end;
+	}
+	
+	
+	if($pos_start>0 && $pos_start<$record['file_size'] && $pos_start<$pos_end) {
+		header("HTTP /1.1 206 Partial Content");
+		header("Cache-control: public");
+		header("Pragma: public");
+		Header("Content-Length: ".($pos_end-$pos_start+1));
+		header('Content-Range: bytes '.$pos_start.'-'.$pos_end.'/'.$record['file_size']);
+		header("Content-type: ".$record['file_type']);
+		header("Content-Disposition: attachment; filename=".getSafeCode($record['file_name'], "utf-8"));
+		$fp = fopen($the_file,'rb');
+		fseek($fp, $pos_start);
+		while(!feof($fp)) {
+			$buffer = stream_get_contents($fp, $block_size);
+			$pos_current += $block_size;
+			if($pos_current>=$pos_end) {
+				echo substr($buffer, 0, $block_size-($pos_current-$pos_end));
+				break;
+			} else {
+				echo $buffer;
+			}
+		}
+		fclose($fp);
 	} else {
-		readfile($the_file);
+		header("HTTP/1.1 200 OK");
+		header("Content-type: ".$record['file_type']);
+		header("Accept-Ranges: bytes");
+		header("Accept-Length: ".$record['file_size']);
+		header("Content-Disposition: attachment; filename=".getSafeCode($record['file_name'], "utf-8"));
+		if(strpos($record['file_type'],"image")===0 && ($setting['watermark']['mode'] & 2)==2 && $record['watermark']==1) {
+			img_watermark($the_file, ROOT_PATH."/".$setting['watermark']['img'], dirname($the_file)."/cache/".basename($the_file), $setting['watermark']['position'], array(
+				'rate'=>$setting['watermark']['img_rate'],
+				'alpha'=>$setting['watermark']['alpha'],
+				'font'=>ROOT_PATH."/".$setting['watermark']['txt_font'],
+				'fontsize'=>$setting['watermark']['txt_fontsize'],
+				'fontcolor'=>$setting['watermark']['txt_fontcolor'],
+				'bgcolor'=>$setting['watermark']['txt_bgcolor'],
+			));
+		} else {
+			readfile($the_file);
+		}
 	}
 } else {
 	$db->close();

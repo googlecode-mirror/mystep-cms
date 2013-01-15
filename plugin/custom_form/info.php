@@ -10,6 +10,6 @@ $info = array(
 );
 $rewrite = array(
 	array("cform/submit/(\d+)", "module.php?m=cf_submit&mid=$1"),
-	array("cform/list/(\d+)", "module.php?m=cf_list&mid=$1"),
+	array("cform/list/(\d+)(/(\d+))?", "module.php?m=cf_list&mid=$1&page=$3"),
 );
 ?>

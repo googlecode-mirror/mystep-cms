@@ -1,13 +1,13 @@
 /**************************************************
-*																								 *
+*																								  *
 * Author	: Windy_sk															*
 * Create	: 2003-05-03														*
-* Modified: 2007-12-9														 *
-* Email	 : windy_sk@126.com											*
-* HomePage: None (Maybe Soon)										 *
-* Notice	: U Can Use & Modify it freely,				 *
-*					 BUT PLEASE HOLD THIS ITEM.						*
-*																								 *
+* Modified: 2007-12-9														  *
+* Email   : windy2006@gmail.com                   *
+* HomePage: www.mysteps.cn                        *
+* Notice	: U Can Use & Modify it freely,				  *
+*					 BUT PLEASE HOLD THIS ITEM.							*
+*																								  *
 **************************************************/
 
 function setSlide() {

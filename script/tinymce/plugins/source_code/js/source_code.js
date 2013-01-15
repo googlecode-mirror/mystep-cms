@@ -4,7 +4,7 @@ var SourceCodeDialog = {
 	init : function() {
 		var f = document.forms[0];
 		var content = tinyMCEPopup.editor.selection.getContent();
-		if(content.match(/^<fieldset[\w\W]+?<textarea.+?type\="(\w+)">([\w\W]+)<\/textarea>[\w\W]*<\/fieldset>$/im)) {
+		if(content.match(/^<fieldset[\w\W]+?<textarea.+?type\="(\w+)">([\w\W]*)<\/textarea>[\w\W]*<\/fieldset>$/im)) {
 			document.forms[0].code_type.value = RegExp.$1;
 			content = HTMLDecode(RegExp.$2);
 		}

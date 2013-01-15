@@ -71,7 +71,7 @@ function cut_words($string) {
 	}
 	return $result;
 }
-function RndKey($lng, $scope=1) {
+function RndKey($length, $scope=1, $charset="gbk") {
 	//Coded By Windy2000 20020501 v1.0
 	$char_list	= array();
 	$char_list[]	= "1234567890";
@@ -79,57 +79,54 @@ function RndKey($lng, $scope=1) {
 	$char_list[]	= "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	$char_list[]	= "!@^()_:+\-";
 	$Rnd_Key	= "";
-	if($scope>0 && $scope<count($char_list)) {
-		for($i=1; $i<=$lng; $i++) {
+	if($scope>0 && $scope<=count($char_list)) {
+		for($i=1; $i<=$length; $i++) {
 			$Rnd_Str  = $char_list[mt_rand(1,$scope) - 1];
 			$Rnd_Key .= substr($Rnd_Str, mt_rand(0,strlen($Rnd_Str)-1), 1);
 		}
 	} else {
-		$args_num = func_num_args();
-		for($i=1; $i<=$lng; $i++) {
-			if($args_num >= 3) {
-				$Rnd_Key .= mt_rand(1, 10)>9 ? func_get_arg(mt_rand(3, $args_num)) : chr(mt_rand(0xb0,0xe0)).chr(mt_rand(0xa0,0xff));
-			} else {
-				$Rnd_Key .= chr(mt_rand(0xb0,0xe0)).chr(mt_rand(0xa0,0xff));
-			}
+		for($i=1; $i<=$length; $i++) {
+			$Rnd_Key .= chr(mt_rand(0xb0,0xf7)).chr(mt_rand(0xa0,0xfe));
 		}
+		if($charset!="gbk") $Rnd_Key = chg_charset($Rnd_Key, "gbk", $charset);
 	}
 	return($Rnd_Key);
 }
-function txt_watermark($code, $mode=true, $credit_str=" - Text Watermark By Windy2000", $url="") {
+function html_watermark($html, $rate=2, $scope=4, $str_append="", $charset="", $class_name="watermark", $tag_name="span", $jam_tag=false) {
 	//Coded By Windy2000 20041202 v2.0
 	/*
 	Please make sure that the following style exist on your style sheet of the watermark page
-	.watermark {
-		position:absolute;width:0px;height:1px;overflow:hidden;
+	.{$class_name} {
+		position:absolute;width:1px;height:1px;overflow:hidden;
 	}
 	*/
-	$file_line = preg_split("/<br( +\/)?>/", $code);
-	$max_count = count($file_line);
-	for($i=0; $i<$max_count; $i++) {
-		$this_str = "";
-		if($mode && strlen($code)<50000) {
-			preg_match_all("/(<(.+?)>)|(&([#\w]+);)/is", $file_line[$i], $arr_tag);
-			$arr_tag = $arr_tag[0];
-			$file_line[$i] = str_replace($arr_tag, chr(0), $file_line[$i]);
-			preg_match_all("/[\x80-\xff]?./", $file_line[$i], $arr_char);
-			$arr_char = $arr_char[0];
-			$max_count2 = count($arr_char);
-			for($j=0; $j<$max_count2; $j++) {
-				if(ord($arr_char[$j])==0) {
-					$this_str .= array_shift($arr_tag);
-				} elseif(mt_rand(1, 10)>8) {
-					$this_str .= "<span class=watermark>".RndKey(mt_rand(1, 2),0)."</span>".$arr_char[$j];
-				} else {
-					$this_str .= $arr_char[$j];
-				}
+	if(strlen($html)>50000) return $html;
+	if($scope>5 && empty($charset)) $charset = "utf-8";
+	$result = "";
+	$cur_tag = "";
+	$rnd_str = "";
+	preg_match_all("/(<(.+?)>)|(&([#\w]+);)/is", $html, $arr_tag);
+	$arr_tag = $arr_tag[0];
+	$html = str_replace($arr_tag, chr(0), $html);
+	$arr_char = cutString($html);
+	for($i=0,$m=count($arr_char); $i<$m; $i++) {
+		if(ord($arr_char[$i])==0) {
+			$cur_tag = array_shift($arr_tag);
+			if(!empty($str_append) && preg_match("/<(\/(p|div))|(br( +\/)?)>/i", $cur_tag)) {
+				$cur_tag = "<{$tag_name} class='{$class_name}'>".$str_append."</{$tag_name}>".$cur_tag;
 			}
+			$result .= $cur_tag;
+		} elseif(mt_rand(1, 10)<$rate) {
+			$rnd_str = RndKey(mt_rand(1, 2), $scope, $charset);
+			if($jam_tag && mt_rand(1, 10)<6) {
+				$rnd_str .= "<{$tag_name} class='".RndKey(mt_rand(3, 6),2)."'>".RndKey(mt_rand(1, 2), $scope, $charset)."</{$tag_name}>".RndKey(mt_rand(1, 2), $scope, $charset);
+			}
+			$result .= "<{$tag_name} class='{$class_name}'>".$rnd_str."</{$tag_name}>".$arr_char[$i];
 		} else {
-			$this_str = $file_line[$i]."<span class=watermark>".RndKey(mt_rand(1, 10),0)." </span>";
+			$result .= $arr_char[$i];
 		}
-		$file_line[$i] = $this_str.((mt_rand(1, 10)>8 && !empty($url))?"<a href='{$url}' target='_blank' style='color:transparent;'>(HIT)</a>":"<span class=watermark>{$credit_str}</span>");
 	}
-	return join("<br />\n", $file_line);
+	return $result;
 }
 function add_slash(&$para) {
 	//Coded By Windy2000 20030805 v1.0
@@ -199,7 +196,12 @@ function HtmlTrans(&$para) {
 	$replace = array("&#39;", "&quot;", "&lt;", "&gt;", "&nbsp; ", "&nbsp; &nbsp; ");
 	if(is_array($para)) {
 		foreach($para as $key => $value) {
-			$para[$key] = str_replace($search, $replace, $value);
+			if(is_array($para)) {
+				HtmlTrans(&$value);
+				$para[$key] = $value;
+			} else {
+				$para[$key] = str_replace($search, $replace, $value);
+			}
 		}
 	} else {
 		$para = str_replace($search, $replace, $para);
@@ -253,16 +255,6 @@ function html2js($str) {
 	}
 	return $result;
 }
-function getSafeCode($value, $charset) {
-	$value_1 = $value;
-	$value_2 = chg_charset($value_1, "utf-8", $charset);
-	$value_3 = chg_charset($value_2, $charset, "utf-8");
-	if(strlen($value_1) == strlen($value_3)) {
-		return $value_2;
-	} else {
-		return $value_1;
-	}
-}
 function chg_charset($content, $from="gbk", $to="utf-8") {
 	if(strtolower($from)==strtolower($to)) return $content;
 	$result = null;
@@ -291,6 +283,22 @@ function chg_charset_file($file_src, $file_dst, $from="gbk", $to="utf-8") {
 	$content = file_get_contents($file_src);
 	$content = iconv($from, $to.'//TRANSLIT//IGNORE',$content);
 	return WriteFile($file_dst, $content, "wb");
+}
+function getSafeCode($str, $charset) {
+	if(is_array($str)) {
+		foreach($str as $key => $value) {
+			$str[$key] = getSafeCode($value, $charset);
+		}
+	} else {
+		$str_1 = $str;
+		$str_2 = chg_charset($str_1, "utf-8", $charset);
+		$str_3 = chg_charset($str_2, $charset, "utf-8");
+		if(strlen($str_1) == strlen($str_3)) {
+			return $str_2;
+		} else {
+			return $str_1;
+		}
+	}
 }
 function json_decode_js($json, $assoc = FALSE) {
 	$json = str_replace(array("\n","\r"),"",$json);

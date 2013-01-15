@@ -2,8 +2,8 @@
 *                                                 *
 * Author  : Windy_sk                              *
 * Create  : 2012-02-03                            *
-* Email   : windy_sk@126.com                      *
-* HomePage: None (Maybe Soon)                     *
+* Email   : windy2006@gmail.com                   *
+* HomePage: www.mysteps.cn                        *
 * Notice  : U Can Use & Modify it freely,         *
 *           BUT PLEASE HOLD THIS ITEM.            *
 *                                                 *

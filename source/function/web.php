@@ -355,6 +355,7 @@ function getUrl($mode, $idx="", $page=1, $web_id=0) {
 	if($webInfo===false) return "#";
 	$url = $webInfo['host'];
 	if(strpos($url, ",")!==false) $url = substr($url, 0, strpos($url, ","));
+	$url = "http://".$url;
 	switch($mode) {
 		case "read":
 			if(is_array($idx)) {
@@ -372,7 +373,7 @@ function getUrl($mode, $idx="", $page=1, $web_id=0) {
 						$cat_idx = "";
 					}
 				}
-				$url = "http://".$url."/".$setting['rewrite']['read']."/";
+				$url .= "/".$setting['rewrite']['read']."/";
 				if($news_id!=0) {
 					if(empty($cat_idx)) $cat_idx = "misc";
 					$url .= $cat_idx."/";
@@ -380,9 +381,9 @@ function getUrl($mode, $idx="", $page=1, $web_id=0) {
 				}
 			} else {
 				if($news_id!=0) {
-					$url = "http://".$url."/read.php?id=".$news_id."&page=".$page;
+					$url .= "/read.php?id=".$news_id."&page=".$page;
 				} else {
-					$url = "http://".$url."/list.php?cat=".$cat_idx;
+					$url .= "/list.php?cat=".$cat_idx;
 				}
 			}
 			break;
@@ -402,7 +403,7 @@ function getUrl($mode, $idx="", $page=1, $web_id=0) {
 						$cat_idx = "";
 					}
 				}
-				$url = "http://".$url."/".$setting['rewrite']['list']."/";
+				$url .= "/".$setting['rewrite']['list']."/";
 				if(!empty($cat_idx)) {
 					$url .= $cat_idx."/";
 				} else {
@@ -415,19 +416,19 @@ function getUrl($mode, $idx="", $page=1, $web_id=0) {
 				if($page>1) $url .= "_{$page}";
 				$url .= $setting['gen']['cache_ext'];
 			} else {
-				$url = "http://".$url."/list.php?cat=".$cat_idx."&pre=".$cat_pre."&page=".$page;
+				$url .= "/list.php?cat=".$cat_idx."&pre=".$cat_pre."&page=".$page;
 			}
 			break;
 		case "tag":
 			if($setting['rewrite']['enable']) {
-				$url = "http://".$url."/tag/".$idx.($page==1?"":"_{$page}").$setting['gen']['cache_ext'];
+				$url .= "/tag/".$idx.($page==1?"":"_{$page}").$setting['gen']['cache_ext'];
 			} else {
-				$url = "http://".$url."/tag.php?tag=".$idx."&page=".$page;
+				$url .= "/tag.php?tag=".$idx."&page=".$page;
 			}
 			break;
 		default:
 			global $mystep;
-			$url = $mystep->getUrl($mode, $idx, $page, $web_id);
+			$url = $mystep->getUrl($mode, $url, $idx, $page);
 			break;
 	}
 	$url = str_replace("//", "/", $url);

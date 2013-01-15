@@ -218,11 +218,8 @@ mytpl;
 		return $result;
 	}
 	
-	public static function getUrl($idx="", $page=1, $web_id=1) {
+	public static function getUrl($url, $idx, $page=1) {
 		global $setting;
-		if(!is_numeric($page)) $page = 1;
-		$webInfo = getParaInfo("website", "web_id", $web_id);
-		$url = "http://".$webInfo['host'];
 		if($setting['rewrite']['enable']) {
 			$url .= "/survey/".$idx;
 		} else {

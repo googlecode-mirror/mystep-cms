@@ -124,20 +124,17 @@ $catid = 0;
 		return $result;
 	}
 	
-	public static function getUrl($mode="", $idx="", $page=1, $web_id=1) {
+	public static function getUrl($mode, $url, $idx="", $page=1) {
 		global $setting;
-		if(!is_numeric($page)) $page = 1;
-		$webInfo = getParaInfo("website", "web_id", $web_id);
-		$url = "http://".$webInfo['host'];
 		if($setting['rewrite']['enable']) {
 			if($mode=="list") {
-				$url .= "/cform/list/".$idx;
+				$url .= "/cform/list/".$idx."/".$page;
 			} else {
 				$url .= "/cform/submit/".$idx;
 			}
 		} else {
 			if($mode=="list") {
-				$url .= "/module.php?m=cf_list&mid=".$idx;
+				$url .= "/module.php?m=cf_list&mid=".$idx."&page=".$page;
 			} else {
 				$url .= "/module.php?m=cf_submit&mid=".$idx;
 			}
@@ -147,12 +144,12 @@ $catid = 0;
 		return $url;
 	}
 	
-	public static function getUrl_list($idx="", $page=1, $web_id=1) {
-		return self::getUrl("list", $idx, $page, $web_id);
+	public static function getUrl_list($url, $idx="", $page=1) {
+		return self::getUrl("list", $url, $idx, $page);
 	}
 	
-	public static function getUrl_submit($idx="", $page=1, $web_id=1) {
-		return self::getUrl("submit", $idx, $page, $web_id);
+	public static function getUrl_submit($url, $idx="", $page=1) {
+		return self::getUrl("submit", $url, $idx, $page);
 	}
 	
 	public static function tag_list(MyTPL $tpl, $att_list = array()) {

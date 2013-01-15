@@ -17,6 +17,7 @@
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.5"
 	};
+	var popupLayer_noClose = false;
 
 	$.setupJMPopups = function(settings) {
 		setupJqueryMPopups = jQuery.extend(setupJqueryMPopups, settings);
@@ -36,8 +37,10 @@
 				beforeClose: function() {},
 				afterClose: function() {},
 				reloadSuccess: null,
-				cache: false
+				cache: false,
+				no_close: false
 			}, settings);
+			popupLayer_noClose = settings.no_close;
 			loadPopupLayerContent(settings, true);
 			return this;
 		}
@@ -207,7 +210,7 @@
 			$("body").append("<div class='popshow' id='" + idElement + "'><!-- --></div>");
 			var theTitle = $("<div/>").attr("id", idElement+"_title").addClass("title").html(popupObject.title);
 			var theContent = $("<div/>").attr("id", idElement+"_content").addClass("content").html(data).css({"width":"100%", "height":"auto", "overflow":"hidden"});
-			var theClose = $("<span id='"+idElement+"_close'>X</span>").css({"position":"absolute","right":"4px","top":"4px","font-weight":"bold","cursor":"pointer","font-size":"14px","padding":"0px 3px 0px 3px", "color":"#fff", "border":"1px solid #fff", "background-color":"#679cc6"}).appendTo(theTitle);
+			if(popupLayer_noClose==false) var theClose = $("<span id='"+idElement+"_close'>X</span>").css({"position":"absolute","right":"4px","top":"4px","font-weight":"bold","cursor":"pointer","font-size":"14px","padding":"0px 3px 0px 3px", "color":"#fff", "border":"1px solid #fff", "background-color":"#679cc6"}).appendTo(theTitle);
 			data = theTitle.outerHTML() + theContent.outerHTML();
 			var zIndex = parseInt(openedPopups.length == 1 ? 500000 : $("#popupLayer_" + openedPopups[openedPopups.length - 2].name).css("z-index")) + 2;
 		}	else {
@@ -286,7 +289,7 @@
 	});
 
 	$(document).keydown(function(e){
-		if (e.keyCode == 27) {
+		if (e.keyCode == 27 && popupLayer_noClose==false) {
 			$.closePopupLayer();
 		}
 	});
@@ -332,14 +335,16 @@ jQuery.fn.drag = function(){
 	});
 }
 
-function showPop(name, title, type, content, width, height) {
+function showPop(name, title, type, content, width, height, no_close) {
+	if(no_close==null) no_close = false;
 	$.openPopupLayer({
 		'name': name,
 		'title': title,
 		'type': type,
 		'content': content,
 		'width': width,
-		'height': height
+		'height': height,
+		'no_close' : no_close
 	});
 }
 
@@ -358,6 +363,7 @@ window.alert = function(info, nl) {
 
 window.confirm_org = window.confirm;
 window.confirm = function(info, func, btn, title, nl) {
+	if(typeof(info)!="string") info = info.toString();
 	if(info.length==0) return;
 	if(func==null || $("#info_show").length==0) return confirm_org(info);
 	if(title==null) title = "MyStep";
@@ -376,6 +382,7 @@ window.confirm = function(info, func, btn, title, nl) {
 
 window.prompt_org = window.prompt;
 window.prompt = function(info, func, value, title, btn, nl) {
+	if(typeof(info)!="string") info = info.toString();
 	if(info.length==0) return;
 	if(func==null || $("#info_show").length==0) return prompt_org(info, value);
 	if(nl!=false) nl = true;
@@ -420,6 +427,6 @@ $(function(){
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.4"
 	});
-	$("<div>").attr("id", "info_show").addClass("info_show").html('<div class="info"></div><div class="button"></div>').appendTo("body");
+	$("<div>").attr("id", "info_show").addClass("info_show").html('<div class="info">aaa</div><div class="button">bbb</div>').appendTo("body");
 	$("#css_jmpopups").attr("href", rlt_path+"script/jquery.jmpopups.css");
 });
