@@ -2654,7 +2654,6 @@ $setting = $cur_setting;
 				'images/arrow.png',
 				'images/editor.css',
 				'images/style.css',
-				'include/config.php',
 				'include/parameter.php',
 				'list.php',
 				'plugin/comment/class.php',
