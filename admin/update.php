@@ -159,14 +159,14 @@ mystep;
 				$script_update .= <<<mystep
 \$db->ExeSqlFile("run.sql");
 
-\\\\------------------------------
+//------------------------------
 mystep;
 			}
 			if(count($update_info['code'])>0) {
-				$script_update .= "\n\n".join("\n\\\\------------------------------\n", $update_info['code'])."\n\n";
+				$script_update .= "\n\n".join("\n//------------------------------\n", $update_info['code'])."\n\n";
 			}
 			$script_update .= <<<mystep
-\\\\------------------------------
+//------------------------------
 
 MultiDel(ROOT_PATH."/_update");
 \$goto_url = "{$setting['web']['url']}/{$setting['path']['admin']}";
