@@ -68,7 +68,7 @@ mystep;
 		$pre_list = array();
 		foreach($website as $cur_web) {
 			$cur_setting = getSubSetting($cur_web['web_id']);
-			$pre_list[] = "`".$cur_setting['db']['name']."`.`".$cur_setting['db']['pre']."`";
+			$pre_list[] = $cur_setting['db']['name']."`.`".$cur_setting['db']['pre'];
 		}
 		$strFind = array("{db_name}", "{pre}", "{charset}");
 		$strReplace = array($setting['db']['name'], $setting['db']['pre'], $setting['db']['charset']);
