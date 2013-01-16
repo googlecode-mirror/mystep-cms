@@ -3262,6 +3262,55 @@ $setting = $cur_setting;
 				'source/function/web.php',
 				'template/admin/web_template_input.tpl',
 		),
+		'code' => '
+$cur_setting = $setting;
+unset($setting);
+include(ROOT_PATH."/include/config.php");
+$ignore_list = array (
+  0 => ".",
+  1 => "..",
+  2 => "_maker",
+  3 => "cache",
+  4 => "update",
+  5 => "install.lock",
+  6 => "article",
+  7 => "pic",
+  8 => "tmp",
+  9 => "web.config",
+  10 => "aspnet_client",
+  11 => ".svn",
+  12 => "2011",
+  13 => "2012",
+  14 => "2013",
+  15 => "2014",
+  16 => "_bak",
+  17 => "_test",
+  18 => "_archive",
+  19 => "install",
+  20 => "xcache",
+);
+$rewrite_list_str = var_export($rewrite_list, true);
+$expire_list_str = var_export($expire_list, true);
+$ignore_list_str = var_export($ignore_list, true);
+if(empty($rewrite_list_str)) $rewrite_list_str = "array()";
+if(empty($expire_list_str)) $expire_list_str = "array()";
+if(empty($ignore_list_str)) $ignore_list_str = "array()";
+$content = <<<mystep
+<?php
+\$setting = array();
+
+/*--settings--*/
+\$rewrite_list = {$rewrite_list_str};
+\$expire_list = {$expire_list_str};
+\$ignore_list = {$ignore_list_str};
+\$authority = "{$authority}";
+?>
+mystep;
+$content = str_replace("/*--settings--*/", makeVarsCode($setting, "\$setting"), $content);
+WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+unset($setting);
+$setting = $cur_setting;
+		',
 	),
 );
 ?>
