@@ -925,7 +925,8 @@ function GetIp() {
 	} elseif(isset($_SERVER["HTTP_CLIENT_IP"])) {
 		$ip = $_SERVER["HTTP_CLIENT_IP"];
 	}
-	if($ip!=$ip_org) $ip = $ip_org.",".$ip;
+	if(preg_match("/[a-z]+/i", $ip)) $ip = "";
+	if(!empty($ip) && $ip!=$ip_org) $ip = $ip_org.",".$ip;
 	return $ip;
 }
 function GetMicrotime($rate = 3) {
