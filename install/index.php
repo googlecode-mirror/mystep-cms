@@ -63,6 +63,57 @@ mystep;
 			$step = 21;
 		} else {
 			mysql_close($link);
+			$new_setting = $setting;
+			unset(
+				$new_setting['web']['s_user'],
+				$new_setting['web']['s_pass'],
+				$new_setting['web']['cache_mode'],
+				
+				$new_setting['db']['host'],
+				$new_setting['db']['user'],
+				$new_setting['db']['pass'],
+				$new_setting['db']['pconnect'],
+				$new_setting['db']['charset'],
+				
+				$new_setting['gen']['charset'],
+				$new_setting['gen']['gzip_level'],
+				$new_setting['gen']['cache'],
+				$new_setting['gen']['cache_ext'],
+				$new_setting['gen']['timezone'],
+				$new_setting['gen']['update'],
+				$new_setting['gen']['minify'],
+				$new_setting['gen']['etag'],
+				
+				$new_setting['cookie']['path'],
+				$new_setting['cookie']['prefix'],
+				
+				$new_setting['watermark']['position'],
+				$new_setting['watermark']['img_rate'],
+				$new_setting['watermark']['txt_font'],
+				$new_setting['watermark']['txt_fontsize'],
+				$new_setting['watermark']['txt_fontcolor'],
+				$new_setting['watermark']['txt_bgcolor'],
+				$new_setting['watermark']['alpha'],
+				$new_setting['watermark']['credit'],
+				
+				$new_setting['rewrite'],
+				$new_setting['email'],
+				$new_setting['js'],
+				$new_setting['list'],
+				$new_setting['session'],
+				$new_setting['path'],
+				$new_setting['content'],
+				$new_setting['memcache']
+			);
+			$result = <<<mystep
+<?php
+\$setting_sub = array();
+
+/*--settings--*/
+?>
+mystep;
+			$result = str_replace("/*--settings--*/", makeVarsCode($new_setting, '$setting_sub'), $result);
+			WriteFile(ROOT_PATH."/include/config_main.php", $result, "w");
 		}
 		break;
 	case 4:

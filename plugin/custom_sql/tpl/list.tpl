@@ -27,7 +27,7 @@
 				</tr>
 <!--loop:start key="record" time="20"-->
 				<tr>
-					<td class="row"><!--record_no--></td>
+					<td class="row"><!--record_id--></td>
 					<td class="row"><!--record_name--></td>
 					<td class="row"><!--record_fields--></td>
 					<td class="row" align="center"><a href="?method=view&id=<!--record_id-->" target="_blank">浏览</a> <a href="?method=export&id=<!--record_id-->">导出</a> <a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('请按确定继续。')">删除</a></td>

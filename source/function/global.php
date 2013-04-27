@@ -128,37 +128,27 @@ function html_watermark($html, $rate=2, $scope=4, $str_append="", $charset="", $
 	}
 	return $result;
 }
-function add_slash(&$para) {
+function add_slash(&$str) {
 	//Coded By Windy2000 20030805 v1.0
-	if(is_array($para)) {
-		foreach($para as $key => $value) {
-			if(is_array($value)) {
-				add_slash($value);
-				$para[$key] = $value;
-			} else {
-				if(is_string($value)) $para[$key] = addslashes($value);
-			}
+	if(is_array($str)) {
+		foreach($str as $key => $value) {
+			$str[$key] = add_slash($value);
 		}
-	} elseif(is_string($para)) {
-		$para = addslashes($para);
+	} elseif(is_string($str)) {
+		$str = addslashes($str);
 	}
-	return;
+	return $str;
 }
-function strip_slash(&$para) {
+function strip_slash(&$str) {
 	//Coded By Windy2000 20030805 v1.0
-	if(is_array($para)) {
-		foreach($para as $key => $value) {
-			if(is_array($value)) {
-				strip_slash($value);
-				$para[$key] = $value;
-			} else {
-				if(is_string($value)) $para[$key] = stripslashes($value);
-			}
+	if(is_array($str)) {
+		foreach($str as $key => $value) {
+			$str[$key] = strip_slash($value);
 		}
-	} else {
-		if(is_string($value)) $para = stripslashes($para);
+	} elseif(is_string($str)) {
+		$str = stripslashes($str);
 	}
-	return;
+	return $str;
 }
 function arrayMerge($arr_1, $arr_2) {
 	if(!is_array($arr_1)) return false;
@@ -190,33 +180,35 @@ function arrayMerge($arr_1, $arr_2) {
 	}
 	return $arr_1;
 }
-function HtmlTrans(&$para) {
+function HtmlTrans(&$str) {
 	//Coded By Windy2000 20030805 v1.0
 	$search = array("'", "\"", "<", ">", "  ", "\t");
 	$replace = array("&#39;", "&quot;", "&lt;", "&gt;", "&nbsp; ", "&nbsp; &nbsp; ");
-	if(is_array($para)) {
-		foreach($para as $key => $value) {
-			if(is_array($para)) {
-				HtmlTrans(&$value);
-				$para[$key] = $value;
-			} else {
-				$para[$key] = str_replace($search, $replace, $value);
-			}
+	if(is_array($str)) {
+		foreach($str as $key => $value) {
+			$str[$key] = HtmlTrans(&$value);
 		}
-	} else {
-		$para = str_replace($search, $replace, $para);
+	} elseif(is_string($str)) {
+		$str = str_replace($search, $replace, $str);
 	}
-	return;
+	return $str;
 }
-function modi_blank($str) {
+function modi_blank(&$str) {
 	//Coded By Windy2000 20020503 v1.0
-	return preg_replace("/(\s)+/", "\\1", trim($str));
+	if(is_array($str)) {
+		foreach($str as $key => $value) {
+			$str[$key] = modi_blank($value);
+		}
+	} elseif(is_string($str)) {
+		$str = preg_replace("/(\s)+/", "\\1", trim($str));
+	}
+	return $str;
 }
 function txt2html($content) {
 	//Coded By Windy2000 20020503 v1.0
 	$content = str_replace("  ", "&nbsp; ", $content);
-	$content = str_replace("\r\n", "<br />\n", $content);
-	$content = str_replace("\r", "<br />\n", $content);
+	$content = str_replace("\r\n", "\n", $content);
+	$content = str_replace("\n", "<br />\n", $content);
 	$content = str_replace("\t", " &nbsp; &nbsp; &nbsp; &nbsp;", $content);
 	return $content;
 }
@@ -387,12 +379,6 @@ function is_utf8($string) {
 
 
 /*---------------------------------------Functions 4 File Start---------------------------------------*/
-function RemoveHeader($content) {
-	//Coded By Windy2000 20070420 v1.1
-	$content = preg_replace("/^.+?\r\n\r\n/s", "", $content);
-	$content = preg_replace("/^\w+[\r\n]+/", "", $content);
-	return $content;
-}
 function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $timeout=10, $fake_ip="") {
 	//Coded By Windy2000 20080320 v1.4
 	$errno = "";
@@ -451,10 +437,15 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	fputs($fp, $output);
 	$status = stream_get_meta_data($fp);
 	if($status['timeout']) return false;
+	
+	$gzip = false;
+	while(true) {
+		$buffer = fgets($fp, 512);
+		if(strpos($buffer, "Content-Encoding: gzip")!==false) $gzip = true;
+		if(strlen($buffer)<3) break;
+	}
 	$content = stream_get_contents($fp);
 	fclose($fp);
-	$gzip = (strpos($content, "Content-Encoding: gzip")!==false);
-	$content = RemoveHeader($content);
 	if($gzip) $content = gzdecode($content);
 	//if($gzip) $content = gzinflate(substr($content,10));
 	return $content;
@@ -954,6 +945,30 @@ function GetTimeDiff($time_start, $decimal = 3, $micro = true) {
 	if($micro) $time *= 1000;
 	$time = preg_replace("/^([\d]+.[\d]{".$decimal."})[\d]*$/","\\1",(string)$time);
 	return $time;
+}
+function getDate_cn($date="") {
+	if(empty($date)) $date=time();
+	if(!is_numeric($date)) $date = strtotime($date);
+	$the_year = (STRING)date("Y");
+	$the_month = (STRING)date("n");
+	$the_day = (STRING)date("j");
+	$num_cn = array();
+	$num_cn[] = array("○","十","廿","卅");
+	$num_cn[] = array("○","一","二","三","四","五","六","七","八","九");
+	$result = "";
+	for($i=0,$m=strlen($the_year);$i<$m;$i++) {
+		$result .= $num_cn[1][$the_year[$i]];
+	}
+	$result .= "年";
+	for($i=0,$m=strlen($the_month);$i<$m;$i++) {
+		$result .= $num_cn[$i][$the_month[$i]];
+	}
+	$result .= "月";
+	for($i=0,$m=strlen($the_day);$i<$m;$i++) {
+		$result .= $num_cn[$i][$the_day[$i]];
+	}
+	$result .= "日";
+	return $result;
 }
 function GetTinyUrl($url) {
 	return file_get_contents("http://tinyurl.com/api-create.php?url=".urlencode($url));

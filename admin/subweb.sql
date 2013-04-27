@@ -14,7 +14,7 @@ CREATE TABLE `{pre}news_show` (
 	`cat_id` SMALLINT UNSIGNED NOT NULL COMMENT '新闻类型索引',
 	`web_id` TINYINT UNSIGNED DEFAULT 0 COMMENT '所属子站',
 	`subject` Char(200) NOT NULL COMMENT '新闻标题',
-	`style` Char(40) NOT NULL COMMENT '标题样式',
+	`style` Char(40) NOT NULL DEFAULT '' COMMENT '标题样式',
 	`views` MEDIUMINT UNSIGNED DEFAULT 0 COMMENT '浏览次数',
 	`describe` Char(255) DEFAULT '' COMMENT '新闻描述',
 	`original` Char(40) NOT NULL DEFAULT '' COMMENT '作者/出处',

@@ -5,38 +5,23 @@ $method = $req->getServer("QUERY_STRING");
 $log_info = "";
 if($method=="update" && count($_POST)>0) {
 	$log_info = $setting['language']['admin_web_rewrite_update'];
-	$cur_setting = $setting;
-	unset($setting);
-	include(ROOT_PATH."/include/config.php");
-	$setting['rewrite']['enable'] = ($_POST['rewrite']=="true");
-	$setting['rewrite']['read'] = $_POST['read'];
-	$setting['rewrite']['list'] = $_POST['list'];
-	$setting['rewrite']['tag'] = $_POST['tag'];
-	$rewrite_list = array();
+	
+
+	$setting_new = array();
+	$setting_new['rewrite'] = array();
+	$setting_new['rewrite']['enable'] = ($_POST['rewrite']=="true");
+	$setting_new['rewrite']['read'] = $_POST['read'];
+	$setting_new['rewrite']['list'] = $_POST['list'];
+	$setting_new['rewrite']['tag'] = $_POST['tag'];
+	$para_new = array();
+	$para_new["rewrite"] = array();
 	$max_count = count($_POST['rule']);
 	for($i=0; $i<$max_count; $i++) {
 		if(empty($_POST['rule'][$i])) continue;
-		$rewrite_list[] = array($_POST['rule'][$i], $_POST['jump'][$i]);
+		$para_new["rewrite"][] = array($_POST['rule'][$i], $_POST['jump'][$i]);
 	}
-	$rewrite_list_str = var_export($rewrite_list, true);
-	$expire_list_str = var_export($expire_list, true);
-	$ignore_list_str = var_export($ignore_list, true);
-	$content = <<<mystep
-<?php
-\$setting = array();
-
-/*--settings--*/
-\$rewrite_list = {$rewrite_list_str};
-\$expire_list = {$expire_list_str};
-\$ignore_list = {$ignore_list_str};
-\$authority = "{$authority}";
-?>
-mystep;
-	$content = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $content);
-	WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+	changeSetting($setting_new, $para_new);
 	if(!empty($_POST['rule_new'])) WriteFile(ROOT_PATH."/.htaccess", $_POST['rule_new'], "wb");
-	unset($setting);
-	$setting = $cur_setting;
 } else {
 	$tpl_info['idx'] = "web_rewrite";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);

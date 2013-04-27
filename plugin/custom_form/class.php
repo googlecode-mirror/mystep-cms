@@ -9,13 +9,15 @@ class plugin_custom_form implements plugin {
 		if($plugin_info = getParaInfo("plugin", "class", $info['class'])) {
 			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
-		global $db, $setting, $admin_cat;
+		global $db, $admin_cat;
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_custom_form", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '±íµ¥', 'custom_form.php', '../plugin/custom_form/', 0, 0, '".$info['intro']."')");
 		$new_id = $db->GetInsertId();
+		deleteCache("admin_cat");
+		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_install']."
@@ -28,7 +30,6 @@ class plugin_custom_form implements plugin {
 			WriteFile(dirname(__FILE__)."/config.php", "<?php
 \$catid = {$new_id};
 ?>", "wb");
-			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
@@ -37,7 +38,6 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
-			deleteCache("plugin");
 			buildParaList("plugin");
 			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
@@ -72,6 +72,8 @@ mystep;
 		$db->query("drop table ".$setting['db']['pre']."custom_form");
 		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'custom_form.php%'");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		deleteCache("admin_cat");
+		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_uninstall']."
@@ -81,7 +83,6 @@ mystep;
 			</pre>
 			");
 		} else {
-			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
@@ -90,7 +91,6 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
-			deleteCache("plugin");
 			buildParaList("plugin");
 			WriteFile(dirname(__FILE__)."/config.php", '<?php
 $catid = 0;
@@ -157,7 +157,7 @@ $catid = 0;
 		$result = "";
 		if(!isset($att_list['mid'])) return "";
 		$mid = $att_list['mid'];
-		if(!is_numeric($att_list['mid'])) eval('$mid = '.$mid.";");
+		if(!is_numeric($att_list['mid'])) eval('$mid = "'.$mid.'";');
 		if(!isset($att_list['lng'])) $att_list['lng'] = "cn";
 		if(!isset($att_list['order'])) $att_list['order'] = "id desc";
 		if(!isset($att_list['limit'])) $att_list['limit'] = 0;
@@ -188,6 +188,9 @@ while(\$record=\$db->getRS()) {
 		\$record['name'] = \$record['name_en'];
 	} elseif("{$att_list['lng']}"=="en") {
 		\$record['name_en'] = ucwords(strtolower(\$record['name_en']));
+		foreach(\$record as \$key => \$value) {
+			\$record[$key] = itemTrans(\$value, \$key, 0, 1);
+		}
 	}
 	echo <<<content
 {$unit}

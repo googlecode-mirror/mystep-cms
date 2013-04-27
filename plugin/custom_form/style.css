@@ -1,4 +1,5 @@
 .cf_form {border:1px #629DC5 solid;}
+.cf_form label, .cf_form span{color:#000;}
 .cf_form .cat {font-weight:bold; background-color:#F2F9FD; border:1px solid #629DC5; padding:5px 10px; vertical-align:middle;}
 .cf_form .row {border:1px solid #629DC5; background-color:#FFFFFF; padding:5px 10px; vertical-align:middle;}
 .cf_form .row td {border:1px solid #629DC5; background-color:#FFFFFF; padding:5px 10px; vertical-align:middle;}

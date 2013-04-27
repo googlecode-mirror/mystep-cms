@@ -100,17 +100,8 @@
 .box_s2 .title span{float:left;width:80px;height:24px;margin:0px 10px 0px 10px;text-align:center;padding-top:3px;cursor:pointer;}
 .box_s2 .title .highlight{background:url(switch_bar_2.png) 0px 0px no-repeat;color:#2f7fb8;}
 
-.login{text-align:center;}
-.login .info{width:500px;color:red;font-weight:bold;font-size:18px;margin:20px auto 0px auto;}
-.login .box{width:300px;margin:20px auto 60px auto;float:none;font-weight:bold;}
-.login .box .content{text-align:center;line-height:36px;font-size:14px;}
-#login{font-weight:bold;}
-#login img{height:40px;}
-#login div{padding:0px 10px 7px 10px;text-align:center;}
-#login .reset{width:40px;height:24px;overflow:hidden;background-image:url(btn_reset.png);border:0px;}
-#login .submit{width:40px;height:24px;overflow:hidden;background-image:url(btn_submit.png);border:0px;}
-#login a{color:blue;}
-#login a:hover{color:red;}
+#login .reset{background-image:url(btn_reset.png);}
+#login .submit{background-image:url(btn_submit.png);}
 
 #pic_show{width:100%;height:60px;border:1px #d3e2eb solid;overflow:hidden;cursor:pointer;}
 #pic_show DIV{height:60px;font-weight:bold;color:#268bc0;text-align:center;}
@@ -120,18 +111,6 @@
 #pic_show .m{width:949px;overflow:hidden;}
 #pic_show .marquee{position:relative;top:0px;left:2px;white-space:nowrap;word-break:keep-all;}
 #pic_show .marquee img{width:180px;height:60px;}
-
-.slide{position:relative;width:100%;height:100%;}
-.slide a{color:#FFF;}
-.slide a:hover{color:#FFF;}
-.slice dl{display:none;}
-.slide dd{text-align:center;}
-.slide dd img{width:100%;height:100%;}
-.slide .slide-num{position:absolute;bottom:20px;height:20px;font-size:12px;width:100%;}
-.slide .slide-num ul{float:right;}
-.slide .slide-num li{float:left;padding:0 7px;background:#666;margin:0px 5px 0px 0px;color:#FFF;height:20px;line-height:20px;cursor:pointer;}
-.slide .slide-num li.selected{background:#faa213;cursor:auto;}
-.slide .slide-show{position:absolute;bottom:0px;background:#faa213;height:20px;font-weight:bold;font-size:14px;width:100%;line-height:20px;padding:0 5px;}
 
 .taglist{width:94%;background:#F9F9F9;border:1px solid #DFDFDF;margin:10px auto 10px auto;overflow:hidden;padding:10px;}
 .taglist h4{font-weight:bold;margin-bottom:10px;}
@@ -147,9 +126,10 @@
 .page_main .page strong{font-weight:bold;color:#FF0084}
 .page_main .page a:hover{color:#FFF;background:#039;text-decoration:none;}
 
-.page_main .main{min-height:500px;height:auto!important;width:750px;}
+.page_main .main{min-height:500px;height:auto!important;width:750px;padding-top:10px;}
 .page_main .main H1{font-weight:bold;font-size:20px;margin:0px 0px 0px 0px;text-align:center;}
 .page_main .main H3{margin:20px 0px 20px 0px;padding:10px 0px 10px 0px;text-align:center;border-top:1px #b3d7eb solid;border-bottom:1px #b3d7eb solid;color:#268bc0;}
+.page_main .main H4{font-weight:bold;font-size:16px;margin:0px 0px 0px 0px;text-align:center;}
 .page_main .main .bottom{border-top:1px #ddcf7f solid;clear:both;text-align:left;line-height:24px;padding:10px 0px 0px 0px;font-weight:bold;}
 
 .page_main #page_sel{margin-bottom:20px;}

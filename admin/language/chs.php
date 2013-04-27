@@ -22,6 +22,7 @@ $language = array (
   'admin_psw_desc' => '请重复输入密码',
   'admin_psw_desc_addon' => '（如果密码不变，此项和前一项请留空！）',
   'admin_nopower' => '您无权进行该操作！',
+  'admin_database_error' => '更新数据库时出错，请查看错误记录！',
   
   'admin_art_catalog_delete' => '删除分类',
   'admin_art_catalog_change' => '变更分类顺序',

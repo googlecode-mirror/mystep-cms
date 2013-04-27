@@ -13,7 +13,11 @@ if(count($_POST)>0) {
 		} else {
 			$print = $_POST['print'];
 			unset($_POST['mid'], $_POST['print']);
-			$_POST_org = $_POST;
+			//$_POST_org = $_POST;
+			if(isset($_POST['append'])) {
+				$append = $_POST['append'];
+				unset($_POST['append']);
+			}
 			foreach($_POST as $key => $value) {
 				if(is_array($value)) {
 					if(is_numeric($value[0])) {
@@ -22,12 +26,27 @@ if(count($_POST)>0) {
 						$_POST[$key] = implode(",", $value);
 					}
 				}
+				if($setting['gen']['language']=="en") $value = itemTrans($value, $key, 1, 0);
 			}
 			$_POST['add_date'] = date("Y-m-d H:i:s");
 			$str_sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $_POST, "insert", "a");
 			$db->Query($str_sql);
-			$_POST = $_POST_org;
-			//debug($_POST);
+			if(isset($append)) {
+				for($i=0,$m=count($append);$i<$m;$i++) {
+					$flag = true;
+					foreach($append[$i] as $key => $value) {
+						if(empty($value)) {
+							$flag = false;
+							break;
+						}
+						if(isset($_POST[$key])) $_POST[$key] = $value;
+					}
+					if(!$flag) continue;
+					$str_sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $_POST, "insert", "a");
+					$db->Query($str_sql);
+				}
+			}
+			//$_POST = $_POST_org;
 			if(empty($print)) {
 				echo '
 				<script>

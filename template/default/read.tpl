@@ -22,7 +22,7 @@
 							<h1><!--record_subject--></h1>
 							<h3>来源：<!--record_original--> &nbsp; | &nbsp; 时间：<!--record_add_date--> &nbsp; | &nbsp; 浏览：<!--record_views--></h3>
 						</div>
-						<div style="text-align:center;">
+						<div class="page after">
 							<select id="page_sel" style="display:none;" onchange="location.href=this.value"></select>
 						</div>
 						<div id="content">
@@ -30,7 +30,7 @@
 <!--record_content-->
 							<div class="notice"><!--record_notice--></div>
 						</div>
-						<div class="page after"><!--page_list--></div>
+						<div class="page after"><!--page_list--><br /><br /><a href="<!--link_all-->">显示全部内容</a></div>
 						<div>
 							<div style="float:left;">
 								<!--news_jump news_id='$news_id' cat_id='$cat_id'-->
@@ -50,7 +50,6 @@
 		</div>
 	</div>
 <script language="JavaScript" type="text/javascript">
-//<![CDATA[
 $(function() {
 	var subPage = <!--sub_page-->;
 	if(subPage.length>0) {
@@ -65,7 +64,7 @@ $(function() {
 		obj_select.selectedIndex = selIndex;
 		obj_select.style.display = "";
 	} else {
-		$("#page_sel").parent().remove();
+		$(".page").remove();
 	}
 	$("#content").after('<div id="showImage"></div>');
 	$("#content").showImage({"img_width":120,"img_height":80,"ole_id":"showImage","interval":5,"pos_adjust":1,"remove_org":false,"ole_width":640,"img_show_height":420,"step_adjust":-10});
@@ -81,5 +80,4 @@ $(function() {
 		});
 	}
 });
-//]]> 
 </script>

@@ -123,6 +123,28 @@ function getSetting($para_1="", $para_2="", $idx="") {
 	}
 	return $result;
 }
+function changeSetting($setting_new, $para_new = array(), $if_write = true) {
+	require(ROOT_PATH."/include/config.php");
+	$setting = arrayMerge($setting, $setting_new);
+	if(isset($para_new["rewrite"])) $rewrite_list = $para_new["rewrite"];
+	if(isset($para_new["expire"])) $expire_list = $para_new["expire"];
+	if(isset($para_new["authority"])) $authority = $para_new["authority"];
+	$rewrite_list_str = var_export($rewrite_list, true);
+	$expire_list_str = var_export($expire_list, true);
+	$content = <<<mystep
+<?php
+\$setting = array();
+
+/*--settings--*/
+\$rewrite_list = {$rewrite_list_str};
+\$expire_list = {$expire_list_str};
+\$authority = "{$authority}";
+?>
+mystep;
+	$content = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $content);
+	if($if_write) WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+	return $content;
+}
 function getList($layer = 1, $cat_main = 0) {
 	global $catalog, $max_layer;
 	if($layer>$max_layer || !is_array($GLOBALS["catalog_{$layer}"])) return;
@@ -351,7 +373,7 @@ function getUrl($mode, $idx="", $page=1, $web_id=0) {
 	} else {
 		$webInfo = getParaInfo("website", "web_id", $web_id);
 	}
-	if(!is_numeric($page)) $page = 1;
+	if(!is_numeric($page)) $page = "all";
 	if($webInfo===false) return "#";
 	$url = $webInfo['host'];
 	if(strpos($url, ",")!==false) $url = substr($url, 0, strpos($url, ","));
@@ -455,7 +477,7 @@ function getCacheExpire() {
 	$the_file = str_replace(".php", "", $setting['info']['self']);
 	return isset($expire_list[$the_file]) ? $expire_list[$the_file] : $expire_list["default"];
 }
-function showInfo($msg = "", $mode = true, $link = "") {
+function showInfo($msg = "", $exit = true, $link = "") {
 	global $setting;
 	if(empty($link)) $link = "javascript:history.go(-1)";
 	$result = <<<windy2000
@@ -471,11 +493,8 @@ function showInfo($msg = "", $mode = true, $link = "") {
     </td></tr>
   </table>
 </div>
-<script>
-setTimeout("history.go(-1)", 2000);
-</script>
 windy2000;
-	if($mode) {
+	if($exit) {
 		global $db;
 		if(!empty($db)) {
 			$db->close();
@@ -623,6 +642,21 @@ function GzDocOut($level = 3, $show = false) {
 		}
 	}
 	return; 
+}
+function itemTrans($str, $type, $from=0, $to=1) {
+	if(!is_string($str)) return $str;
+	$the_file = ROOT_PATH."/script/jquery.autocomplete/".$type.".php";
+	if(file_exists($the_file)) {
+		include($the_file);
+		$type = $$type;
+		for($i=0,$m=count($type);$i<$m;$i++) {
+			if($type[$i][$from]==$str) {
+				$str = $type[$i][$to];
+				break;
+			}
+		}
+	}
+	return $str;
 }
 function __autoload($class_name) {
 	if($class_name=="parent") return;

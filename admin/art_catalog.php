@@ -110,6 +110,7 @@ switch($method) {
 					$log_info = $setting['language']['admin_art_catalog_edit'];
 					function multiChange($catid, $layer) {
 						global $db, $setting;
+						if($layer>100) showInfo($setting['language']['admin_art_catalog_error']);
 						$db->Query("update ".$setting['db']['pre']."news_cat set cat_layer='{$layer}' where cat_id = '{$catid}'");
 						$catid_list = array();
 						$db->Query("select cat_id from ".$setting['db']['pre']."news_cat where cat_main = '{$catid}'");

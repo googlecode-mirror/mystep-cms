@@ -45,23 +45,8 @@ switch($method) {
 		if(count($update_info['setting'])>0) {
 			$setting_org = $setting;
 			require(ROOT_PATH."/include/config.php");
-			$update_info['setting'] = arrayMerge($setting, $update_info['setting']);
-			$rewrite_list_str = var_export($rewrite_list, true);
-			$expire_list_str = var_export($expire_list, true);
-			$ignore_list_str = var_export($ignore_list, true);
-			$content = <<<mystep
-<?php
-\$setting = array();
-
-/*--settings--*/
-\$rewrite_list = {$rewrite_list_str};
-\$expire_list = {$expire_list_str};
-\$ignore_list = {$ignore_list_str};
-\$authority = "{$authority}";
-?>
-mystep;
 			$update_info['setting']['gen']['etag'] = date("Ymd");
-			$content = str_replace("/*--settings--*/", makeVarsCode($update_info['setting'], '$setting'), $content);
+			$content = changeSetting($update_info['setting'], array(), false);
 			if($method=="update") WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
 			$setting = $setting_org;
 		}

@@ -14,10 +14,10 @@
 			<input type="hidden" name="email" value="<!--record_email-->" />
 			<input type="hidden" name="sender_name" value="" />
 			<input type="hidden" name="sender_email" value="" />
-			<TEXTAREA name="content" COLS="110" ROWS="40" id="content">
+			<textarea name="content" cols="110" rows="40" id="content">
 尊敬的 <span style="font-weight:bold;color:#aa0000"><!--record_name--></span><br />
 欢迎您参加<b>“<!--name-->”</b>！<br />
-您填表信息已经收到。请确认下列表单信息正确无误：<br />
+您填表信息已经收到。请确认下列表单信息正确无误：<br /><br />
 <?php
 global $record;
 foreach($para as $key => $value) {
@@ -32,7 +32,7 @@ foreach($para as $key => $value) {
 <b>Fax:</b> +86-10-87109800<br />
 <b>Email:</b> windy2006@gmail.com<br />
 <b>website:</b> <?=$setting['web']['url']?><br />
-			</TEXTAREA>
+			</textarea>
 		</TD>
 	</TR>
 	<TR>
@@ -46,25 +46,32 @@ foreach($para as $key => $value) {
 </form>
 </div>
 
-<script type="text/javascript" language="JavaScript" src="../../script/tinymce/tiny_mce.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../script/tinymce/jquery.tinymce.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 //<![CDATA[
 var the_email = "<?=$record['email']?>";
+
 function send_mail_app(email, subject, content)	{
 	if(the_email.length<5) {
 		alert("无可用 Email，请核实数据！");
 		return;
 	}
-	//content = content.replace(/<(\/)?\w+[^>]+>/g, "");
-	content = content.replace(/&/g, "%26");
-	content = content.replace(/\n/g, "%0D%0A");
-	content = content.replace(/\s/g, "%20");
-	content = content.replace(/#/g, "%23");
-	content = UrlEncode(content);
 	subject = subject.replace(/&/g, "%26");
 	subject = subject.replace(/\s/g, "%20");
 	subject = subject.replace(/#/g, "%23");
 	subject = UrlEncode(subject);
+	
+	if(content.length>1000) {
+		content = content.replace(/<br(.+?)>/g, "\n");
+		content = content.replace(/<(\/)?\w+[^>]*>/g, "");
+		content = content.replace(/&/g, "%26");
+		content = content.replace(/\s/g, "%20");
+		content = content.replace(/#/g, "%23");
+		content = content.replace(/\n/g, "%0D%0A");
+	} else {
+		content = UrlEncode(content);
+	}
+	
 	if(content.length>1900) {
 		window.location="mailto:"+email+"?subject="+subject+"&body="+UrlEncode("由于邮件内容过长，无法自动调用邮件程序！<br /><br />请将内容直接复制到邮件程序，或通过系统程序发送！");
 	} else {
@@ -81,93 +88,14 @@ function send_mail() {
 	return true;
 }
 
-tinyMCE.init({
-	mode : "exact",
-	elements : "content",
-	language : "zh",
-	theme : "advanced",
-	plugins : "safari,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
-
-	theme_advanced_buttons1 : "fullscreen,preview,|,undo,redo,newdocument,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup,format",
-	theme_advanced_buttons2 : "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code,change",
-	theme_advanced_buttons3 : "",
-	theme_advanced_toolbar_location : "top",
-	theme_advanced_toolbar_align : "left",
-	theme_advanced_statusbar_location : "bottom",
-	theme_advanced_resizing : false,
-	
-	content_css: "../../images/editor.css",
-	entity_encoding : "raw",
-	add_unload_trigger : false,
-	
-	preformatted : false,
-	remove_linebreaks : false,
-	apply_source_formatting : true,
-	convert_fonts_to_spans : true,
-	verify_html : true,
-	paste_auto_cleanup_on_paste : true,
-	extended_valid_elements : "textarea[class|type|title],script[charset|defer|language|src|type]",
-	forced_root_block : "div",
-	force_br_newlines : true,
-	force_p_newlines : false,
-	
-	template_external_list_url : "lists/template_list.js",
-	external_link_list_url : "lists/link_list.js",
-	external_image_list_url : "lists/image_list.js",
-	media_external_list_url : "lists/media_list.js",
-	
-	oninit : function() {
-		var content = tinyMCE.get('content').getContent();
-		content = content.replace(/mce\:script/g, "script");
-		content = content.replace(/_mce_src/g, "src");
-		content = content.replace(/\n/g, "<br />\n");
-		tinyMCE.get('content').setContent(content);
-	},
-	
-	setup : function(ed) {
-		ed.addButton('change', {
-			title : 'Div/P 模式切换',
-			image : 'images/div.png',
-			onclick : function() {
-				var content = tinyMCE.get('content').getContent();
-				if(content.indexOf("<div")==-1) {
-					content = content.replace(/<p(.*?)>([\w\W]+?)<\/p>/ig, "<div$1>$2</div>");
-				} else {
-					content = content.replace(/<div(.*?)>([\w\W]+?)<\/div>/ig, "<p$1>$2</p>");
-				}
-				tinyMCE.get('content').setContent(content);
-			}
-		});
-		ed.addButton('format', {
-			title : '代码清理',
-			image : 'images/format.png',
-			onclick : function() {
-				var content = tinyMCE.get('content').getContent();
-				if(content.indexOf("<div")==-1) {
-					content = content.replace(/(<br(\s\/)?>)+/ig, "</p><p>");
-					content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
-					content = content.replace(/<\/p><p/g, "<\/p>\n<p");
-				} else {
-					content = content.replace(/(<br(\s\/)?>)+/ig, "</div><div>");
-					content = content.replace(/<div(.*?)>[\xa0\r\n\s\u3000]+/ig, "<div$1>");
-					content = content.replace(/<\/div><div/g, "<\/div>\n<div");
-				}
-				content = content.replace(/mso\-[^;]+?;/ig, "");
-				content = content.replace(/[\xa0]/g, "");
-				content = content.replace(/<\/td>/g, "&nbsp;</td>");
-				while(content.search(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*><\!\-\- pagebreak \-\-\><\/\1>[\r\n\s]*/g, "<!-- pagebreak -->");
-				while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
-				while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
-				content = content.replace(/  /g, String.fromCharCode(160)+" ");
-				tinyMCE.get('content').setContent(content);
-			}
-		});
-	},
-	
-	template_replace_values : {
-		username : "mystep",
-		staffid : "31415926"
-	}
+$(function() {
+	var new_setting = {};
+	new_setting.plugins = "safari,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template";
+	new_setting.theme_advanced_buttons1 = "fullscreen,preview,|,undo,redo,newdocument,removeformat,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,fontsizeselect,|,forecolor,backcolor,|,sub,sup";
+	new_setting.theme_advanced_buttons2 = "cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent,blockquote,|,link,unlink,image,media,|,insertdate,inserttime,charmap,|,code";
+	new_setting.forced_root_block = "p";
+	tinyMCE_init("content", new_setting);
 });
+
 //]]>
 </script>

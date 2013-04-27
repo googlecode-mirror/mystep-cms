@@ -21,8 +21,8 @@
 		</div>
 		<div class="fr">
 			<script language="JavaScript" type="text/javascript" src="/script/chs2cht.js"></script> |
-			<a href="#" onclick="setHomepage()">设为首页</a> |
-			<a href="#" onclick="addBookmark(this)">加入收藏</a>
+			<a href="javascript:void(0)" onclick="setHomepage()">设为首页</a> |
+			<a href="javascript:void(0)" onclick="addBookmark(this)">加入收藏</a>
 		</div>
 	</div>
 	<div id="page_top" class="after">

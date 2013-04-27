@@ -19,7 +19,7 @@ switch($method) {
 		break;
 	case "pos":
 		$log_info = $setting['language']['plugin_admin_cat_pos'];
-		$$sql_list = array();
+		$sql_list = array();
 		$max_count = count($_POST['id']);
 		for($i=0; $i<$max_count; $i++) {
 			if(!is_numeric($_POST['order'][$i])) continue;

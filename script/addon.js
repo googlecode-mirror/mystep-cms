@@ -84,7 +84,7 @@ function setList() {
 
 function loadingShow(info) {
 	if($("#bar_loading").length==0) {
-		var cssText = "top:0px;left:0px;display:none;color:#333333;font-size:24px;font-weight:bold;line-height:48px;position:absolute;border:1px #999999 solid;padding:20px 30px 10px 30px;z-index:999;background-color:#eeeeee;z-index:999;text-align:center;";
+		var cssText = "display:none;position:absolute;top:0px;left:0px;z-index:999;color:#333333;font-size:24px;font-weight:bold;line-height:48px;border:1px #999999 solid;padding:20px 30px 10px 30px;background-color:#eeeeee;text-align:center;";
 		$("<div>").attr("id", "bar_loading").cssText(cssText).append($('<img src="'+rlt_path+'images/loading.gif" style="width:400px;height:10px">')).append("<br />").append($("<span>")).appendTo("body");
 	}
 	if($("#screenLocker").length>0) {
@@ -137,6 +137,53 @@ function showSubMenu(theObj) {
 			}
 		}, 'json');
 		
+	});
+}
+
+function anchorShow(){
+	$("<div>").attr("id", "anchor_show").html('<div>Top</div><div></div><div>Close</div>').css({"position":"fixed","width":"150px","top":"0px","right":"0px","cursor":"pointer"}).appendTo("body");
+	$("#anchor_show > div").css({"background-color":"#7d0a2c","padding":"5px","border":"1px #fff solid","text-align":"center","color":"#fff"});
+	$("#anchor_show > div:eq(1)").css({"background-color":"#222","padding":"0px"});
+	$("#anchor_show > div:eq(0)").click(function(){
+		var theURL = location.href;
+		theURL = theURL.replace(/#.*$/, "");
+		location.href = theURL + "#";
+	});
+	$("#anchor_show > div:eq(2)").click(function(){
+		$("#anchor_show > div:eq(1)").slideToggle("fast",function(){
+			var theObj = $(this).next();
+			if(theObj.text().toLowerCase()=="open") {
+				theObj.text("Close");
+			} else {
+				theObj.text("Open");
+			}
+		});
+	});
+	var anchor_list = $("a[name^=subtitle_]");
+	var anchor_cur = null;
+	for(var i=0,m=anchor_list.length;i<m;i++) {
+		anchor_cur = $(anchor_list.get(i));
+		$("<p>").attr("idx",i).html(anchor_cur.parent().text()).click(function(){
+			location.href = location.href.replace(/#.*/, "")+"#subtitle_"+$(this).attr("idx");
+		}).css({"border-bottom":"#333 1px solid","color":"#fff","padding":"5px"}).hover(
+			function() {
+				$(this).css("background-color","#ff0052");
+			},
+			function() {
+				if($(this).attr("highlight")=="1") return;
+				$(this).css("background-color","");
+			}
+		).appendTo("#anchor_show > div:eq(1)");
+	}
+	$(window).scroll(function(){
+		var the_top = $("#anchor_show").position().top;
+		$("#anchor_show > div:eq(1) > p").css("background-color","").attr("highlight", "0");
+		for(var i=anchor_list.length-1;i>=0;i--) {
+			if(the_top+400>=$(anchor_list.get(i)).position().top) {
+				$("#anchor_show > div:eq(1) > p:eq("+i+")").css("background-color","#ff0052").attr("highlight", "1");
+				break;
+			}
+		}
 	});
 }
 

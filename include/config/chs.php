@@ -97,9 +97,9 @@ $setting_comm['js_descr']['debug'] = '执行JaveScript出现错误时，显示错误信息提示
 
 $setting_comm['list'] = array();
 $setting_comm['list_comm'] = '列表显示数量设置';
-$setting_comm['list']['txt'] = '文字列表';
-$setting_comm['list']['img'] = '图片列表';
-$setting_comm['list']['mix'] = '图文列表';
+$setting_comm['list']['txt'] = '标题列表';
+$setting_comm['list']['img'] = '图片展示';
+$setting_comm['list']['mix'] = '图文混合';
 $setting_comm['list']['rss'] = '聚合列表';
 $setting_comm['list_descr']['txt'] = '文字列表模式下显示新闻的数量';
 $setting_comm['list_descr']['img'] = '图片列表模式下显示新闻的数量';
@@ -231,7 +231,7 @@ $setting_type['rewrite']['list'] = array("text", "", "10");
 $setting_type['rewrite']['tag'] = array("text", "", "10");
 
 $setting_type['email'] = array();
-$setting_type['email']['mode'] = array("select", array("内置函数"=>"", "普通验证"=>"smtp", "SSL 验证"=>"ssl", "TLS 验证"=>"tls", "SSL/TLS 混合验证"=>"ssl/tls"));
+$setting_type['email']['mode'] = array("select", array("内置函数"=>"", "SMTP验证"=>"smtp", "SSL 验证"=>"ssl", "TLS 验证"=>"tls", "SSL/TLS 混合验证"=>"ssl/tls"));
 $setting_type['email']['host'] = array("text", false, "30");
 $setting_type['email']['port'] = array("text", "digital_", "5");
 $setting_type['email']['user'] = array("text", false, "30");

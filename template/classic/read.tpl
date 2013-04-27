@@ -13,14 +13,13 @@
 		<div class="fr page_main">
 			<div class="box">
 				<div class="title">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 正文<input type="hidden" id="news_id" value="<!--record_news_id-->"></div>
-				<div class="page after"><!--prefix_list--></div>
 				<div class="content">
 					<div class="main">
 						<div>
 							<h1><!--record_subject--></h1>
 							<h3>来源：<!--record_original--> &nbsp; | &nbsp; 时间：<!--record_add_date--> &nbsp; | &nbsp; 浏览：<!--record_views--></h3>
 						</div>
-						<div style="text-align:center;">
+						<div class="page after">
 							<select id="page_sel" style="display:none;" onchange="location.href=this.value"></select>
 						</div>
 						<div id="content">
@@ -28,7 +27,7 @@
 <!--record_content-->
 							<div class="notice"><!--record_notice--></div>
 						</div>
-						<div class="page after"><!--page_list--></div>
+						<div class="page after"><!--page_list--><br /><br /><a href="<!--link_all-->">显示全部内容</a></div>
 						<div>
 							<div style="float:left;">
 								<!--news_jump news_id='$news_id' cat_id='$cat_id'-->
@@ -50,7 +49,6 @@
 		</div>
 	</div>
 <script language="JavaScript" type="text/javascript">
-//<![CDATA[
 $(function() {
 	var subPage = <!--sub_page-->;
 	if(subPage.length>0) {
@@ -65,7 +63,7 @@ $(function() {
 		obj_select.selectedIndex = selIndex;
 		obj_select.style.display = "";
 	} else {
-		$("#page_sel").parent().remove();
+		$(".page").remove();
 	}
 	if($("#ms_showImage").length>0) {
 		$("#content").after('<div id="showImage"></div>');
@@ -84,7 +82,6 @@ $(function() {
 		});
 	}
 });
-//]]> 
 </script>
 <!-- JiaThis Button BEGIN -->
 <script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0" charset="utf-8"></script>

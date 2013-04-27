@@ -29,6 +29,7 @@
 	$MSSQL->GetDBs()				// Get the Databases List of Current MySQL Server as an Array
 	$MSSQL->GetTabs($the_db)			// Get the Tables List of Current Selected Database as an Array
 	$MSSQL->GetQueryFields()			// Get the Columns List of Current Query
+	$MSSQL->GetInsertId()					// Return auto increment id generate by insert query
 	$MSSQL->buildSQL($table, $data, $mode = "insert", $addon = "") // Build SQL string for insert or update
 	$MSSQL->ConvertLimit($sql)					// convert sql query string include limit grammar of mysql to mssql sql query string
 	$MSSQL->Free()					// Free the $MSSQL->DB_result in order to Release the System Resource
@@ -137,7 +138,8 @@ class MSSQL extends class_common {
 	}
 
 	public function GetInsertId($tbl){
-		$rsID = mssql_query("SELECT IDENT_CURRENT('{$tbl}') as new_id", $this->DB_conn); 
+		$rsID = mssql_query("SELECT IDENT_CURRENT('{$tbl}') as new_id", $this->DB_conn);
+		//$rsID = mssql_query("SELECT @@IDENTITY as new_id", $this->DB_conn);
 		$new_id = mssql_result($rsID, 0, "new_id"); 
 		mssql_free_result($rsID);
 		return ($new_id?$new_id:0);
@@ -253,8 +255,9 @@ class MSSQL extends class_common {
 
 		foreach($data as $key => $value) {
 			$value = str_replace("\\r\\n", "'+char(13)+char(10)+'", $value);
-			$value = str_replace("\\\'", "''", $value);
-			$value = str_replace("\'", "''", $value);
+			$value = str_replace("'", "''", $value);
+			$value = str_replace("\\'", "''", $value);
+			$value = str_replace("'''", "''", $value);
 			$value = str_replace("'''", "''", $value);
 			if(strtolower($key) == 'submit') continue;
 			if($mode=="insert" && $addon != "" && $value==="") continue;
@@ -289,7 +292,7 @@ class MSSQL extends class_common {
 				$sql = preg_replace("/limit\s+(\d+)$/i", "", $sql);
 				$sql = str_ireplace("select", "select top ".$matches[1], $sql);
 			} elseif(preg_match("/limit\s+(\d+)[\s,]+(\d+)$/i", $sql, $matches)) {
-				$start = $matches[1]+1;
+				$start = $matches[1];
 				$size = $matches[2];
 				if(preg_match("/order by\s+(.+?)\s+limit/i", $sql, $matches)) {
 					$the_order = $matches[1];
@@ -306,9 +309,9 @@ class MSSQL extends class_common {
 					$the_order_2 = $the_order." desc";
 				}
 				$sql = preg_replace("/limit\s+(\d+)[\s,]+(\d+)$/i", "", $sql);
-				$sql = str_ireplace("select", "select top ".($start+$size), $sql);
-				$sql = "select top ".$size." * from (".$sql.") order by ".$the_order_2;
-				$sql = "select * from (".$sql.") order by ".$the_order;
+				$sql = str_ireplace("select", "select top(".($start+$size).")", $sql);
+				$sql = "select top(".$size.") * from (".$sql.") as tmp_1 order by ".$the_order_2;
+				$sql = "select * from (".$sql.") as tmp_2 order by ".$the_order;
 			}
 		}
 		return $sql;

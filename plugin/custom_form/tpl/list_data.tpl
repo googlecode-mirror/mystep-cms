@@ -41,7 +41,7 @@
 	<a href="<!--page_prev-->">ÉÏÒ³</a>
 	<a href="<!--page_next-->">ÏÂÒ³</a>
 	<a href="<!--page_last-->">Ä©Ò³</a>
-	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center" /><input type="button" value="GO" onclick="location.href='?mid=<!--mid-->&keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
+	ÌøÒ³<input type="text" size="2" value="<!--page_cur-->" style="text-align:center" onkeypress="if(window.event.keyCode==13)location.href='?mid=<!--mid-->&keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.value" /><input type="button" value="GO" onclick="location.href='?mid=<!--mid-->&keyword=<!--keyword-->&order=<!--order-->&order_type=<!--order_type_org-->&page='+this.previousSibling.value" />
 </div>
 		</td>
 	</tr>

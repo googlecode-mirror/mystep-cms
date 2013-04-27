@@ -9,13 +9,15 @@ class plugin_search implements plugin {
 		if($plugin_info = getParaInfo("plugin", "class", $info['class'])) {
 			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
-		global $db, $setting, $admin_cat;
+		global $db, $admin_cat;
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_search", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_1']."', 'search.php?method=engine', '../plugin/search/', 0, 0, '".$info['cat_desc_1']."')");
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 5, '".$info['cat_name_2']."', 'search.php?method=keyword', '../plugin/search/', 0, 0, '".$info['cat_desc_2']."')");
+		deleteCache("admin_cat");
+		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_install']."
@@ -25,7 +27,6 @@ class plugin_search implements plugin {
 			</pre>
 			");
 		} else {
-			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
@@ -34,7 +35,6 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
-			deleteCache("plugin");
 			buildParaList("plugin");
 			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
@@ -47,6 +47,8 @@ mystep;
 		$db->query("drop table ".$setting['db']['pre']."search_keyword");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
 		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'search.php%'");
+		deleteCache("admin_cat");
+		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_uninstall']."
@@ -56,7 +58,6 @@ mystep;
 			</pre>
 			");
 		} else {
-			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
@@ -65,7 +66,6 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
-			deleteCache("plugin");
 			buildParaList("plugin");
 			echo showInfo($setting['language']['plugin_uninstall_done'], false);
 		}
@@ -152,7 +152,7 @@ mytpl;
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."keyword_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
 		$result = <<<mytpl
 <?php
-\$result = getData("select keyword from ".\$setting['db']['pre']."search_keyword order by {$att_list['order']} limit {$att_list['limit']}", "all", 60*60*24);
+\$result = getData("select keyword from ".\$setting['db']['pre']."search_keyword where (`amount`>0 and `chg_date`> UNIX_TIMESTAMP()-604800) and length(keyword)>4 and length(keyword)<30 order by {$att_list['order']} limit {$att_list['limit']}", "all", 60*60*24);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];

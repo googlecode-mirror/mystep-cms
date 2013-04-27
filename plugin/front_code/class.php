@@ -9,9 +9,11 @@ class plugin_front_code implements plugin {
 		if($plugin_info = getParaInfo("plugin", "class", $info['class'])) {
 			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
-		global $db, $setting, $admin_cat;
+		global $db, $admin_cat;
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_front_code", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 99, ",")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'front_code.php', '../plugin/front_code/', 0, 0, '".$info['cat_desc']."')");
+		deleteCache("admin_cat");
+		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_install']."
@@ -21,7 +23,6 @@ class plugin_front_code implements plugin {
 			</pre>
 			");
 		} else {
-			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
@@ -30,7 +31,6 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
-			deleteCache("plugin");
 			buildParaList("plugin");
 			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
@@ -41,6 +41,8 @@ mystep;
 		$info = self::info();
 		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='front_code.php'");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		deleteCache("admin_cat");
+		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_uninstall']."
@@ -57,7 +59,6 @@ mystep;
 			}
 			$mydb->emptyTBL();
 			unset($mydb);
-			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
@@ -66,7 +67,6 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
-			deleteCache("plugin");
 			buildParaList("plugin");
 			echo showInfo($setting['language']['plugin_uninstall_done'], false);
 		}

@@ -9,12 +9,14 @@ class plugin_comment implements plugin {
 		if($plugin_info = getParaInfo("plugin", "class", $info['class'])) {
 			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
-		global $db, $setting, $admin_cat;
+		global $db, $admin_cat;
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
 		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_comment", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
 		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 4, '".$info['cat_name']."', 'comment.php', '../plugin/comment/', 0, 0, '".$info['cat_desc']."')");
+		deleteCache("admin_cat");
+		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_install']."
@@ -24,7 +26,6 @@ class plugin_comment implements plugin {
 			</pre>
 			");
 		} else {
-			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
@@ -33,7 +34,6 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
-			deleteCache("plugin");
 			buildParaList("plugin");
 			echo showInfo($setting['language']['plugin_install_done'], false);
 		}
@@ -46,6 +46,8 @@ mystep;
 		$db->query("drop table ".$setting['db']['pre']."comment");
 		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='comment.php'");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		deleteCache("admin_cat");
+		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_uninstall']."
@@ -55,7 +57,6 @@ mystep;
 			</pre>
 			");
 		} else {
-			deleteCache("admin_cat");
 			includeCache("admin_cat");
 			$admin_cat = toJson($admin_cat, $setting['gen']['charset']);
 			echo <<<mystep
@@ -64,7 +65,6 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
-			deleteCache("plugin");
 			buildParaList("plugin");
 			MultiDel(dirname(__FILE__)."/cache/");
 			MakeDir(dirname(__FILE__)."/cache/");

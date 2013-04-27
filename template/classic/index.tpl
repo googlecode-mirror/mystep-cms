@@ -111,7 +111,6 @@
 	</div>
 
 <script language="JavaScript" type="text/javascript">
-//<![CDATA[
 $(function(){
 	//News Picture
 	var stop_news_image = false;
@@ -188,5 +187,4 @@ $(function(){
 		}
 	}, "json");
 });
-//]]> 
 </script> 

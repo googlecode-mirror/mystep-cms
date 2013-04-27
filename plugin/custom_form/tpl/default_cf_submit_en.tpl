@@ -25,8 +25,10 @@ mystep;
 			if($value['format']!=".") $format = ' need="'.$value['format'].'"';
 			$length = "";
 			if($value['length']!="") $length = ' len="'.$value['length'].'"';
+			$class="";
+			if(array_search($key, array("country", "location", "province"))!==false) $class="ac_input";
 			echo <<<mystep
-						<input name="{$key}" type="text" value="{$value['default_en']}" size="50"{$length}{$format} />
+						<input name="{$key}" class="{$class}" type="text" value="{$value['default_en']}" size="50"{$length}{$format} />
 mystep;
 			break;
 		case "radio":
@@ -84,6 +86,7 @@ mystep;
 		</TR>
 	</table>
 </form>
+<script language="JavaScript" type="text/javascript" src="/script/jquery.autocomplete.js"></script>
 <script Language="JavaScript1.2">
 var uTime = (new Date()).getTime();
 var date = new Date();

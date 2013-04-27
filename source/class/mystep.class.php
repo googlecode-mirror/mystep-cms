@@ -181,7 +181,7 @@ mystep;
 		$host = $req->getServer("HTTP_HOST");
 		//$setting['info']['web'] = getParaInfo("website", "host", $host);
 		for($i=0,$m=count($GLOBALS['website']);$i<$m;$i++) {
-			if(strpos($GLOBALS['website'][$i]['host'], $host)!==false) {
+			if(strpos(",".$GLOBALS['website'][$i]['host'].",", ",".$host.",")!==false) {
 				$GLOBALS['website'][$i]['host'] = $host;
 				$setting['web']['url'] = "http://".$host;
 				$setting['info']['web'] = $GLOBALS['website'][$i];
@@ -237,6 +237,10 @@ mystep;
 			call_user_func($this->func_end[$i]);
 		}
 		$setting['info']['query_count'] = $GLOBALS['db']->Close();
+		if($GLOBALS['db']->GetError($err_info) && isset($GLOBALS['op_mode'])) {
+			ob_clean();
+			echo showInfo($setting['language']['admin_database_error'].'<ol style="text-align:left;font-weight:normal;"><li>'.implode('</li><li>',$err_info).'</li></ol>', 0);
+		}
 		if(!empty($GLOBALS['goto_url']) && ob_get_length()==0) {
 			header("location: ".$GLOBALS['goto_url']);
 		} else {

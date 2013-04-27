@@ -16,22 +16,8 @@ if($method=="update") {
 		$_POST['setting']['db']['pass'] = $setting['db']['pass'];
 	}
 	unset($_POST['setting']['web']['s_pass_r'], $_POST['setting']['db']['pass_r']);
-	$rewrite_list_str = var_export($rewrite_list, true);
-	$expire_list_str = var_export($expire_list, true);
-	$ignore_list_str = var_export($ignore_list, true);
-	$content = <<<mystep
-<?php
-\$setting = array();
-
-/*--settings--*/
-\$rewrite_list = {$rewrite_list_str};
-\$expire_list = {$expire_list_str};
-\$ignore_list = {$ignore_list_str};
-\$authority = "{$authority}";
-?>
-mystep;
-	$content = str_replace("/*--settings--*/", makeVarsCode($_POST['setting'], '$setting'), $content);
-	WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+	
+	$content = changeSetting($_POST['setting']);
 	if(isset($_POST['set_default'])) {
 		WriteFile(ROOT_PATH."/include/config-default.php", $content, "wb");
 	}

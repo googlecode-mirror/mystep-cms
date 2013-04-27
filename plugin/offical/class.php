@@ -313,7 +313,13 @@ class plugin_offical implements plugin {
 		$str_sql = "select a.* from {db_pre}news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1";
 		if(!empty($att_list['expire'])) $str_sql .= " and (a.expire is null or a.expire>now())";
 		if(!empty($att_list['web_id'])) $str_sql .= " and a.web_id='{$att_list['web_id']}'";
-		if(!empty($att_list['cat_id'])) $str_sql .= " and (a.cat_id ='{$att_list['cat_id']}' || b.cat_main='{$att_list['cat_id']}')";
+		if(!empty($att_list['cat_id'])) {
+			if(is_numeric($att_list['cat_id'])) {
+				$str_sql .= " and (a.cat_id ={$att_list['cat_id']} || b.cat_main={$att_list['cat_id']})";
+			} else {
+				$str_sql .= " and (a.cat_id in ({$att_list['cat_id']}) || b.cat_main in ({$att_list['cat_id']}))";
+			}
+		}
 		if(!empty($att_list['show_image'])) $str_sql .= " and a.image!=''";
 		if(!empty($att_list['setop'])) $str_sql .= " and (a.setop & {$att_list['setop']})={$att_list['setop']}";
 		if(!empty($att_list['tag'])) $str_sql .= " and (".$att_list['tag'].")";
@@ -428,7 +434,7 @@ mytpl;
 		global $setting;
 		$result = "";
 		if(!isset($att_list['idx'])) $att_list['idx'] = "";
-		if(!isset($att_list['type'])) $att_list['type'] = "";
+		if(!isset($att_list['type'])) $att_list['type'] = "all";
 		if(!isset($att_list['limit']) || !is_numeric($att_list['limit'])) $att_list['limit'] = 0;
 		if($att_list['type']=="image") {
 			$tpl_file = $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_link_img.tpl";
@@ -443,6 +449,7 @@ mytpl;
 <?php
 \$link_idx = "{$att_list['idx']}";
 \$link_list = \$GLOBALS['link_txt'];
+if("{$att_list['type']}"=="all") \$link_list = array_merge(\$link_list, \$GLOBALS['link_img']);
 mytpl;
 		}
 		$cur_content = $tpl->Get_TPL($tpl_file);

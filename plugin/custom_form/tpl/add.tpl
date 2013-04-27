@@ -452,14 +452,14 @@ function confirmItem(mode) {
 }
 $.getScript("../../script/jquery.codemirror.js", function(){
 	$('.source_code').codemirror({
-				lineWrapping: false,
-				height: 200
+				lineWrapping: true,
+				height: 250
 		}, function(){
 				if($.codemirror_error) {
-					//alert("Ω≈±æ‘ÿ»Î ß∞‹£°");
+					alert("Ω≈±æ‘ÿ»Î ß∞‹£°");
 				} else {
-					$('.CodeMirror').css({width:'680px','overflow':"hidden","text-align":"left"});
 					$('.source_code').parent(".row").css("padding","0px");
+					$('.CodeMirror').css({width:'680px',height:'auto','overflow':"hidden","text-align":"left"});
 				}
 			});
 });

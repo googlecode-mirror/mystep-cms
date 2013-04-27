@@ -22,6 +22,7 @@ $language = array (
   'admin_psw_desc' => 'Reinput the previous password please',
   'admin_psw_desc_addon' => ' (If no need to change, just keep the blank empty)',
   'admin_nopower' => 'You havn\'t the power to make current operation!',
+  'admin_database_error' => 'Error occurs when write to database, check the error please!',
   
   'admin_art_catalog_delete' => 'Delecte Catalog',
   'admin_art_catalog_change' => 'Reorder Catalog',

@@ -20,9 +20,9 @@
 			<div class="box">
 				<div class="title">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 列表</div>
 				<div class="page after"><!--prefix_list--></div>
-				<div class="content">
+				<div class="content after">
 					<div class="main">
-<!--news cat_id='$cat_id' limit='$limit' template="mix" show_date="1" condition='$condition'-->
+<!--news cat_id='$cat_id' limit='$limit' template="image" condition='$condition'-->
 					</div>
 				</div>
 				<div class="page after"><!--page_list--></div>

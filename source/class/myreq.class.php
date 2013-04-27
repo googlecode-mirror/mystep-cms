@@ -114,6 +114,44 @@ class MyReq extends class_common {
 		setcookie($name, $value, $expire, $path, $domain, $secure);
 		return;
 	}
+	
+	public function exportPara($var, $type = "request") {
+		$type = strtolower($type);
+		switch($type) {
+			case "svr":
+			case "server":
+				$GLOBALS[$var] = &$_SERVER;
+				break;	
+			case "env":
+				$GLOBALS[$var] = &$_ENV;
+				break;
+			case "get":
+				$GLOBALS[$var] = &$_GET;
+				break;
+			case "post":
+				$GLOBALS[$var] = &$_POST;
+				break;
+			case "req":
+			case "request":
+				$GLOBALS[$var] = &$_REQUEST;
+				break;
+			case "file":
+			case "files":
+				$GLOBALS[$var] = &$_FILES;
+				break;
+			case "cookie":
+				$GLOBALS[$var] = &$_COOKIE;
+				break;
+			case "sess":
+			case "session":
+				$GLOBALS[$var] = &$_SESSION;
+				break;
+			default:
+				$GLOBALS[$var] = &$GLOBALS;
+				break;
+		}
+		return true;
+	}
 
 	public function getPara($type = "get", $para = "") {
 		$type = strtolower($type);

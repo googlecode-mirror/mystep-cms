@@ -137,7 +137,7 @@ function attach_mine() {
 
 function attach_remove(aid) {
 	var content, re;
-	content = tinyMCE.get('content').getContent();
+	content = tinyMCE.activeEditor.getContent();
 	re = new RegExp("<a id\\=\"att_"+aid+".+?<\\/a>", "ig");
 	content = content.replace(re, "");
 	re = new RegExp("(<br \\/>)*<img.+?files\\?"+aid+".+?>(<br \\/>)*", "ig");
@@ -146,7 +146,7 @@ function attach_remove(aid) {
 	content = content.replace(re, "");
 	re = new RegExp("<div>[\s\r\n]*<\\/div>", "ig");
 	content = content.replace(re, "");
-	tinyMCE.get('content').setContent(content);
+	tinyMCE.activeEditor.setContent(content);
 	return;
 }
 
@@ -159,7 +159,8 @@ function tinyMCE_init(the_id, new_setting) {
 		for(var x in new_setting) tinymce_setting[x] = new_setting[x];
 	}
 	$('#'+the_id).tinymce(tinymce_setting);
-	powerUpload_init(the_id);
+	if(typeof(upload_limit)!="undefined") powerUpload_init(the_id);
+	ed_id = the_id;
 	return;
 }
 
@@ -172,8 +173,9 @@ function powerUpload_init(the_id){
 	$("<div>").attr("id", "info_upload").html('<div class="info"></div>').css("display", "none").appendTo("body");
 	$("#css_powerupload").attr("href", rlt_path+"script/jquery.powerupload.css");
 	
+	if(typeof(upload_limit)=="undefined") upload_limit = 10;
 	$(tinyMCE.getInstanceById(the_id).getBody()).powerUpload({
-		maxfiles: 10,
+		maxfiles: 30,
 		maxfilesize: upload_limit,
 		url: 'upload.php',
 		
@@ -183,7 +185,7 @@ function powerUpload_init(the_id){
 					alert('您的浏览器不支持拖拽上传！');
 					break;
 				case 'TooManyFiles':
-					alert('每次最多只能上传 10 个文件');
+					alert('每次最多只能上传 30 个文件');
 					break;
 				case 'FileTooLarge':
 					alert('文件 ' + file.name+' 过大，只能上传小于 ' + upload_limit + 'MB 的文件！');
@@ -273,7 +275,7 @@ function powerUpload_init(the_id){
 
 var tinymce_setting = {
 		// Location of TinyMCE script
-		script_url : '../script/tinymce/tiny_mce.js',
+		script_url : '/script/tinymce/tiny_mce.js',
 
 		// General options
 		language : "cn",
@@ -331,10 +333,10 @@ var tinymce_setting = {
 			}
 		},
 		oninit : function() {
-			var content = tinyMCE.get('content').getContent();
+			var content = tinyMCE.activeEditor.getContent();
 			content = content.replace(/mce\:script/g, "script");
 			content = content.replace(/_mce_src/g, "src");
-			tinyMCE.get('content').setContent(content);
+			tinyMCE.activeEditor.setContent(content);
 		},
 
 		setup : function(ed) {
@@ -349,20 +351,20 @@ var tinymce_setting = {
 				title : 'Div/P 模式切换',
 				image : 'images/div.png',
 				onclick : function() {
-					var content = tinyMCE.get('content').getContent();
+					var content = tinyMCE.activeEditor.getContent();
 					if(content.indexOf("<div")==-1) {
 						content = content.replace(/<p(.*?)>([\w\W]+?)<\/p>/ig, "<div$1>$2</div>");
 					} else {
 						content = content.replace(/<div(.*?)>([\w\W]+?)<\/div>/ig, "<p$1>$2</p>");
 					}
-					tinyMCE.get('content').setContent(content);
+					tinyMCE.activeEditor.setContent(content);
 				}
 			});
 			ed.addButton('format', {
 				title : '代码清理',
 				image : 'images/format.png',
 				onclick : function() {
-					var content = tinyMCE.get('content').getContent();
+					var content = tinyMCE.activeEditor.getContent();
 					if(content.indexOf("<div")==-1) {
 						content = content.replace(/(<br(\s\/)?>)+/ig, "</p><p>");
 						content = content.replace(/<p(.*?)>[\xa0\r\n\s\u3000]+/ig, "<p$1>");
@@ -379,7 +381,7 @@ var tinymce_setting = {
 					while(content.search(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/)!=-1) content = content.replace(/<(\w+)[^>]*>[\s\r\n]*<\/\1>[\r\n\s]*/g, "");
 					while(content.search(/<\/(\w+)><\1([^>]*)>/g)!=-1) content = content.replace(/<\/(\w+)><\1([^>]*)>/g, "");
 					content = content.replace(/  /g, String.fromCharCode(160)+" ");
-					tinyMCE.get('content').setContent(content);
+					tinyMCE.activeEditor.setContent(content);
 				}
 			});
 			ed.addButton('showImage', {

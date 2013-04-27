@@ -34,6 +34,7 @@
 	$MySQL->GetTabData($the_tab)			// Get All of The Data of a Table
 	$MySQL->GetTabFields($the_db, $the_tab)		// Get the Columns List of a Table as an Array
 	$MySQL->GetQueryFields()			// Get the Columns List of Current Query
+	$MySQL->GetInsertId()					// Return auto increment id generate by insert query
 	$MySQL->buildSQL($table, $data, $mode = "insert", $addon = "") // Build SQL string for insert or update
 	$MySQL->ReadSqlFile($file)			// Read SQL File And Send Content of the File to HandleSQL($strSQL)
 	$MySQL->ExeSqlFile($file)			// Read SQL File And Send Content of the File to HandleSQL($strSQL)
@@ -212,6 +213,14 @@ class MySQL extends class_common {
 		$result = ($row_num>0 ? $this->GetResult(0) : "");
 		$this->DB_Qtype = $DB_Qtype_org;
 		$this->free();
+		return $result;
+	}
+	
+	public function GetRecord($sql){
+		$result = array();
+		$this->Query($sql);
+		while($result[] = $this->GetRS()) {}
+		array_pop($result);
 		return $result;
 	}
 
@@ -411,7 +420,7 @@ class MySQL extends class_common {
 				$sql = "insert into `{$table}` ";
 				break;
 			case "update":
-				$sql = "update LOW_PRIORITY`{$table}` set ";
+				$sql = "update LOW_PRIORITY `{$table}` set ";
 				break;
 			default:
 				$sql = "replace into `{$table}` set ";

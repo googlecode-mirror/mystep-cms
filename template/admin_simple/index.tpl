@@ -37,7 +37,7 @@
 				<div id="cat_tree"></div>
 			</td>
 			<td class="content" valign="top">
-				<iframe id="main" name="main" frameborder="0" scrolling="yes" src="art_content.php"></iframe>
+				<iframe id="main" name="main" frameborder="0" scrolling="yes" src="<!--first_page-->"></iframe>
 			</td>
 		</tr></table>
 	</div>

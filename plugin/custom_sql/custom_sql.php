@@ -114,7 +114,6 @@ function build_page($method) {
 		$max_count = count($sql_list);
 		for($i=0; $i<$max_count; $i++) {
 			$sql_list[$i]['id'] = $i;
-			$sql_list[$i]['no'] = $i+1;
 			$tpl->Set_Loop('record', $sql_list[$i]);
 		}
 		$tpl->Set_Variable('title', $setting['language']['plugin_custom_sql_title']);

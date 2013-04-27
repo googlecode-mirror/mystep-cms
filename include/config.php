@@ -28,7 +28,7 @@ $setting['gen']['charset'] = 'gbk';
 $setting['gen']['gzip_level'] = 4;
 $setting['gen']['cache'] = false;
 $setting['gen']['cache_ext'] = '.html';
-$setting['gen']['template'] = 'classic';
+$setting['gen']['template'] = 'default';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
 $setting['gen']['update'] = 'http://www.mysteps.cn/update/';
 $setting['gen']['minify'] = false;
@@ -53,8 +53,8 @@ $setting['js']['debug'] = true;
 
 $setting['list'] = array();
 $setting['list']['txt'] = 30;
-$setting['list']['img'] = 10;
-$setting['list']['mix'] = 25;
+$setting['list']['img'] = 12;
+$setting['list']['mix'] = 15;
 $setting['list']['rss'] = 50;
 
 $setting['session'] = array();
@@ -176,30 +176,6 @@ $expire_list = array (
   'list' => 3600,
   'tag' => 86400,
   'read' => 604800,
-);
-$ignore_list = array (
-  0 => '.',
-  1 => '..',
-  2 => '_maker',
-  3 => 'cache',
-  4 => 'update',
-  5 => 'install.lock',
-  6 => 'article',
-  7 => 'pic',
-  8 => 'tmp',
-  9 => 'web.config',
-  10 => 'aspnet_client',
-  11 => '.svn',
-  12 => '2011',
-  13 => '2012',
-  14 => '_bak',
-  15 => 'colorway',
-  16 => 'ciguang',
-  17 => 'news_show',
-  18 => 'apple',
-  19 => '_archive',
-  20 => 'install',
-  21 => 'xcache',
 );
 $authority = "mystep";
 ?>

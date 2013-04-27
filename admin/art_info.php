@@ -45,7 +45,7 @@ switch($method) {
 
 if(!empty($log_info)) {
 	write_log($log_info, "id={$id}");
-	$goto_url = $setting['info']['self'];
+	$goto_url = ($method=="delete") ? $req->getServer("HTTP_REFERER") : $setting['info']['self'];
 }
 $mystep->pageEnd(false);
 

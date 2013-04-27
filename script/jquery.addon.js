@@ -522,17 +522,18 @@ jQuery.fn.imageWall = function(options) {
 		img_width: 150,
 		img_height: 60,
 		interval: 5,
-		speed: 500
+		speed: 500,
+		tag: "img"
 	};
 	var params = $.extend({}, defaults, options || {});
 	var obj_ole = $(this);
 	var img_cnt = params.size_h*params.size_v;
 	var img_content = obj_ole.html().replace(/\s*[\r\n]+\s*/g, "");
-	var repeat_times = Math.ceil(img_cnt/obj_ole.find("img").length)+1;
+	var repeat_times = Math.ceil(img_cnt/obj_ole.find(params.tag).length)+1;
 	var show_done = true;
 	var rebuild_list = function(theOle) {
 		for(var i=0;i<img_cnt;i++) {
-			theOle.find("img").first().appendTo(theOle);
+			theOle.find(params.tag).first().appendTo(theOle);
 		}
 	};
 	var setBack = function() {
@@ -544,6 +545,7 @@ jQuery.fn.imageWall = function(options) {
 	obj_ole.css({"width":(params.size_h*params.img_width),"height":(params.size_v*params.img_height),"overflow":"hidden","position":"relative"});
 	obj_ole.html('<div></div><div></div>');
 	obj_ole.find("div").css({"position":"absolute","top":0,"left":0,"z-index":0}).html(img_content);
+	obj_ole.find(params.tag).css({"display":"block","float":"left","width":params.img_width,"height":params.img_height,"overflow":"hidden"});
 	obj_ole.find("img").css({"display":"block","float":"left","width":params.img_width,"height":params.img_height,"border":0});
 	rebuild_list(obj_ole.find("div:eq(0)"));
 	setInterval(function(){
@@ -552,12 +554,12 @@ jQuery.fn.imageWall = function(options) {
 		var cur_idx = 0;
 		show_done = false;
 		for(var i=0;i<img_cnt;i++) {
-			setTimeout(function(){cur_obj.find("img:eq("+cur_idx+")").animate({"opacity":"0"},params.speed*3);cur_idx++;}, params.speed*i);
+			setTimeout(function(){cur_obj.find(params.tag+":eq("+cur_idx+")").animate({"opacity":"0"},params.speed*3);cur_idx++;}, params.speed*i);
 		}
 		setTimeout(function(){
 			setBack();
 			rebuild_list(obj_ole.find("div").first());
-			obj_ole.find("div").first().find("img").css("opacity", "1");
+			obj_ole.find("div").first().find(params.tag).css("opacity", "1");
 			show_done = true;
 		}, params.speed*(i+2));
 	}, params.interval);

@@ -15,7 +15,6 @@ if($tpl->Is_Cached()) {
 	echo $tpl->Get_Content();
 	$mystep->pageEnd($setting['gen']['show_info']);
 }
-includeCache("link");
 $tpl_info['idx'] = "index";
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));

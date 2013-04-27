@@ -17,8 +17,8 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 		runmode : false,
 		readOnly : false,
 		times_count : 15,
-		//base_path : "http://codemirror.net"
 		base_path : "/script/codemirror"
+		//base_path : "http://codemirror.net"
 	}, options);
 	var mode_list = new Object();
 	mode_list.clike = "text/x-csrc";
@@ -84,13 +84,13 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 										"/mode/javascript/javascript.js",
 										"/mode/css/css.js",
 										"/mode/htmlmixed/htmlmixed.js",
-										"/mode/htmlembedded/htmlembedded.js",
+										"/mode/htmlembedded/htmlembedded.js"
 									];
 	type_list.htmlmixed = [
 										"/mode/xml/xml.js",
 										"/mode/javascript/javascript.js",
 										"/mode/css/css.js",
-										"/mode/htmlmixed/htmlmixed.js",
+										"/mode/htmlmixed/htmlmixed.js"
 									];
 	type_list.javascript = ["/mode/javascript/javascript.js"];
 	type_list.jinja2 = ["/mode/jinja2/jinja2.js"];
@@ -98,7 +98,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 	type_list.lua = ["/mode/lua/lua.js"];
 	type_list.markdown = [
 										"/mode/xml/xml.js",
-										"/mode/markdown/markdown.js",
+										"/mode/markdown/markdown.js"
 									];
 	type_list.mysql = ["/mode/mysql/mysql.js"];
 	type_list.ntriples = ["/mode/ntriples/ntriples.js"];
@@ -109,7 +109,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 										"/mode/javascript/javascript.js",
 										"/mode/css/css.js",
 										"/mode/clike/clike.js",
-										"/mode/php/php.js",
+										"/mode/php/php.js"
 									];
 	type_list.plsql = ["/mode/plsql/plsql.js"];
 	type_list.properties = ["/mode/properties/properties.js"];
@@ -220,7 +220,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 				if(the_content.length==0) the_content = obj.text();
 				the_content += "\n";
 				CodeMirror.runMode(the_content.replace(/\t/g, String.fromCharCode(160)+String.fromCharCode(160)).replace(/ /g, String.fromCharCode(160)), settings.mode, callback);
-				
+				var width_side = Math.ceil(gutter.length/100)*0.5+1;
 				var new_obj = $('\
 <div class="CodeMirror" style="height:auto;">\
 	<div class="CodeMirror-scroll">\
@@ -228,7 +228,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 			<div class="CodeMirror-lines" style="margin:-4px 0px -4px 0px;">\
 				<div style="position:relative;">\
 					<div style="position:absolute;top:0px;left:0px;">\
-						<div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left:0px;width:20px;background-color:#efefef;">'+gutter.join('')+'</div>\
+						<div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left:0px;width:'+width_side+'em;background-color:#efefef;">'+gutter.join('')+'</div>\
 					</div>\
 					<pre class="cm-s-default">'+accum.join('')+'</pre>\
 				</div>\
@@ -239,7 +239,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 <div class="CodeMirror_scroll"></div>\
 				').insertAfter(obj);
 				$(".CodeMirror").css({"position":"relative"});
-				new_obj.find(".CodeMirror-lines > div > pre").css("margin-left","2em");
+				new_obj.find(".CodeMirror-lines > div > pre").css("margin-left",(width_side+0.5)+"em");
 				new_obj.css("overflow-x","hidden");
 				obj.hide();
 			});

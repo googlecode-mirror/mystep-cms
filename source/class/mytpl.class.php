@@ -389,6 +389,8 @@ mytpl;
 				}
 			}
 			if($minify) {
+				$content = str_replace("//<![CDATA[", "", $content);
+				$content = str_replace("//]]> ", "", $content);
 				$content = preg_replace("/".preg_quote($this->delimiter_l).".+?".preg_quote($this->delimiter_r)."/", "", $content);
 				$content = preg_replace("/\/\/[\w\s]+([\r\n]+)/", '\1', $content);
 				$content = preg_replace("/\s+/", " ", $content);

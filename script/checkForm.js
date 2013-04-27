@@ -11,6 +11,18 @@
 **************************************************/
 
 function checkForm(the_form, myChecker){
+	function highlightIt(the_obj){
+		var tag_name = the_obj.tagName.toLowerCase();
+		(tag_name=="input") ? the_obj.select() : the_obj.focus();
+		$(the_obj).one("keypress", function(){
+			$(this).css({"background-color":"transparent","border":"1px #cbcbcb solid"});
+		}).one("change", function(){
+			$(this).css({"background-color":"#DAE7F2","border":"1px #A9A9A9 inset"});
+		});
+		$(the_obj).css({"background-color":"#ffc3ae","border":"1px #ff0000 solid"});
+		$(window).scrollTop($(the_obj).position().top-100);
+		return;
+	}
 	var flag = false;
 	if(typeof(myChecker)=="function") {
 		flag = myChecker(the_form);
@@ -26,6 +38,7 @@ function checkForm(the_form, myChecker){
 	obj_list = $(the_form).find("input,select,textarea");
 	for(var i=0;i<obj_list.length;i++){
 		the_obj = obj_list[i];
+		tag_name = the_obj.tagName.toLowerCase();
 		if(typeof(the_obj.getAttribute)=="undefined") continue;
 		the_value = the_obj.value;
 		the_value = (the_value==null?"":the_value.replace(/(^\s*)|(\s*$)/g,""));
@@ -36,7 +49,7 @@ function checkForm(the_form, myChecker){
 			if(the_len.match(/^\d+$/)) {
 				if(the_length > the_len) {
 					alert(printf(language.checkform_lenth_limit1, the_len));
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 			} else {
@@ -48,7 +61,7 @@ function checkForm(the_form, myChecker){
 						} else {
 							alert(printf(language.checkform_lenth_limit2, the_len.join(" - ")));
 						}
-						(tag_name=="input") ? the_obj.select() : the_obj.focus();
+						highlightIt(the_obj);
 						return false;
 					}
 				}
@@ -58,12 +71,11 @@ function checkForm(the_form, myChecker){
 			if(the_need.search("_")>=0 && the_value=="") continue;
 			the_need = the_need.toLowerCase().replace("_", "");
 		}
-		tag_name = the_obj.tagName.toLowerCase();
 		switch(the_need){
 			case "email":
 				if(!/^[\w\-\.]+@([\w\-]+\.)+[a-z]{2,4}$/i.test(the_value)) {
 					alert(language.checkform_err_email);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 				break;
@@ -71,56 +83,56 @@ function checkForm(the_form, myChecker){
 				//if(!/^(http|ftp):\/\/(\w+:\w+@)?([\w\-]+\.)+\w+(\/[\w\.\-]*)*(\?[\w&=%\-,]+)?#*$/ig.test(the_value)) {
 				if(!/^(http|ftp):\/\/(\w+:\w+@)?([\w\-]+\.)+\w+(\:\d+)?.*/i.test(the_value)) {
 					alert(language.checkform_err_url);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 				break;
 			case "digital":
 				if(!/^\d+$/.test(the_value)) {
 					alert(language.checkform_err_digital);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 				break;
 			case "number":
 				if(!/^[\-+]?\d+(\.\d+)?$/.test(the_value)) {
 					alert(language.checkform_err_number);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 				break;
 			case "alpha":
 				if(!/^[a-z_\d\-]+$/i.test(the_value)) {
 					alert(language.checkform_err_alpha);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 				break;
 			case "word":
 				if(!/^[\w\s\-]+$/i.test(the_value)) {
 					alert(language.checkform_err_word);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 				break;
 			case "name":
 				if(!/^[\w\u4e00-\u9FA5 \uf900-\uFA2D]+$/.test(the_value)) {
 					alert(language.checkform_err_name);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 				break;
 			case "date":
 				if(!/^\d{4}([\/\-])\d{1,2}\1\d{1,2}$/.test(the_value)) {
 					alert(language.checkform_err_date);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				} else {
 					var the_list = the_value.split(/[\-\/]/g);
 					var cur_date = new Date((the_list[0]-0), (the_list[1]-1), (the_list[2]-0));
 					if(cur_date.getDate()!=(the_list[2]-0) || cur_date.getMonth()!=(the_list[1]-1) ) {
 						alert(language.checkform_err_date2);
-						(tag_name=="input") ? the_obj.select() : the_obj.focus();
+						highlightIt(the_obj);
 						return false;
 					}
 				}
@@ -128,19 +140,19 @@ function checkForm(the_form, myChecker){
 			case "time":
 				if(!/^\d{1,2}:\d{1,2}(:\d{1,2})?$/.test(the_value)) {
 					alert(language.checkform_err_time);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				} else {
 					var the_list = the_value.split(/:/g);
 					if(parseInt(the_list[0])>23 || parseInt(the_list[1])>59) {
 						alert(language.checkform_err_time2);
-						(tag_name=="input") ? the_obj.select() : the_obj.focus();
+						highlightIt(the_obj);
 						return false;
 					} else {
 						if(the_list.length==3) {
 							if(parseInt(the_list[2])>59) {
 								alert(language.checkform_err_time2);
-								(tag_name=="input") ? the_obj.select() : the_obj.focus();
+								highlightIt(the_obj);
 								return false;
 							}
 						}
@@ -151,14 +163,14 @@ function checkForm(the_form, myChecker){
 			case "fax":
 				if(!/^([\d]{3,5}\-)?[\d]{6,11}(\-[\d]{1,5})?$/.test(the_value)) {
 					alert(language.checkform_err_tel);
-					(tag_name=="input") ? the_obj.select() : the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 				break;
 			case "":
 				if(the_value.replace(/\s/g,"").length==0) {
 					alert(language.checkform_noempty);
-					the_obj.focus();
+					highlightIt(the_obj);
 					return false;
 				}
 				break;

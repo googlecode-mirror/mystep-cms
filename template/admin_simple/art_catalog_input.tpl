@@ -72,8 +72,8 @@
 				<td class="row">
 					<select name="cat_type" onchange="showTpl(this.value)">
 						<option value="0" <!--cat_type_0-->>标题列表</option>
-						<option value="1" <!--cat_type_1-->>图片简介</option>
-						<option value="2" <!--cat_type_2-->>图片展示</option>
+						<option value="1" <!--cat_type_1-->>图片展示</option>
+						<option value="2" <!--cat_type_2-->>图文混合</option>
 						<option value="3" <!--cat_type_3-->>自定义</option>
 					</select>
 					<span class="comment">（根据栏目内容选择对应的目录页展示方式）</span>

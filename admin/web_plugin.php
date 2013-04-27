@@ -80,6 +80,7 @@ switch($method) {
 		$log_info = $setting['language']['admin_web_plugin_active'];
 		$db->Query("update ".$setting['db']['pre']."plugin set `active`=1-`active` where `idx`='".$idx."'");
 		deleteCache("plugin");
+		MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
 		delTplCache($setting['gen']['template']);
 		break;
 	case "order":

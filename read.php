@@ -6,7 +6,7 @@ if(!is_numeric($news_id)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
 }
-list($cat_id, $add_date, $page_count, $subject, $view_lvl, $link)=array_values(getData("select cat_id, add_date, pages, subject, view_lvl, link from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record", 1200));
+list($cat_id, $add_date, $page_count, $subject, $view_lvl, $link, $template)=array_values(getData("select cat_id, add_date, pages, subject, view_lvl, link, template from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record", 1200));
 if(is_null($cat_id) || is_null($add_date)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
@@ -28,9 +28,14 @@ if($cat_info = getParaInfo("news_cat", "cat_id", $cat_id)) {
 }
 $db->Query("update ".$setting['db']['pre_sub']."news_show set views = views + 1 where news_id=".$news_id);
 $page = $req->getGet("page");
-if(!is_numeric($page)) $page = 1;
-if($page < 1) $page = 1;
-if($page > $page_count) $page = $page_count;
+if($page_count==1) $page=1;
+if(!is_numeric($page)) {
+	$page = "all";
+	$page_count = 1;
+} else {
+	if($page < 1) $page = 1;
+	if($page > $page_count) $page = $page_count;
+}
 
 if($setting['gen']['cache']) {
 	$cache_info = array(
@@ -54,20 +59,55 @@ if($view_lvl>$setting['info']['user']['type']['view_lvl']) {
 	$mystep->pageEnd($setting['gen']['show_info']);
 }
 
+if(!empty($template)) {
+	$template = explode(",", $template);
+	if(count($template)==1) {
+		$template[1] = $template[0];
+		$template[0] = "main";
+	}
+	$tpl_info['idx'] = $template[0];
+} else {
+	$template = array("main", "read");
+}
+
 $tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 if($tpl->Is_Cached()) {
 	echo $tpl->Get_Content();
 	$mystep->pageEnd($setting['gen']['show_info']);
 }
 
-$detail = getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "record", 1200);
+if($page=="all") {
+	$detail = getData("select * from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record", 1200);
+	if($detail!==false) {
+		$contents = getData("select * from ".$setting['db']['pre_sub']."news_detail where news_id='{$news_id}' order by page", "all", 1200);
+		$content = "";
+		for($i=0,$m=count($contents);$i<$m;$i++) {
+			$content .= <<<mystep
+<p><h4><a name="subtitle_{$i}"></a>{$contents[$i]['sub_title']}</h4></p>
+{$contents[$i]['content']}
+<hr />
+mystep;
+		}
+		if(empty($content)) {
+			$detail = false;
+		} else {
+			$detail['sub_title'] = "";
+			$detail['content'] = $content;
+		}
+	}
+	$mystep->setAddedContent("end", '
+<script language="JavaScript" type="text/javascript">$(function(){anchorShow();});</script>
+');
+} else {
+	$detail = getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "record", 1200);
+}
 if($detail===false) {
 	$goto_url = "/";
 	$mystep->pageEnd();
 }
 
 $web_id = $setting['info']['web']['web_id'];
-$tpl_info['idx'] = "read";
+$tpl_info['idx'] = $template[1];
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 
 if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', ' - <a href="'.getUrl("list", $cat_idx, 1, $setting['info']['web']['web_id']).'">'.$cat_name.'</a>');
@@ -103,6 +143,7 @@ if($page_count==1) {
 		if(!empty($result[$i]['sub_title'])) $result[$i]['txt'] .= " - ".$result[$i]['sub_title'];
 	}
 	$tpl_tmp->Set_Variable('sub_page', toJson($result, $setting['gen']['charset']));
+	$tpl_tmp->Set_Variable('link_all', getUrl("read", array($news_id, $cat_idx), "all", $setting['info']['web']['web_id']));
 	unset($result);
 }
 

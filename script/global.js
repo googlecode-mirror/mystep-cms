@@ -97,6 +97,21 @@ Array.prototype.append = function (newArray) {
 	return;
 }
 
+if(!Array.prototype.indexOf) {
+	Array.prototype.indexOf = function(val) {
+		var len = this.length;
+		var i = Number(arguments[1]) || 0;
+		i = (i<0) ? Math.ceil(i) : Math.floor(i);
+		if(i<0) i += len;
+		for(;i<len;i++) {
+			if(this[i] === val) {
+				return i;
+			}
+		}
+		return -1;
+	}
+}
+
 function openDialog(url, width, height, mode) {
 	var sOrnaments = "dialogWidth:"+width+"px;dialogHeight:"+height+"px;center:1;dialogLeft:200;dialogTop:100;dialogHide:0;edge:raised;help:0;resizable:0;scroll:0;status:0;unadorned:0;center:1;";
 	var win = null;
@@ -321,6 +336,31 @@ function UrlEncode(s) {
 	});
 }
 
+function debug(para, mode) {
+	if($("#debug").length==0) {
+		$('\
+<div style="margin:10px auto;width:600px;">\
+	<b>Debug:</b><br/>\
+	<textarea id="debug" cols="100" rows="10"></textarea>\
+</div>\
+		').appendTo("body");
+	}
+	var str = "";
+	if(typeof(para)!="string") {
+		for(var x in para) {
+			str += x + " : " + para[x] + "\n";
+		}
+	} else {
+		str = para;
+	}
+	
+	if(mode==true) {
+		$id("debug").value = str + "\n\n======================================\n\n" + $id("debug").value;
+	} else {
+		$id("debug").value = str;
+	}
+}
+
 function md5(str) {
 	var rhex = function(num) {
 		var hex_chr = "0123456789abcdef"; 
@@ -452,7 +492,9 @@ function checkObj(obj, func_show) {
 function reportError(msg, url, line) {
 	var str = "You have found an error as below: \n\n";
 	str += "Err: " + msg + "\n\non line: " + line;
-	if(typeof(ms_setting)!="undefined" && ms_setting.debug) alert(str, true);
+	var report_func = alert;
+	if(typeof(alert_org)!="undefined") report_func = alert_org;
+	if(typeof(ms_setting)!="undefined" && ms_setting.debug) report_func(str, true);
 	return true;
 }
 window.onerror = reportError;

@@ -69,6 +69,7 @@ DIV .addnew {position:absolute; top:0px; right:10px; width:120px; height:20px; p
 
 TABLE td {vertical-align:middle;}
 TABLE .cat, TABLE .row, TABLE .cat td, TABLE .row td {border:1px solid #629DC5; padding:5px 10px;}
+TABLE tr:hover {background-color:#F2F9FD;}
 TABLE .cat {font-weight:bold; background-color:#F2F9FD;}
 TABLE .cat span {color:red;}
 

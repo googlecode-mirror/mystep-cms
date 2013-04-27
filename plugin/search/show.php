@@ -36,6 +36,7 @@ if(!empty($mode)) {
 	}
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	$news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".(empty($condition)?"":" and {$condition}"), "result");
+	if($news_count>0) $db->Query("update ".$setting['db']['pre']."search_keyword set `amount`='".$news_count."' where keyword = '{$keyword}'");
 	$tpl_tmp->Set_Variable('title', $setting['web']['title']);
 	$tpl_tmp->Set_Variable('web_url', $setting['web']['url']);
 	$tpl_tmp->Set_Variable('keyword', $keyword);

@@ -59,7 +59,7 @@ Class MyEmail extends class_common {
 		$subject = str_replace("\r", '', $subject);
 		$subject = str_replace("\n", '', $subject);
 		$subject = trim($subject);
-		$this->subject = "=?".$this->charset."?b?".base64_encode($subject)."?=";
+		$this->subject = "=?".$this->charset."?B?".base64_encode($subject)."?=";
 		return;
 	}
 	
@@ -70,7 +70,7 @@ Class MyEmail extends class_common {
 		if (empty($name)) {
 			$this->from = $email;
 		} else {
-			$name = "=?".$this->charset."?b?".base64_encode($name)."?=";
+			$name = "=?".$this->charset."?B?".base64_encode($name)."?=";
 			$this->from = $name . " <" . $email . ">";
 		}
 		ini_set('sendmail_from', $email);
@@ -122,7 +122,7 @@ Content-Transfer-Encoding: base64
 		$email = trim($email);
 		$name = trim(preg_replace('/[\r\n]+/', '', $name));
 		if(!preg_match('/^[\w\-\.]+@(([\w\-]+)[.])+[a-z]{2,4}$/i', $email)) return false;
-		$name = "=?".$this->charset."?b?".base64_encode($name)."?=";
+		$name = "=?".$this->charset."?B?".base64_encode($name)."?=";
 		array_push($this->$type, array($email, $name));
 		return true;
 	}

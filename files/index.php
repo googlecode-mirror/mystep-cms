@@ -14,20 +14,23 @@ if($setting['web']['close'] && !isset($_COOKIE['force'])) {
 	exit();
 }
 include(ROOT_PATH."/include/parameter.php");
-include(ROOT_PATH."/source/function/etag.php");
 include(ROOT_PATH."/source/function/global.php");
 include(ROOT_PATH."/source/function/web.php");
 include(ROOT_PATH."/source/class/abstract.class.php");
 include(ROOT_PATH."/source/class/mystep.class.php");
 
-set_time_limit(1200);
-ob_end_clean();
-
 $mystep = new MyStep();
-$db = $mystep->getInstance("MySQL", $setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
-$cache = $mystep->getInstance("MyCache", $setting['web']['cache_mode']);
+$mystep->pageStart(false);
+ob_end_clean();
+set_time_limit(1200);
 
-if($record=getData("select * from ".$setting['db']['pre']."attachment where id = ".$id, "record", 1800)) {
+if($record=getData("select a.*, b.view_lvl from ".$setting['db']['pre']."attachment a left join ".$setting['db']['pre']."news_show b on a.web_id=b.web_id and a.news_id=b.news_id where id = ".$id, "record", 1800)) {
+	if($record['view_lvl']>$setting['info']['user']['type']['view_lvl']) {
+		$db->close();
+		header("location: ".getUrl("read", $record['news_id'], 1, $record['web_id']));
+		exit();
+	}
+	if(strpos($record['file_type'],"image")===0) include(ROOT_PATH."/source/function/etag.php");
 	$the_ext = ".".GetFileExt($record['file_name']);
 	$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d", substr($record['file_time'],0, 10));
 	$the_file = $record['file_time'].substr(md5($record['file_size']),0,5);
@@ -49,7 +52,6 @@ if($record=getData("select * from ".$setting['db']['pre']."attachment where id =
 	$db->Query("update ".$setting['db']['pre']."attachment set file_count = file_count + 1 where id = ".$id);
 	$db->close();
 	
-	
 	if(isset($_SERVER['HTTP_RANGE'])) {
 		preg_match("/^bytes=(\d*)-(\d*)$/i", $_SERVER['HTTP_RANGE'], $match);
 		$pos_start = $match[1];
@@ -60,7 +62,6 @@ if($record=getData("select * from ".$setting['db']['pre']."attachment where id =
 		if(empty($pos_end) || $pos_end>$record['file_size']-1) $pos_end = $record['file_size']-1;
 		if(empty($pos_start)) $pos_start = $record['file_size']-1-$pos_end;
 	}
-	
 	
 	if($pos_start>0 && $pos_start<$record['file_size'] && $pos_start<$pos_end) {
 		header("HTTP /1.1 206 Partial Content");

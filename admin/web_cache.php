@@ -6,37 +6,21 @@ $log_info = "";
 
 if($method=="update" && count($_POST)>0) {
 	$log_info = $setting['language']['admin_web_cache_update'];
-	$cur_setting = $setting;
-	unset($setting);
-	include(ROOT_PATH."/include/config.php");
-	$setting['gen']['cache'] = ($_POST['cache']=="true");
-	$setting['web']['cache_mode'] = $_POST['cache_mode'];
-	$expire_list = array();
+	$setting_new = array();
+	$setting_new['gen'] = array();
+	$setting_new['gen']['cache'] = ($_POST['cache']=="true");
+	$setting_new['web'] = array();
+	$setting_new['web']['cache_mode'] = $_POST['cache_mode'];
+	$para_new = array();
+	$para_new["expire"] = array();
 	$max_count = count($_POST['page']);
 	for($i=0; $i<$max_count; $i++) {
 		if($i==0) $_POST['page'][0] = "default";
 		if(empty($_POST['page'][$i])) continue;
 		eval('$value = '.$_POST['expire'][$i].';');
-		$expire_list[$_POST['page'][$i]] = $value;
+		$para_new["expire"][$_POST['page'][$i]] = $value;
 	}
-	$rewrite_list_str = var_export($rewrite_list, true);
-	$expire_list_str = var_export($expire_list, true);
-	$ignore_list_str = var_export($ignore_list, true);
-	$content = <<<mystep
-<?php
-\$setting = array();
-
-/*--settings--*/
-\$rewrite_list = {$rewrite_list_str};
-\$expire_list = {$expire_list_str};
-\$ignore_list = {$ignore_list_str};
-\$authority = "{$authority}";
-?>
-mystep;
-	$content = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $content);
-	WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
-	unset($setting);
-	$setting = $cur_setting;
+	changeSetting($setting_new, $para_new);
 } elseif($method=="clean") {
 	ignore_user_abort("on");
 	set_time_limit(0);

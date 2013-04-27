@@ -45,7 +45,7 @@ function setIt() {
 		loadingShow("Ω≈±æ‘ÿ»Î÷–£¨«Î…‘∫Ú");
 		$('#file_content').codemirror({
 				lineWrapping: false,
-				height: 400,
+				height: 300,
 				ext_css: "\
 					.CodeMirror-fullscreen {background-color:#fff;display:block;position:absolute;top:0;left:0;width:100%;height:100%;z-index:9999;margin:0;padding:0;border:0px solid #BBBBBB;opacity:1;}\
 					.activeline {background: #e8f2ff !important;}\
@@ -134,6 +134,7 @@ function setIt() {
 					    hlLine = editor.addLineClass(cur, "background", "activeline");
 					  }
 					});
+					editor.refresh();
 				}
 				loadingShow();
 			}

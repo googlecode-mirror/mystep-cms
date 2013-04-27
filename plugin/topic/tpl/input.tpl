@@ -49,7 +49,7 @@
 			<tr>
 				<td colspan="2" align="center">
 					<div>
-						<textarea name="topic_intro" style="width:100%;height:200px;"><!--topic_intro--></textarea>
+						<textarea id="topic_intro" name="topic_intro" style="width:100%;height:200px;"><!--topic_intro--></textarea>
 					</div>
 				</td>
 			</tr>
@@ -135,58 +135,13 @@
 		</table>
 	</div>
 </div>
-<script type="text/javascript" src="../../script/tinymce/tiny_mce.js"></script>
+<script language="JavaScript" type="text/javascript" src="../../script/tinymce/jquery.tinymce.js"></script>
 <script language="JavaScript">
 if(typeof($.setupJMPopups)=="undefined") $.getScript("../../script/jquery.jmpopups.js", function(){
 	$.setupJMPopups({
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.4"
 	});
-});
-
-tinyMCE.init({
-	mode : "exact",
-	elements : "topic_intro",
-	language : "zh",
-	theme : "advanced",
-	plugins : "safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
-
-	theme_advanced_buttons1 : "cut,copy,paste,|,undo,redo,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,fontsizeselect,|,forecolor,backcolor,|,link,unlink,image,charmap,removeformt,code,preview",
-	theme_advanced_buttons2 : "",
-	theme_advanced_buttons3 : "",
-	theme_advanced_toolbar_location : "top",
-	theme_advanced_toolbar_align : "left",
-	theme_advanced_statusbar_location : "bottom",
-	theme_advanced_resizing : false,
-	content_css : "css/content.css",
-
-	template_external_list_url : "lists/template_list.js",
-	external_link_list_url : "lists/link_list.js",
-	external_image_list_url : "lists/image_list.js",
-	media_external_list_url : "lists/media_list.js",
-	
-	dialog_type : "modal",
-	relative_urls : true,
-	remove_linebreaks : false,
-	invalid_elements : "",
-	event_elements : "a,img,span,div",
-	extended_valid_elements : "iframe[src|frameborder=0|width|height|align|scrolling|name],"+
-							"script[src|type|language],"+
-							"form[action|method|name],"+
-							"center,"+
-							"input[type|name|value|checked|src|alt|size|maxlength],"+
-							"button[name|value|type],"+
-							"select[name|size|multiple|onchange],"+
-							"textarea[name|rows|cols]",
-	
-	flash_wmode : "transparent",
-	flash_quality : "high",
-	flash_menu : "false",
-
-	template_replace_values : {
-		username : "Windy2000",
-		staffid : "19781226"
-	}
 });
 
 function search_link(keyword) {
@@ -205,51 +160,50 @@ function setIt() {
 	if(editor == null) {
 		$('#topic_tpl').codemirror({
 				lineWrapping: false,
-				height: 400,
+				height: 300,
 				ext_css: "\
 					.CodeMirror-fullscreen {background-color:#fff;display:block;position:absolute;top:0;left:0;width:100%;height:100%;z-index:9999;margin:0;padding:0;border:0px solid #BBBBBB;opacity:1;}\
 					.activeline {background: #e8f2ff !important;}\
 				",
-				onCursorActivity: function () {
-					editor.setLineClass(hlLine, null, null);
-					if(editor.getSelection().length==0) {
-						hlLine = editor.setLineClass(editor.getCursor().line, "activeline");
-					}
-				},
 				extraKeys: {
-					"F11": function() {
-						var scroller = editor.getScrollerElement();
-						if (scroller.className.search(/\bCodeMirror-fullscreen\b/) === -1) {
-							$(scroller).css({"position":"absolute"});
-							$("body").css("overflow","hidden");
-							scroller.className += " CodeMirror-fullscreen";
+					"F11": function(cm) {
+						var wrap = cm.getWrapperElement();
+						var scroller = cm.getScrollerElement();
+						if (/\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className)) {
+							wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
+							wrap.style.height = "";
+							wrap.style.width = "";
+							scroller.style.height = "";
+							scroller.style.width = "";
+							document.documentElement.style.overflow = "";
+						} else {
+							wrap.className += " CodeMirror-fullscreen";
+							wrap.style.height = (window.innerHeight || (document.documentElement || document.body).clientHeight) + "px";
+							wrap.style.width = "100%";
 							scroller.style.height = "100%";
 							scroller.style.width = "100%";
-							editor.refresh();
-						} else {
-							$(scroller).css({"position":"static"});
-							$("body").css("overflow","auto");
-							scroller.className = scroller.className.replace(" CodeMirror-fullscreen", "");
-							scroller.style.height = '';
-							scroller.style.width = '';
-							editor.refresh();
+							document.documentElement.style.overflow = "hidden";
+						}
+						cm.refresh();
+						return;
+					},
+					"Esc": function(cm) {
+						var wrap = cm.getWrapperElement();
+						var scroller = cm.getScrollerElement();
+						if (/\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className)) {
+							wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
+							wrap.style.height = "";
+							wrap.style.width = "";
+							scroller.style.height = "";
+							scroller.style.width = "";
+							document.documentElement.style.overflow = "";
+							cm.refresh();
 						}
 					},
-					"Esc": function() {
-						var scroller = editor.getScrollerElement();
-						if (scroller.className.search(/\bCodeMirror-fullscreen\b/) !== -1) {
-							$(scroller).css({"position":"static"});
-							$("body").css("overflow","auto");
-							scroller.className = scroller.className.replace(" CodeMirror-fullscreen", "");
-							scroller.style.height = '';
-							scroller.style.width = '';
-							editor.refresh();
-						}
-					},
-					"Shift-Tab": function() {
-						var the_pos = editor.getCursor().line;
-						var the_selection = editor.getSelection().split("\n");
-						var the_line = editor.getLine(the_pos);
+					"Shift-Tab": function(cm) {
+						var the_pos = cm.getCursor().line;
+						var the_selection = cm.getSelection().split("\n");
+						var the_line = cm.getLine(the_pos);
 						var line_start = 0, line_end = 0;
 						if(the_line.indexOf(the_selection[0])!=-1) {
 							line_start = the_pos;
@@ -259,14 +213,14 @@ function setIt() {
 							line_end = the_pos;
 						}
 						for(var i=line_start; i<=line_end; i++) {
-							editor.setLine(i, "	" + editor.getLine(i));
+							cm.setLine(i, "	" + cm.getLine(i));
 						}
-						editor.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
+						cm.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
 					},
-					"Shift-Backspace": function() {
-						var the_pos = editor.getCursor().line;
-						var the_line = editor.getLine(the_pos);
-						var the_selection = editor.getSelection().split("\n");
+					"Shift-Backspace": function(cm) {
+						var the_pos = cm.getCursor().line;
+						var the_line = cm.getLine(the_pos);
+						var the_selection = cm.getSelection().split("\n");
 						var line_start = 0, line_end = 0;
 						if(the_line.indexOf(the_selection[0])!=-1) {
 							line_start = the_pos;
@@ -276,9 +230,9 @@ function setIt() {
 							line_end = the_pos;
 						}
 						for(var i=line_start; i<=line_end; i++) {
-							editor.setLine(i, editor.getLine(i).replace(/^\s/, ""));
+							cm.setLine(i, cm.getLine(i).replace(/^\s/, ""));
 						}
-						editor.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
+						cm.setSelection({line:line_start,ch:0}, {line:line_end,ch:999});
 					}
 				}
 			}, function(){
@@ -286,8 +240,16 @@ function setIt() {
 					alert("½Å±¾ÔØÈëÊ§°Ü£¡");
 				} else {
 					$('.CodeMirror').css({width:'800px','overflow':"hidden","text-align":"left"});
-					editor = $.codemirror_get_editor(0);
-					hlLine = editor.setLineClass(0, "activeline");
+					var editor = $.codemirror_get_editor(0);
+					var hlLine = editor.addLineClass(0, "background", "activeline");
+					editor.on("cursorActivity", function() {
+					  var cur = editor.getLineHandle(editor.getCursor().line);
+					  if (cur != hlLine) {
+					    editor.removeLineClass(hlLine, "background", "activeline");
+					    hlLine = editor.addLineClass(cur, "background", "activeline");
+					  }
+					});
+					editor.refresh();
 				}
 			}
 		);
@@ -309,4 +271,12 @@ function setIframe(idx) {
 		$.setPopupLayersPosition();
 	}
 }
+$(function() {
+	var new_setting = {};
+	new_setting.plugins = "safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template";
+	new_setting.theme_advanced_buttons1 = "cut,copy,paste,|,undo,redo,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,fontsizeselect,|,forecolor,backcolor,|,link,unlink,image,charmap,removeformt,code,preview";
+	new_setting.theme_advanced_buttons2 = "";
+	new_setting.forced_root_block = "p";
+	tinyMCE_init("topic_intro", new_setting);
+});
 </script>
