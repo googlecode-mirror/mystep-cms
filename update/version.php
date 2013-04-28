@@ -3456,6 +3456,7 @@ $setting = $cur_setting;
 				'gen' => array(
 						'etag' => '20130427',
 					),
+		),
 		'code' => '',
 	),
 );
