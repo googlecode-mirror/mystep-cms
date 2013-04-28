@@ -69,7 +69,6 @@ DIV .addnew {position:absolute; top:0px; right:10px; width:120px; height:20px; p
 
 TABLE td {vertical-align:middle;}
 TABLE .cat, TABLE .row, TABLE .cat td, TABLE .row td {border:1px solid #629DC5; padding:5px 10px;}
-TABLE tr:hover {background-color:#F2F9FD;}
 TABLE .cat {font-weight:bold; background-color:#F2F9FD;}
 TABLE .cat span {color:red;}
 
@@ -83,6 +82,7 @@ H1 {font-size:16px;font-weight:bold;text-align:center;margin:10px auto 0px auto;
 #input_area span.comment {color:#00a; font-size:12px; margin-left:10px;}
 #input_area .btn {width:90px; background-color:#DAE7F2; color:black; font-weight:normal; border:1px solid black; padding:1px 10px 1px 10px;}
 #input_area .cbox {width:20px; background-color:transparent; border:0px;}
+#input_area tr:hover {background-color:#eef;}
 #list_area tr:hover {background-color:#eef;}
 #list_area td {word-wrap:break-word;word-break:break-all;}
 
