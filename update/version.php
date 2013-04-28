@@ -3348,7 +3348,7 @@ $setting = $cur_setting;
 				'images/classic/style.css',
 				'images/default/style.css',
 				'images/style.css',
-				'inc.php',
+				'inc.php',
 				'include/config/chs.php',
 				'include/config/default.php',
 				'include/parameter.php',
@@ -3450,7 +3450,6 @@ $setting = $cur_setting;
 				'template/default/main_base.tpl',
 				'template/default/main_blank.tpl',
 				'template/default/read.tpl',
-				'update/version.php',
 		),
 		'setting' => array(
 				'gen' => array(
