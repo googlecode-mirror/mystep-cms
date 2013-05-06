@@ -437,7 +437,6 @@ $para = '.var_export($para, true).';
 		if(!empty($_POST['sender_email'])) $setting['web']['email'] = $_POST['sender_email'];
 		$mail = $mystep->getInstance("MyEmail", $setting['web']['email'], $setting['gen']['charset']);
 		$mail->addEmail($setting['web']['email'], $setting['web']['title'], "reply");
-		$mail->setFrom($setting['web']['email'], $setting['web']['title'], true);
 		$mail->setSubject($_POST['subject']);
 		$mail->setContent($_POST['content']);
 		$mail->addEmail($_POST['email']);

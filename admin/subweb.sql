@@ -27,6 +27,7 @@ CREATE TABLE `{pre}news_show` (
 	`pages` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '新闻页数',
 	`add_user` Char(20) NOT NULL COMMENT '录入人',
 	`add_date` DATETIME DEFAULT '0000-00-00 00:00:00' COMMENT '录入日期',
+	`template` Char(255) DEFAULT '' COMMENT '显示模板',
 	`notice` Char(255) DEFAULT '' COMMENT '文章提示',
 	`expire` DATE COMMENT '过期时间',
 	INDEX `catalog` (`web_id`, `cat_id`),

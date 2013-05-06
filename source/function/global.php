@@ -446,7 +446,10 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	}
 	$content = stream_get_contents($fp);
 	fclose($fp);
-	if($gzip) $content = gzdecode($content);
+	if($gzip) {
+		$content = preg_replace("/[\r\n]*\w{3}[\r\n]+/", "", $content);
+		$content = gzdecode($content);
+	}
 	//if($gzip) $content = gzinflate(substr($content,10));
 	return $content;
 }

@@ -50,7 +50,6 @@ $setting_skip['db']['pconnect'] = '';
 $setting_skip['gen'] = array();
 $setting_skip['gen']['charset'] = '';
 $setting_skip['gen']['gzip_level'] = '';
-$setting_skip['gen']['cache'] = '';
 $setting_skip['gen']['rewrite'] = '';
 $setting_skip['gen']['cache_ext'] = '';
 $setting_skip['gen']['timezone'] = '';

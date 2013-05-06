@@ -100,8 +100,8 @@ function loadingShow(info) {
 					display: "none"
 				}).appendTo("body");
 		
-		$('#screenLocker').height($(window).height() + "px");
-		$('#screenLocker').width($(document.body).outerWidth(true) + "px");
+		$('#screenLocker').height($(window).height() + $(window).scrollTop());
+		$('#screenLocker').width($(document.body).outerWidth(true) + $(window).scrollLeft());
 		$('#screenLocker').fadeIn();
 		
 		var theTop = ($(window).height() - $("#bar_loading").height())/2 + $(document.body).scrollTop();

@@ -44,7 +44,7 @@ mystep;
 			$length = "";
 			if($value['length']!="") $length = ' len="'.$value['length'].'"';
 			echo <<<mystep
-						<input name="{$key}" type="text" value="{$record[$key]}" size="200"{$length}{$format} />
+						<input name="{$key}" type="text" value="{$record[$key]}" size="50"{$length}{$format} />
 mystep;
 			break;
 		case "radio":

@@ -267,6 +267,7 @@ function build_page($method) {
 		$n = 0;
 		for($i=0; $i<$max_count; $i++) {
 			if(is_file($plugin_list['dir'][$i]."/info.php")) {
+				$info = array();
 				include($plugin_list['dir'][$i]."/info.php");
 				$update_info_hash = array();
 				if(isset($info['update_url'])) {

@@ -306,27 +306,6 @@ function getParaInfo($idx, $col, $value) {
 /*---------------------------------------Functions For Parameter End-------------------------------------*/
 
 /*---------------------------------------Functions For Web Start-------------------------------------*/
-function checkUser() {
-	global $req, $db, $setting;
-	$ms_user = $req->getCookie('ms_user');
-	if(!empty($ms_user)) {
-		list($user_id, $user_pwd)=explode("\t",$ms_user);
-		if($userinfo = getData("SELECT username, group_id, type_id from ".$setting['db']['pre']."users where user_id='".mysql_real_escape_string($user_id)."' and password='".mysql_real_escape_string($user_pwd)."'", "record", 1200)) {
-			$req->setSession("username", $userinfo['username']);
-			$req->setSession("usergroup", $userinfo['group_id']);
-			$req->setSession("usertype", $userinfo['type_id']);
-		} elseif($user_id==0 && $user_pwd==$setting['web']['s_pass']) {
-			$req->setSession("username", $setting['web']['s_user']);
-			$req->setSession("usergroup", 1);
-			$req->setSession("usertype", 3);
-		}
-	} elseif(!empty($GLOBALS['authority']) && md5($req->getReq($GLOBALS['authority']))==$setting['web']['s_pass']) {
-		$req->setSession("username", $setting['web']['s_user']);
-		$req->setSession("usergroup", 1);
-		$req->setSession("usertype", 3);
-	}
-	return;
-}
 function getData($query, $mode="all", $ttl = 600) {
 	global $db, $cache;
 	$key = md5($query);

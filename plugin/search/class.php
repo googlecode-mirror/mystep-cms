@@ -134,8 +134,6 @@ mytpl;
 		} else {
 			$url .= "/module.php?m=search&k=".$idx."&page=".$page;
 		}
-		$url = str_replace("//", "/", $url);
-		$url = str_replace("http:/", "http://", $url);
 		return $url;
 	}
 	

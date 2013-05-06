@@ -26,6 +26,8 @@ class MyStep extends class_common {
 		$css = array(),
 		$js = array();
 	
+	public static $func_log_s = array();
+	
 	public function getInstance($calledClass = "") {
 		global $setting, $class_list;
 		if(!class_exists($calledClass)) {
@@ -205,15 +207,16 @@ mystep;
 		if($setPlugin) $this->setPlugin();
 		$this->getLanguage(ROOT_PATH."/source/language/");
 		$setting['language']=$this->language;
+
+		$req->SessionStart($GLOBALS['sess_handle']);
 		
 		$max_count = count($this->func_start);
 		for($i=0; $i<$max_count; $i++) {
 			call_user_func($this->func_start[$i]);
 		}
-
-		$req->SessionStart($GLOBALS['sess_handle']);
+		
 		$username = $req->getSession("username");
-		if((empty($username) || $username=="Guest")) checkUser();
+		if((empty($username) || $username=="Guest")) $this->logcheck();
 		$req->setSession("url", "http://".$req->getServer("HTTP_HOST").$req->getServer("URL"));
 		$req->setSession("ip", GetIp());
 		$setting['info']['user'] = array();
@@ -227,6 +230,7 @@ mystep;
 			  'view_lvl' => '0',
 			);
 		}
+		
 		$this->regAjax("reset_psw", "MyStep::ajax_reset_psw");
 	}
 	
@@ -353,9 +357,12 @@ mystep;
 		}
 	}
 	
-	public function regLog($login, $logout) {
+	public function regLog($login, $logout="", $logcheck="", $chg_psw="") {
 		if(is_callable($login)) $this->func_log['login'] = $login;
 		if(is_callable($logout)) $this->func_log['logout'] = $logout;
+		if(is_callable($logcheck)) $this->func_log['logcheck'] = $logcheck;
+		if(is_callable($chg_psw)) $this->func_log['chg_psw'] = $chg_psw;
+		self::$func_log_s = $this->func_log;
 	}
 	
 	public function login($user_name, $user_psw) {
@@ -395,16 +402,51 @@ mystep;
 		}
 	}
 	
-	public static function ajax_reset_psw($psw_org, $psw_new) {
+	public function logcheck() {
+		if(isset($this->func_log['logcheck'])) {
+			$result = call_user_func($this->func_log['logcheck']);
+		} else {
+			global $req, $db, $setting;
+			$ms_user = $req->getCookie('ms_user');
+			if(!empty($ms_user)) {
+				list($user_id, $user_pwd)=explode("\t",$ms_user);
+				if($userinfo = getData("SELECT username, group_id, type_id from ".$setting['db']['pre']."users where user_id='".mysql_real_escape_string($user_id)."' and password='".mysql_real_escape_string($user_pwd)."'", "record", 1200)) {
+					$req->setSession("username", $userinfo['username']);
+					$req->setSession("usergroup", $userinfo['group_id']);
+					$req->setSession("usertype", $userinfo['type_id']);
+				} elseif($user_id==0 && $user_pwd==$setting['web']['s_pass']) {
+					$req->setSession("username", $setting['web']['s_user']);
+					$req->setSession("usergroup", 1);
+					$req->setSession("usertype", 3);
+				}
+			} elseif(!empty($GLOBALS['authority']) && md5($req->getReq($GLOBALS['authority']))==$setting['web']['s_pass']) {
+				$req->setSession("username", $setting['web']['s_user']);
+				$req->setSession("usergroup", 1);
+				$req->setSession("usertype", 3);
+			}
+			return;
+		}
+	}
+	
+	public static function chg_psw($psw_org, $psw_new) {
 		global $setting, $db;
 		$username = $_SESSION['username'];
 		if($username==$setting['web']['s_user'] && md5($psw_org)==$setting['web']['s_pass']) return $setting['language']['psw_reset_err_op'];
 		if($user_id = $db->getSingleRecord("select user_id from ".$setting['db']['pre']."users where username='".mysql_real_escape_string($username)."' and password='".md5($psw_org)."'")) {
 			$db->query("update ".$setting['db']['pre']."users set password='".md5($psw_new)."' where username='".mysql_real_escape_string($username)."'");
-			return;
+			return "";
 		} else {
 			return $setting['language']['psw_reset_err'];
 		}
+	}
+	
+	public static function ajax_reset_psw($psw_org, $psw_new) {
+		if(isset(self::$func_log_s['chg_psw'])) {
+			$flag = call_user_func(self::$func_log_s['chg_psw'], $psw_org, $psw_new);
+		} else {
+			$flag = self::chg_psw($psw_org, $psw_new);
+		}
+		return $flag;
 	}
 	
 	public function addCSS($cssFile) {

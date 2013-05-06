@@ -58,7 +58,7 @@
 .box .content UL{margin:0px 0px 0px 0px;}
 .box .content LI{font-size:14px;height:22px;line-height:22px;overflow:hidden;margin-bottom:2px;background:url(dot.gif) 2px 10px no-repeat;padding-left:10px;white-space:nowrap;word-break:keep-all;}
 .box .content LI:hover{background-color:#e7f2f9;}
-.box .content LI I{color:#859ba6;float:right;margin-right:5px;}
+.box .content LI I{color:#859ba6;float:right;margin-right:5px;*margin-top:-22px;}
 .box .content LI em{font-weight:bold;font-style:normal;}
 .box .content A{white-space:nowrap;word-break:keep-all;}
 .box .content .more{float:right;margin:10px 10px 6px 0px;}

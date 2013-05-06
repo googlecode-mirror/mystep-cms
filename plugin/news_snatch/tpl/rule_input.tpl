@@ -68,13 +68,13 @@ function importRule() {
 }
 $.getScript("../../script/jquery.codemirror.js", function(){
 	$('.source_code').codemirror({
-				lineWrapping: false,
+				lineWrapping: true,
 				height: 250
 		}, function(){
 				if($.codemirror_error) {
-					//alert("Ω≈±æ‘ÿ»Î ß∞‹£°");
+					alert("Ω≈±æ‘ÿ»Î ß∞‹£°");
 				} else {
-					$('.CodeMirror').css({width:'710px','overflow':"hidden","text-align":"left"});
+					$('.CodeMirror').css({width:'710px',height:'auto','overflow':"hidden","text-align":"left"});
 					$('.source_code').parent(".row").css("padding","0px");
 				}
 			});

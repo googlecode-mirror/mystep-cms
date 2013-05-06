@@ -35,7 +35,7 @@ if(!empty($_SERVER["HTTP_REFERER"]) && isset($file_list)) {
 		}
 		$update_info = array('sql'=>$sql_list, 'file'=>$file_list, 'content'=>array());
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
-			$the_file = $plugin_path.$p.$update_info['file'][$i];
+			$the_file = $plugin_path."/".$p."/".$update_info['file'][$i];
 			if(file_exists($the_file)) {
 				if(is_dir($the_file)) {
 					$update_info['content'][$i] = ".";

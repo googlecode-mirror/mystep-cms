@@ -63,7 +63,7 @@ Class MyEmail extends class_common {
 		return;
 	}
 	
-	public function setFrom($email, $name="", $auto=true) {
+	public function setFrom($email, $name="", $auto=false) {
 		$email = trim($email);
 		if(!preg_match('/^[\w\-\.]+@(([\w\-]+)[.])+[a-z]{2,4}$/i', $email)) return false;
 		$name = trim(preg_replace('/[\r\n]+/', '', $name));
@@ -118,11 +118,13 @@ Content-Transfer-Encoding: base64
 	}
 	
 	public function addEmail($email, $name="", $type="to") {
-		if (!preg_match('/^(to|cc|bcc|reply)$/', $type)) return false;
+		$type = strtolower($type);
+		if(array_search($type, array("to", "cc", "bcc", "reply"))===false) return false;
+		//if(!preg_match('/^(to|cc|bcc|reply)$/i', $type)) return false;
 		$email = trim($email);
 		$name = trim(preg_replace('/[\r\n]+/', '', $name));
 		if(!preg_match('/^[\w\-\.]+@(([\w\-]+)[.])+[a-z]{2,4}$/i', $email)) return false;
-		$name = "=?".$this->charset."?B?".base64_encode($name)."?=";
+		//$name = "=?".$this->charset."?B?".base64_encode($name)."?=";
 		array_push($this->$type, array($email, $name));
 		return true;
 	}

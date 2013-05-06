@@ -3353,8 +3353,6 @@ $setting = $cur_setting;
 				'include/config/default.php',
 				'include/parameter.php',
 				'index.php',
-				'install/index.php',
-				'install/install.sql',
 				'plugin/ad_show/class.php',
 				'plugin/ad_show/tpl/list.tpl',
 				'plugin/admin_cat/admin_cat.php',
@@ -3456,7 +3454,65 @@ $setting = $cur_setting;
 						'etag' => '20130427',
 					),
 		),
-		'code' => '',
+	),
+	'0.99.9.9.9.2' => array(
+		'info' => '
+				1.Fix a bug in sql file for sub-website
+				2.Fix a bug in plugin function
+				3.Fix a css bug under IE
+				4.Fix a mistake in email functions
+				5.Add a new ticket system plugin
+				6.Fix a dialog bug in js function
+				7.Fix a bug in GetRemoteContent function when it has been gziped
+				8.Enhance 3rd part login functions
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/subweb.sql',
+				'admin/web_plugin.php',
+				'images/classic/style.css',
+				'include/parameter.php',
+				'plugin/custom_form/custom_form.php',
+				'plugin/custom_form/tpl/edit_data.tpl',
+				'plugin/news_snatch/tpl/rule_input.tpl',
+				'plugin/search/class.php',
+				'plugin/search/info.php',
+				'plugin/search/search.php',
+				'plugin/ticket',
+				'plugin/ticket/class.php',
+				'plugin/ticket/index.php',
+				'plugin/ticket/info',
+				'plugin/ticket/info.php',
+				'plugin/ticket/info/chs.php',
+				'plugin/ticket/info/en.php',
+				'plugin/ticket/install.sql',
+				'plugin/ticket/language',
+				'plugin/ticket/language/chs.php',
+				'plugin/ticket/language/default.php',
+				'plugin/ticket/language/en.php',
+				'plugin/ticket/list.php',
+				'plugin/ticket/show.php',
+				'plugin/ticket/style.css',
+				'plugin/ticket/ticket.php',
+				'plugin/ticket/tpl',
+				'plugin/ticket/tpl/check.tpl',
+				'plugin/ticket/tpl/input.tpl',
+				'plugin/ticket/tpl/list.tpl',
+				'plugin/ticket/tpl/main.tpl',
+				'plugin/ticket/tpl/show.tpl',
+				'plugin/ticket/tpl/topic.tpl',
+				'script/addon.js',
+				'source/class/myemail.class.php',
+				'source/class/mystep.class.php',
+				'source/function/global.php',
+				'source/function/web.php',
+				'template/admin/web_subweb_input.tpl',
+		),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20130506',
+					),
+		),
 	),
 );
 ?>

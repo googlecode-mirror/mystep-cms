@@ -1,5 +1,5 @@
 <?php
-$info = array(
+$info_default = array(
 	"name" => "ÎÄÕÂÄÚÈÝ¼ìË÷²å¼þ",
 	"idx" => basename(realpath(dirname(__FILE__))),
 	"ver" => "1.5",
@@ -21,4 +21,15 @@ $info = array(
 $rewrite = array(
 	array("search/([^\.]+?)(/(\d+))?", "module.php?m=search&k=$1&page=$3"),
 );
+
+if(isset($setting['gen']['language'])) {
+	if(is_file(realpath(dirname(__FILE__))."/info/".$setting['gen']['language'].".php")) {
+		include(realpath(dirname(__FILE__))."/info/".$setting['gen']['language'].".php");
+		$info = array_merge($info_default, $info);
+	} else {
+		$info = $info_default;
+	}
+} else {
+	$info = $info_default;
+}
 ?>
