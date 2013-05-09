@@ -929,7 +929,11 @@ function GetIp() {
 		$ip = $_SERVER["HTTP_CLIENT_IP"];
 	}
 	if(preg_match("/[a-z]+/i", $ip)) $ip = "";
-	if(!empty($ip) && $ip!=$ip_org) $ip = $ip_org.",".$ip;
+	if(!empty($ip) && $ip!=$ip_org) {
+		$ip = $ip_org.",".$ip;
+	} else {
+		$ip = $ip_org;
+	}
 	return $ip;
 }
 function GetMicrotime($rate = 3) {
