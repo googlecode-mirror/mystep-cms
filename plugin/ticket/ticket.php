@@ -84,6 +84,7 @@ switch($method) {
 				if(!empty($topic_info)) {
 					$mail = $mystep->getInstance("MyEmail", $topic_info['email'], $setting['gen']['charset']);
 					$mail->addEmail($topic_info['email'], $setting['web']['title'], "reply");
+					$mail->setFrom($topic_info['email'], $setting['web']['title'], true);
 					$mail->setSubject("RE: ".$_POST['subject']);
 					$mail->setContent($_POST['reply'], false);
 					$mail->addEmail($_POST['email']);

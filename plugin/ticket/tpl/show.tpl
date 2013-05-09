@@ -12,21 +12,21 @@
 			<td class="cat" width="80">您的姓名：</td>
 			<td class="row">
 				<input name="idx" type="hidden" value="<!--idx-->" />
-				<input name="name" type="text" value="" maxlength="20" need="" />
+				<input name="name" type="text" value="<!--user_name-->" maxlength="20" need="" />
 				<span class="comment">（如何称呼您）</span>
 			</td>
 		</tr>
 		<tr>
 			<td class="cat" width="80">电子邮件：</td>
 			<td class="row">
-				<input name="email" type="text" value="" maxlength="100" need="email" />
+				<input name="email" type="text" value="<!--user_email-->" maxlength="100" need="email" />
 				<span class="comment">（用户答复您问题的邮箱）</span>
 			</td>
 		</tr>
 		<tr>
 			<td class="cat" width="80">问题类型：</td>
 			<td class="row">
-				<select name="type">
+				<select name="type" need="">
 					<option value="">请选择</option>
 <!--loop:start key="type"-->
 					<option value="<!--type_name-->"><!--type_name--></option>
@@ -79,11 +79,11 @@
 			<td class="cat" align="left"><!--record_subject-->（<a href="mailto:<!--record_email-->" target="_blank"><!--record_name--></a> - <!--record_add_date-->）</td>
 		</tr>
 		<tr>
-			<td class="row">
+			<td class="row" align="left">
 				<!--record_message-->
 				<div class="reply">
 					<div style="font-weight:bold;margin:5px 0px;">回复：</div>
-					<div><!--record_reply--></div>
+					<pre><!--record_reply--></pre>
 				</div>
 			</td>
 		</tr>

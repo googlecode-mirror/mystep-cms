@@ -47,7 +47,7 @@ function checkForm(the_form, myChecker){
 		the_length = typeof(String.prototype.Tlength)=="undefined"?the_value.length:the_value.Tlength();
 		if(the_len!=null) {
 			if(the_len.match(/^\d+$/)) {
-				if(the_length > the_len) {
+				if(the_length != the_len) {
 					alert(printf(language.checkform_lenth_limit1, the_len));
 					highlightIt(the_obj);
 					return false;
@@ -102,14 +102,14 @@ function checkForm(the_form, myChecker){
 				}
 				break;
 			case "alpha":
-				if(!/^[a-z_\d\-]+$/i.test(the_value)) {
+				if(!/^[a-z_\d]+$/i.test(the_value)) {
 					alert(language.checkform_err_alpha);
 					highlightIt(the_obj);
 					return false;
 				}
 				break;
 			case "word":
-				if(!/^[\w\s\-]+$/i.test(the_value)) {
+				if(!/^[\w\s\-\(\)\.,]+$/i.test(the_value)) {
 					alert(language.checkform_err_word);
 					highlightIt(the_obj);
 					return false;

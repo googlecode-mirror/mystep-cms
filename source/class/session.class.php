@@ -19,6 +19,7 @@ class sess_mystep {
 		if($result = mysql_query("SELECT * FROM ".$setting['db']['pre']."user_online WHERE sid = '{$sid}' AND reflash > ".($_SERVER["REQUEST_TIME"]-($setting['session']['expire']*60)))) {
 			if (mysql_num_rows($result)) {
 				$record = mysql_fetch_assoc($result);
+				$record['userinfo'] = unserialize($record['userinfo']);
 				return MyReq::sessEncode($record);
 			}
 		} else {
@@ -28,10 +29,14 @@ class sess_mystep {
 	
 	public static function sess_write($sid, $sess_data) {
 		if(self::$skip) return true;
-		extract(MyReq::sessDecode($sess_data));
 		$file_list = array("ajax.php", "merge.php", "vcode.php","language.js.php", "setting.js.php");
 		$file_this = array_shift(explode('?', basename($url)));
 		if(array_search($file_this, $file_list)!==false) return true;
+		
+		$sess_data = MyReq::sessDecode($sess_data);
+		$sess_data['ip'] = mysql_real_escape_string($sess_data['ip']);
+		$sess_data['userinfo'] = mysql_real_escape_string(serialize($sess_data['userinfo']));
+		extract(MyReq::sessDecode($sess_data));
 		
 		include(ROOT_PATH."/include/config.php");
 		$reflash = $_SERVER["REQUEST_TIME"];
@@ -40,7 +45,7 @@ class sess_mystep {
 		if(empty($usergroup)) $usergroup = 0;
 		self::$cnt = mysql_connect($setting['db']['host'], $setting['db']['user'], $setting['db']['pass']);
 		mysql_select_db($setting['db']['name']);
-		$result = mysql_query("REPLACE INTO ".$setting['db']['pre']."user_online (sid, ip, username, usertype, usergroup, reflash, url) VALUES ('{$sid}', '{$ip}', '{$username}', '{$usertype}', '{$usergroup}', '{$reflash}', '{$url}')", self::$cnt);
+		$result = mysql_query("REPLACE INTO ".$setting['db']['pre']."user_online (sid, ip, username, usertype, usergroup, reflash, url, userinfo) VALUES ('{$sid}', '{$ip}', '{$username}', '{$usertype}', '{$usergroup}', '{$reflash}', '{$url}', '{$userinfo}')", self::$cnt);
 		return $result;
 	}
 	

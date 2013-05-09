@@ -230,7 +230,6 @@ mystep;
 			  'view_lvl' => '0',
 			);
 		}
-		
 		$this->regAjax("reset_psw", "MyStep::ajax_reset_psw");
 	}
 	
@@ -365,30 +364,66 @@ mystep;
 		self::$func_log_s = $this->func_log;
 	}
 	
-	public function login($user_name, $user_psw) {
-		$user_name = mysql_real_escape_string($user_name);
-		$user_psw = mysql_real_escape_string($user_psw);
-		$result = "";
-		if(isset($this->func_log['login'])) {
-			$result = call_user_func($this->func_log['login'], $user_name, $user_psw);
+	public function logcheck($user_id="", $user_pwd="") {
+		$userinfo = array();
+		if(isset($this->func_log['logcheck'])) {
+			$userinfo = call_user_func($this->func_log['logcheck'], $user_id, $user_pwd);
 		} else {
-			global $setting, $db, $req;
-			$req->setCookie("ms_info");
-			$req->setCookie("vcode");
-			$user_info = $db->GetSingleRecord("select user_id, group_id, type_id from ".$setting['db']['pre']."users where username='{$user_name}' and password='".md5($user_psw)."'");
-			if($user_info) {
-				list($uid, $groupid) = array_values($user_info);
-			} elseif($user_name==$setting['web']['s_user'] && md5($user_psw)==$setting['web']['s_pass']) {
-				$uid=0;
-				$groupid=1;
-			}
-			if(isset($uid)) {
-				$req->setCookie("ms_user", $uid."\t".md5($user_psw), 60*60*24);
+			global $req, $db, $setting;
+			$ms_user = "";
+			if(!empty($user_id) && !empty($user_pwd)) {
+				$user_pwd = md5($user_pwd);
+				$ms_user = $user_id."\t".$user_pwd;
 			} else {
-				$result = $setting['language']['login_error_psw'];
+				$ms_user = $req->getCookie('ms_user');
 			}
+			$userinfo = array();
+			if(!empty($ms_user)) {
+				list($user_id, $user_pwd)=explode("\t",$ms_user);
+				if($userinfo = getData("SELECT user_id, group_id, type_id, username as name, email from ".$setting['db']['pre']."users where (user_id='".mysql_real_escape_string($user_id)."' || username='".mysql_real_escape_string($user_id)."') and password='".mysql_real_escape_string($user_pwd)."'", "record", 1200)) {
+					$req->setSession("username", $userinfo['username']);
+					$req->setSession("usergroup", $userinfo['group_id']);
+					$req->setSession("usertype", $userinfo['type_id']);
+					$userinfo = array(
+						"name" => $userinfo['username'],
+						"email" => $userinfo['email'],
+					);
+					$req->setCookie("ms_user", $userinfo['user_id']."\t".$user_pwd, 60*60*12);
+				} elseif(($user_id==0 || $user_id==$setting['web']['s_user']) && $user_pwd==$setting['web']['s_pass']) {
+					$req->setSession("username", $setting['web']['s_user']);
+					$req->setSession("usergroup", 1);
+					$req->setSession("usertype", 3);
+					$userinfo = array(
+						"name" => $setting['web']['s_user'],
+						"email" => $setting['web']['email'],
+					);
+					$req->setCookie("ms_user", "0\t".$user_pwd, 60*60*12);
+				}
+			} elseif(!empty($GLOBALS['authority']) && md5($req->getReq($GLOBALS['authority']))==$setting['web']['s_pass']) {
+				$req->setSession("username", $setting['web']['s_user']);
+				$req->setSession("usergroup", 1);
+				$req->setSession("usertype", 3);
+				$userinfo = array(
+					"name" => $setting['web']['s_user'],
+					"email" => $setting['web']['email'],
+				);
+			}
+			$req->setSession("userinfo", $userinfo);
+			return $userinfo;
 		}
-		return $result;
+	}
+	
+	public function login($user_name, $user_pwd) {
+		$user_name = mysql_real_escape_string($user_name);
+		$user_pwd = mysql_real_escape_string($user_pwd);
+		if(isset($this->func_log['login'])) {
+			$result = call_user_func($this->func_log['login'], $user_name, $user_pwd);
+		} else {
+			global $req;
+			$req->setCookie("ms_info");
+			$result = $this->logcheck($user_name, $user_pwd);
+		}
+		return (count($result)==0)?$setting['language']['login_error_psw']:"";
 	}
 	
 	public function logout() {
@@ -399,32 +434,6 @@ mystep;
 			$req->setCookie("ms_user");
 			$req->setCookie("ms_info", $setting['language']['login_logout'], 60*10);
 			$req->destroySession();	
-		}
-	}
-	
-	public function logcheck() {
-		if(isset($this->func_log['logcheck'])) {
-			$result = call_user_func($this->func_log['logcheck']);
-		} else {
-			global $req, $db, $setting;
-			$ms_user = $req->getCookie('ms_user');
-			if(!empty($ms_user)) {
-				list($user_id, $user_pwd)=explode("\t",$ms_user);
-				if($userinfo = getData("SELECT username, group_id, type_id from ".$setting['db']['pre']."users where user_id='".mysql_real_escape_string($user_id)."' and password='".mysql_real_escape_string($user_pwd)."'", "record", 1200)) {
-					$req->setSession("username", $userinfo['username']);
-					$req->setSession("usergroup", $userinfo['group_id']);
-					$req->setSession("usertype", $userinfo['type_id']);
-				} elseif($user_id==0 && $user_pwd==$setting['web']['s_pass']) {
-					$req->setSession("username", $setting['web']['s_user']);
-					$req->setSession("usergroup", 1);
-					$req->setSession("usertype", 3);
-				}
-			} elseif(!empty($GLOBALS['authority']) && md5($req->getReq($GLOBALS['authority']))==$setting['web']['s_pass']) {
-				$req->setSession("username", $setting['web']['s_user']);
-				$req->setSession("usergroup", 1);
-				$req->setSession("usertype", 3);
-			}
-			return;
 		}
 	}
 	

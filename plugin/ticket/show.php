@@ -17,6 +17,7 @@ if(!empty($topic_info)) {
 		$info = $setting['language']['plugin_ticket_post'];
 		$mail = $mystep->getInstance("MyEmail", $_POST['email'], $setting['gen']['charset']);
 		$mail->addEmail($_POST['email'], $_POST['name'], "reply");
+		$mail->setFrom($_POST['email'], $_POST['name'], true);
 		$mail->setSubject($_POST['subject']." - ".$setting['language']['plugin_ticket_notice']);
 		$mail->setContent($_POST['message'], false);
 		$mail->addEmail($topic_info['email']);
@@ -35,6 +36,7 @@ if(!empty($topic_info)) {
 	for($i=0,$m=count($topic_info['type']);$i<$m;$i++) {
 		$tpl_tmp->Set_Loop('type', array("name"=>$topic_info['type'][$i]));
 	}
+	$tpl_tmp->Set_Variables($req->getSession("userinfo"), "user");
 	$tpl_tmp->Set_Variable('idx', $topic_info['idx']);
 	$tpl_tmp->Set_Variable('topic', $topic_info['topic']);
 	$tpl_tmp->Set_Variable('info', $info);

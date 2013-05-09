@@ -302,6 +302,7 @@ CREATE TABLE `{pre}user_online` (
 	`usergroup` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户组',
 	`reflash` Char(15) DEFAULT 0 COMMENT '最近刷新时间（unixtimestamp）',
 	`url` Char(150) COMMENT '当前访问页面',
+	`userinfo` Char(255) default 0 COMMENT '用户信息',
 	PRIMARY KEY (`sid`)
 ) ENGINE=HEAP DEFAULT CHARSET={charset} COMMENT='网站当前浏览者';
 

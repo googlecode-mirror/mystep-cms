@@ -60,7 +60,7 @@ $language = array (
   'db_update_done' => '数据表 %s 已更新 %d 条数据！',
   'db_operate_done' => '数据表 %s 执行了操作（%s）！',
   
-  'checkform_lenth_limit1' => '请将字符数限制在 %1 个字符以内！',
+  'checkform_lenth_limit1' => '字符数应为 %1 个！',
   'checkform_lenth_limit2' => '所添内容必须为 %1 个字符！',
   'checkform_lenth_limit3' => '请将字符数限制在 %1 个字符！',
   'checkform_noempty' => '您还有一些必添项目没有填充，请填写完全！',

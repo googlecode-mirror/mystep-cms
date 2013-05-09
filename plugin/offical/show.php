@@ -2,7 +2,7 @@
 $method = $req->getGet("f");
 switch($method) {
 	case "login_show":
-		if(is_null($setting['info']['user']['name']) || $setting['info']['user']['type']['type_id']==1) {
+		if(is_null($setting['info']['user']['name']) || $req->getSession("usertype")<=1) {
 			build_page($method);
 		} else {
 			$goto_url = "./";

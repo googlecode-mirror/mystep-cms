@@ -234,21 +234,9 @@ class plugin_offical implements plugin {
 	}
 	
 	public static function login($user_name, $user_psw) {
-		global $db, $setting, $req;
-		$result = "";
-		$user_info = $db->GetSingleRecord("select user_id, group_id, type_id from ".$setting['db']['pre']."users where username='{$user_name}' and password='".md5($user_psw)."'");
-		if($user_info) {
-			list($uid, $groupid) = array_values($user_info);
-		} elseif($user_name==$setting['web']['s_user'] && md5($user_psw)==$setting['web']['s_pass']) {
-			$uid=0;
-			$groupid=1;
-		}
-		if(isset($uid)) {
-			$req->setCookie("ms_user", $uid."\t".md5($user_psw), 60*60*24);
-		} else {
-			$result = $setting['language']['login_error_psw'];
-		}
-		return $result;
+		global $mystep, $setting;
+		$result = $mystep->logcheck($user_name, $user_psw);
+		return (count($result)==0)?$setting['language']['login_error_psw']:"";
 	}
 	
 	public static function logout() {
