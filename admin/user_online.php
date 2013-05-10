@@ -32,6 +32,7 @@ if($order_type=="desc") {
 $tpl_tmp->Set_Variable('order', $order);
 $tpl_tmp->Set_Variable('order_type', $order_type);
 while($record = $db->GetRS()) {
+	$record['userinfo'] = unserialize($record['userinfo']);
 	HtmlTrans(&$record);
 	$record['reflash'] = date("Y-m-d H:i:s", $record['reflash']);
 	$type_info = getParaInfo("user_type", "type_id", $record['usertype']);
@@ -39,6 +40,7 @@ while($record = $db->GetRS()) {
 	if($group_info = getParaInfo("user_group", "group_id", $record['usergroup'])) {
 		$record['usertype'] .= " £¨".$group_info['group_name']."£©"; 
 	}
+	if(isset($record['userinfo']['name']))  $record['username'] = $record['userinfo']['name'];
 	$tpl_tmp->Set_Loop('record', $record);
 }
 $tpl_tmp->Set_Variable('title', $setting['language']['admin_user_online_title']);

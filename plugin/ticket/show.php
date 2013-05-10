@@ -30,7 +30,10 @@ if(!empty($topic_info)) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	$tickets = getData("select * from ".$setting['db']['pre']."ticket where idx='".mysql_real_escape_string($idx)."' and reply!=''", "all", 86400);
 	for($i=0,$m=count($tickets);$i<$m;$i++) {
+		$tickets[$i]['id'] = $i+1;
 		$tickets[$i]['add_date'] = date("Y-m-d H:i:s", $tickets[$i]['add_date']);
+		$tickets[$i]['message'] = nl2br($tickets[$i]['message']);
+		$tickets[$i]['reply'] = nl2br($tickets[$i]['reply']);
 		$tpl_tmp->Set_Loop('record', $tickets[$i]);
 	}
 	for($i=0,$m=count($topic_info['type']);$i<$m;$i++) {

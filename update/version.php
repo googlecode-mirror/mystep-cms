@@ -3520,8 +3520,8 @@ $setting = $cur_setting;
 				2.Optimize user login function, now cms user and 3rd part user can login at a same time
 				3.Set login user\'s name and email to the default value of ticket plugin
 				4.Fix a bug in email functions
-				5.Fix a bug in getIP function
-				6.Fix a bug in online user function
+				5.
+				6.
 				Some other adjusts...
 			',
 		'file' => array(
@@ -3534,7 +3534,6 @@ $setting = $cur_setting;
 				'script/checkForm.js',
 				'source/class/mystep.class.php',
 				'source/class/session.class.php',
-				'source/function/global.php',
 				'source/language/chs.php',
 				'source/language/default.php',
 				'source/language/en.php',
@@ -3542,6 +3541,30 @@ $setting = $cur_setting;
 		'sql' => array(
 				'alter table `{pre}user_online` add `userinfo` Char(255) default ""',
 				'alter table `{pre}user_online` modify `sid` char(32) UNIQUE NOT NULL',
+			),
+		'setting' => array(
+				'gen' => array(
+						'etag' => '20130509',
+					),
+			),
+	),
+	'0.99.9.9.9.4' => array(
+		'info' => '
+				1.Fix a bug in online user list
+				2.Fix a bug in online user function
+				3.Fix a bug in getIP function
+				4.Some adjust in ticket plugin
+				Some other adjusts...
+			',
+		'file' => array(
+				'admin/user_online.php',
+				'plugin/ticket/show.php',
+				'plugin/ticket/style.css',
+				'plugin/ticket/tpl/input.tpl',
+				'plugin/ticket/tpl/show.tpl',
+				'source/class/session.class.php',
+				'source/function/global.php',
+				'template/admin/user_online.tpl',
 			),
 		'setting' => array(
 				'gen' => array(

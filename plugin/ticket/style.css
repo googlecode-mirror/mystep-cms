@@ -10,4 +10,7 @@
 .ticket_list .cat {font-weight:bold; background-color:#F2F9FD; border:1px solid #629DC5; padding:5px 10px; vertical-align:middle;}
 .ticket_list .row {border:1px solid #629DC5; background-color:#FFFFFF; padding:5px 10px; vertical-align:middle;}
 .ticket_list .row td {border:1px solid #629DC5; background-color:#FFFFFF; padding:5px 10px; vertical-align:middle;}
-.ticket_list .reply {padding:5px;background-color:#eeeeee;border:1px #ccc solid;width:90%;text-align:left;float:right;margin:20px 10px 10px 20px;}
+.ticket_list .message {line-height:24px;}
+.ticket_list .reply {padding:10px 10px;background-color:#eeeeee;border:1px #ccc solid;width:90%;text-align:left;float:right;margin:10px 10px 10px 0px;}
+.ticket_list .reply div {font-weight:bold;}
+.ticket_list .reply pre {line-height:24px;padding-left:24px;}

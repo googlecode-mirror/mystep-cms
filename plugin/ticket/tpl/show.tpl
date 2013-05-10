@@ -80,11 +80,12 @@
 		</tr>
 		<tr>
 			<td class="row" align="left">
-				<!--record_message-->
-				<div class="reply">
-					<div style="font-weight:bold;margin:5px 0px;">»Ø¸´£º</div>
-					<pre><!--record_reply--></pre>
+				<div class="message">
+					<!--record_message-->
 				</div>
+				<div class="reply">
+					<div>»Ø¸´£º</div>
+					<pre><!--record_reply--></pre>
 			</td>
 		</tr>
 <!--loop:end-->
