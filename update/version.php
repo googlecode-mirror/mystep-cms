@@ -3520,8 +3520,6 @@ $setting = $cur_setting;
 				2.Optimize user login function, now cms user and 3rd part user can login at a same time
 				3.Set login user\'s name and email to the default value of ticket plugin
 				4.Fix a bug in email functions
-				5.
-				6.
 				Some other adjusts...
 			',
 		'file' => array(
@@ -3562,6 +3560,7 @@ $setting = $cur_setting;
 				'plugin/ticket/style.css',
 				'plugin/ticket/tpl/input.tpl',
 				'plugin/ticket/tpl/show.tpl',
+				'read.php',
 				'source/class/session.class.php',
 				'source/function/global.php',
 				'template/admin/user_online.tpl',
