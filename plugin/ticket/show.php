@@ -28,7 +28,7 @@ if(!empty($topic_info)) {
 	$tpl_info['idx'] = "show";
 	$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-	$tickets = getData("select * from ".$setting['db']['pre']."ticket where idx='".mysql_real_escape_string($idx)."' and reply!=''", "all", 86400);
+	$tickets = getData("select * from ".$setting['db']['pre']."ticket where idx='".mysql_real_escape_string($idx)."' and reply!='' order by id desc", "all", 86400);
 	for($i=0,$m=count($tickets);$i<$m;$i++) {
 		$tickets[$i]['id'] = $i+1;
 		$tickets[$i]['add_date'] = date("Y-m-d H:i:s", $tickets[$i]['add_date']);

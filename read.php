@@ -28,6 +28,7 @@ if($cat_info = getParaInfo("news_cat", "cat_id", $cat_id)) {
 }
 $db->Query("update ".$setting['db']['pre_sub']."news_show set views = views + 1 where news_id=".$news_id);
 $page = $req->getGet("page");
+if(empty($page)) $page = 1;
 if($page_count==1) $page=1;
 if(!is_numeric($page)) {
 	$page = "all";
@@ -95,7 +96,7 @@ mystep;
 			$detail['content'] = $content;
 		}
 	}
-	$mystep->setAddedContent("end", '
+	$mystep->setAddedContent("start", '
 <script language="JavaScript" type="text/javascript">$(function(){anchorShow();});</script>
 ');
 } else {
