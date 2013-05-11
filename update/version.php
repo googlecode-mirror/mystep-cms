@@ -3556,6 +3556,7 @@ $setting = $cur_setting;
 			',
 		'file' => array(
 				'admin/user_online.php',
+				'admin/web_rewrite.php',
 				'plugin/ticket/show.php',
 				'plugin/ticket/style.css',
 				'plugin/ticket/tpl/input.tpl',
@@ -3565,9 +3566,15 @@ $setting = $cur_setting;
 				'source/function/global.php',
 				'template/admin/user_online.tpl',
 			),
+			'code' => '
+$para_new = array();
+$para_new["rewrite"] = $rewrite_list;
+$para_new["rewrite"][0][0] = "article/[^\\/]+/(\\d+)(_(\\w+))?\\.html";
+changeSetting($setting, $para_new);
+		',
 		'setting' => array(
 				'gen' => array(
-						'etag' => '20130510',
+						'etag' => '20130511',
 					),
 			),
 	),

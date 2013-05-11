@@ -5,7 +5,6 @@ $method = $req->getServer("QUERY_STRING");
 $log_info = "";
 if($method=="update" && count($_POST)>0) {
 	$log_info = $setting['language']['admin_web_rewrite_update'];
-	
 
 	$setting_new = array();
 	$setting_new['rewrite'] = array();
