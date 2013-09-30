@@ -114,6 +114,7 @@ switch($method) {
 			}
 			$attach_list = $_POST['attach_list'];
 			unset($_POST['attach_list']);
+			$_POST['tag'] = str_replace("¡¢", ",", $_POST['tag']);
 			$_POST['tag'] = str_replace("£¬", ",", $_POST['tag']);
 			$_POST['tag'] = str_replace(" ", "_", $_POST['tag']);
 			if($_POST['setop_mode']==0) {

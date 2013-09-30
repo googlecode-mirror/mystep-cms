@@ -403,8 +403,8 @@ $(function() {
     deferRequestBy: 0,
     params: { mode:'country' },
     noCache: false,
-    onSelect: function(value, data){return;},
-  }
+    onSelect: function(value, data){return;}
+  };
   $('.ac_input').each(function(index, domEle){
   	ac_options.params = {mode:$(domEle).attr("name")};
   	$(domEle).autocomplete(ac_options);

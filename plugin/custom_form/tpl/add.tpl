@@ -161,6 +161,7 @@
 					<option value="radio">单选</option>
 					<option value="checkbox">多选</option>
 					<option value="select">下拉选单</option>
+					<option value="file">附件上传</option>
 				</select>
 			</td>
 		</tr>
@@ -237,6 +238,7 @@
 var cf_item=<!--cf_item-->;
 $(function(){
 	refreshItem();
+	$id("itemlist").value = $.toJSON(cf_item);
 });
 function refreshItem() {
 	var ole = $("#item_list");

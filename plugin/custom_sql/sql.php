@@ -9,32 +9,32 @@ $sql_list = array (
   1 => 
   array (
     'name' => '报道情况',
-    'fields' => '姓名,公司,身份,房间号,房间类型,入住时间',
-    'sql' => 'select name, company, identity, room_no, room_type, date_checkin from ms_custom_form_1 where room_no is not null and room_no!=\'\' and company!=\'中国食品土畜进出口商会\'',
+    'fields' => '分类,姓名,公司,房间号,房间类型,入住时间',
+    'sql' => 'select cata, name, company, room_no, room_type, date_checkin from ms_custom_form_4 where room_no is not null and room_no!=\'\' and company!=\'中国食品土畜进出口商会\'',
   ),
   2 => 
   array (
     'name' => '入住情况',
     'fields' => '房间类型,入住日期,入住数量',
-    'sql' => 'select room_type, date_checkin, count(*) as cnt from ms_custom_form_1 where room_no is not null and room_no!=\'\' and company!=\'中国食品土畜进出口商会\' group by room_type, date_checkin ',
+    'sql' => 'select room_type, date_checkin, count(*) as cnt from ms_custom_form_4 where room_no is not null and room_no!=\'\' and company!=\'中国食品土畜进出口商会\' group by room_type, date_checkin ',
   ),
   3 => 
   array (
     'name' => '合住情况',
     'fields' => '房间号,已入住',
-    'sql' => 'select room_no, count(*) as cnt from ms_custom_form_1 where room_type=\'双人间（拼）\' and room_no is not null and room_no!=\'\' and company!=\'中国食品土畜进出口商会\' group by room_no order by cnt',
+    'sql' => 'select room_no, count(*) as cnt from ms_custom_form_4 where room_type=\'拼间\' and room_no is not null and room_no!=\'\' and company!=\'中国食品土畜进出口商会\' group by room_no order by cnt',
   ),
   4 => 
   array (
     'name' => '未报道企业',
-    'fields' => '姓名,公司,身份,已收款,受否开发票',
-    'sql' => 'select name, company, identity, payment, invoice from ms_custom_form_1 where room_no is null or room_no=\'\' order by company',
+    'fields' => '类别,姓名,公司,应收款,支付情况',
+    'sql' => 'select cata, name, company, fee_total, pay from ms_custom_form_4 where room_no is null or room_no=\'\' order by company',
   ),
   5 => 
   array (
-    'name' => '钱数统计',
+    'name' => '支付统计',
     'fields' => '发票,应付款,已付款,支付酒店',
-    'sql' => 'select invoice,sum(fee) as 应付款, sum(payment) as 已付款,sum(pay_hotel) as 支付酒店 from ms_custom_form_1 group by invoice',
+    'sql' => 'select pay,sum(fee_total) as 应付款, sum(pay_hotel) as 支付酒店 from ms_custom_form_4',
   ),
   6 => 
   array (

@@ -6,5 +6,6 @@ CREATE TABLE `{pre}custom_form` (
 	`name_en` Char(100) COMMENT '名称英文',
 	`notes` char(255)	DEFAULT '' COMMENT '备注',
 	`add_date` DATETIME COMMENT '添加日期',
+	`expire` DATETIME COMMENT '过期日期',
 	PRIMARY KEY (`mid`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='自定义表单信息';

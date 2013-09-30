@@ -20,7 +20,7 @@
 				<td class="cat" colspan="2">模板内容：<span class="comment">（高级模式中按 Shift+Tab - 缩进, Shift+Backspace - 反缩进）</span></td>
 			</tr>
 			<tr>
-				<td colspan="2" style="width:800px;overflow:hidden;">
+				<td colspan="2" style="width:800px;overflow:hidden;background-color:#fff;">
 					<textarea id="file_content" type="<!--file_type-->" name="file_content" style="width:100%;height:400px;" wrap='off'><!--file_content--></textarea>
 				</td>
 			</tr>

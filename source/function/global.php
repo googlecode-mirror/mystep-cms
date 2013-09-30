@@ -14,7 +14,7 @@
 /*---------------------------------------String Functions Start-------------------------------------*/
 function cutString($string) {
 	//Coded By Windy2000 201201012 v1.0
-	if(preg_match("/[\xE0-\xEF][\x80-\xBF]{2}/xs", $string)) {
+	if(is_utf8($string)) {
 		preg_match_all("/([\xE0-\xEF][\x80-\xBF]{2})|./", $string, $arr);
 	} else {
 		preg_match_all("/[\xa0-\xff]?./", $string, $arr);
@@ -281,6 +281,7 @@ function getSafeCode($str, $charset) {
 		foreach($str as $key => $value) {
 			$str[$key] = getSafeCode($value, $charset);
 		}
+		return $str;
 	} else {
 		$str_1 = $str;
 		$str_2 = chg_charset($str_1, "utf-8", $charset);
@@ -307,9 +308,9 @@ function toXML($var) {
 	if(is_array($var)) {
 		foreach($var as $key => $value) {
 			if(is_numeric($key)) $key = "item";
-			if($key=="item") $result .= "\n";
+			//if($key=="item") $result .= "\n";
 			$result .= "<{$key}>";
-			if($key=="item") $result .= "\n";
+			//if($key=="item") $result .= "\n";
 			$result .= toXML($value);
 			$result .= "</{$key}>";
 			$result .= "\n";
@@ -364,6 +365,7 @@ function hexToStr($hex) {
 	return $string;
 }
 function is_utf8($string) {
+	$string = preg_replace("/[\x20-\x7e]+/", "", $string);
 	return preg_match('%^(?:
 	[\x09\x0A\x0D\x20-\x7E] # ASCII
 	| [\xC2-\xDF][\x80-\xBF] # non-overlong 2-byte
@@ -957,9 +959,9 @@ function GetTimeDiff($time_start, $decimal = 3, $micro = true) {
 function getDate_cn($date="") {
 	if(empty($date)) $date=time();
 	if(!is_numeric($date)) $date = strtotime($date);
-	$the_year = (STRING)date("Y");
-	$the_month = (STRING)date("n");
-	$the_day = (STRING)date("j");
+	$the_year = (STRING)date("Y", $date);
+	$the_month = (STRING)date("n", $date);
+	$the_day = (STRING)date("j", $date);
 	$num_cn = array();
 	$num_cn[] = array("○","十","廿","卅");
 	$num_cn[] = array("○","一","二","三","四","五","六","七","八","九");
@@ -969,11 +971,21 @@ function getDate_cn($date="") {
 	}
 	$result .= "年";
 	for($i=0,$m=strlen($the_month);$i<$m;$i++) {
-		$result .= $num_cn[$i][$the_month[$i]];
+		if($m==1 && $i==0) {
+			$result .= $num_cn[1][$the_month[$i]];
+			break;
+		} else {
+			$result .= $num_cn[$i][$the_month[$i]];
+		}
 	}
 	$result .= "月";
 	for($i=0,$m=strlen($the_day);$i<$m;$i++) {
-		$result .= $num_cn[$i][$the_day[$i]];
+		if($m==1 && $i==0) {
+			$result .= $num_cn[1][$the_day[$i]];
+			break;
+		} else {
+			$result .= $num_cn[$i][$the_day[$i]];
+		}
 	}
 	$result .= "日";
 	return $result;

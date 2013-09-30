@@ -13,7 +13,9 @@ switch($method) {
 		break;
 	case "login":
 		$user_name = $req->getPost("user_name");
-		$user_psw =$req->getPost("user_psw");
+		$user_psw = $req->getPost("user_psw");
+		$user_name = mysql_real_escape_string($user_name);
+		$user_psw = mysql_real_escape_string($user_psw);
 		$check_code = $req->getPost("check_code");
 		$ms_info = "";
 		if(strtolower($check_code) == strtolower($req->getCookie("vcode"))) {

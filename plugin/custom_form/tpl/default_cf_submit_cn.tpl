@@ -32,12 +32,17 @@ mystep;
 						<input name="{$key}" class="{$class}" type="text" value="{$value['default']}" size="50"{$length}{$format} />
 mystep;
 			break;
+		case "file":
+			echo <<<mystep
+						<input name="{$key}" type="file" value="" size="50" />
+mystep;
+			break;
 		case "radio":
 			for($i=0; $i<count($value['value']['cn']); $i++) {
 				$selected = ($value['value']['cn'][$i]==$value['default']?" checked":"");
 				$the_value = $i+1;
 				echo <<<mystep
-						<input name="{$key}" id="i_{$key}_{$i}" type="radio" value="{$the_value}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['cn'][$i]}</label>
+						<label><input name="{$key}" type="radio" value="{$the_value}"{$selected} /> {$value['value']['cn'][$i]}</label>
 mystep;
 			}
 			break;
@@ -57,7 +62,7 @@ mystep;
 				$selected = (strpos($value['default'], $value['value']['cn'][$i])!==false?" checked":"");
 				$the_value = pow(2, $i);
 				echo <<<mystep
-						<input name="{$key}[]" id="i_{$key}_{$i}" type="checkbox" value="{$the_value}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['cn'][$i]}</label><br />
+						<label><input name="{$key}[]" type="checkbox" value="{$the_value}"{$selected} /> {$value['value']['cn'][$i]}</label><br />
 mystep;
 			}
 			break;
@@ -78,7 +83,7 @@ mystep;
 }
 ?>
 		<TR CLASS="row">
-			<TD colspan="2"><center><input type="checkbox" name="print" value="y" id="print" /><label for="print"> 打印</label></center></TD>
+			<TD colspan="2"><center><label><input type="checkbox" name="print" value="y" /> 打印</label></center></TD>
 		</TR>
 		<TR CLASS="row">
 			<TD colspan="2"><center><input type="submit" value=" 提 交 " /> &nbsp; <input type="reset" value=" 复 位 " /></center></TD>

@@ -20,7 +20,7 @@
 			【<a href="?&mid=<!--mid-->">返回列表页面</a>】
 		</div>
 		<br />
-		<form name="cf_<!--method-->" method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
+		<form name="cf_<!--method-->" method="post" action="?method=<!--method-->_ok" ENCTYPE="multipart/form-data" onsubmit="return checkForm(this)">
 			<div align="left">
 			<input name="id" type="hidden" value="<!--record_id-->" />
 			<input name="mid" type="hidden" value="<!--mid-->" />
@@ -47,11 +47,17 @@ mystep;
 						<input name="{$key}" type="text" value="{$record[$key]}" size="50"{$length}{$format} />
 mystep;
 			break;
+		case "file":
+			echo <<<mystep
+						<input name="{$key}" type="file" value="" size="50" />
+mystep;
+			$value['comment'] = "<a href='file.php?mid=".$mid."&id=".$id."&f=".$key."' target='_blank'>Check</a>";
+			break;
 		case "radio":
 			for($i=0; $i<count($value['value']['cn']); $i++) {
 				$selected = ($value['value']['cn'][$i]==$record[$key]?" checked":"");
 				echo <<<mystep
-						<input name="{$key}" id="i_{$key}_{$i}" type="radio" value="{$value['value']['cn'][$i]}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['cn'][$i]}</label>
+						<label><input name="{$key}" type="radio" value="{$value['value']['cn'][$i]}"{$selected} /> {$value['value']['cn'][$i]}</label>
 mystep;
 			}
 			break;
@@ -69,7 +75,7 @@ mystep;
 			for($i=0; $i<count($value['value']['cn']); $i++) {
 				$selected = (strpos($record[$key], $value['value']['cn'][$i])!==false?" checked":"");
 				echo <<<mystep
-						<input name="{$key}[]" id="i_{$key}_{$i}" type="checkbox" value="{$value['value']['cn'][$i]}"{$selected} /><label for="i_{$key}_{$i}"> {$value['value']['cn'][$i]}</label><br />
+						<label><input name="{$key}[]" type="checkbox" value="{$value['value']['cn'][$i]}"{$selected} /> {$value['value']['cn'][$i]}</label><br />
 mystep;
 			}
 			break;

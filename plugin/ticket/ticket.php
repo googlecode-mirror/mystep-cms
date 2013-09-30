@@ -73,6 +73,7 @@ switch($method) {
 		unset($_POST['id']);
 		if(!empty($_POST['reply'])) {
 			if($_POST['status']==0) $_POST['status'] = 1;
+			$_POST['reply_date'] = $_SERVER['REQUEST_TIME']);
 			if(isset($_POST['sendmail'])) {
 				$topic_info = array();
 				for($i=0,$m=count($ticket_list);$i<$m;$i++) {

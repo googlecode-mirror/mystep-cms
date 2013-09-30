@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "用户调查交互插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.0",
+	"ver" => "1.1",
 	"class" => "plugin_ticket",
 	"intro" => "向网站管理员提交意见问题，并等待回馈",
 	"cat_name" => "用户交互",

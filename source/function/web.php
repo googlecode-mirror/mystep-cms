@@ -651,8 +651,13 @@ function __autoload($class_name) {
 
 /*--------------------------------Functions For Error Start------------------------------------------*/
 function getString($value) {
-	global $setting;
-	return getSafeCode($value, $setting['gen']['charset']);
+	if(preg_match("/(\-[\w]{2})+/", $value)) $value = str_replace("-", "%", $value);	
+	if(preg_match("/(%[\w]{2})+/", $value)) $value = urldecode($value);
+	if(is_utf8($value)) {
+		global $setting;
+		$value = chg_charset($value, "utf-8", $setting['gen']['charset']);
+	}
+	return $value;
 }
 function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 	$err_type = array(

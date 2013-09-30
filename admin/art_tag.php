@@ -36,9 +36,12 @@ switch($method) {
 		$db_tmp->SelectDB($setting['db']['name']);
 		$db_tmp->Query("update ".$setting['db']['pre_sub']."news_tag set `count`=0");
 		$db->ReConnect(true, $setting['db']['name']);
+		
+		$n = 1;
 		$db->Query("select news_id, tag from ".$setting['db']['pre_sub']."news_show order by news_id");
 		while($record = $db->GetRS()) {
 			$the_tag = $record['tag'];
+			$the_tag = str_replace("¡¢", ",", $the_tag);
 			$the_tag = str_replace("£¬", ",", $the_tag);
 			$the_tag = str_replace("¡¡", " ", $the_tag);
 			$the_tag = str_replace(" ", "_", $the_tag);
@@ -62,13 +65,21 @@ switch($method) {
 					$db_tmp->Query("insert into ".$setting['db']['pre_sub']."news_tag values(0, '".$the_tag[$n]."', 1, 0, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
 				}
 			}
+			if(++$n%50===0) {
+				$db_tmp->ReConnect(false, $setting['db']['name']);
+			}
 		}
 		$db_tmp->Query("delete from ".$setting['db']['pre_sub']."news_tag where `count`<2 and `click`<5 and `add_date`<UNIX_TIMESTAMP()-60*60*24*10");
 		$db->Free();
+
+		$n = 1;
 		$db->Query("select id, tag from ".$setting['db']['pre_sub']."news_tag");
 		while($record = $db->GetRS()) {
 			$counter = $db_tmp->GetSingleResult("select count(*) from ".$setting['db']['pre_sub']."news_show where tag like '%{$record['tag']}%'");
 			$db_tmp->Query("update ".$setting['db']['pre_sub']."news_tag set `count`='{$counter}' where id='{$record['id']}'");
+			if(++$n%50===0) {
+				$db_tmp->ReConnect(false, $setting['db']['name']);
+			}
 		}
 		$db_tmp->Close();
 		unset($db_tmp);
@@ -109,11 +120,7 @@ function build_page($method) {
 	$db->Query($str_sql);
 	while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
-			if($setting['gen']['rewrite']) {
-				$record['link'] = $setting_sub['web']['url']."/tag/".urlencode($record['tag']).$setting['gen']['cache_ext'];
-			} else {
-				$record['link'] = $setting_sub['web']['url']."/tag.php?tag=".urlencode($record['tag']);
-			}
+			$record['link'] = getUrl("tag", urlencode($record['tag']), 1, $web_id);
 			$record['add_date'] = date("Y-m-d", $record['add_date']);
 			$record['update_date'] = date("Y-m-d", $record['update_date']);
 			$tpl_tmp->Set_Loop('record', $record);

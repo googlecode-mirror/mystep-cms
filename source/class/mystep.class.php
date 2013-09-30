@@ -235,8 +235,7 @@ mystep;
 	
 	public function pageEnd($show_info = false) {
 		global $setting;
-		$max_count = count($this->func_end);
-		for($i=0; $i<$max_count; $i++) {
+		for($i=count($this->func_end)-1; $i>=0; $i--) {
 			call_user_func($this->func_end[$i]);
 		}
 		$setting['info']['query_count'] = $GLOBALS['db']->Close();
@@ -357,6 +356,7 @@ mystep;
 	}
 	
 	public function regLog($login, $logout="", $logcheck="", $chg_psw="") {
+		$this->func_log = array();
 		if(is_callable($login)) $this->func_log['login'] = $login;
 		if(is_callable($logout)) $this->func_log['logout'] = $logout;
 		if(is_callable($logcheck)) $this->func_log['logcheck'] = $logcheck;
@@ -380,24 +380,24 @@ mystep;
 			$userinfo = array();
 			if(!empty($ms_user)) {
 				list($user_id, $user_pwd)=explode("\t",$ms_user);
-				if($userinfo = getData("SELECT user_id, group_id, type_id, username as name, email from ".$setting['db']['pre']."users where (user_id='".mysql_real_escape_string($user_id)."' || username='".mysql_real_escape_string($user_id)."') and password='".mysql_real_escape_string($user_pwd)."'", "record", 1200)) {
+				if($userinfo = getData("SELECT user_id, group_id, type_id, username, email from ".$setting['db']['pre']."users where (user_id='".mysql_real_escape_string($user_id)."' || username='".mysql_real_escape_string($user_id)."') and password='".mysql_real_escape_string($user_pwd)."'", "record", 1200)) {
 					$req->setSession("username", $userinfo['username']);
 					$req->setSession("usergroup", $userinfo['group_id']);
 					$req->setSession("usertype", $userinfo['type_id']);
+					if($req->getCookie('ms_user')=="") $req->setCookie("ms_user", $userinfo['user_id']."\t".$user_pwd, 60*60*12);
 					$userinfo = array(
 						"name" => $userinfo['username'],
 						"email" => $userinfo['email'],
 					);
-					$req->setCookie("ms_user", $userinfo['user_id']."\t".$user_pwd, 60*60*12);
 				} elseif(($user_id==0 || $user_id==$setting['web']['s_user']) && $user_pwd==$setting['web']['s_pass']) {
 					$req->setSession("username", $setting['web']['s_user']);
 					$req->setSession("usergroup", 1);
 					$req->setSession("usertype", 3);
+					if($req->getCookie('ms_user')=="") $req->setCookie("ms_user", "0\t".$user_pwd, 60*60*12);
 					$userinfo = array(
 						"name" => $setting['web']['s_user'],
 						"email" => $setting['web']['email'],
 					);
-					$req->setCookie("ms_user", "0\t".$user_pwd, 60*60*12);
 				}
 			} elseif(!empty($GLOBALS['authority']) && md5($req->getReq($GLOBALS['authority']))==$setting['web']['s_pass']) {
 				$req->setSession("username", $setting['web']['s_user']);
@@ -422,8 +422,9 @@ mystep;
 			global $req;
 			$req->setCookie("ms_info");
 			$result = $this->logcheck($user_name, $user_pwd);
+			$result = (count($result)==0)?$setting['language']['login_error_psw']:"";
 		}
-		return (count($result)==0)?$setting['language']['login_error_psw']:"";
+		return $result;
 	}
 	
 	public function logout() {
@@ -459,19 +460,49 @@ mystep;
 	}
 	
 	public function addCSS($cssFile) {
-		if(file_exists(ROOT_PATH."/".$cssFile)) $this->css[] = ROOT_PATH."/".$cssFile;
+		$cssFile = str_replace("//", "/", ROOT_PATH."/".$cssFile);
+		if(file_exists($cssFile)) $this->css[] = $cssFile;
+	}
+	
+	public function removeCSS($cssFile) {
+		$cssFile = str_replace("//", "/", ROOT_PATH."/".$cssFile);
+		$key = array_search($cssFile, $this->css);
+		if(is_numeric($key)) {
+			unset($this->css[$key]);
+			$this->css = array_values($this->css);
+		}
 	}
 	
 	public function getCSS() {
 		return $this->css;
 	}
 	
+	public function clearCSS() {
+		$this->css = array();
+		return;
+	}
+	
 	public function addJS($jsFile) {
-		if(file_exists(ROOT_PATH."/".$jsFile)) $this->js[] = ROOT_PATH."/".$jsFile;
+		$jsFile = str_replace("//", "/", ROOT_PATH."/".$jsFile);
+		if(file_exists($jsFile)) $this->js[] = $jsFile;
+	}
+	
+	public function removeJS($jsFile) {
+		$jsFile = str_replace("//", "/", ROOT_PATH."/".$jsFile);
+		$key = array_search($jsFile, $this->js);
+		if(is_numeric($key)) {
+			unset($this->js[$key]);
+			$this->js = array_values($this->js);
+		}
 	}
 	
 	public function getJS() {
 		return $this->js;
+	}
+	
+	public function clearJS() {
+		$this->js = array();
+		return;
 	}
 }
 

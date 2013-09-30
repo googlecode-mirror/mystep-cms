@@ -10,10 +10,10 @@
 			<div>下面是默认邮件的内容，发送前请根据实际情况修改。</div>
 			<BR />
 			<input type="hidden" name="mid" value="<!--mid-->" />
-			<input type="hidden" name="subject" value="<!--name-->" />
-			<input type="hidden" name="email" value="<!--record_email-->" />
-			<input type="hidden" name="sender_name" value="" />
-			<input type="hidden" name="sender_email" value="" />
+			<b>邮件主题：</b><input type="text" name="subject" value="<!--name-->" size="50" /><BR /><BR />
+			<b>邮件地址：</b><input type="text" name="email" value="<!--record_email-->" size="50" /><BR /><BR />
+			<b>发 件 人：</b><input type="text" name="sender_name" value="" size="50" /><BR /><BR />
+			<b>回复地址：</b><input type="text" name="sender_email" value="" size="50" /><BR /><BR />
 			<textarea name="content" cols="110" rows="40" id="content">
 尊敬的 <span style="font-weight:bold;color:#aa0000"><!--record_name--></span><br />
 欢迎您参加<b>“<!--name-->”</b>！<br />
@@ -23,7 +23,19 @@ global $record;
 foreach($para as $key => $value) {
 	if($value['manager']=='true') continue;
 	if(empty($value['title'])) continue;
-	echo "<b>".$value['title']."：</b> ".$record[$key]."<br />";
+	echo "<b>".$value['title']."：</b> ";
+	if($value['type']=='file') {
+		$data = explode("::", $record[$key]);
+		$path = "http://".$setting['info']['web']['host'].dirname($_SERVER["PHP_SELF"])."/";
+		if(strpos($data, "image/")!==false) {
+			echo '<a href="'.$path.'file.php?mid='.$mid.'&id='.$id.'&f='.$key.'" target="_blank"><img src="file.php?mid='.$mid.'&id='.$id.'&f='.$key.'" height="80" /></a>';
+		} else {
+			echo '<a href="'.$path.'file.php?mid='.$mid.'&id='.$id.'&f='.$key.'" target="_blank">'.$data[0].'</a>';
+		}
+	} else {
+		echo $record[$key];
+	}
+	echo "<br />";
 }
 ?>
 <br />

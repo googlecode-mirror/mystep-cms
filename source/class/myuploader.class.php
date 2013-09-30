@@ -47,6 +47,10 @@ class MyUploader extends class_common {
 	public function doit($getsize = true) {
 		foreach($_FILES as $key => $value) {
 			if(is_array($value['name'])) {
+				if(is_array($value['name'][0]) {
+					$this->Error("Structure of FILE is too complex!");
+					exit;
+				}
 				$max_count = count($value['name']);
 				for($i=0; $i<$max_count; $i++) {
 					if($value['error'][$i] == 4) continue;

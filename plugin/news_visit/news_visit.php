@@ -42,9 +42,7 @@ $db->Query($str_sql);
 while($record = $db->GetRS()) {
 	HtmlTrans(&$record);
 	$record['day_start'] = date("Y-m-d", $record['day_start']);
-	$webInfo = getParaInfo("website", "web_id", $record['web_id']);
-	$record['link'] = "http://".$webInfo['host']."/read.php?id=".$record['news_id'];
-	$record['web_id'] = $webInfo['name'];
+	$record['link'] = getUrl("read", array($record['news_id'], $record['cat_id']), 1, $record['web_id']);
 	$catInfo = getParaInfo("news_cat", "cat_id", $record['cat_id']);
 	$record['cat_id'] = $catInfo['cat_name'];
 	$tpl->Set_Loop('record', $record);

@@ -1,6 +1,8 @@
 <div class="title"><!--title--></div>
+<script type="text/javascript" src="../../script/checkForm.js" Language="JavaScript1.2"></script>
+<script type="text/javascript" src="../../script/jquery.date_input.js" language="JavaScript1.2"></script>
 <div align="left">
-	<form method="post" action="?method=<!--method-->_ok">
+	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="cat" colspan="2">基本信息</td>
@@ -28,6 +30,12 @@
 				<td class="cat">英文名称：</td>
 				<td class="row">
 					<input name="name_en" type="text" value="<!--name_en-->" maxlength="100" need="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="cat">过期时间：</td>
+				<td class="row">
+					<input name="expire" type="text" value="<!--expire-->" maxlength="100" need="date_" />
 				</td>
 			</tr>
 			<tr>
@@ -161,6 +169,7 @@
 					<option value="radio">单选</option>
 					<option value="checkbox">多选</option>
 					<option value="select">下拉选单</option>
+					<option value="file">附件上传</option>
 				</select>
 			</td>
 		</tr>

@@ -185,6 +185,7 @@ Content-Transfer-Encoding: base64
 		$this->addHeader("X-Mailer", "MyStep_CMS");
 		$this->addHeader("MIME-Version", "1.0");
 		
+		
 		$mail_content = implode("\r\n", $this->headers)."\r\n";
 		if(!empty($extHeader)) $mail_content .= $extHeader."\r\n";
 		$mail_content .= $this->buildMail();

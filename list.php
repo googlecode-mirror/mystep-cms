@@ -18,9 +18,8 @@ if(is_numeric($cat_idx)) {
 }
 $cat_info = getParaInfo("news_cat_sub", "cat_idx", $cat_idx);
 if($cat_info===false && !empty($cat_idx)) {
-	unset($_SERVER['QUERY_STRING']);
-	$prefix = "";
-	$cat_idx = "";
+	$goto_url = "/";
+	$mystep->pageEnd();
 }
 if(!empty($cat_info['cat_link'])) {
 	$goto_url = $cat_info['cat_link'];
@@ -90,7 +89,7 @@ if(!empty($prefix)) {
 }
 
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-$news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".($cat_id==0?"":" and (a.cat_id ='{$cat_id}' || b.cat_main='{$cat_id}')").(empty($condition)?"":" and {$condition}"), "result");
+$news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where ".($cat_id==0?"(b.cat_main=0)":"(a.cat_id ='{$cat_id}' || b.cat_main='{$cat_id}')").(empty($condition)?"":" and {$condition}"), "result");
 if(!empty($cat_name)) $tpl_tmp->Set_Variable('catalog_txt', (empty($cat_main_link)?"":" - {$cat_main_link}").' - <a href="'.getUrl("list", $cat_idx, 1, $web_id).'">'.$cat_name.'</a>');
 $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('web_url', $setting['web']['url']);

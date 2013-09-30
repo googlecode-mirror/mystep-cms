@@ -95,6 +95,13 @@ class MySQL extends class_common {
 		$this->Connect($pconnect, $the_db);
 		return;
 	}
+
+	public function checkConnect($pconnect = true, $the_db = "") {
+		if(mysql_ping($this->DB_conn)===false) {
+			$this->ReConnect($pconnect, $the_db);
+		}
+		return;
+	}
 	
 	public function setCharset($charset="") {
 		if(empty($charset)) $charset = $this->DB_charset;

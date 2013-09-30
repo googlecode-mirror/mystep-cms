@@ -39,13 +39,13 @@ BODY {font-size:12px; text-align:left; padding:0px; margin:auto; cursor:default;
 #page_top .r .info {text-align:right; padding:10px 10px 0px 10px; white-space:nowrap; word-wrap:keep-all;}
 
 #menu_nav {margin-right:20px;}
-#menu_nav li {z-index:100; position:relative; text-align:center; display:block; float:left; letter-spacing:1px; font-size:14px; font-weight:bold; white-space:nowrap; word-wrap:keep-all;}
+#menu_nav li {z-index:100; position:relative; text-align:center; display:block; float:left; letter-spacing:1px; font-size:14px; font-weight:bold; white-space:nowrap; word-wrap:normal; word-break:keep-all;}
 #menu_nav li a.nav {text-decoration:none; font-weight:bold; display:block; float:left; padding:5px 8px 5px 8px; margin:24px 5px 0px 5px; border:1px solid #6d84b4;}
 #menu_nav li a.nav:link,
 #menu_nav li a.nav:visited {color:#fff; background-color:#739ace;}
 #menu_nav li a.nav:hover {background-color:#6d84b4;}
 #menu_nav li ul {position:absolute; list-style-type:none; width:110px; display:none; top:48px; left:5px;}
-#menu_nav li ul li {background-color:#f2f9fd; position:relative; width:100%; border-bottom:1px #ccc solid; font-size:12px; filter:alpha(opacity=80); -moz-opacity:0.8; opacity:0.8;}
+#menu_nav li ul li {background-color:#f2f9fd; position:relative; width:100%; border-bottom:1px #ccc solid; font-size:12px; filter:alpha(opacity=80); -moz-opacity:0.8; opacity:0.8; white-space:normal; word-wrap:break-word; word-break:break-all;}
 #menu_nav li ul li a {display:block; text-decoration:none; text-align:left; padding:10px 10px 10px 10px;}
 #menu_nav li ul li a:link,
 #menu_nav li ul li a:visited {color:#000;}
@@ -82,8 +82,8 @@ H1 {font-size:16px;font-weight:bold;text-align:center;margin:10px auto 0px auto;
 #input_area span.comment {color:#00a; font-size:12px; margin-left:10px;}
 #input_area .btn {width:90px; background-color:#DAE7F2; color:black; font-weight:normal; border:1px solid black; padding:1px 10px 1px 10px;}
 #input_area .cbox {width:20px; background-color:transparent; border:0px;}
-#input_area tr:hover {background-color:#eef;}
-#list_area tr:hover {background-color:#eef;}
+#input_area tr, #list_area tr {background-color:#fff;}
+#input_area tr:hover, #list_area tr:hover {background-color:#eef;}
 #list_area td {word-wrap:break-word;word-break:break-all;}
 
 #img_lst{width:800px;margin:20px auto 20px auto;clear:both;}

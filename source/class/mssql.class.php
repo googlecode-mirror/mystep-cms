@@ -290,13 +290,14 @@ class MSSQL extends class_common {
 		if(stripos($sql, "select")!==0 || stripos($sql, "limit")!==false) {
 			if(preg_match("/limit\s+(\d+)$/i", $sql, $matches)) {
 				$sql = preg_replace("/limit\s+(\d+)$/i", "", $sql);
-				$sql = str_ireplace("select", "select top ".$matches[1], $sql);
+				$sql = preg_replace("/^select/i", "select top ".$matches[1], $sql);
 			} elseif(preg_match("/limit\s+(\d+)[\s,]+(\d+)$/i", $sql, $matches)) {
 				$start = $matches[1];
 				$size = $matches[2];
 				if(preg_match("/order by\s+(.+?)\s+limit/i", $sql, $matches)) {
 					$the_order = $matches[1];
 					$the_order = preg_replace("/\s*,\s*/", ",", $the_order);
+					$the_order = preg_replace("/\w+\./", "", $the_order);
 					$order_list = explode(",", $the_order);
 					for($i=0,$m=count($order_list);$i<$m;$i++) {
 						if(strpos($order_list[$i], " ")===false) $order_list[$i] .= " asc";
@@ -309,7 +310,7 @@ class MSSQL extends class_common {
 					$the_order_2 = $the_order." desc";
 				}
 				$sql = preg_replace("/limit\s+(\d+)[\s,]+(\d+)$/i", "", $sql);
-				$sql = str_ireplace("select", "select top(".($start+$size).")", $sql);
+				$sql = preg_replace("/^select/i", "select top(".($start+$size).")", $sql);
 				$sql = "select top(".$size.") * from (".$sql.") as tmp_1 order by ".$the_order_2;
 				$sql = "select * from (".$sql.") as tmp_2 order by ".$the_order;
 			}

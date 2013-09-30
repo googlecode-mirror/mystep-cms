@@ -12,6 +12,7 @@ if(!$mydb->checkTBL()) {
 	$db_setting = array(
 		array("idx",10),
 		array("page",30),
+		array("position",10),
 		array("description",200)
 	);
 	$mydb->createTBL($db_setting);
@@ -24,7 +25,7 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $setting['language']['plugin_front_code_delete'];
+		$log_info = $setting['language']['plugin_xcode_delete'];
 		$record = $mydb->queryDate("idx=".$idx, true, &$fp_pos, &$row_pos);
 		$mydb->deleteDate($row_pos);
 		unlink(dirname(__FILE__)."/code/".$idx.".php");
@@ -35,14 +36,14 @@ switch($method) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$content = $_POST['content'];
-			if(!preg_match("/^<\?php(.+)\?>$/i", $content)) $content = "<?php\n".$content."\n?>";
+			if(!preg_match("/^[\r\n\s]*<\?php(.+)\?>[\r\n\s]*$/is", $content)) $content = "<?php\n".$content."\n?>";
 			unset($_POST['content']);
 			if($method=="add_ok") {
 				$_POST['idx'] = $_SERVER['REQUEST_TIME'];
-				$log_info = $setting['language']['plugin_front_code_add'];
+				$log_info = $setting['language']['plugin_xcode_add'];
 				$mydb->insertDate($_POST, 1);
 			} else {
-				$log_info = $setting['language']['plugin_front_code_edit'];
+				$log_info = $setting['language']['plugin_xcode_edit'];
 				$record = $mydb->queryDate("idx=".$idx, true, &$fp_pos, &$row_pos);
 				$mydb->updateDate($_POST, $row_pos, 1);
 			}
@@ -76,28 +77,28 @@ function build_page($method) {
 		$record = $mydb->queryAll();
 		if(!$record) $record = array();
 		$tpl_tmp->Set_Loop('record', $record, true);
-		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_front_code_title']);
+		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_xcode_title']);
 	} else {
 		if($method == "edit") {
 			$record = $mydb->queryDate("idx=".$idx, true, &$fp_pos, &$row_pos);
 			if(!$record) {
-				$tpl->Set_Variable('main', showInfo($setting['language']['plugin_front_code_error'], 0));
+				$tpl->Set_Variable('main', showInfo($setting['language']['plugin_xcode_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
 			$record['content'] = GetFile(dirname(__FILE__)."/code/".$idx.".php");
-			$record['content'] = preg_replace("/^<\?php(.+)\?>$/is", "\\1", $record['content']);
 			HtmlTrans(&$record);
 		} else {
 			$record = array();
 			$record['idx'] = $_SERVER['REQUEST_TIME'];
 			$record['page'] = "";
+			$record['position'] = "0";
 			$record['description'] = "";
-			$record['content'] = "";
+			$record['content'] = "<?php\n\n?>";
 		}
 		$tpl_tmp->Set_Variables($record);
 		
-		$tpl_tmp->Set_Variable('title', ($method=='add'?$setting['language']['plugin_front_code_add']:$setting['language']['plugin_front_code_edit']));
+		$tpl_tmp->Set_Variable('title', ($method=='add'?$setting['language']['plugin_xcode_add']:$setting['language']['plugin_xcode_edit']));
 		$tpl_tmp->Set_Variable('method', $method);
 		$tpl_tmp->Set_Variable('back_url', $req->getServer("HTTP_REFERER"));
 	}

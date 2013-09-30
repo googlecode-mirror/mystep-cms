@@ -11,6 +11,7 @@ CREATE TABLE `{pre}ticket` (
 	`reply` MEDIUMTEXT COMMENT '回复',
 	`status` TINYINT DEFAULT 0 COMMENT '状态',
 	`add_date` Char(15) DEFAULT 0 COMMENT '发布日期（unixtimestamp）',
+	`reply_date` Char(15) DEFAULT 0 COMMENT '回复日期（unixtimestamp）',
 	PRIMARY KEY (`id`),
 	INDEX (`idx`)
 ) ENGINE=MyISAM DEFAULT CHARSET={charset} COMMENT='用户交互系统';

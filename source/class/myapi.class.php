@@ -39,6 +39,7 @@ class MyApi extends class_common {
 		if(isset($this->methods[$method])) {
 			$result = call_user_func_array($this->methods[$method], $para);
 		}
+		if(empty($charset)) $charset="utf-8";
 		switch($return) {
 			case "j":
 			case "json":

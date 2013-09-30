@@ -196,7 +196,7 @@ for(\$i=0; \$i<\$max_count; \$i++) {
 $unit
 content;
 	echo "\\n";
-	if(\$i>=\$time && \$time>0) break;
+	//if(\$i>=\$time && \$time>0) break;
 }
 mytpl;
 					if($loop) {
@@ -288,6 +288,12 @@ mytpl;
 		$tpl_cache = "<!--".filemtime($this->tpl_info['file'])."-->".$tpl_cache;
 		$this->WriteFile($cache_file, $tpl_cache, 'wb');
 		return $cache_file;
+	}
+	
+	public function remove_TPL_Cache() {
+		$cache_file = $this->tpl_info['path']."/cache/".str_replace("../", "", $this->tpl_info['style'])."/".$this->tpl_info['idx'].".php";
+		if(file_exists($cache_file)) unlink($cache_file);
+		return;
 	}
 	
 	protected function Get_Block($attrib, $content, &$block_attrib, &$block_content) {

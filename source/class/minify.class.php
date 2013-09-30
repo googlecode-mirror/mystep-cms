@@ -164,7 +164,7 @@ class JSMin {
 							$this->action(3);
 							break;
 						default:
-							if ($this->isAlphaNum($this->b)) {
+							if ($this->isAlphaNum($this->b) || $this->b=="!") {
 								$this->action(1);
 							}
 							else {

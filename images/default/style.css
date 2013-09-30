@@ -87,11 +87,11 @@ TABLE .row {font-size:12px; background-color:#4791C5; border-bottom:1px solid #0
 .page_lst {width:100%; margin-top:10px;}
 .page_lst .fl {width:261px;}
 
-.page_lst .page {text-align:center; padding:20px 0;}
-.page_lst .page em, .page_lst .page a, .page_lst .page strong, .page_lst .page i {padding:3px 7px; border:1px solid #DDD; *display:inline-block;}
-.page_lst .page em, .page_lst .page i {color:#6C6C6C;}
-.page_lst .page strong {font-weight:bold; color:#FF0084}
-.page_lst .page a:hover {color:#FFF; background:#039; text-decoration:none;}
+.page {text-align:center; padding:20px 0;}
+.page em, .page a, .page strong, .page i {padding:3px 7px; border:1px solid #DDD; *display:inline-block;}
+.page em, .page i {color:#6C6C6C;}
+.page strong {font-weight:bold; color:#FF0084}
+.page a:hover {color:#FFF; background:#039; text-decoration:none;}
 
 .page_lst .box_1 {float:left; margin:0px 0px 10px 0px;}
 .page_lst .box_1 .content .pic {margin:0px; padding:0px;}

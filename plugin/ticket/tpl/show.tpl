@@ -79,7 +79,7 @@
 			<td class="cat" align="left"><!--record_subject-->£¨<a href="mailto:<!--record_email-->" target="_blank"><!--record_name--></a> - <!--record_add_date-->£©</td>
 		</tr>
 		<tr>
-			<td class="row" align="left">
+			<td class="row" align="left" style="background-color:<!--record_color-->">
 				<div class="message">
 					<!--record_message-->
 				</div>

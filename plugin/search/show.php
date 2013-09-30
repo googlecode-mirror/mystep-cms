@@ -3,8 +3,8 @@ global $keyword, $condition, $limit, $web_id;
 $mode = $req->getGet("mode");
 $keyword = $req->getGet("k");
 
-if(!empty($keyword)) {
-	$keyword = getSafeCode($keyword, $setting['gen']['charset']);
+if(strlen($keyword)>=4) {
+	$keyword = getString($keyword);
 	$keyword = mysql_real_escape_string($keyword);
 	if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."search_keyword where keyword = '{$keyword}'")) {
 		$record['chg_date'] = time();

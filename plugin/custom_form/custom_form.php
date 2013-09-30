@@ -104,6 +104,19 @@ switch($method) {
 		foreach($_POST as $key => $value) {
 			if(is_array($value)) $_POST[$key] = implode(",", $value);
 		}
+		if(count($_FILES)>0) {
+			$path_upload = dirname(__FILE__)."/setting/".$mid."/";
+			MakeDir($path_upload);
+			foreach($_FILES as $key => $value) {
+				if(!empty($value['name'])) {
+					$new_name = md5($value['name'].$value['type'].$value['size']);
+					@unlink($path_upload.$new_name);
+					move_uploaded_file($value['tmp_name'], $path_upload.$new_name);
+					$_POST[$key] = $value['name']."::".$value['type']."::".$new_name;
+				}
+			}
+		}
+		
 		if(function_exists("ext_func")) ext_func();
 		$str_sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $_POST, "update", "id={$id}");
 		$db->Query($str_sql);
@@ -117,6 +130,7 @@ switch($method) {
 		$sql_item['web_id'] = $_POST['web_id'];
 		$sql_item['name'] = $_POST['name'];
 		$sql_item['name_en'] = $_POST['name_en'];
+		$sql_item['expire'] = $_POST['expire'];
 		$sql_item['notes'] = $_POST['notes'];
 		$sql_item['add_date'] = date("Y-m-d H:i:s");
 		$str_sql = $db->buildSQL($setting['db']['pre']."custom_form", $sql_item, "insert", "");
@@ -215,6 +229,9 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 					if(empty($value['length'])) $value['length'] = 100;
 					$str_sql .= "\n	`".$key."` Char(".$value['length'].")";
 					break;
+				case "file":
+					$str_sql .= "\n	`".$key."` Char(255)";
+					break;
 				case "radio":
 				case "select":
 					add_slash($value['value']['cn']);
@@ -253,6 +270,7 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 		$sql_item['web_id'] = $_POST['web_id'];
 		$sql_item['name'] = $_POST['name'];
 		$sql_item['name_en'] = $_POST['name_en'];
+		$sql_item['expire'] = $_POST['expire'];
 		$sql_item['notes'] = $_POST['notes'];
 		$str_sql = $db->buildSQL($setting['db']['pre']."custom_form", $sql_item, "update", "mid={$mid}");
 		$db->Query($str_sql);
@@ -352,6 +370,9 @@ $para = '.str_replace("\r", "", $para).';
 						if(empty($value['length'])) $value['length'] = 100;
 						$item_type .= "`".$key."` Char(".$value['length'].")";
 						break;
+					case "file":
+						$str_sql .= "\n	`".$key."` Char(255)";
+						break;
 					case "radio":
 					case "select":
 						add_slash($value['value']['cn']);
@@ -438,7 +459,7 @@ $para = '.var_export($para, true).';
 		$mail = $mystep->getInstance("MyEmail", $setting['web']['email'], $setting['gen']['charset']);
 		$mail->addEmail($setting['web']['email'], $setting['web']['title'], "reply");
 		$mail->setSubject($_POST['subject']);
-		$mail->setContent($_POST['content']);
+		$mail->setContent(str_replace("http://".$setting['info']['web']['host'].dirname($_SERVER["PHP_SELF"])."/file.php?mid=", "file.php?mid=", $_POST['content']));
 		$mail->addEmail($_POST['email']);
 		$mail->addHeader("Disposition-Notification-To", $setting['web']['email']);
 		$flag = $mail->send($setting['email']);

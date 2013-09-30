@@ -30,11 +30,12 @@ if(empty($group['power_func']) ) {
 	$req->setCookie("referer", $req->getServer("REQUEST_URI"), 1000);
 	$mystep->pageEnd(false);
 }
-
+$op_mode = ($setting['info']['web']['web_id']==1 && ($group['power_func']=="all" || strpos(",".$group['power_func'].",", ",1,")!==false));
 includeCache("admin_cat");
+if(!$op_mode) $admin_cat = $admin_cat_plat;
 if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "file", $setting['info']['self'])) {
 	if(strpos(",".$group['power_func'].",", ",".$cat_info['id'].",")===false) {
-		echo '<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">'.$setting['language']['admin_nopower'].'</div>';
+		echo '<div style="text-align:center; font-size:36px; color:#f00; margin-top:100px;">'.$setting['language']['login_nopower'].'</div>';
 		$mystep->pageEnd(false);
 	}
 }

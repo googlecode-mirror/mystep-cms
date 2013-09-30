@@ -5,6 +5,7 @@
 		<tr align="center">
 			<td class="cat" width="120">编号</td>
 			<td class="cat" width="120">相关页面</td>
+			<td class="cat" width="120">执行位置</td>
 			<td class="cat">功能描述</td>
 			<td class="cat" width="60">操作</td>
 		</tr>
@@ -12,6 +13,7 @@
 		<tr class="row" align="center">
 			<td align="center"><!--record_idx--></td>
 			<td align="center"><!--record_page--></td>
+			<td align="center"><!--record_position--></td>
 			<td align="left"><!--record_description--></td>
 			<td align="center"><a href="?method=edit&idx=<!--record_idx-->">修改</a> <a href="?method=delete&idx=<!--record_idx-->" onclick="return confirm('请按确定继续。')">删除</a></td>
 		</tr>

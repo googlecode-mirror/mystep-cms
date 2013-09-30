@@ -1,5 +1,5 @@
 <?php
-class plugin_front_code implements plugin {
+class plugin_xcode implements plugin {
 	public static function install() {
 		global $setting;
 		$info = self::info();
@@ -10,8 +10,8 @@ class plugin_front_code implements plugin {
 			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
 		global $db, $admin_cat;
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_front_code", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 99, ",")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'front_code.php', '../plugin/front_code/', 0, 0, '".$info['cat_desc']."')");
+		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_xcode", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 99, ",")');
+		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'xcode.php', '../plugin/xcode/', 0, 0, '".$info['cat_desc']."')");
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -39,7 +39,7 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat, $mystep;
 		$info = self::info();
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='front_code.php'");
+		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='xcode.php'");
 		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
 		deleteCache("admin_cat");
 		deleteCache("plugin");
@@ -99,17 +99,37 @@ mystep;
 	}
 	
 	public static function page_start() {
-		global $mystep, $setting;
+		global $mystep, $setting, $req;
+		if(strpos($req->getserver("PHP_SELF"),"/plugin/")!==false && $setting['info']['self']!="show.php") return;
 		$mydb = $mystep->getInstance("MyDB", "code", dirname(__FILE__));
 		if($mydb->checkTBL()) {
 			if($record = $mydb->queryDate("page=".$setting['info']['self'], false, &$fp_pos, &$row_pos)) {
 				for($i=0, $m=count($record); $i<$m; $i++) {
-					include(dirname(__FILE__)."/code/".$record[$i]["idx"].".php");
+					if($record[$i]["position"]==0) include(dirname(__FILE__)."/code/".$record[$i]["idx"].".php");
 				}
 			}
 			if($record = $mydb->queryDate("page=", false, &$fp_pos, &$row_pos)) {
 				for($i=0, $m=count($record); $i<$m; $i++) {
-					include(dirname(__FILE__)."/code/".$record[$i]["idx"].".php");
+					if($record[$i]["position"]==0) include(dirname(__FILE__)."/code/".$record[$i]["idx"].".php");
+				}
+			}
+		}
+		return;
+	}
+	
+	public static function page_end() {
+		global $mystep, $setting, $req;
+		if(strpos($req->getserver("PHP_SELF"),"/plugin/")!==false && $setting['info']['self']!="show.php") return;
+		$mydb = $mystep->getInstance("MyDB", "code", dirname(__FILE__));
+		if($mydb->checkTBL()) {
+			if($record = $mydb->queryDate("page=".$setting['info']['self'], false, &$fp_pos, &$row_pos)) {
+				for($i=0, $m=count($record); $i<$m; $i++) {
+					if($record[$i]["position"]==1) include(dirname(__FILE__)."/code/".$record[$i]["idx"].".php");
+				}
+			}
+			if($record = $mydb->queryDate("page=", false, &$fp_pos, &$row_pos)) {
+				for($i=0, $m=count($record); $i<$m; $i++) {
+					if($record[$i]["position"]==1) include(dirname(__FILE__)."/code/".$record[$i]["idx"].".php");
 				}
 			}
 		}

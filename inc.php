@@ -6,6 +6,12 @@ if(count(debug_backtrace())<1) {
 	header("location: install/");
 	exit();
 }
+foreach($_GET as $k => $v) {
+	if(!preg_match("/^\w+$/", $k)) {
+		header("location: /");
+		exit();
+	}
+}
 define('ROOT_PATH', str_replace("\\", "/", dirname(__file__)));
 require(ROOT_PATH."/include/config.php");
 require(ROOT_PATH."/include/parameter.php");

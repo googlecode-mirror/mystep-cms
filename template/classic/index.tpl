@@ -114,58 +114,48 @@
 $(function(){
 	//News Picture
 	var stop_news_image = false;
-	$("#news_image").parent().css({'height':'200px','overflow':'hidden','margin-top':'0px'});
+	$("#news_image").parent().css({'height':'200px','overflow':'hidden','margin-top':'0px','position':'absolute'});
 	$("#news_image").hover(
 		function() {stop_news_image = true;},
 		function() {stop_news_image = false;}
 	);
-	if($.browser.msie) {
-		$("#news_image").css({'height':'190px','overflow':'hidden'});
-		var item_cnt = $("#news_image").children();
-		var cur_idx = 0;
-		setInterval(function(){
-			if(!stop_news_image) {
-				cur_idx++;
-				if(cur_idx>=item_cnt.length) cur_idx = 0;
-				$(item_cnt).hide();
-				$(item_cnt[cur_idx]).css({'opacity':0});
-				$(item_cnt[cur_idx]).show();
-				$(item_cnt[cur_idx]).fadeTo(2000, 1);
+	var content = $("#news_image").html();
+	$("#news_image").html(content + content);
+	setInterval(function(){
+		if(!stop_news_image) {
+			var theStep = 190;
+			var theTop = parseInt($("#news_image").css('top'));
+			if(Math.abs(theTop/theStep)>=$("#news_image").children().length/2) {
+				$("#news_image").css('top', '0px');
+				theTop = 0;
 			}
-		}, 5000);
-	} else {
-		var content = $("#news_image").html();
-		$("#news_image").html(content + content);
-		setInterval(function(){
-			if(!stop_news_image) {
-				var theStep = 190;
-				var theTop = parseInt($("#news_image").css('top'));
-				if(Math.abs(theTop/theStep)>=$("#news_image").children().length/2) {
-					$("#news_image").css('top', '0px');
-					theTop = 0;
-				}
-				$("#news_image").animate({'top':theTop-theStep},1000);
-			}
-		}, 5000);
-	}
+			$("#news_image").animate({'top':theTop-theStep},1000);
+		}
+	}, 5000);
 	//Picture Show
 	var stop_pic_show = false;
 	var theObj = $("#pic_show .marquee");
+	$("#pic_show").css('position', 'absolute');
+	$("#pic_show").parent().next().css('margin-top', $("#pic_show").height()+10);
 	theObj.parent().hover(
 		function() {stop_pic_show = true;},
 		function() {stop_pic_show = false;}
 	);
-	if(theObj.children().length>5) {
+	var img_cnt = theObj.children().length;
+	if(img_cnt>1) {
+		var unit_width = 187; //width + margin + border*2
 		var content = theObj.html();
-		theObj.html(content + content + content);
+		var times = Math.ceil(theObj.width()/(img_cnt*unit_width))*2;
+		theObj.html((new Array(times+1)).join(content));
 		setInterval(function(){
 			if(!stop_pic_show) {
 				var theObj = $("#pic_show .marquee");
-				var theStep = 187*5;
+				var theStep = unit_width * Math.floor(theObj.width()/unit_width);
 				var theLeft = parseInt(theObj.css('left'));
-				var theLength = 187*theObj.children().length/3;
+				var theLength = unit_width * img_cnt;
 				if(Math.abs(theLeft)>=theLength) {
 					theLeft += theLength;
+					if(Math.abs(theLeft)>=theLength) theLeft += theLength;
 					theObj.css('left', theLeft);
 				}
 				theObj.animate({'left':theLeft-theStep},1000);

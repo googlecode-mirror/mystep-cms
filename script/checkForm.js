@@ -46,11 +46,19 @@ function checkForm(the_form, myChecker){
 		the_len = the_obj.getAttribute("len");
 		the_length = typeof(String.prototype.Tlength)=="undefined"?the_value.length:the_value.Tlength();
 		if(the_len!=null) {
-			if(the_len.match(/^\d+$/)) {
-				if(the_length != the_len) {
-					alert(printf(language.checkform_lenth_limit1, the_len));
-					highlightIt(the_obj);
-					return false;
+			if(the_len.match(/^(\d+)(\!)?$/)) {
+				if(RegExp.$2=="!") {
+					if(the_length != RegExp.$1) {
+						alert(printf(language.checkform_lenth_limit1_2, RegExp.$1));
+						highlightIt(the_obj);
+						return false;
+					}
+				} else {
+					if(the_length > the_len) {
+						alert(printf(language.checkform_lenth_limit1, the_len));
+						highlightIt(the_obj);
+						return false;
+					}
 				}
 			} else {
 				the_len = the_len.split("-");
@@ -72,6 +80,8 @@ function checkForm(the_form, myChecker){
 			the_need = the_need.toLowerCase().replace("_", "");
 		}
 		switch(the_need){
+			case null:
+				break;
 			case "email":
 				if(!/^[\w\-\.]+@([\w\-]+\.)+[a-z]{2,4}$/i.test(the_value)) {
 					alert(language.checkform_err_email);
@@ -175,6 +185,14 @@ function checkForm(the_form, myChecker){
 				}
 				break;
 			default:
+				try{
+					var re=new RegExp(the_need,"i");
+					if(!re.test(the_value)) {
+						alert(language.checkform_err);
+						highlightIt(the_obj);
+						return false;
+					}
+				} catch(e){}
 				break;
 		}
 	}

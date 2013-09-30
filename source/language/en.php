@@ -60,10 +60,12 @@ $language = array (
   'db_update_done' => 'in table %s, %d lines have been updated',
   'db_operate_done' => 'in table %s, operation of %s done!',
   
-  'checkform_lenth_limit1' => 'Keep %1 input characters!',
+  'checkform_lenth_limit1' => 'Keep the input characters within %1 !',
+  'checkform_lenth_limit1_2' => 'Keep %1 input characters!',
   'checkform_lenth_limit2' => '%1 characters are needed!',
   'checkform_lenth_limit3' => 'Keep the input characters within %1 !',
   'checkform_noempty' => 'Some item must be filled!',
+  'checkform_err' => 'Bad format!',
   'checkform_err_email' => 'Wrong email format !',
   'checkform_err_url' => 'Wrong website address format !',
   'checkform_err_digital' => 'Digital only !',

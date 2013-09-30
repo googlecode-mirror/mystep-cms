@@ -60,10 +60,12 @@ $language = array (
   'db_update_done' => '数据表 %s 已更新 %d 条数据！',
   'db_operate_done' => '数据表 %s 执行了操作（%s）！',
   
-  'checkform_lenth_limit1' => '字符数应为 %1 个！',
+  'checkform_lenth_limit1' => '请将字符数限制在 %1 个字符以内！',
+  'checkform_lenth_limit1_2' => '字符数应为 %1 个！',
   'checkform_lenth_limit2' => '所添内容必须为 %1 个字符！',
   'checkform_lenth_limit3' => '请将字符数限制在 %1 个字符！',
   'checkform_noempty' => '您还有一些必添项目没有填充，请填写完全！',
+  'checkform_err' => '当前项目格式有误！',
   'checkform_err_email' => '错误的电子邮件格式，请输入合法的电子邮件地址！',
   'checkform_err_url' => '错误的网址格式，请输入合法的网址！',
   'checkform_err_digital' => '当前项目只可以填充数字！',
@@ -114,12 +116,12 @@ $language = array (
 	'short_month_names_11' => '十一',
 	'short_month_names_12' => '十二',
 
-	'short_day_names_1' => '一',
-	'short_day_names_2' => '二',
-	'short_day_names_3' => '三',
-	'short_day_names_4' => '四',
-	'short_day_names_5' => '五',
-	'short_day_names_6' => '六',
-	'short_day_names_7' => '日',
+	'short_day_names_1' => '日',
+	'short_day_names_2' => '一',
+	'short_day_names_3' => '二',
+	'short_day_names_4' => '三',
+	'short_day_names_5' => '四',
+	'short_day_names_6' => '五',
+	'short_day_names_7' => '六',
 );
 ?>

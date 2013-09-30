@@ -187,7 +187,9 @@ function build_page($method) {
 			$web = getParaInfo("website", "web_id", $news_cat[$i]['web_id']);
 			$news_cat[$i]['web_name'] = $web['name'];
 			if(empty($news_cat[$i]['web_name'])) $news_cat[$i]['web_name'] = $setting['language']['admin_art_catalog_public'];
-			$news_cat[$i]['web_url'] = "http://".$web['host'];
+			$news_cat[$i]['web_url'] = $web['host'];
+			if(strpos($news_cat[$i]['web_url'], ",")!==false) $news_cat[$i]['web_url'] = substr($news_cat[$i]['web_url'], 0, strpos($news_cat[$i]['web_url'], ","));
+			$news_cat[$i]['web_url'] = "http://".$news_cat[$i]['web_url'];
 			$tpl_tmp->Set_Loop('record', $news_cat[$i]);
 		}
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_catalog_catalog']);

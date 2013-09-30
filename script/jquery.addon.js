@@ -334,7 +334,7 @@ jQuery.fn.powerImage = function(options) {
 		var url = $(this).attr("src");
 		if(!url) return;
 		this.src = params.image;
-		$(this).css({"width":32,"height":32,"margin-bottom":"400px"});
+		$(this).css({"width":32,"height":32,"margin-bottom":"20px"});
 		if(this.title=="" && this.alt!="") this.title = this.alt;
 		if(params.zoom) {
 			if(this.title!="") this.title += "\n";
@@ -368,7 +368,7 @@ jQuery.fn.powerImage = function(options) {
 		$.each(params.imgs, function(i, data) {
 			if(data.obj==null) return;
 			var obj = data.obj, url = data.url;
-			var img_top_1 = obj.offset().top+300; img_top_2 = img_top_1 + obj.height();
+			var img_top_1 = obj.offset().top+100; img_top_2 = img_top_1 + obj.height();
 			if((img_top_1 > win_top_1 && img_top_1 < win_top_2) || (img_top_2 > win_top_1 && img_top_2 < win_top_2)) {
 				var cur_img = $("<img>");
 				cur_img.load(function() {

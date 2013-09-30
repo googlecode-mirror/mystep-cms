@@ -346,7 +346,7 @@ function debug(para, mode) {
 		').appendTo("body");
 	}
 	var str = "";
-	if(typeof(para)!="string") {
+	if(typeof(para)!="string" && typeof(para)!="number") {
 		for(var x in para) {
 			str += x + " : " + para[x] + "\n";
 		}

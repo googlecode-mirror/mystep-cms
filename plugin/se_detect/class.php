@@ -149,7 +149,7 @@ mystep;
 			} else {
 				$record = array();
 				$record['date'] = $theDate;
-				$record[$setting['language']['etc']] = 1;
+				$record['ÆäËû'] = 1;
 			}
 			$db->Query($db->buildSQL($setting['db']['pre']."se_count", $record, "replace"));
 			WriteFile(dirname(__FILE__)."/agent.txt", $agent_cur."\n");

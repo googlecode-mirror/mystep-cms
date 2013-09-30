@@ -11,12 +11,11 @@
 				<a href="###" onclick="confirm('请选择校验方式：\n\n本机校验：通过本地生成的校验信息校验网站文件\n\n网络校验：通过更新服务器上的校验文件校验', 'checkModify', ['本机校验','网络校验'], '文件校验')">检查文件改动</a>
 				 |
 				<a href="###" onclick="confirm('更新校验信息会造成自动升级时将已改动文件错误覆盖！\n&nbsp;\n是否继续？', 'updateModify', ['确 定','取 消'], '更新本地校验')">更新本地校验</a>
-				<span style="display:<?=(file_exists("../update/")?"inline":"none")?>">
-					 |
+				<div style="margin-top:5px;display:<?=(file_exists("../update/")?"block":"none")?>">
 					<a href="###" onclick="emptyUpdate()">清空升级信息</a>
 					 |
 					<a href="###" onclick="exportUpdate()">导出升级信息</a>
-				</span>
+				</div>
 			</td>
 		</tr>
 		<tr>

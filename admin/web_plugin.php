@@ -90,6 +90,7 @@ switch($method) {
 			$db->Query("update ".$setting['db']['pre']."plugin set `order`=".$_POST['order'][$i]." where `idx`='".$_POST['idx'][$i]."'");
 		}
 		deleteCache("plugin");
+		MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
 		break;
 	case "install":
 	case "uninstall":
@@ -149,6 +150,7 @@ mystep;
 			$db->Query('update '.$setting['db']['pre'].'plugin set subweb="'.$subweb.'" where idx="'.$idx.'"');
 			MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
 			deleteCache("plugin");
+			MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
 			
 			if(isset($_POST['plugin_setting'])) {
 				include($plugin_path.$idx."/config.php");

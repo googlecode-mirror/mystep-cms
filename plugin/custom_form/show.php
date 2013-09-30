@@ -1,77 +1,117 @@
 <?php
 $mid = $req->getReq("mid");
-
-if(count($_POST)>0) {
-	if(isset($_COOKIE['cf_time'])) {
-		if($req->getCookie("cf_done")>time()) {
-			echo '
-			<script>
-				alert("'.$setting['language']['plugin_custom_form_error_1'].'");
-				history.go(-1);
-			</script>
-			';
-		} else {
-			$print = $_POST['print'];
-			unset($_POST['mid'], $_POST['print']);
-			//$_POST_org = $_POST;
-			if(isset($_POST['append'])) {
-				$append = $_POST['append'];
-				unset($_POST['append']);
-			}
-			foreach($_POST as $key => $value) {
-				if(is_array($value)) {
-					if(is_numeric($value[0])) {
-						$_POST[$key] = array_sum($value);
-					} else {
-						$_POST[$key] = implode(",", $value);
-					}
-				}
-				if($setting['gen']['language']=="en") $value = itemTrans($value, $key, 1, 0);
-			}
-			$_POST['add_date'] = date("Y-m-d H:i:s");
-			$str_sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $_POST, "insert", "a");
-			$db->Query($str_sql);
-			if(isset($append)) {
-				for($i=0,$m=count($append);$i<$m;$i++) {
-					$flag = true;
-					foreach($append[$i] as $key => $value) {
-						if(empty($value)) {
-							$flag = false;
-							break;
-						}
-						if(isset($_POST[$key])) $_POST[$key] = $value;
-					}
-					if(!$flag) continue;
-					$str_sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $_POST, "insert", "a");
-					$db->Query($str_sql);
-				}
-			}
-			//$_POST = $_POST_org;
-			if(empty($print)) {
+$record = false;
+if(!empty($mid) && is_numeric($mid)) {
+	$record = $db->getSingleRecord("select * from ".$setting['db']['pre']."custom_form where mid=".$mid);
+}
+if($record==false) {
+	$goto_url = "/";
+	$mystep->pageEnd(false);
+}
+if(!empty($record['expire']) && (strtotime($record['expire']) < time())) {
+	$tpl_info['idx'] = "expire";
+	$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/";
+	$tpl = $mystep->getInstance("MyTpl", $tpl_info, false);
+	$tpl->Set_Variable('expire_info', $setting['language']['plugin_custom_form_expire']);
+	$mystep->show($tpl);
+} else {
+	if(count($_POST)>0) {
+		if(isset($_COOKIE['cf_time'])) {
+			if($req->getCookie("cf_done")>time()) {
 				echo '
 				<script>
-					alert("'.$setting['language']['plugin_custom_form_done'].'");
-					location.href="/";
+					alert("'.$setting['language']['plugin_custom_form_error_1'].'");
+					history.go(-1);
 				</script>
 				';
 			} else {
-				$module = "cf_print";
+				$print = $_POST['print'];
+				unset($_POST['mid'], $_POST['print']);
+				//$_POST_org = $_POST;
+				if(isset($_POST['append'])) {
+					$append = $_POST['append'];
+					unset($_POST['append']);
+				}
+				foreach($_POST as $key => $value) {
+					if(is_array($value)) {
+						if(is_numeric($value[0])) {
+							$_POST[$key] = array_sum($value);
+						} else {
+							$_POST[$key] = implode(",", $value);
+						}
+					}
+					if($setting['gen']['language']=="en") $value = itemTrans($value, $key, 1, 0);
+				}
+				if(count($_FILES)>0) {
+					$path_upload = dirname(__FILE__)."/setting/".$mid."/";
+					MakeDir($path_upload);
+					foreach($_FILES as $key => $value) {
+						if($key=="append") {
+							$m=count($_FILES['append']['name']);
+							foreach($_FILES['append']['name'][0] as $k => $v) {
+								for($i=0;$i<$m;$i++) {
+									if(!empty($_FILES['append']['name'][$i][$k])) {
+										$new_name = md5($_FILES['append']['name'][$i][$k].$_FILES['append']['type'][$i][$k].$_FILES['append']['size'][$i][$k]);
+										@unlink($path_upload.$new_name);
+										move_uploaded_file($_FILES['append']['tmp_name'][$i][$k], $path_upload.$new_name);
+										$append[$i][$k] = $_FILES['append']['name'][$i][$k]."::".$_FILES['append']['type'][$i][$k]."::".$new_name;
+									}
+								}
+							}
+						} else {
+							if(!empty($value['name'])) {
+								$new_name = md5($value['name'].$value['type'].$value['size']);
+								@unlink($path_upload.$new_name);
+								move_uploaded_file($value['tmp_name'], $path_upload.$new_name);
+								$_POST[$key] = $value['name']."::".$value['type']."::".$new_name;
+							}
+						}
+					}
+				}
+				
+				$_POST['add_date'] = date("Y-m-d H:i:s");
+				$str_sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $_POST, "insert", "a");
+				$db->Query($str_sql);
+				if(isset($append)) {
+					for($i=0,$m=count($append);$i<$m;$i++) {
+						$flag = true;
+						foreach($append[$i] as $key => $value) {
+							if(empty($value)) {
+								$flag = false;
+								break;
+							}
+							if(isset($_POST[$key])) $_POST[$key] = $value;
+						}
+						if(!$flag) continue;
+						$str_sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $_POST, "insert", "a");
+						$db->Query($str_sql);
+					}
+				}
+				//$_POST = $_POST_org;
+				if(empty($print)) {
+					echo '
+					<script>
+						alert("'.$setting['language']['plugin_custom_form_done'].'");
+						location.href="/";
+					</script>
+					';
+				} else {
+					$module = "cf_print";
+				}
+				unset($_COOKIE['cf_time']);
+				$req->setCookie("cf_done", time()+300, 300);
+				if(empty($print)) $mystep->pageEnd(false);
 			}
-			unset($_COOKIE['cf_time']);
-			$req->setCookie("cf_done", time()+300, 300);
-			if(empty($print)) $mystep->pageEnd(false);
+		} else {
+			echo '
+			<script>
+				alert("'.$setting['language']['plugin_custom_form_error_2'].'");
+				history.go(-1);
+			</script>
+			';
 		}
-	} else {
-		echo '
-		<script>
-			alert("'.$setting['language']['plugin_custom_form_error_2'].'");
-			history.go(-1);
-		</script>
-		';
 	}
-}
-
-if(!empty($mid) && is_numeric($mid)) {
+	
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info, $cache_info);
 	$tpl_info['idx'] = $mid."_".$module."_".($setting['gen']['language']=="en"?"en":"cn");
 	$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/setting/";
@@ -114,7 +154,5 @@ if(!empty($mid) && is_numeric($mid)) {
 	}
 	
 	$mystep->show($tpl);
-} else {
-	$goto_url = "/";
 }
 ?>

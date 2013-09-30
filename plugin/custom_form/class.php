@@ -189,7 +189,7 @@ while(\$record=\$db->getRS()) {
 	} elseif("{$att_list['lng']}"=="en") {
 		\$record['name_en'] = ucwords(strtolower(\$record['name_en']));
 		foreach(\$record as \$key => \$value) {
-			\$record[$key] = itemTrans(\$value, \$key, 0, 1);
+			\$record[\$key] = itemTrans(\$value, \$key, 0, 1);
 		}
 	}
 	echo <<<content
