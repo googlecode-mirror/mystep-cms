@@ -3593,6 +3593,7 @@ changeSetting($setting, $para_new);
 				10.Improve form check function
 				11.Improve ConvertLimit function in mssql plugin
 				12.Add pinyin transfer function
+				13.Fix a inject bug in list.php
 				Some other adjusts...
 			',
 		'file' => array(
@@ -3607,6 +3608,7 @@ changeSetting($setting, $para_new);
 				'images/default/style.css',
 				'inc.php',
 				'include/parameter.php',
+				'read.php',
 				'list.php',
 				'plugin/bootstrap',
 				'plugin/bootstrap/bootstrap.html',

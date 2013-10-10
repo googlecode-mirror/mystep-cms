@@ -42,11 +42,11 @@ $setting['rewrite']['list'] = 'catalog';
 $setting['rewrite']['tag'] = 'tag';
 
 $setting['email'] = array();
-$setting['email']['mode'] = '';
-$setting['email']['host'] = '';
+$setting['email']['mode'] = 'smtp';
+$setting['email']['host'] = 'smtpx.sina.net';
 $setting['email']['port'] = 25;
-$setting['email']['user'] = '';
-$setting['email']['password'] = '';
+$setting['email']['user'] = 'cccfna@cccfna.org.cn';
+$setting['email']['password'] = 'cccfna2003';
 
 $setting['js'] = array();
 $setting['js']['debug'] = true;
@@ -106,7 +106,7 @@ $setting['memcache']['min_savings'] = 0.5;
 $rewrite_list = array (
   0 => 
   array (
-    0 => 'article/[^\\/]+/(\\d+)(_(\\d+))?\\.html',
+    0 => 'article/[^\\/]+/(\\d+)(_(\\w+))?\\.html',
     1 => 'read.php?id=$1&page=$3',
   ),
   1 => 

@@ -85,7 +85,7 @@ if($cat_main > 0) {
 
 $condition = "1=1";
 if(!empty($prefix)) {
-	$condition = "subject like '[".$prefix."]%'";
+	$condition = "subject like '[".mysql_real_escape_string($prefix)."]%'";
 }
 
 $tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);

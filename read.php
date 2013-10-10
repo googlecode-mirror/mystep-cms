@@ -96,9 +96,7 @@ mystep;
 			$detail['content'] = $content;
 		}
 	}
-	$mystep->setAddedContent("start", '
-<script language="JavaScript" type="text/javascript">$(function(){anchorShow();});</script>
-');
+	$mystep->setAddedContent("end", '<script language="JavaScript" type="text/javascript">$(function(){anchorShow();});</script>');
 } else {
 	$detail = getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "record", 1200);
 }
