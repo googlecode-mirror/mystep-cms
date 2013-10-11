@@ -296,7 +296,7 @@ CREATE TABLE `{pre}users` (
 # 网站当前浏览者
 CREATE TABLE `{pre}user_online` (
 	`sid` char(32) UNIQUE NOT NULL COMMENT 'SessionID',
-	`ip` Char(50) NOT NULL COMMENT 'ip地址',
+	`ip` Char(50) NOT NULL UNIQUE COMMENT 'ip地址',
 	`username` Char(40) NOT NULL DEFAULT 'guest' COMMENT '用户名称',
 	`usertype` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户类型',
 	`usergroup` TINYINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '用户组',

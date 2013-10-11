@@ -3734,6 +3734,10 @@ $para_new["rewrite"] = $rewrite_list;
 $para_new["rewrite"][0][0] = "article/[^\\/]+/(\\d+)(_(\\w+))?\\.html";
 changeSetting($setting, $para_new);
 		',
+		'sql' => array(
+				'truncate table `{pre}user_online`',
+				'alter table `{pre}user_online` modify `ip` Char(50) NOT NULL UNIQUE',
+			),
 		'setting' => array(
 				'gen' => array(
 						'etag' => '20130930',
