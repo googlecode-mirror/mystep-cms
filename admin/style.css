@@ -70,12 +70,11 @@ DIV .addnew {position:absolute; top:0px; right:10px; width:120px; height:20px; p
 TABLE td {vertical-align:middle;}
 TABLE .cat, TABLE .row, TABLE .cat td, TABLE .row td {border:1px solid #629DC5; padding:5px 10px;}
 TABLE .cat {font-weight:bold; background-color:#F2F9FD;}
-TABLE .cat span {color:red;}
+TABLE .cat span {color:#ff0000;}
 
 H1 {font-size:16px;font-weight:bold;text-align:center;margin:10px auto 0px auto;}
 
-#list_area,
-#input_area {width:800px; border:1px solid #629DC5; margin:10px auto 10px auto;}
+#list_area, #input_area {width:800px; border:1px solid #629DC5; margin:10px auto 10px auto;}
 #input_area input[type=text],
 #input_area select {width:280px; background-color:#DAE7F2; color:#15324A; font-weight:bold; font-size:12px; border:1px inset #A9A9A9; padding-top:3px;}
 #input_area textarea {width:280px; font-size:12px; border:1px inset #A9A9A9;}
@@ -83,7 +82,7 @@ H1 {font-size:16px;font-weight:bold;text-align:center;margin:10px auto 0px auto;
 #input_area .btn {width:90px; background-color:#DAE7F2; color:black; font-weight:normal; border:1px solid black; padding:1px 10px 1px 10px;}
 #input_area .cbox {width:20px; background-color:transparent; border:0px;}
 #input_area tr, #list_area tr {background-color:#fff;}
-#input_area tr:hover, #list_area tr:hover {background-color:#eef;}
+#input_area tr > td:hover, #list_area tr:hover {background-color:#eef;}
 #list_area td {word-wrap:break-word;word-break:break-all;}
 
 #img_lst{width:800px;margin:20px auto 20px auto;clear:both;}

@@ -1,7 +1,7 @@
 <?php
 $ms_version = array(
-	'ver' => '1.0',
-	'date' => '2013-9-30',
+	'ver' => '1.0.1',
+	'date' => '2013-10-22',
 	'charset' => 'GBK',
 	'language' => 'CHS',
 );
@@ -55,15 +55,8 @@ $ignore_list = array (
   '2012',
   '2013',
   '2014',
-  '_bak',
-  '_test',
-  '_archive',
   'install',
   'xcache',
-  'colorway',
-  'ciguang',
-  'news_show',
-  'apple'
 );
 
 $sess_handle = array(

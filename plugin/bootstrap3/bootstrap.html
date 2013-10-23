@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Bootstrap test</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Test Page">
+	<meta name="author" content="windy2000">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/github.css" rel="stylesheet">
+	<link href="css/test.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+		<script src="js/html5shiv.js"></script>
+		<script src="js/respond.min.js"></script>	
+	<![endif]-->
+</head>
+<body data-spy="scroll" data-target="#nav" data-offset="300">
+<!-- Docs master nav -->
+<header class="navbar navbar-inverse navbar-fixed-top" role="banner" id="top">
+	<div class="container">
+		<div class="navbar-header">
+			<a href="http://getbootstrap.com/" class="navbar-brand" target="_blank">Bootstrap</a>
+			<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+		</div>
+		<nav id="top_nav" class="collapse navbar-collapse" role="navigation">
+			<ul class="nav navbar-nav">
+				<li><a href="#top">顶部</a></li>
+				<li class="divider-vertical"></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">页面特效 <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#modal">对话框</a></li>
+						<li><a href="#dropdown">下拉项</a></li>
+						<li><a href="#scrollspy">滚动侦测</a></li>
+						<li><a href="#tab">标签页</a></li>
+						<li><a href="#tooltips">工具提示</a></li>
+						<li><a href="#popover">弹出提示</a></li>
+						<li><a href="#alert">通知消息</a></li>
+						<li><a href="#button">按钮</a></li>
+						<li><a href="#collapse">折叠</a></li>
+						<li><a href="#carousel">轮播</a></li>
+						<li><a href="#affix">悬浮</a></li>
+					</ul>
+				</li>
+				<li class="divider-vertical"></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">排版样式 <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#typesetting_1">页面布局</a></li>
+						<li><a href="#typesetting_2">抬头</a></li>
+						<li><a href="#typesetting_3">格式</a></li>
+						<li><a href="#typesetting_4">段落</a></li>
+						<li><a href="#typesetting_5">引用</a></li>
+						<li><a href="#typesetting_6">列表</a></li>
+					</ul>
+				</li>
+				<li class="divider-vertical"></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">页面组件 <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#table">表格</a></li>
+						<li><a href="#btn">按钮</a></li>
+						<li><a href="#progress">进度条</a></li>
+						<li><a href="#group">列表组</a></li>
+						<li><a href="#panel">面版</a></li>
+					</ul>
+				</li>
+				<li class="divider-vertical"></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">表单样式 <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#form_1">样式测试</a></li>
+						<li><a href="#form_2">默认样式</a></li>
+						<li><a href="#form_3">行模式</a></li>
+						<li><a href="#form_4">水平模式</a></li>
+						<li><a href="#form_5">表单控件</a></li>
+						<li><a href="#form_6">控件状态</a></li>
+						<li><a href="#form_7">扩展控件</a></li>
+					</ul>
+				</li>
+				<li class="divider-vertical"></li>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">页面元素 <b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#icon">图标</a></li>
+						<li><a href="#pagination">页码</a></li>
+						<li><a href="#label">标签</a></li>
+						<li><a href="#badge">徽章</a></li>
+						<li><a href="#media">图文列表</a></li>
+						<li><a href="#thumbnail">图片展示</a></li>
+					</ul>
+				</li>
+				<li class="divider-vertical"></li>
+			</ul>
+			<form class="navbar-search pull-right hidden-sm">
+				<input id="search_input" type="text" class="form-control search-query" value="检索" />
+			</form>
+		</nav>
+	</div>
+</header>
+
+<div id="page_container" class="container">
+	<!-- Masthead -->
+	<section class="well" id="overview" title="测试笔记">
+		<h2>测试笔记 <a name="top"></a></h2>
+		<ol>
+			<li>创建了响应式的12列流动宽度栅格系统，根据屏幕大小，设置了了四种模式的流布局（xs,sm,md,lg），大部分控件都设定为width:100%，可通过栅格来控制其大小。</li>
+			<li>图标不再使用图片，改为矢量字体</li>
+			<li>修复了模态窗口在载入远程页面时的一个bug</li>
+			<li>标签页如标签包含上拉项，则无法获取父元素，无法正常显示（用处不大，不修复了）</li>
+			<li>修复了工具提示在取消时，无法恢复默认title的问题</li>
+			<li>为消息通知添加了show方法和相关事件</li>
+			<li>为折叠组件添加了鼠标悬浮响应（由于过渡效果无法连续快速响应，放弃使用该效果）</li>
+			<li>由于悬浮组件问题多多，固重新写了其核心代码</li>
+			<li>调整轮播样式为2.0模式</li>
+			<li>可以通过修改 bootstrap-theme.css 来定义相关控件的颜色与滤镜等样式</li>
+			<li>按住 Ctrl 键点击各个 example 框，可显示对应的超文本代码</li>
+			<li>既然锚点被转义，索性就加了一个滚动的效果（不要理解为机器慢了。。。）</li>
+		</ol>
+	</section>
+
+	<div class="row">
+		<div id="nav" class="col-md-2 hidden-sm hidden-print" role="complementary">
+			<ul id="affix_bar" class="nav nav-list sidenav" data-spy="affix" data-offset-top="50" data-relative="true">
+				<li class="nav-header"><a href="#top"><i class="glyphicon glyphicon-chevron-right"></i> 顶端</a></li>
+				<li>
+					<a href="#javascript"><i class="glyphicon glyphicon-chevron-right"></i> 页面特效</a>
+					<ul class="nav">
+						<li><a href="#modal">对话框</a></li>
+						<li><a href="#dropdown">下拉项</a></li>
+						<li><a href="#scrollspy">滚动侦测</a></li>
+						<li><a href="#tab">标签页</a></li>
+						<li><a href="#tooltips">工具提示</a></li>
+						<li><a href="#popover">弹出提示</a></li>
+						<li><a href="#alert">通知消息</a></li>
+						<li><a href="#button">按钮类型</a></li>
+						<li><a href="#collapse">折叠</a></li>
+						<li><a href="#carousel">轮播</a></li>
+						<li><a href="#affix">悬浮</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#typesetting"><i class="glyphicon glyphicon-chevron-right"></i> 排版样式</a>
+					<ul class="nav">
+						<li><a href="#typesetting_1">页面布局</a></li>
+						<li><a href="#typesetting_2">抬头</a></li>
+						<li><a href="#typesetting_3">格式</a></li>
+						<li><a href="#typesetting_4">段落</a></li>
+						<li><a href="#typesetting_5">引用</a></li>
+						<li><a href="#typesetting_6">列表</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#components"><i class="glyphicon glyphicon-chevron-right"></i> 页面组件</a>
+					<ul class="nav">
+						<li><a href="#table">表格</a></li>
+						<li><a href="#btn">按钮</a></li>
+						<li><a href="#progress">进度条</a></li>
+						<li><a href="#group">列表组</a></li>
+						<li><a href="#panel">面版</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#form"><i class="glyphicon glyphicon-chevron-right"></i> 表单样式</a>
+					<ul class="nav">
+						<li><a href="#form_1">样式测试</a></li>
+						<li><a href="#form_2">默认样式</a></li>
+						<li><a href="#form_3">行模式</a></li>
+						<li><a href="#form_4">水平模式</a></li>
+						<li><a href="#form_5">表单控件</a></li>
+						<li><a href="#form_6">控件状态</a></li>
+						<li><a href="#form_7">扩展控件</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#etc"><i class="glyphicon glyphicon-chevron-right"></i> 页面元素</a>
+					<ul class="nav">
+						<li><a href="#icon">图标</a></li>
+						<li><a href="#pagination">页码</a></li>
+						<li><a href="#label">标签</a></li>
+						<li><a href="#badge">徽章</a></li>
+						<li><a href="#media">图文列表</a></li>
+						<li><a href="#thumbnail">图片展示</a></li>
+					</ul>
+				</li>
+				<li class="divider"></li>
+				<li class="nav-footer"><a href="#" onclick="setAffix()"><i class="glyphicon glyphicon-chevron-right"></i> 点击转移</a></li>
+			</ul>
+		</div>
+
+		<div id="main" class="col-md-10">
+			<section id="javascript">
+				<div class="page-header">
+					<h1>页面特效 <small>引入 Bootstrap.js 文件<a name="javascript"></a></small></h1>
+				</div>
+				<section id="modal" title="对话框">
+					<div class="page-header">
+						<h2>对话框 <small>modal<a name="modal"></a></small></h2>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">类似传统的javascript模态对话框，但更圆滑更灵活，带有最基本的功能和智能的默认项</div>
+						<div id="modal_test" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h3 class="modal-title">对话框标题</h4>
+									</div>
+									<div class="modal-body">
+										<h4>对话框文字</h4>
+										<p>高考临近，湖北孝感惊现史上最刻苦“吊瓶班”。这是昨日孝感市第一高级中学某晚自习教室的一幕，"吊瓶高考班"轰动全校！不知台上的老师面对如此震撼的场面和沁人心脾的药水味，如何站稳脚跟hold住全场呢？该校学生表示，备战高考，补充能量挨几针也是值得的，你hold住了吗？</p>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+										<button type="button" class="btn btn-primary" onclick="alert('Just do it!');$('#modal_test').modal('hide');">保存</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="modal_test2" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 id="myModalLabel">载入页面测试（只能为本域名下的页面）</h4>
+									</div>
+									<div class="modal-body">
+										如果可以看到本文字则表示页面载入失败！	
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="example">
+							<button type="button" data-toggle="modal" data-keyboard="true" data-backdrop="true" data-show="true" data-target="#modal_test" class="btn btn-primary btn-lg">点击演示</button>
+							<a data-toggle="modal" href="fish.html" data-target="#modal_test2" class="btn btn-primary btn-lg">远程页面</a>
+						</div>
+					</div>
+				</section>
+				<section id="dropdown" title="下拉项">
+					<div class="page-header">
+						<h2>下拉项 <small>dropdown<a name="dropdown"></a></small></h2>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">这个简单的插件几乎可以给Bootstrap的任何组件添加下拉项，如：导航栏，标签页和胶囊链接等。</div>
+						<div class="example">
+							<nav class="navbar navbar-default navbar-static" role="navigation">
+								<div class="navbar-header">
+									<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-js-navbar-collapse">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+									<a class="navbar-brand" href="#">下拉导航</a>
+								</div>
+								<div class="collapse navbar-collapse bs-js-navbar-collapse">
+									<ul class="nav navbar-nav">
+										<li class="dropdown" id="menutest1">
+											<a id="drop1" class="dropdown-toggle" data-toggle="dropdown" href="#menutest1">下拉项1 <b class="caret"></b></a>
+											<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
+												<li><a href="#">动作</a></li>
+												<li><a href="#">另一个动作</a></li>
+												<li><a href="#">其他</a></li>
+												<li class="divider"></li>
+												<li><a href="#">被间隔的链接</a></li>
+											</ul>
+										</li>
+										<li class="dropdown" id="menutest2">
+											<a id="drop2" class="dropdown-toggle" data-toggle="dropdown" href="#menutest2">下拉项2 <b class="caret"></b></a>
+											<ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+												<li><a href="#">动作</a></li>
+												<li><a href="#">另一个动作</a></li>
+												<li><a href="#">其他</a></li>
+												<li class="divider"></li>
+												<li><a href="#">被间隔的链接</a></li>
+											</ul>
+										</li>
+										<li>
+											<a data-toggle="dropdown" data-target="#menutest1" href="#">点击我看看</a>
+										</li>
+										<li class="active">
+											<a data-toggle="dropdown" data-target="#menutest3" href="#">点击我看看</a>
+										</li>
+									</ul>
+									<ul class="nav navbar-nav navbar-right">
+										<li class="dropup" id="menutest3">
+											<a id="drop3" class="dropdown-toggle" data-toggle="dropdown" href="#menutest3">上拉项 <b class="caret"></b></a>
+											<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+												<li><a href="#">动作</a></li>
+												<li><a href="#">另一个动作</a></li>
+												<li><a href="#">其他</a></li>
+												<li class="divider"></li>
+												<li><a href="#">被间隔的链接</a></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+							</nav>
+							<nav role="navigation">
+								<ul class="nav nav-pills">
+									<li class="active"><a href="#">规则的链接</a></li>
+									<li class="dropdown" id="menutest4">
+										<a id="drop4" class="dropdown-toggle" data-toggle="dropdown" href="#menutest4">下拉项 <b class="caret"></b></a>
+										<ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
+											<li><a href="#">动作</a></li>
+											<li><a href="#">另一个动作</a></li>
+											<li><a href="#">其他</a></li>
+											<li class="divider"></li>
+											<li><a href="#">被间隔的链接</a></li>
+										</ul>
+									</li>
+									<li class="dropup" id="menutest5">
+										<a id="drop5" class="dropdown-toggle" data-toggle="dropdown" href="#menutest5">上拉项 <b class="caret"></b></a>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="drop5">
+											<li><a href="#">动作</a></li>
+											<li><a href="#">另一个动作</a></li>
+											<li><a href="#">其他</a></li>
+											<li class="divider"></li>
+											<li><a href="#">被间隔的链接</a></li>
+										</ul>
+									</li>
+								</ul>
+							</nav>
+						</div>
+					</div>
+				</section>
+				<section id="scrollspy" title="滚动侦测">
+					<div class="page-header">
+						<h1>滚动侦测 <small>scrollspy<a name="scrollspy"></a></small></h1>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">
+							<p>滚动侦测会根据当前滚动条位置而自动更新导航栏中的链接状态。</p>
+							<p>滚动下面的内容区域，然后观察导航条状态，导航条中的菜单甚至下拉项都会同步高亮。 </p>
+						</div>
+						<div class="example">
+							<nav class="navbar navbar-default navbar-static" role="navigation">
+								<div class="navbar-header">
+									<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar_test">
+										<span class="sr-only">Toggle navigation</span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+										<span class="icon-bar"></span>
+									</button>
+									<a class="navbar-brand" href="#">项目名称</a>
+								</div>
+								<div id="navbar_test" class="collapse navbar-collapse">
+									<ul class="nav navbar-nav">
+										<li><a href="#fat">企业红利</a></li>
+										<li><a href="#mdo">中国高铁</a></li>
+										<li class="dropdown">
+											<a href="#" class="dropdown-toggle" data-toggle="dropdown">党国大事 <b class="caret"></b></a>
+											<ul class="dropdown-menu">
+												<li><a href="#one">警车遛狗</a></li>
+												<li><a href="#two">少年失踪</a></li>
+												<li class="divider"></li>
+												<li><a href="#three">环卫大姐</a></li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+							</nav>
+							<div data-spy="scroll" data-target="#navbar_test" data-offset="0" style="height:200px;overflow:auto;position:relative;">
+								<h4 id="fat">企业红利</h4>
+								<p>中方向美方承诺提高国有企业红利上缴比例，增加上缴利润的中央国企和省级国企的数量，将国有资本经营预算纳入国家预算体系。还承诺，鼓励包括国有公司在内的上市公司增加红利支付。还承诺在信贷提供、税收优惠和监管政策等方面对各类所有制企业一视同仁。<br /><br />
+								美方认为，提高国有企业分红比例带来的收入可用于资助政府的社保和养老开支，从而有可能降低中国人大量储蓄的必要性，让他们提高消费支出，从而达到刺激中国内需的目的。</p>
+								<h4 id="mdo">中国高铁</h4>
+								<p>据估，中国高铁槽道市场约十几亿元，德国哈芬占70%。业内人士称，中铁设计院的铁道图纸，直接指定使用哈芬，而非技术标准。哈芬在德国使用成本高昂的不锈钢，在中国则是碳钢。更有业内人士证实，目前中国高铁用的实为国内生产，原产几乎不足四分之一。（财新）</p>
+								<h4 id="one">警车遛狗</h4>
+								<p>近日，拍摄于四川绵阳街头的一张照片引起热议，一辆在路上行驶的法院警车，车窗里伸出一个宠物狗的脑袋，四处张望。此情景被怀疑是公务人员私用警车带宠物狗兜风。经调查得知，这是我国新近引进的一批特殊品种警犬，为麻痹犯罪分子，故意化妆成宠物狗的样子。</p>
+								<h4 id="two">少年失踪</h4>
+								<p>4月25日，19岁的韩耀在云南省昆明市晋宁县晋城镇南门村鑫云冷库附近失踪。家属在寻找时，竟然发现这一区域已先后有8名青少年失踪，其中近一年内就有6人。有一名青年雷玉生就在此地的大街上被人拖进了一面包车，被扔进黑砖窑强迫劳动，后逃离黑砖窑重获自由。</p>
+								<p>4月25日，19岁的韩耀在云南省昆明市晋宁县晋城镇南门村鑫云冷库附近失踪。家属在寻找时，竟然发现这一区域已先后有8名青少年失踪，其中近一年内就有6人。有一名青年雷玉生就在此地的大街上被人拖进了一面包车，被扔进黑砖窑强迫劳动，后逃离黑砖窑重获自由。</p>
+								<h4 id="three">环卫大姐</h4>
+								<p>30多岁女人直接吐东西在刚扫过的地上，环卫大姐上去说了两句，结果挨了三巴掌三脚。见到被打的环卫大姐时，她精神不好，坐在凳子上不说话，左脸的伤痕还很显眼，工友在一旁照料她。2012年5月4日，浙江省，杭州市。</p>
+								<p>尹大姐说：“小孩子都知道不能在街上乱吐。”那女人说：那不就是你们环卫应该做的事情吗？尹大姐说：难道我们环卫工人就低人一等吗？”话音刚落，“啪”“啪”“啪”三个巴掌落在尹大姐脸上。</p>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id="tab" title="标签页">
+					<div class="page-header">
+						<h1>标签页 <small>tab<a name="tab"></a></small></h1>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">该插件通过点击标签页和胶囊链接切换显示不同容器中的内容。</div>
+						<div class="example">
+							<div>
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-primary active" onclick="chgClass('#tabs', 'nav-tabs')"><input type="radio" name="btn_1" />.nav-tabs</label>
+									<label class="btn btn-primary" onclick="chgClass('#tabs', 'nav-pills')"><input type="radio" name="btn_1" />.nav-pills</label>
+								</div>
+								<div class="btn-group">
+									<button class="btn btn-primary" data-toggle="button" onclick="setClass('#tabs', 'nav-stacked')">.nav-stacked</button>
+									<button class="btn btn-primary" onclick="$('#tab li:eq(6) a').tab('show')">手动激活</button>
+								</div>
+							</div>
+							<ul id="tabs" class="nav nav-tabs">
+								<li class="active"><a href="#home" data-toggle="tab">首页</a></li>
+								<li><a href="#profile" data-toggle="tab">介绍</a></li>
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">下拉 <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a href="#dropdown1" data-toggle="tab">智慧</a></li>
+										<li><a href="#dropdown2" data-toggle="tab">夜壶</a></li>
+									</ul>
+								</li>
+								<li class="dropup">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">上弹（显示有误） <b class="caret"></b></a>
+									<ul class="dropdown-menu">
+										<li><a href="#dropdown3" data-toggle="tab">道德</a></li>
+										<li><a href="#dropdown4" data-toggle="tab">人品</a></li>
+									</ul>
+								</li>
+								<li class="disabled"><a href="#home" data-toggle="tab">禁止（貌似不管用）</a></li>
+							</ul>
+							<div id="myTabContent" class="tab-content">
+								<div class="tab-pane fade in active" id="home">
+									<p>5月6日，北京，一对新人启用直升机接亲。该直升机是欧洲直升机公司系列，机型为AS350B3，该公司北京唯一可承接低空飞行业务的航空公司，此次为首次承接婚礼。据悉，首次空中婚礼总费用为5万元。定价包括飞行时间和申报审批等费用，飞行时间按照1小时3万元计算。</p>
+								</div>
+								<div class="tab-pane fade" id="profile">
+									<p>法国代表社会党参选的奥朗德今晨在大选中获得胜利，成为法兰西第五共和国第七位总统，法国也在17年之后迎来首位左翼总统。萨科齐在5年任内因政绩不佳引发不满，选前处于民调落后的劣势。萨科齐虽试图打造“危机总统”形象，但终未能实现逆转。奥朗德现年58岁，至今未婚，与社会党前总统选举候选人罗亚尔同居30多年，育有4子女，多年来坚持骑车上下班。对华关系持强硬立场。</p>
+								</div>
+								<div class="tab-pane fade" id="dropdown1">
+									<p>平壤某鱼肉样板店经理日云硕（音），在去年金正日和金正恩来店视察时，曾目睹这样一幕：金正恩将父亲让进电梯，然后自己嗖嗖地爬上三层楼梯，电梯再次打开时，他立正向父亲致意。日云硕动情地回忆说：“我被他的忠诚与智慧折服了...”</p>
+								</div>
+								<div class="tab-pane fade" id="dropdown2">
+									<p>不是政府人士，永远不要去做政府的吹鼓手，因为吹鼓手在政府眼里永远只值一个夜壶铜钿，尿急了拿出来用一下，用完了将夜壶放到最角落地方；你吹得越起劲，不仅公众看不起你，政府更看不起你，所以吹鼓手都没有好下场。-----杜月笙</p>
+								</div>
+								<div class="tab-pane fade" id="dropdown3">
+									<p>30多岁女人直接吐东西在刚扫过的地上，环卫大姐上去说了两句，结果挨了三巴掌三脚。见到被打的环卫大姐时，她精神不好，坐在凳子上不说话，左脸的伤痕还很显眼，工友在一旁照料她。2012年5月4日，浙江省，杭州市。</p>
+								</div>
+								<div class="tab-pane fade" id="dropdown4">
+									<p>尹大姐说：“小孩子都知道不能在街上乱吐。”那女人说：那不就是你们环卫应该做的事情吗？尹大姐说：难道我们环卫工人就低人一等吗？”话音刚落，“啪”“啪”“啪”三个巴掌落在尹大姐脸上。</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id="tooltips" title="工具提示">
+					<div class="page-header">
+						<h1>工具提示 <small>tooltips<a name="tooltips"></a></small></h1>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">
+							<p>此插件不依赖图片，只是使用CSS3来实现动画效果，并使用data属性存储标题。</p>
+							<p>激活后，鼠标经过下面链接时将显示工具提示：</p>
+						</div>
+						<div class="example" id="tooltip_test">
+							<p style="margin-bottom: 0;">
+								“这是我的<a href="#" data-toggle="tooltip" data-placement="top" title="向上">第一次</a>英文访问,很抱歉它不够严谨,但是我<a href="#" data-toggle="tooltip" data-placement="bottom" title="向下">不得不</a>这么做,不只因为采访时间限制，更因为我面对的是卡梅隆，<br />
+								这个人<a href="#" data-toggle="tooltip" data-placement="left" title="向左">喜爱挑战</a>、从无畏惧，他也希望别人如此，他可以原谅不完美，但他<a href="#" data-toggle="tooltip" data-placement="right" title="向右">无法接受</a>一个人不去努力接近自己的极限。”<br />
+								——
+								<a href="#" data-toggle="tooltip" data-placement="bottom" title="柴静始终站在离新闻最近的地方，她以她的犀利和敏锐、坚定与坚持，最终历练成为一名优秀的新闻工作者。 ">柴静</a>《看见》专访
+								<a href="#" data-toggle="tooltip" data-placement="top" title="1954年8月16日生于加拿大的著名电影导演，擅长拍摄动作片以及科幻电影。">卡梅隆</a>
+							</p>
+							<div>&nbsp;</div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary" onclick="$('#tooltip_test').find('a[data-toggle=tooltip]').tooltip({})"><input type="radio" name="btn_2" />激活工具提示</label>
+								<label class="btn btn-primary active" onclick="$('#tooltip_test').find('a[data-toggle=tooltip]').tooltip('destroy');"><input type="radio" name="btn_2" />取消工具提示</label>
+							</div>
+							<div>&nbsp;</div>
+							<div>录入框：<input id="tooltips_input" type="text" placeholder="点击1秒后出现提示" title="<a href='http://www.cnbootstrap.com'>可以加链接哦！</a><br />可以直接显示超文本呢！" /></div>
+						</div>
+					</div>
+				</section>
+				<section id="popover" title="弹出提示">
+					<div class="page-header">
+						<h1>弹出提示 <small>popover<a name="popover"></a></small></h1>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">
+							<p>与iPad上的效果类似，把存放输助信息的元素显示为弹出框提示。</p>
+							<p>鼠标经过按钮时切换弹示提示的显示/隐藏。</p>
+						</div>
+						<div class="callout callout-warning"><strong>*</strong> 作为工具提示组件的升级，本更能需要包含 <a href="#tooltips">Tooltip</a> 。</div>
+						<div class="example">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary" onclick="$('#popover_test').popover('toggle')"><input type="radio" name="btn_5" />激活</label>
+								<label class="btn btn-primary active" onclick="$('#popover_test').popover('destroy')"><input type="radio" name="btn_5" />关闭</label>
+							</div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary" onclick="setPop('#popover_test',{placement:'top'})"><input type="radio" name="btn_3" />Top</label>
+								<label class="btn btn-primary" onclick="setPop('#popover_test',{placement:'left'})"><input type="radio" name="btn_3" />Left</label>
+								<label class="btn btn-primary" onclick="setPop('#popover_test',{placement:'bottom'})"><input type="radio" name="btn_3" />Bottom</label>
+								<label class="btn btn-primary active" onclick="setPop('#popover_test',{placement:'right'})"><input type="radio" name="btn_3" />Right</label>
+							</div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary active" onclick="setPop('#popover_test',{trigger:'click'});"><input type="radio" name="btn_4" />Click</label>
+								<label class="btn btn-primary" onclick="setPop('#popover_test',{trigger:'hover'});"><input type="radio" name="btn_4" />Hover</label>
+								<label class="btn btn-primary" onclick="setPop('#popover_test',{trigger:'focus'});"><input type="radio" name="btn_4" />Focus</label>
+								<label class="btn btn-primary" onclick="setPop('#popover_test',{trigger:'manual'});"><input type="radio" name="btn_4" />Manual</label>
+							</div>
+							<div>&nbsp;</div>
+							<div>
+								<a href="#" id="popover_test" class="btn btn-danger" data-toggle="popover" data-html="true" data-placement="right" data-trigger="click" title="点击相应按钮激活（<a href='#'>可以加链接</a>）" data-content="他来自山东，是一名残疾人，因思想独立、指谪政弊而被政府迫害。地方政府和当权政要派专人看管他，调拨专款作为对他的看管费用，他每天都活在别人的监视和囚禁中，其遭遇只能用令人发指来形容。历尽万难，他终于成功逃离了当地，在外国使节的帮助和护送下去到了国外。他，就是孙膑。">激活后弹出提示</a>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id="alert" title="通知消息">
+					<div class="page-header">
+						<h1>通知消息 <small>alert<a name="alert"></a></small></h1>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">
+							<p>通知插件使用轻巧的类以实现关闭通知框的功能。</p>
+							<p>该组件默认只能关闭，已经为该组件添加了显示功能，可以方便控制通知栏的显示与隐藏。</p>
+						</div>
+						<div class="example">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary active" onclick="chgClass('#alert_test', 'alert-success');"><input type="radio" name="btn_4" />.alert-success</label>
+								<label class="btn btn-primary" onclick="chgClass('#alert_test', 'alert-warning');"><input type="radio" name="btn_4" />.alert-warning</label>
+								<label class="btn btn-primary" onclick="chgClass('#alert_test', 'alert-danger');"><input type="radio" name="btn_4" />.alert-danger</label>
+								<label class="btn btn-primary" onclick="chgClass('#alert_test', 'alert-info');"><input type="radio" name="btn_4" />.alert-info</label>
+							</div>
+							<div>&nbsp;</div>
+							<div id="alert_test" class="alert fade in alert-success">
+								<a class="close" data-dismiss="alert" href="#">&times;</a>
+								<strong>警告！</strong> 在贵国遵守宪法就要违反刑法。<a href="#" class="alert-link">链接需要加上 .alert-link 样式</a>
+							</div>
+							<div id="alert_test2" class="alert fade in alert-danger" style="display:none;">
+								<a class="close" data-dismiss="alert" href="#">&times;</a>
+								<h4 class="alert-heading">微博控们注意了！</h4>
+								<p>出游微博晒幸福时，最好不要泄露出游时间、人数，别泄露住址，谨慎晒出游照片，以免让贼判断出你家是否有人。因为小偷说不定会盯上你的微博，“随着微博的发展，贼也很时尚啊！”</p>
+								<p>
+									<a class="btn btn-danger" href="#" onclick="alert('Cool')">接受建议</a> <a class="btn btn-default" href="#" onclick="$('#alert_test2').alert('close');">不当回事</a>
+								</p>
+							</div>
+							<div>&nbsp;</div>
+							<div>
+								<a class="btn btn-info" href="#" onclick="$('#alert_test2').alert('show');">点击我看看</a>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id="button" title="按钮介绍">
+					<div class="page-header">
+						<h1>按钮介绍 <small>button<a name="button"></a></small></h1>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">
+							<p>控制按钮的状态或者为其他复合控件(比如工具条)创建按钮组。</p>
+							<p>使用按钮插件触发开关和更改状态。</p>
+						</div>
+						<div class="example">
+							<table class="table table-bordered table-striped">
+								<tbody>
+								<tr>
+									<td>状态</td>
+									<td>
+										<button type="button" id="button_test" data-loading-text="三秒"	data-complete-text="完成！" class="btn btn-primary">载入状态</button>
+									</td>
+								</tr>
+								<tr>
+									<td>单独开关</td>
+									<td>
+										<button type="button" class="btn btn-primary" data-toggle="button">单独开关</button>
+									</td>
+								</tr>
+								<tr>
+									<td>复选</td>
+									<td>
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-primary"><input type="checkbox" name="btn_5" />左</label>
+											<label class="btn btn-primary"><input type="checkbox" name="btn_5" />中</label>
+											<label class="btn btn-primary"><input type="checkbox" name="btn_5" />右</label>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>单选</td>
+									<td>
+										<div class="btn-group" data-toggle="buttons">
+											<label class="btn btn-primary"><input type="radio" name="btn_6" />左</label>
+											<label class="btn btn-primary"><input type="radio" name="btn_6" />中</label>
+											<label class="btn btn-primary"><input type="radio" name="btn_6" />右</label>
+										</div>
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+				<section id="collapse" title="折叠">
+					<div class="page-header">
+						<h1>折叠 <small>collapse<a name="collapse"></a></small></h1>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">
+							<p>为可折叠的组件(比如手风琴式应用，导航栏)提供基本样式和灵活地支持。</p>
+							<p>由于bootstrip的过渡效果为单进程，在连续多个显示时会出现问题，故本组件没有设定鼠标悬浮响应，现已通过其他方式实现。</p>
+						</div>
+						<div class="example" style="height:80px;padding-left:0px;">
+							<ul id="collapse_nav">
+								<li data-toggle="collapse_hover" data-target="#sub_1" data-parent="#collapse_nav" data-trigger="hover">
+									<a href="http://www.cccfna.org.cn/catalog/贸易统计/index.html" target="_blank">贸易统计</a><ul id="sub_1" class="subcat collapse"><li>
+									<a href="http://www.cccfna.org.cn/catalog/统计快报/index.html" target="_blank">统计快报</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/农产品月报/index.html" target="_blank">农产品月报</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/商品月报/index.html" target="_blank">商品月报</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/行业统计/index.html" target="_blank">行业统计</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/市场分析/index.html" target="_blank">市场分析</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/国外数据/index.html" target="_blank">国外数据</a></li></ul>
+								</li><li data-toggle="collapse_hover" data-target="#sub_2" data-parent="#collapse_nav" data-trigger="hover">
+									<a href="http://www.cccfna.org.cn/catalog/会展信息/index.html" target="_blank">会展信息</a><ul id="sub_2" class="subcat collapse"><li>
+									<a href="http://www.cccfna.org.cn/catalog/国内会展/index.html" target="_blank">国内会展</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/国外展览/index.html" target="_blank">国外展览</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/广交会/index.html" target="_blank">广交会</a></li></ul>
+								</li><li data-toggle="collapse_hover" data-target="#sub_3" data-parent="#collapse_nav" data-trigger="hover">
+									<a href="http://www.cccfna.org.cn/catalog/两岸贸易/index.html" target="_blank">两岸贸易</a><ul id="sub_3" class="subcat collapse"><li>
+									<a href="http://www.cccfna.org.cn/catalog/两岸交流/index.html" target="_blank">两岸交流</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/统计分析/index.html" target="_blank">统计分析</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/ECFA专栏/index.html" target="_blank">ECFA专栏</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/贸易政策/index.html" target="_blank">贸易政策</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/投资政策/index.html" target="_blank">投资政策</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/食品安全/index.html" target="_blank">食品安全</a></li></ul>
+								</li><li data-toggle="collapse_hover" data-target="#sub_4" data-parent="#collapse_nav" data-trigger="hover">
+									<a href="http://www.cccfna.org.cn/catalog/走出去/index.html" target="_blank">走出去</a><ul id="sub_4" class="subcat collapse"><li>
+									<a href="http://www.cccfna.org.cn/catalog/政策法规/index.html" target="_blank">政策法规</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/国外政策/index.html" target="_blank">国外政策</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/调研分析/index.html" target="_blank">调研分析</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/投资机会/index.html" target="_blank">投资机会</a></li></ul>
+								</li><li data-toggle="collapse_hover" data-target="#sub_5" data-parent="#collapse_nav" data-trigger="hover">
+									<a href="http://www.cccfna.org.cn/catalog/贸易促进/index.html" target="_blank">贸易促进</a><ul id="sub_5" class="subcat collapse"><li>
+									<a href="http://www.cccfna.org.cn/catalog/采购团组/index.html" target="_blank">采购团组</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/贸易洽谈/index.html" target="_blank">贸易洽谈</a></li></ul>
+								</li><li data-toggle="collapse_hover" data-target="#sub_6" data-parent="#collapse_nav" data-trigger="hover">
+									<a href="http://www.cccfna.org.cn/catalog/贸易指南/index.html" target="_blank">贸易指南</a><ul id="sub_6" class="subcat collapse"><li>
+									<a href="http://www.cccfna.org.cn/catalog/产品指南/index.html" target="_blank">产品指南</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/市场指南/index.html" target="_blank">市场指南</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/电子杂志/index.html" target="_blank">电子杂志</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/分析报告/index.html" target="_blank">分析报告</a></li><li>
+									<a href="http://www.cccfna.org.cn/catalog/产品标准/index.html" target="_blank">产品标准</a></li></ul>
+								</li>
+							</ul>
+						</div>
+						<div class="example">
+							<div class="panel-group" id="accordion">
+								<div class="panel panel-default">
+									<div class="panel-heading panel-toggle" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" style="cursor:pointer;">
+										<h4 class="panel-title">国土问题</h4>
+									</div>
+									<div id="collapseOne" class="panel-collapse collapse in">
+										<div class="panel-body">前一段时间一个段子说，某国的网民在因国土问题与中国网民争吵时说，全是敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词。</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading panel-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" style="cursor:pointer;">
+										<h4 class="panel-title">门票问题</h4>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse">
+										<div class="panel-body">目前，中国半数5A级景区门票达到100元，黄山门票10年来由80元涨至230元。山东曲阜称，与同类景区相比收费较低，仅收150元，不涨票价就丢身价。曲阜的孔庙、孔府和孔林，年收入1.5亿元左右，全部上缴了地方财政，但景区维护成本从未公开。</div>
+									</div>
+								</div>
+								<div class="panel panel-default panel-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" style="cursor:pointer;">
+									<div class="panel-heading">
+										<h4 class="panel-title">超生罚款</h4>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse">
+										<div class="panel-body">学者杨支柱因生二胎被取消公职，并罚款24万余元。他称，计生罚款以前直接叫超生罚款，入世后改成“社会抚养费”。根据9省市超生罚款的平均数，全国31个省市每年征收的超生罚款可高达279亿元。其中大城市将该收入上缴财政，而地方则分配混乱，部分罚款去向成谜。</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading panel-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse_test" style="cursor:pointer;">
+										<h4 class="panel-title">事件响应</h4>
+									</div>
+									<div id="collapse_test" class="panel-collapse collapse">
+										<div class="panel-body">测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试</div>
+									</div>
+								</div>
+							</div>
+							<div>&nbsp;</div>
+							<div><a class="btn btn-info" href="#" data-toggle="collapse" data-target="#collapse_test">点击我看看</a></div>
+						</div>
+					</div>
+				</section>
+				<section id="carousel" title="轮播">
+					<div class="page-header">
+						<h1>轮播 <small>carousel<a name="carousel"></a></small></h1>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">一个创建跑马灯效果，循环展示超文本页面内容。</div>
+						<div class="example">
+							<div id="myCarousel" class="carousel slide">
+								<ol class="carousel-indicators">
+									<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+									<li data-target="#myCarousel" data-slide-to="1"></li>
+									<li data-target="#myCarousel" data-slide-to="2"></li>
+								</ol>
+								<div class="carousel-inner">
+									<div class="item active">
+										<img src="http://v2.bootcss.com/assets/img/bootstrap-mdo-sfmoma-01.jpg" alt="" />
+										<div class="carousel-caption">
+											<h4>即使杀光所有报晓的公鸡，天，还是会亮的</h4>
+											<p>@shifeike: 昨天是李尚平被枪杀10周年，我发的那条纪念微博，成为我的新浪微博账号最后一条微博。这个2010年1月为反对红中抢笔而注册的微博，两年多时间里发了14538条微博，加上被删除的差不多近200万字，积累了96269条粉丝，自此灰飞烟灭。</p>
+										</div>
+									</div>
+									<div class="item">
+										<img src="http://v2.bootcss.com/assets/img/bootstrap-mdo-sfmoma-02.jpg" alt="" />
+										<div class="carousel-caption">
+											<h4>如果人民不欢迎我们，就该我们下台了</h4>
+											<p>被敏感词吓尿了!敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词敏感词</p>
+										</div>
+									</div>
+									<div class="item">
+										<img src="http://v2.bootcss.com/assets/img/bootstrap-mdo-sfmoma-03.jpg" alt="" />
+										<div class="carousel-caption">
+											<h4>国家像需要空气一样需要变革</h4>
+											<p>据戈尔巴乔夫基金会新闻处通报，俄总统梅德韦杰夫今天向前苏联总统戈尔巴乔夫颁发圣徒安德烈·佩尔沃兹万内勋章。戈尔巴乔夫在受勋时表示感谢，并称很激动。他坦言，对自己做过的事情问心无愧。他强调，他进行改革不是为了赢得敬重和荣誉，而是因为认识到，“国家像需要空气一样需要变革”。他承认犯过错误，并至今还在为这些错误而烦恼。但他认为：“短短几年所走过的路，使专制的过去永远成为了历史。”</p>
+										</div>
+									</div>
+								</div>
+								<a class="left carousel-control" href="#myCarousel" data-slide="prev">
+									<span class="icon-prev"></span>
+								</a>
+								<a class="right carousel-control" href="#myCarousel" data-slide="next">
+									<span class="icon-next"></span>
+								</a>
+							</div>
+							<div class="btn-group">
+								<button class="btn btn-primary" onclick="$('#myCarousel').carousel(0)">第一帧</button>
+								<button class="btn btn-primary" onclick="$('#myCarousel').carousel('prev')">上一帧</button>
+								<button class="btn btn-primary" onclick="$('#myCarousel').carousel('next')">下一帧</button>
+								<button class="btn btn-primary" onclick="$('#myCarousel').carousel('pause')">暂停播放</button>
+								<button class="btn btn-primary" onclick="$('#myCarousel').carousel('cycle')">自动播放</button>	
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id="affix" title="悬浮">
+					<div class="page-header">
+						<h1>悬浮 <small>affix<a name="affix"></a></small></h1>
+					</div>
+					<div class="row">
+						<div class="callout callout-info">本页面左侧的导航就是affix插件的完整实例。</div>
+						<div class="callout callout-warning">
+							BootStrip所提供的原始代码问题很大，基本上仅仅能勉强侧栏导航的功能，故重新写了核心代码，强化了这个功能。原有代码调用可延用（无需再设置对应的样式），并进行了扩充，如下：<br />
+							方位属性（用以控制悬浮显示的位置）：Top, Bottom, Left, Right<br />
+							位置属性（可将悬浮限制于父容器）：relative(true|false)<br />
+							如下示例中的左下和右下切换还有些Bug（个别属性没有重置，懒得改了），但是如果不涉及切换就不会触及这个问题！
+						</div>
+						<div class="example">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary active" onclick="$('#affix_bar').removeData('bs.affix');$('#affix_bar').affix({relative:true, offset:50});setAffix('left');"><input type="radio" name="btn_30" />左上</label>
+								<label class="btn btn-primary" onclick="$('#affix_bar').removeData('bs.affix');$('#affix_bar').affix({relative:true, offset:{bottom:50}});setAffix('left');"><input type="radio" name="btn_30" />左下</label>
+								<label class="btn btn-primary" onclick="$('#affix_bar').removeData('bs.affix');$('#affix_bar').affix({relative:true, offset:50});setAffix('right');"><input type="radio" name="btn_30" />右上</label>
+								<label class="btn btn-primary" onclick="$('#affix_bar').removeData('bs.affix');$('#affix_bar').affix({relative:true, offset:{bottom:50}});setAffix('right');"><input type="radio" name="btn_30" />右下</label>
+							</div>
+						</div>
+					</div>
+				</section>
+			</section>
+			
+			<section id="typesetting">
+				<div class="page-header">
+					<h1>排版 <small>标题，段落，列表，以及其他行级元素<a name="typesetting"></a></small></h1>
+				</div>
+				<section id="typesetting_1" title="页面布局">
+					<h2>页面布局<a name="typesetting_1"></a></h2>
+					<div class="example">
+						<div class="example-grid">
+							<div class="row show-grid">
+								<div class="cell col-xs-12 col-md-8">.col-xs-12 .col-md-8</div>
+								<div class="cell col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+							</div>
+							<div class="row show-grid">
+								<div class="cell col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+								<div class="cell col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+								<div class="cell col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+							</div>
+							<div class="row show-grid">
+								<div class="cell col-xs-6">.col-xs-6</div>
+								<div class="cell col-xs-6">.col-xs-6</div>
+							</div>
+						</div>
+						<hr />
+						<div class="example-grid">
+							<div class="row show-grid">
+								<div class="cell col-xs-12 col-sm-6 col-md-8">.col-xs-12 .col-sm-6 .col-md-8</div>
+								<div class="cell col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
+							</div>
+							<div class="row show-grid">
+								<div class="cell col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
+								<div class="cell col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
+								<!-- Optional: clear the XS cols if their content doesn't match in height -->
+								<div class="clearfix visible-xs"></div>
+								<div class="cell col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
+							</div>
+						</div>
+						<hr />
+						<div class="example-grid">
+							<div class="row show-grid">
+								<div class="cell col-md-4">.col-md-4</div>
+								<div class="cell col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
+							</div>
+							<div class="row show-grid">
+								<div class="cell col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
+								<div class="cell col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
+							</div>
+							<div class="row show-grid">
+								<div class="cell col-md-6 col-md-offset-3">.col-md-6 .col-md-offset-3</div>
+							</div>
+						</div>
+						<hr />
+						<p>如下表格的代码顺序为 1,2,3,4,5 ，而显示顺序则为 2,1,3,5,4</p>
+						<div class="example-grid">
+							<div class="row">
+								<div class="cell col-md-5 col-md-push-1">(1).col-md-5 .col-md-push-2</div>
+								<div class="cell col-md-1 col-md-pull-5"">(2)</div>
+								<div class="cell col-md-2">(3).col-md-2</div>
+								<div class="cell col-md-1 col-md-push-3">(4)</div>
+								<div class="cell col-md-3 col-md-pull-1">(5).col-md-3 .col-md-pull-1</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section id="typesetting_2" title="抬头">
+					<h2>抬头<a name="typesetting_2"></a></h2>
+					<div class="example">
+						<h1>h1. 敏感词万岁</h1>
+						<h2>h2. 千年王八万年龟</h2>
+						<h3>h3. 我们在下一盘很大的棋</h3>
+						<h4>h4. 官人，你这麻将打成相公了</h4>
+						<h5>h5. 至于你信不信,反正我信了？</h5>
+						<h6>h6. 404 error　网址找不到</h6>
+					</div>
+				</section>
+				<section id="typesetting_3" title="格式">
+					<h2>强调，地址，缩写<a name="typesetting_3"></a></h2>
+					<div class="example">
+						<table class="table table-bordered table-striped">
+							<thead>
+								<tr>
+									<th>元素</th>
+									<th>效果</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<code>&lt;p&gt;</code>
+									</td>
+									<td>
+										<p>Bootstrap将全局<code>font-size</code>设置为<strong>14px</strong>，<code>line-height</code>为<strong>1.428</strong>。这些属性直接赋给<code>&lt;body&gt;</code>和所有段落元素。另外，<code>&lt;p&gt;</code>（段落）还被设置了等于1/2行高的底部外边距（margin）（即10px）。</p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<code>&lt;small&gt;</code>
+									</td>
+									<td>
+										<small>对于不需要强调的inline或block类型的文本，使用<code>&lt;small&gt;</code>标签包裹，其内的文本将被设置为父容器字体大小的85%。</small><br />标题元素中嵌套的<code>&lt;small&gt;</code>元素被设置不同的<code>font-size</code>。
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<code>&lt;strong&gt;</code>
+									</td>
+									<td>
+										<strong>加粗强调一组文字</strong>，同原<code>&lt;b&gt;</code>标签
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<code>&lt;em&gt;</code>
+									</td>
+									<td>
+										<em>倾斜强调一组文字</em>，同原<code>&lt;i&gt;</code>标签
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<code>&lt;abbr&gt;</code>
+									</td>
+									<td>
+										包装缩写词，当鼠标经过时显示缩写词完整含义。比如“<abbr title="少年先锋敢死队">少先队</abbr>”，“<abbr class="initialism" title="其实我是小写字母">html</abbr>”
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<code>&lt;address&gt;</code>
+									</td>
+									<td>
+										<address>用于包装联系信息的最外层元素或整个信息。</address>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</section>
+				<section id="typesetting_4" title="段落">
+					<h2>段落<a name="typesetting_4"></a></h2>
+					<div class="example">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#p_test', 'text-left')"><input type="radio" name="btn_7" />.text-left</label>
+							<label class="btn btn-primary" onclick="chgClass('#p_test', 'text-center')"><input type="radio" name="btn_7" />.text-center</label>
+							<label class="btn btn-primary" onclick="chgClass('#p_test', 'text-right')"><input type="radio" name="btn_7" />.text-right</label>
+						</div>
+						<div class="btn-group" data-toggle="buttons">
+							<button class="btn btn-primary" onclick="setClass('#p_test', 'lead')">.lead</button>
+						</div>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#p_test', 'default')"><input type="radio" name="btn_7" />.default</label>
+							<label class="btn btn-primary" onclick="chgClass('#p_test', 'text-muted')"><input type="radio" name="btn_7" />.text-muted</label>
+							<label class="btn btn-primary" onclick="chgClass('#p_test', 'text-primary')"><input type="radio" name="btn_7" />.text-primary</label>
+							<label class="btn btn-primary" onclick="chgClass('#p_test', 'text-success')"><input type="radio" name="btn_7" />.text-success</label>
+							<label class="btn btn-primary" onclick="chgClass('#p_test', 'text-info')"><input type="radio" name="btn_7" />.text-info</label>
+							<label class="btn btn-primary" onclick="chgClass('#p_test', 'text-warning')"><input type="radio" name="btn_7" />.text-warning</label>
+							<label class="btn btn-primary" onclick="chgClass('#p_test', 'text-danger')"><input type="radio" name="btn_7" />.text-danger</label>
+						</div>
+						<div>&nbsp;</div>
+						<p id="p_test">一天吃六个胶囊，一天三次、一次两个，没有吃掉多少铬。卫生部合理用药专家孙忠实 于人民网强国论坛</p>
+					</div>
+				</section>
+				<section id="typesetting_5" title="引用">
+					<h2>引用<a name="typesetting_5"></a></h2>
+					<div class="example">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#quote_test', 'pull-left')"><input type="radio" name="btn_8" />.pull-left</label>
+							<label class="btn btn-primary" onclick="chgClass('#quote_test', 'pull-right')"><input type="radio" name="btn_8" />.pull-right</label>
+						</div>
+						<div class="row">
+							<blockquote id="quote_test" class="pull-left">
+								<p>一天吃六个胶囊，一天三次、一次两个，没有吃掉多少铬。</p>
+								<small>卫生部合理用药专家孙忠实 于<cite title="http://bbs1.people.com.cn/">人民网强国论坛</cite></small>
+							</blockquote>
+						</div>
+					</div>
+				</section>
+				<section id="typesetting_6" title="列表">
+					<h2>列表<a name="typesetting_6"></a></h2>
+					<div class="example">
+						<div class="row">
+							<div class="col-md-6">
+								<h3>无序号</h3>
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-primary" onclick="setClass('#typesetting_test_1', 'list-unstyled')"><input type="checkbox" name="btn_9" />.list-unstyled</label>
+									<label class="btn btn-primary" onclick="setClass('#typesetting_test_1', 'list-inline')"><input type="checkbox" name="btn_9" />.list-inline</label>
+								</div>
+								<ul id="typesetting_test_1">
+									<li>Django是个好框架</li>
+									<li>Pyramid是个好框架</li>
+									<li>Tornado是个好框架</li>
+									<li>Flask是个好框架
+										<ul>
+											<li>Phasellus iaculis neque</li>
+											<li>Purus sodales ultricies</li>
+											<li>Vestibulum laoreet porttitor sem</li>
+											<li>Ac tristique libero volutpat at</li>
+										</ul>
+										</li>
+									<li>Uliweb是个好框架</li>
+									<li>Bottle是个好框架</li>
+									<li>Rails是个好框架</li>
+									<li>Yii是个好框架</li>
+								</ul>
+							</div>
+							<div class="col-md-6">
+								<h3>有序号</h3>
+								<p><code>&lt;ol&gt;</code></p>
+								<ol>
+									<li>以热爱祖国为荣，以危害祖国为耻吗？</li>
+									<li>以服务人民为荣，以背离人民为耻吗？</li>
+									<li>以崇尚科学为荣，以愚昧无知为耻吗？</li>
+									<li>以辛勤劳动为荣，以好逸恶劳为耻吗？</li>
+									<li>以团结互助为荣，以损人利己为耻吗？</li>
+									<li>以诚实守信为荣，以见利忘义为耻吗？</li>
+									<li>以遵纪守法为荣，以违法乱纪为耻吗？</li>
+									<li>以艰苦奋斗为荣，以骄奢淫逸为耻吗？</li>
+								</ol>
+							</div>
+							<div class="clearfix"></div>
+							<div class="col-md-12">
+								<h3>描述</h3>
+								<p>
+									<button class="btn btn-primary" data-toggle="button" onclick="setClass('#typesetting_test_2', 'dl-horizontal')">.dl-horizontal</button>
+								</p>
+								<dl id="typesetting_test_2">
+									<dt>描述列表</dt>
+									<dd>适用于术语的定义/解释</dd>
+									<dt>Django</dt>
+									<dd>Django 是一种高级的基于python的web开发框架；</dd>
+									<dd>Django推崇一种快速,整洁而且实用主义哲学的设计及开发方式</dd>
+									<dt>Tornado Tornado Tornado Tornado Tornado</dt>
+									<dd>Tornado 是 FriendFeed 使用的可扩展的非阻塞式 web 服务器及其相关工具的开源版本。</dd>
+								</dl>
+							</div>
+						</div>
+					</div>
+				</section>
+			</section>
+			
+			<section id="components">
+				<div class="page-header">
+					<h1>组件 <small>各类页面元素组合<a name="components"></a></small></h1>
+				</div>
+				<section id="table" title="表格">
+					<div class="page-header">
+						<h1>表格 <small>适用于展示扁平化的列表数据</small><a name="table"></a></h1>
+					</div>
+					<div class="example">
+						<div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary active" onclick="setClass('#table_test', 'table')"><input type="checkbox" name="btn_10" />.table</label>
+								<label class="btn btn-primary" onclick="setClass('#table_test', 'table-striped')"><input type="checkbox" name="btn_10" />.table-striped</label>
+								<label class="btn btn-primary" onclick="setClass('#table_test', 'table-bordered')"><input type="checkbox" name="btn_10" />.table-bordered</label>
+								<label class="btn btn-primary" onclick="setClass('#table_test', 'table-condensed')"><input type="checkbox" name="btn_10" />.table-condensed</label>
+							</div>
+							<div class="btn-group">
+								<button class="btn btn-primary" data-toggle="button" onclick="setClass('#table_test', 'table-hover')">.table-hover</button>
+							</div>
+						</div>
+						<div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary active" onclick="chgClass('#table_test tr', 'default')"><input type="radio" name="btn_11" />.default</label>
+								<label class="btn btn-primary" onclick="chgClass('#table_test tr', 'success')"><input type="radio" name="btn_11" />.success</label>
+								<label class="btn btn-primary" onclick="chgClass('#table_test tr', 'danger')"><input type="radio" name="btn_11" />.danger</label>
+								<label class="btn btn-primary" onclick="chgClass('#table_test tr', 'warning')"><input type="radio" name="btn_11" />.warning</label>
+								<label class="btn btn-primary" onclick="chgClass('#table_test tr', 'active')"><input type="radio" name="btn_11" />.active</label>
+							</div>
+						</div>
+						<div class="table-responsive">
+							<table class="table" id="table_test">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>电视剧</th>
+										<th>类型</th>
+										<th>年代</th>
+										<th>电视剧</th>
+										<th>类型</th>
+										<th>年代</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>1</td>
+										<td>爱情公寓</td>
+										<td>都市爱情喜剧</td>
+										<td>2010</td>
+										<td>爱情公寓</td>
+										<td>都市爱情喜剧</td>
+										<td>2010</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>邪恶力量</td>
+										<td>悬疑魔幻</td>
+										<td>2005</td>
+										<td>邪恶力量</td>
+										<td>悬疑魔幻</td>
+										<td>2005</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>神探伽俐略</td>
+										<td>推理探案</td>
+										<td>2008</td>
+										<td>神探伽俐略</td>
+										<td>推理探案</td>
+										<td>2008</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</section>
+				<section id="btn" title="按钮">
+					<div class="page-header">
+						<h1>按钮<a name="btn"></a></h1>
+					</div>
+					<div class="example">
+						<div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary active" onclick="chgClass('.btn_test', 'btn-default')"><input type="radio" name="btn_12" />.btn-default</label>
+								<label class="btn btn-primary" onclick="chgClass('.btn_test', 'btn-primary')"><input type="radio" name="btn_12" />.btn-primary</label>
+								<label class="btn btn-primary" onclick="chgClass('.btn_test', 'btn-success')"><input type="radio" name="btn_12" />.btn-success</label>
+								<label class="btn btn-primary" onclick="chgClass('.btn_test', 'btn-info')"><input type="radio" name="btn_12" />.btn-info</label>
+								<label class="btn btn-primary" onclick="chgClass('.btn_test', 'btn-warning')"><input type="radio" name="btn_12" />.btn-warning</label>
+								<label class="btn btn-primary" onclick="chgClass('.btn_test', 'btn-danger')"><input type="radio" name="btn_12" />.btn-danger</label>
+								<label class="btn btn-primary" onclick="chgClass('.btn_test', 'btn-link')"><input type="radio" name="btn_12" />.btn-link</label>
+							</div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary" onclick="chgClass('.btn_test', 'btn-lg')"><input type="radio" name="btn_15" />.btn-lg</label>
+								<label class="btn btn-primary" onclick="chgClass('.btn_test', 'btn-sm')"><input type="radio" name="btn_15" />.btn-sm</label>
+								<label class="btn btn-primary" onclick="chgClass('.btn_test', 'btn-xs')"><input type="radio" name="btn_15" />.btn-xs</label>
+							</div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary active" data-toggle="label" onclick="setClass('.btn_test', 'btn')"><input type="checkbox" name="btn_16" />.btn</label>
+								<label class="btn btn-primary" data-toggle="label" onclick="setClass('#btn_test2 > .btn', 'btn-block')"><input type="checkbox" name="btn_16" />.btn-block</label>
+								<label class="btn btn-primary" data-toggle="label" onclick="setClass('.btn_test', 'disabled')"><input type="checkbox" name="btn_16" />.disabled</label>
+							</div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary active" onclick="chgClass('#btn_test', 'dropdown')"><input type="radio" name="btn_13" />.dropdown</label>
+								<label class="btn btn-primary" onclick="chgClass('#btn_test', 'dropup')"><input type="radio" name="btn_13" />.dropup</label>
+							</div>
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-primary active" onclick="chgClass('#btn_test_menu', 'pull-left')"><input type="radio" name="btn_14" />.pull-left</label>
+								<label class="btn btn-primary" onclick="chgClass('#btn_test_menu', 'pull-right')"><input type="radio" name="btn_14" />.pull-right</label>
+							</div>
+						</div>
+						<div>
+							<div class="btn-group" id="btn_test">
+								<button class="btn btn-default btn_test" href="#" onclick="alert('Disable类型只针对绑定事件有效，对onclick事件无效')">我是按钮</button>
+								<button class="btn btn-default btn_test dropdown-toggle" data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="btn_test_menu">
+									<li><a tabindex="-1" href="#">链接 1</a></li>
+									<li><a tabindex="-1" href="#">链接 2</a></li>
+									<li><a tabindex="-1" href="#">链接 3</a></li>
+									<li class="divider"></li>
+									<li class="disabled"><a tabindex="-1" href="#">Disabled</a></li>
+									<li class="dropdown-menu"><a tabindex="-1" href="#">子菜单</a>
+										<ul class="dropdown-menu">
+											<li><a tabindex="-1" href="#">链接 1</a></li>
+											<li><a tabindex="-1" href="#">链接 2</a></li>
+											<li><a tabindex="-1" href="#">链接 3</a></li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="well" style="max-width: 550px; margin: 0 auto 10px;" id="btn_test2">
+							<button type="button" class="btn btn-primary btn-lg btn-block">通过给按钮添加.btn-block可以使其充满父节点100%的宽度</button>
+							<button type="button" class="btn btn-default btn-lg btn-block">而且按钮也变为了块级（block）元素</button>
+						</div>
+					</div>
+				</section>
+				<section id="progress" title="进度条">
+					<h2>进度条<a name="progress"></a></h2>
+					<div class="example">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary" onclick="setClass('#progress_test', 'progress-striped')"><input type="checkbox" name="btn_25" />.progress-striped</label>
+							<label class="btn btn-primary" onclick="setClass('#progress_test', 'active')"><input type="checkbox" name="btn_25" />.active</label>
+						</div>
+						<div>&nbsp;</div>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#progress_test > div', 'progress-bar-default')"><input type="radio" name="btn_26" />.progress-bar-default</label>
+							<label class="btn btn-primary" onclick="chgClass('#progress_test > div', 'progress-bar-info')"><input type="radio" name="btn_26" />.progress-bar-info</label>
+							<label class="btn btn-primary" onclick="chgClass('#progress_test > div', 'progress-bar-success')"><input type="radio" name="btn_26" />.progress-bar-success</label>
+							<label class="btn btn-primary" onclick="chgClass('#progress_test > div', 'progress-bar-warning')"><input type="radio" name="btn_26" />.progress-bar-warning</label>
+							<label class="btn btn-primary" onclick="chgClass('#progress_test > div', 'progress-bar-danger')"><input type="radio" name="btn_26" />.progress-bar-danger</label>
+						</div>
+						<div>&nbsp;</div>
+						<div id="progress_test" class="progress">
+							<div class="progress-bar" style="width:50%;">50%</div>
+						</div>
+						<div>
+							<button id="progress_go" data-loading-text="进度读取中。。。"	data-complete-text="完成！" class="btn btn-primary">进度条测试</button>
+						</div>
+					</div>
+					<div class="example">
+						<div class="progress">
+							<div class="progress-bar progress-bar-success" style="width: 35%">35%</div>
+							<div class="progress-bar progress-bar-warning" style="width: 20%">20%</div>
+							<div class="progress-bar progress-bar-danger" style="width: 10%">10%</div>
+						</div>
+					</div>
+				</section>
+				<section id="group" title="列表组">
+					<h2>列表组<a name="group"></a></h2>
+					<div class="example">
+						<div class="list-group">
+							<a href="#" class="list-group-item active">敏感词万岁<span class="badge">14</span></a>
+							<a href="#" class="list-group-item">千年王八万年龟<span class="badge">22</span></a>
+							<a href="#" class="list-group-item">官人，你这麻将打成相公了</a>
+							<a href="#" class="list-group-item">至于你信不信,反正我信了</a>
+							<a href="#" class="list-group-item active">
+								<h4 class="list-group-item-heading">卫生部合理用药专家孙忠实</h4>
+								<p class="list-group-item-text">一天吃六个胶囊，一天三次、一次两个，没有吃掉多少铬。</p>
+							</a>
+							<a href="#" class="list-group-item">
+								<h4 class="list-group-item-heading">我们在下一盘很大的棋</h4>
+								<p class="list-group-item-text">404 error　网址找不到</p>
+							</a>
+						</div>
+					</div>
+				</section>
+				<section id="panel" title="面版">
+					<h2>面版<a name="panel"></a></h2>
+					<div class="example">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#panel_test', 'panel-default')"><input type="radio" name="btn_28" />.panel-default</label>
+							<label class="btn btn-primary" onclick="chgClass('#panel_test', 'panel-primary')"><input type="radio" name="btn_28" />.panel-primary</label>
+							<label class="btn btn-primary" onclick="chgClass('#panel_test', 'panel-success')"><input type="radio" name="btn_28" />.panel-success</label>
+							<label class="btn btn-primary" onclick="chgClass('#panel_test', 'panel-warning')"><input type="radio" name="btn_28" />.panel-warning</label>
+							<label class="btn btn-primary" onclick="chgClass('#panel_test', 'panel-danger')"><input type="radio" name="btn_28" />.panel-danger</label>
+							<label class="btn btn-primary" onclick="chgClass('#panel_test', 'panel-info')"><input type="radio" name="btn_28" />.panel-info</label>
+						</div>
+						<div id="panel_test" class="panel panel-default">
+							<div class="panel-heading">面版标题</div>
+							<div class="panel-body">
+								<h3>面版内容 - <small>表格</small></h3>
+							</div>
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>电视剧</th>
+										<th>类型</th>
+										<th>年代</th>
+										<th>电视剧</th>
+										<th>类型</th>
+										<th>年代</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>1</td>
+										<td>爱情公寓</td>
+										<td>都市爱情喜剧</td>
+										<td>2010</td>
+										<td>爱情公寓</td>
+										<td>都市爱情喜剧</td>
+										<td>2010</td>
+									</tr>
+									<tr>
+										<td>2</td>
+										<td>邪恶力量</td>
+										<td>悬疑魔幻</td>
+										<td>2005</td>
+										<td>邪恶力量</td>
+										<td>悬疑魔幻</td>
+										<td>2005</td>
+									</tr>
+									<tr>
+										<td>3</td>
+										<td>神探伽俐略</td>
+										<td>推理探案</td>
+										<td>2008</td>
+										<td>神探伽俐略</td>
+										<td>推理探案</td>
+										<td>2008</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="panel-body">
+								<h3>面版内容 - <small>列表组</small></h3>
+							</div>
+							<div class="list-group">
+								<a href="#" class="list-group-item active">敏感词万岁<span class="badge">14</span></a>
+								<a href="#" class="list-group-item">千年王八万年龟<span class="badge">22</span></a>
+								<a href="#" class="list-group-item">官人，你这麻将打成相公了</a>
+								<a href="#" class="list-group-item">至于你信不信,反正我信了</a>
+								<a href="#" class="list-group-item active">
+									<h4 class="list-group-item-heading">卫生部合理用药专家孙忠实</h4>
+									<p class="list-group-item-text">一天吃六个胶囊，一天三次、一次两个，没有吃掉多少铬。</p>
+								</a>
+								<a href="#" class="list-group-item">
+									<h4 class="list-group-item-heading">我们在下一盘很大的棋</h4>
+									<p class="list-group-item-text">404 error　网址找不到</p>
+								</a>
+							</div>
+							<div class="panel-footer">面版脚注</div>
+						</div>
+					</div>
+				</section>
+			</section>
+
+			<section id="form">
+				<div class="page-header">
+					<h1>表单 <small>用于构建表单的各类元素及样式<a name="form"></a></small></h1>
+				</div>
+				<section id="form_1" title="样式测试">
+					<h2>样式测试<a name="form_1"></a></h2>
+					<div class="example">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#form_test', 'form-default');$('#form_test').removeClass('form-horizontal_mod');$('#form_test .form_label').removeClass('sr-only');"><input type="radio" name="btn_15" />.form-default</label>
+							<label class="btn btn-primary" onclick="chgClass('#form_test', 'form-inline');$('#form_test').removeClass('form-horizontal_mod');$('#form_test .form_label').addClass('sr-only');"><input type="radio" name="btn_15" />.form-inline</label>
+							<label class="btn btn-primary" onclick="chgClass('#form_test', 'form-horizontal');$('#form_test').addClass('form-horizontal_mod');$('#form_test .form_label').removeClass('sr-only');"><input type="radio" name="btn_15" />.form-horizontal</label>
+						</div>
+						<form id="form_test" role="form">
+							<div class="form-group">
+								<label class="form_label">邮件：</label> <input type="email" class="form-control" placeholder="邮件" />
+							</div>
+							<div class="form-group">
+								<label class="form_label">密码：</label> <input type="password" class="form-control" placeholder="密码" />
+							</div>
+							<div class="checkbox">
+								<label><input type="checkbox"> 记住我</label>
+							</div>
+							<button type="submit" class="btn btn-default">登录</button>
+						</form>
+					</div>
+				</section>
+				<section id="form_2" title="默认样式">
+					<h2>默认样式<a name="form_2"></a></h2>
+					<div class="example" id="form_">
+						<form id="form_test1" role="form">
+							<div class="form-group">
+								<label>邮件：</label> <input type="email" class="form-control" placeholder="邮件" />
+							</div>
+							<div class="form-group">
+								<label>密码：</label> <input type="password" class="form-control" placeholder="密码" />
+							</div>
+							<div class="form-group">
+								<label>File input</label> <input type="file" />
+								<p class="help-block">说明文字说明文字说明文字说明文字说明文字</p>
+							</div>
+							<div class="checkbox">
+								<label><input type="checkbox"> 记住我</label>
+							</div>
+							<button type="submit" class="btn btn-default">登录</button>
+						</form>
+					</div>
+				</section>
+				<section id="form_3" title="行模式">
+					<h2>行模式<a name="form_3"></a></h2>
+					<div class="example">
+						<form id="form_test2" class="form-inline" role="form">
+							<div class="form-group">
+								<label class="sr-only">邮件：</label> <input type="email" class="form-control" placeholder="邮件" />
+							</div>
+							<div class="form-group">
+								<label class="sr-only">密码：</label> <input type="password" class="form-control" placeholder="密码" />
+							</div>
+							<div class="checkbox">
+								<label class="checkbox"><input type="checkbox"> 记住我</label>
+								<button type="submit" class="btn btn-default">登录</button>
+							</div>
+						</form>
+					</div>
+				</section>
+				<section id="form_4" title="水平模式">
+					<h2>水平模式<a name="form_4"></a></h2>
+					<div class="example">
+						<form id="form_test3" class="form-horizontal" role="form">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">邮件：</label>
+								<div class="col-sm-10"><input type="email" class="form-control" placeholder="邮件"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">密码：</label>
+								<div class="col-sm-10"><input type="password" class="form-control" placeholder="密码"></div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label">备注：</label>
+								<div class="col-sm-10"><p class="form-control-static text-left">如果需要将一行纯文本放置于label的同一行，为 p 元素添加.form-control-static即可。</p></div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<div class="checkbox">
+										<label><input type="checkbox"> 记住我</label>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="submit" class="btn btn-default">登录</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</section>
+				<section id="form_5" title="表单控件">
+					<h2>表单控件<a name="form_5"></a></h2>
+					<div class="example">
+						<form id="form_test2" role="form">
+							<div class="row form-group">
+								<div class="col-xs-2"><label class="control-label">检索框</label></div>
+								<div class="col-xs-4"><input type="search" class="form-control input-medium search-query" placeholder="关键字"></div>
+								<button type="submit" class="btn btn-default">搜索</button>
+							</div>
+							<div class="row form-group">
+								<div class="col-xs-3 col-md-2">
+									<label class="control-label">文本输入框</label>
+								</div>
+								<div class="col-xs-9 col-md-4">
+									<input type="text" class="form-control" placeholder="文本输入框">
+								</div>
+								<div class="col-xs-12 col-md-6">
+									<p class="help-block">除了文本域之外，任何HTML5输入框都是该样式</p>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-xs-2">
+									<label class="control-label">单/复选框</label>
+								</div>
+								<div class="col-xs-3">
+									<div class="checkbox">
+										<label class="checkbox-inline"><input type="checkbox" value=""> 选项一</label>
+									</div>
+									<div class="checkbox">
+										<label class="checkbox-inline"><input type="checkbox" value=""> 选项二</label>
+									</div>
+								</div>
+								<div class="col-xs-3">
+									<div class="radio">
+										<label><input type="radio" name="optionsRadios"	value="option1" checked> 选项一</label>
+									</div>
+									<div class="radio">
+										<label><input type="radio" name="optionsRadios"	value="option2"> 选项二</label>
+									</div>
+								</div>
+								<div class="col-xs-4">
+									<div style="padding:5px;">
+										<label class="checkbox-inline"><input type="checkbox" value="option1"> 1</label>
+										<label class="checkbox-inline"><input type="checkbox" value="option2"> 2</label>
+										<label class="checkbox-inline"><input type="checkbox" value="option3"> 3</label>
+									</div>
+									<div style="padding:5px;">
+										<label class="radio-inline"><input type="radio" name="optionsRadios2" value="option1"> 1</label>
+										<label class="radio-inline"><input type="radio" name="optionsRadios2" value="option2"> 2</label>
+										<label class="radio-inline"><input type="radio" name="optionsRadios2" value="option3"> 3</label>
+									</div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-xs-2">
+									<label class="control-label">选择框</label>
+								</div>
+								<div class="col-xs-10">
+									<select class="form-control">
+										<option>请选择</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-xs-2">
+									<label class="control-label">复选框</label>
+								</div>
+								<div class="col-xs-10">
+									<select class="form-control" multiple>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-xs-2">
+									<label class="control-label">上传框</label>
+								</div>
+								<div class="col-xs-10">
+									<input class="form-control" type="file">
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-xs-2">
+									<label class="control-label">文本域</label>
+								</div>
+								<div class="col-xs-10">
+									<textarea class="form-control" rows="3"></textarea>
+								</div>
+							</div>
+							<div>
+								<button type="submit" class="btn btn-primary">确认</button>
+								<button class="btn btn-default">取消</button>
+							</div>
+						</form>
+					</div>
+				</section>
+				<section id="form_6" title="表单控件状态">
+					<h2>表单控件状态<a name="form_6"></a></h2>
+					<div class="example">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#control_test', 'has-default')"><input type="radio" name="btn_17" />.has-default</label>
+							<label class="btn btn-primary" onclick="chgClass('#control_test', 'has-warning')"><input type="radio" name="btn_17" />.has-warning</label>
+							<label class="btn btn-primary" onclick="chgClass('#control_test', 'has-error')"><input type="radio" name="btn_17" />.has-error</label>
+							<label class="btn btn-primary" onclick="chgClass('#control_test', 'has-success')"><input type="radio" name="btn_17" />.has-success</label>
+						</div>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#input_test', 'default')"><input type="radio" name="btn_20" />.default</label>
+							<label class="btn btn-primary" onclick="chgClass('#input_test', 'disabled')"><input type="radio" name="btn_20" />.disabled</label>
+							<label class="btn btn-primary" onclick="chgClass('#input_test', 'focus')"><input type="radio" name="btn_20" />.focus</label>
+						</div>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#input_test_ole', 'col-md-4')"><input type="radio" name="btn_18" />.col-md-4</label>
+							<label class="btn btn-primary" onclick="chgClass('#input_test_ole', 'col-md-5')"><input type="radio" name="btn_18" />.col-md-5</label>
+							<label class="btn btn-primary" onclick="chgClass('#input_test_ole', 'col-md-6')"><input type="radio" name="btn_18" />.col-md-6</label>
+							<label class="btn btn-primary" onclick="chgClass('#input_test_ole', 'col-md-7')"><input type="radio" name="btn_18" />.col-md-7</label>
+						</div>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#input_test', 'input-default')"><input type="radio" name="btn_19" />.input-default</label>
+							<label class="btn btn-primary" onclick="chgClass('#input_test', 'input-sm')"><input type="radio" name="btn_19" />.input-sm</label>
+							<label class="btn btn-primary" onclick="chgClass('#input_test', 'input-lg')"><input type="radio" name="btn_19" />.input-lg</label>
+						</div>
+						<div>&nbsp;</div>
+						<form class="form-horizontal">
+							<div class="row form-group" id="control_test">
+								<div class="col-md-2"><label class="control-label">输入框</label></div>
+								<div class="col-md-4" id="input_test_ole"><input id="input_test" type="text" class="form-control" placeholder="输入框"></div>
+								<div class="col-md-3"><p class="help-block">这里显示帮助信息</p></div>
+							</div>
+						</form>
+					</div>
+				</section>
+				<section id="form_7" title="扩展表单控件">
+					<h2>扩展表单控件<a name="form_7"></a></h2>
+					<div class="example">
+						<form class="form-horizontal">
+							<div class="row form-group">
+								<div class="col-md-2"><label class="control-label pull-right">电子邮件</label></div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+										<input type="text" class="form-control" placeholder="Username">
+									</div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-2"><label class="control-label pull-right">前置文本</label></div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<span class="input-group-addon">@</span><input class="form-control" type="text">
+									</div>
+									<span class="help-block">转行帮助信息</span>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-2"><label class="control-label pull-right">后置文本</label></div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<input class="form-control" type="text"><span class="input-group-addon">.00</span>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<span class="help-block">同行帮助信息</span>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-2"><label class="control-label pull-right">前置+后置文本</label></div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<span class="input-group-addon">$</span><input class="form-control" type="text"><span class="input-group-addon">.00</span>
+									</div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-2"><label class="control-label pull-right">后置按钮</label></div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<input class="form-control" type="text">
+										<span class="input-group-btn"><button class="btn btn-default" type="button">执行</button></span>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<span class="input-group-btn"><button class="btn btn-default" type="button">执行</button></span>
+										<input class="form-control" type="text">
+									</div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-2"><label class="control-label pull-right">下拉按钮</label></div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<div class="input-group-btn">
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">选项 <span class="caret"></span></button>
+											<ul class="dropdown-menu">
+												<li><a href="#">操作一</a></li>
+												<li><a href="#">操作二</a></li>
+												<li><a href="#">操作三</a></li>
+												<li class="divider"></li>
+												<li><a href="#">其他选项</a></li>
+											</ul>
+										</div>
+										<input class="form-control" type="text">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<input class="form-control" type="text">
+										<div class="input-group-btn">
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">选项 <span class="caret"></span></button>
+											<ul class="dropdown-menu">
+												<li><a href="#">操作一</a></li>
+												<li><a href="#">操作二</a></li>
+												<li><a href="#">操作三</a></li>
+												<li class="divider"></li>
+												<li><a href="#">其他选项</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-md-2"><label class="control-label pull-right">分段按钮</label></div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<div class="input-group-btn">
+											<button type="button" class="btn btn-default" tabindex="-1">选项</button>
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+												<span class="caret"></span>
+											</button>
+											<ul class="dropdown-menu">
+												<li><a href="#">操作一</a></li>
+												<li><a href="#">操作二</a></li>
+												<li><a href="#">操作三</a></li>
+												<li class="divider"></li>
+												<li><a href="#">其他选项</a></li>
+											</ul>
+										</div>
+										<input class="form-control" type="text">
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="input-group">
+										<input class="form-control" type="text">
+										<div class="input-group-btn">
+											<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+												<span class="caret"></span>
+											</button>
+											<button type="button" class="btn btn-default" tabindex="-1">选项</button>
+											<ul class="dropdown-menu">
+												<li><a href="#">操作一</a></li>
+												<li><a href="#">操作二</a></li>
+												<li><a href="#">操作三</a></li>
+												<li class="divider"></li>
+												<li><a href="#">其他选项</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</section>
+			</section>
+			
+			<section id="etc">
+				<div class="page-header">
+					<h1>页面元素<small>其他元素<a name="etc"></a></small></h1>
+				</div>
+				<section id="icon" title="图标">
+					<h2>图标<a name="icon"></a></h2>
+					<div class="example">
+						<ul class="glyphicons">
+							<li><span class="glyphicon glyphicon-adjust"></span> .glyphicon .glyphicon-adjust</li>
+							<li><span class="glyphicon glyphicon-align-center"></span> .glyphicon .glyphicon-align-center</li>
+							<li><span class="glyphicon glyphicon-align-justify"></span> .glyphicon .glyphicon-align-justify</li>
+							<li><span class="glyphicon glyphicon-align-left"></span> .glyphicon .glyphicon-align-left</li>
+							<li><span class="glyphicon glyphicon-align-right"></span> .glyphicon .glyphicon-align-right</li>
+							<li><span class="glyphicon glyphicon-arrow-down"></span> .glyphicon .glyphicon-arrow-down</li>
+							<li><span class="glyphicon glyphicon-arrow-left"></span> .glyphicon .glyphicon-arrow-left</li>
+							<li><span class="glyphicon glyphicon-arrow-right"></span> .glyphicon .glyphicon-arrow-right</li>
+							<li><span class="glyphicon glyphicon-arrow-up"></span> .glyphicon .glyphicon-arrow-up</li>
+							<li><span class="glyphicon glyphicon-asterisk"></span> .glyphicon .glyphicon-asterisk</li>
+							<li><span class="glyphicon glyphicon-backward"></span> .glyphicon .glyphicon-backward</li>
+							<li><span class="glyphicon glyphicon-ban-circle"></span> .glyphicon .glyphicon-ban-circle</li>
+							<li><span class="glyphicon glyphicon-barcode"></span> .glyphicon .glyphicon-barcode</li>
+							<li><span class="glyphicon glyphicon-bell"></span> .glyphicon .glyphicon-bell</li>
+							<li><span class="glyphicon glyphicon-bold"></span> .glyphicon .glyphicon-bold</li>
+							<li><span class="glyphicon glyphicon-book"></span> .glyphicon .glyphicon-book</li>
+							<li><span class="glyphicon glyphicon-bookmark"></span> .glyphicon .glyphicon-bookmark</li>
+							<li><span class="glyphicon glyphicon-briefcase"></span> .glyphicon .glyphicon-briefcase</li>
+							<li><span class="glyphicon glyphicon-bullhorn"></span> .glyphicon .glyphicon-bullhorn</li>
+							<li><span class="glyphicon glyphicon-calendar"></span> .glyphicon .glyphicon-calendar</li>
+							<li><span class="glyphicon glyphicon-camera"></span> .glyphicon .glyphicon-camera</li>
+							<li><span class="glyphicon glyphicon-certificate"></span> .glyphicon .glyphicon-certificate</li>
+							<li><span class="glyphicon glyphicon-check"></span> .glyphicon .glyphicon-check</li>
+							<li><span class="glyphicon glyphicon-chevron-down"></span> .glyphicon .glyphicon-chevron-down</li>
+							<li><span class="glyphicon glyphicon-chevron-left"></span> .glyphicon .glyphicon-chevron-left</li>
+							<li><span class="glyphicon glyphicon-chevron-right"></span> .glyphicon .glyphicon-chevron-right</li>
+							<li><span class="glyphicon glyphicon-chevron-up"></span> .glyphicon .glyphicon-chevron-up</li>
+							<li><span class="glyphicon glyphicon-circle-arrow-down"></span> .glyphicon .glyphicon-circle-arrow-down</li>
+							<li><span class="glyphicon glyphicon-circle-arrow-left"></span> .glyphicon .glyphicon-circle-arrow-left</li>
+							<li><span class="glyphicon glyphicon-circle-arrow-right"></span> .glyphicon .glyphicon-circle-arrow-right</li>
+							<li><span class="glyphicon glyphicon-circle-arrow-up"></span> .glyphicon .glyphicon-circle-arrow-up</li>
+							<li><span class="glyphicon glyphicon-cloud"></span> .glyphicon .glyphicon-cloud</li>
+							<li><span class="glyphicon glyphicon-cloud-download"></span> .glyphicon .glyphicon-cloud-download</li>
+							<li><span class="glyphicon glyphicon-cloud-upload"></span> .glyphicon .glyphicon-cloud-upload</li>
+							<li><span class="glyphicon glyphicon-cog"></span> .glyphicon .glyphicon-cog</li>
+							<li><span class="glyphicon glyphicon-collapse-down"></span> .glyphicon .glyphicon-collapse-down</li>
+							<li><span class="glyphicon glyphicon-collapse-up"></span> .glyphicon .glyphicon-collapse-up</li>
+							<li><span class="glyphicon glyphicon-comment"></span> .glyphicon .glyphicon-comment</li>
+							<li><span class="glyphicon glyphicon-compressed"></span> .glyphicon .glyphicon-compressed</li>
+							<li><span class="glyphicon glyphicon-copyright-mark"></span> .glyphicon .glyphicon-copyright-mark</li>
+							<li><span class="glyphicon glyphicon-credit-card"></span> .glyphicon .glyphicon-credit-card</li>
+							<li><span class="glyphicon glyphicon-cutlery"></span> .glyphicon .glyphicon-cutlery</li>
+							<li><span class="glyphicon glyphicon-dashboard"></span> .glyphicon .glyphicon-dashboard</li>
+							<li><span class="glyphicon glyphicon-download"></span> .glyphicon .glyphicon-download</li>
+							<li><span class="glyphicon glyphicon-download-alt"></span> .glyphicon .glyphicon-download-alt</li>
+							<li><span class="glyphicon glyphicon-earphone"></span> .glyphicon .glyphicon-earphone</li>
+							<li><span class="glyphicon glyphicon-edit"></span> .glyphicon .glyphicon-edit</li>
+							<li><span class="glyphicon glyphicon-eject"></span> .glyphicon .glyphicon-eject</li>
+							<li><span class="glyphicon glyphicon-envelope"></span> .glyphicon .glyphicon-envelope</li>
+							<li><span class="glyphicon glyphicon-euro"></span> .glyphicon .glyphicon-euro</li>
+							<li><span class="glyphicon glyphicon-exclamation-sign"></span> .glyphicon .glyphicon-exclamation-sign</li>
+							<li><span class="glyphicon glyphicon-expand"></span> .glyphicon .glyphicon-expand</li>
+							<li><span class="glyphicon glyphicon-export"></span> .glyphicon .glyphicon-export</li>
+							<li><span class="glyphicon glyphicon-eye-close"></span> .glyphicon .glyphicon-eye-close</li>
+							<li><span class="glyphicon glyphicon-eye-open"></span> .glyphicon .glyphicon-eye-open</li>
+							<li><span class="glyphicon glyphicon-facetime-video"></span> .glyphicon .glyphicon-facetime-video</li>
+							<li><span class="glyphicon glyphicon-fast-backward"></span> .glyphicon .glyphicon-fast-backward</li>
+							<li><span class="glyphicon glyphicon-fast-forward"></span> .glyphicon .glyphicon-fast-forward</li>
+							<li><span class="glyphicon glyphicon-file"></span> .glyphicon .glyphicon-file</li>
+							<li><span class="glyphicon glyphicon-film"></span> .glyphicon .glyphicon-film</li>
+							<li><span class="glyphicon glyphicon-filter"></span> .glyphicon .glyphicon-filter</li>
+							<li><span class="glyphicon glyphicon-fire"></span> .glyphicon .glyphicon-fire</li>
+							<li><span class="glyphicon glyphicon-flag"></span> .glyphicon .glyphicon-flag</li>
+							<li><span class="glyphicon glyphicon-flash"></span> .glyphicon .glyphicon-flash</li>
+							<li><span class="glyphicon glyphicon-floppy-disk"></span> .glyphicon .glyphicon-floppy-disk</li>
+							<li><span class="glyphicon glyphicon-floppy-open"></span> .glyphicon .glyphicon-floppy-open</li>
+							<li><span class="glyphicon glyphicon-floppy-remove"></span> .glyphicon .glyphicon-floppy-remove</li>
+							<li><span class="glyphicon glyphicon-floppy-save"></span> .glyphicon .glyphicon-floppy-save</li>
+							<li><span class="glyphicon glyphicon-floppy-saved"></span> .glyphicon .glyphicon-floppy-saved</li>
+							<li><span class="glyphicon glyphicon-folder-close"></span> .glyphicon .glyphicon-folder-close</li>
+							<li><span class="glyphicon glyphicon-folder-open"></span> .glyphicon .glyphicon-folder-open</li>
+							<li><span class="glyphicon glyphicon-font"></span> .glyphicon .glyphicon-font</li>
+							<li><span class="glyphicon glyphicon-forward"></span> .glyphicon .glyphicon-forward</li>
+							<li><span class="glyphicon glyphicon-fullscreen"></span> .glyphicon .glyphicon-fullscreen</li>
+							<li><span class="glyphicon glyphicon-gbp"></span> .glyphicon .glyphicon-gbp</li>
+							<li><span class="glyphicon glyphicon-gift"></span> .glyphicon .glyphicon-gift</li>
+							<li><span class="glyphicon glyphicon-glass"></span> .glyphicon .glyphicon-glass</li>
+							<li><span class="glyphicon glyphicon-globe"></span> .glyphicon .glyphicon-globe</li>
+							<li><span class="glyphicon glyphicon-hand-down"></span> .glyphicon .glyphicon-hand-down</li>
+							<li><span class="glyphicon glyphicon-hand-left"></span> .glyphicon .glyphicon-hand-left</li>
+							<li><span class="glyphicon glyphicon-hand-right"></span> .glyphicon .glyphicon-hand-right</li>
+							<li><span class="glyphicon glyphicon-hand-up"></span> .glyphicon .glyphicon-hand-up</li>
+							<li><span class="glyphicon glyphicon-hd-video"></span> .glyphicon .glyphicon-hd-video</li>
+							<li><span class="glyphicon glyphicon-hdd"></span> .glyphicon .glyphicon-hdd</li>
+							<li><span class="glyphicon glyphicon-header"></span> .glyphicon .glyphicon-header</li>
+							<li><span class="glyphicon glyphicon-headphones"></span> .glyphicon .glyphicon-headphones</li>
+							<li><span class="glyphicon glyphicon-heart"></span> .glyphicon .glyphicon-heart</li>
+							<li><span class="glyphicon glyphicon-heart-empty"></span> .glyphicon .glyphicon-heart-empty</li>
+							<li><span class="glyphicon glyphicon-home"></span> .glyphicon .glyphicon-home</li>
+							<li><span class="glyphicon glyphicon-import"></span> .glyphicon .glyphicon-import</li>
+							<li><span class="glyphicon glyphicon-inbox"></span> .glyphicon .glyphicon-inbox</li>
+							<li><span class="glyphicon glyphicon-indent-left"></span> .glyphicon .glyphicon-indent-left</li>
+							<li><span class="glyphicon glyphicon-indent-right"></span> .glyphicon .glyphicon-indent-right</li>
+							<li><span class="glyphicon glyphicon-info-sign"></span> .glyphicon .glyphicon-info-sign</li>
+							<li><span class="glyphicon glyphicon-italic"></span> .glyphicon .glyphicon-italic</li>
+							<li><span class="glyphicon glyphicon-leaf"></span> .glyphicon .glyphicon-leaf</li>
+							<li><span class="glyphicon glyphicon-link"></span> .glyphicon .glyphicon-link</li>
+							<li><span class="glyphicon glyphicon-list"></span> .glyphicon .glyphicon-list</li>
+							<li><span class="glyphicon glyphicon-list-alt"></span> .glyphicon .glyphicon-list-alt</li>
+							<li><span class="glyphicon glyphicon-lock"></span> .glyphicon .glyphicon-lock</li>
+							<li><span class="glyphicon glyphicon-log-in"></span> .glyphicon .glyphicon-log-in</li>
+							<li><span class="glyphicon glyphicon-log-out"></span> .glyphicon .glyphicon-log-out</li>
+							<li><span class="glyphicon glyphicon-magnet"></span> .glyphicon .glyphicon-magnet</li>
+							<li><span class="glyphicon glyphicon-map-marker"></span> .glyphicon .glyphicon-map-marker</li>
+							<li><span class="glyphicon glyphicon-minus"></span> .glyphicon .glyphicon-minus</li>
+							<li><span class="glyphicon glyphicon-minus-sign"></span> .glyphicon .glyphicon-minus-sign</li>
+							<li><span class="glyphicon glyphicon-move"></span> .glyphicon .glyphicon-move</li>
+							<li><span class="glyphicon glyphicon-music"></span> .glyphicon .glyphicon-music</li>
+							<li><span class="glyphicon glyphicon-new-window"></span> .glyphicon .glyphicon-new-window</li>
+							<li><span class="glyphicon glyphicon-off"></span> .glyphicon .glyphicon-off</li>
+							<li><span class="glyphicon glyphicon-ok"></span> .glyphicon .glyphicon-ok</li>
+							<li><span class="glyphicon glyphicon-ok-circle"></span> .glyphicon .glyphicon-ok-circle</li>
+							<li><span class="glyphicon glyphicon-ok-sign"></span> .glyphicon .glyphicon-ok-sign</li>
+							<li><span class="glyphicon glyphicon-open"></span> .glyphicon .glyphicon-open</li>
+							<li><span class="glyphicon glyphicon-paperclip"></span> .glyphicon .glyphicon-paperclip</li>
+							<li><span class="glyphicon glyphicon-pause"></span> .glyphicon .glyphicon-pause</li>
+							<li><span class="glyphicon glyphicon-pencil"></span> .glyphicon .glyphicon-pencil</li>
+							<li><span class="glyphicon glyphicon-phone"></span> .glyphicon .glyphicon-phone</li>
+							<li><span class="glyphicon glyphicon-phone-alt"></span> .glyphicon .glyphicon-phone-alt</li>
+							<li><span class="glyphicon glyphicon-picture"></span> .glyphicon .glyphicon-picture</li>
+							<li><span class="glyphicon glyphicon-plane"></span> .glyphicon .glyphicon-plane</li>
+							<li><span class="glyphicon glyphicon-play"></span> .glyphicon .glyphicon-play</li>
+							<li><span class="glyphicon glyphicon-play-circle"></span> .glyphicon .glyphicon-play-circle</li>
+							<li><span class="glyphicon glyphicon-plus"></span> .glyphicon .glyphicon-plus</li>
+							<li><span class="glyphicon glyphicon-plus-sign"></span> .glyphicon .glyphicon-plus-sign</li>
+							<li><span class="glyphicon glyphicon-print"></span> .glyphicon .glyphicon-print</li>
+							<li><span class="glyphicon glyphicon-pushpin"></span> .glyphicon .glyphicon-pushpin</li>
+							<li><span class="glyphicon glyphicon-qrcode"></span> .glyphicon .glyphicon-qrcode</li>
+							<li><span class="glyphicon glyphicon-question-sign"></span> .glyphicon .glyphicon-question-sign</li>
+							<li><span class="glyphicon glyphicon-random"></span> .glyphicon .glyphicon-random</li>
+							<li><span class="glyphicon glyphicon-record"></span> .glyphicon .glyphicon-record</li>
+							<li><span class="glyphicon glyphicon-refresh"></span> .glyphicon .glyphicon-refresh</li>
+							<li><span class="glyphicon glyphicon-registration-mark"></span> .glyphicon .glyphicon-registration-mark</li>
+							<li><span class="glyphicon glyphicon-remove"></span> .glyphicon .glyphicon-remove</li>
+							<li><span class="glyphicon glyphicon-remove-circle"></span> .glyphicon .glyphicon-remove-circle</li>
+							<li><span class="glyphicon glyphicon-remove-sign"></span> .glyphicon .glyphicon-remove-sign</li>
+							<li><span class="glyphicon glyphicon-repeat"></span> .glyphicon .glyphicon-repeat</li>
+							<li><span class="glyphicon glyphicon-resize-full"></span> .glyphicon .glyphicon-resize-full</li>
+							<li><span class="glyphicon glyphicon-resize-horizontal"></span> .glyphicon .glyphicon-resize-horizontal</li>
+							<li><span class="glyphicon glyphicon-resize-small"></span> .glyphicon .glyphicon-resize-small</li>
+							<li><span class="glyphicon glyphicon-resize-vertical"></span> .glyphicon .glyphicon-resize-vertical</li>
+							<li><span class="glyphicon glyphicon-retweet"></span> .glyphicon .glyphicon-retweet</li>
+							<li><span class="glyphicon glyphicon-road"></span> .glyphicon .glyphicon-road</li>
+							<li><span class="glyphicon glyphicon-save"></span> .glyphicon .glyphicon-save</li>
+							<li><span class="glyphicon glyphicon-saved"></span> .glyphicon .glyphicon-saved</li>
+							<li><span class="glyphicon glyphicon-screenshot"></span> .glyphicon .glyphicon-screenshot</li>
+							<li><span class="glyphicon glyphicon-sd-video"></span> .glyphicon .glyphicon-sd-video</li>
+							<li><span class="glyphicon glyphicon-search"></span> .glyphicon .glyphicon-search</li>
+							<li><span class="glyphicon glyphicon-send"></span> .glyphicon .glyphicon-send</li>
+							<li><span class="glyphicon glyphicon-share"></span> .glyphicon .glyphicon-share</li>
+							<li><span class="glyphicon glyphicon-share-alt"></span> .glyphicon .glyphicon-share-alt</li>
+							<li><span class="glyphicon glyphicon-shopping-cart"></span> .glyphicon .glyphicon-shopping-cart</li>
+							<li><span class="glyphicon glyphicon-signal"></span> .glyphicon .glyphicon-signal</li>
+							<li><span class="glyphicon glyphicon-sort"></span> .glyphicon .glyphicon-sort</li>
+							<li><span class="glyphicon glyphicon-sort-by-alphabet"></span> .glyphicon .glyphicon-sort-by-alphabet</li>
+							<li><span class="glyphicon glyphicon-sort-by-alphabet-alt"></span> .glyphicon .glyphicon-sort-by-alphabet-alt</li>
+							<li><span class="glyphicon glyphicon-sort-by-attributes"></span> .glyphicon .glyphicon-sort-by-attributes</li>
+							<li><span class="glyphicon glyphicon-sort-by-attributes-alt"></span> .glyphicon .glyphicon-sort-by-attributes-alt</li>
+							<li><span class="glyphicon glyphicon-sort-by-order"></span> .glyphicon .glyphicon-sort-by-order</li>
+							<li><span class="glyphicon glyphicon-sort-by-order-alt"></span> .glyphicon .glyphicon-sort-by-order-alt</li>
+							<li><span class="glyphicon glyphicon-sound-5-1"></span> .glyphicon .glyphicon-sound-5-1</li>
+							<li><span class="glyphicon glyphicon-sound-6-1"></span> .glyphicon .glyphicon-sound-6-1</li>
+							<li><span class="glyphicon glyphicon-sound-7-1"></span> .glyphicon .glyphicon-sound-7-1</li>
+							<li><span class="glyphicon glyphicon-sound-dolby"></span> .glyphicon .glyphicon-sound-dolby</li>
+							<li><span class="glyphicon glyphicon-sound-stereo"></span> .glyphicon .glyphicon-sound-stereo</li>
+							<li><span class="glyphicon glyphicon-star"></span> .glyphicon .glyphicon-star</li>
+							<li><span class="glyphicon glyphicon-star-empty"></span> .glyphicon .glyphicon-star-empty</li>
+							<li><span class="glyphicon glyphicon-stats"></span> .glyphicon .glyphicon-stats</li>
+							<li><span class="glyphicon glyphicon-step-backward"></span> .glyphicon .glyphicon-step-backward</li>
+							<li><span class="glyphicon glyphicon-step-forward"></span> .glyphicon .glyphicon-step-forward</li>
+							<li><span class="glyphicon glyphicon-stop"></span> .glyphicon .glyphicon-stop</li>
+							<li><span class="glyphicon glyphicon-subtitles"></span> .glyphicon .glyphicon-subtitles</li>
+							<li><span class="glyphicon glyphicon-tag"></span> .glyphicon .glyphicon-tag</li>
+							<li><span class="glyphicon glyphicon-tags"></span> .glyphicon .glyphicon-tags</li>
+							<li><span class="glyphicon glyphicon-tasks"></span> .glyphicon .glyphicon-tasks</li>
+							<li><span class="glyphicon glyphicon-text-height"></span> .glyphicon .glyphicon-text-height</li>
+							<li><span class="glyphicon glyphicon-text-width"></span> .glyphicon .glyphicon-text-width</li>
+							<li><span class="glyphicon glyphicon-th"></span> .glyphicon .glyphicon-th</li>
+							<li><span class="glyphicon glyphicon-th-large"></span> .glyphicon .glyphicon-th-large</li>
+							<li><span class="glyphicon glyphicon-th-list"></span> .glyphicon .glyphicon-th-list</li>
+							<li><span class="glyphicon glyphicon-thumbs-down"></span> .glyphicon .glyphicon-thumbs-down</li>
+							<li><span class="glyphicon glyphicon-thumbs-up"></span> .glyphicon .glyphicon-thumbs-up</li>
+							<li><span class="glyphicon glyphicon-time"></span> .glyphicon .glyphicon-time</li>
+							<li><span class="glyphicon glyphicon-tint"></span> .glyphicon .glyphicon-tint</li>
+							<li><span class="glyphicon glyphicon-tower"></span> .glyphicon .glyphicon-tower</li>
+							<li><span class="glyphicon glyphicon-transfer"></span> .glyphicon .glyphicon-transfer</li>
+							<li><span class="glyphicon glyphicon-trash"></span> .glyphicon .glyphicon-trash</li>
+							<li><span class="glyphicon glyphicon-tree-conifer"></span> .glyphicon .glyphicon-tree-conifer</li>
+							<li><span class="glyphicon glyphicon-tree-deciduous"></span> .glyphicon .glyphicon-tree-deciduous</li>
+							<li><span class="glyphicon glyphicon-unchecked"></span> .glyphicon .glyphicon-unchecked</li>
+							<li><span class="glyphicon glyphicon-upload"></span> .glyphicon .glyphicon-upload</li>
+							<li><span class="glyphicon glyphicon-usd"></span> .glyphicon .glyphicon-usd</li>
+							<li><span class="glyphicon glyphicon-user"></span> .glyphicon .glyphicon-user</li>
+							<li><span class="glyphicon glyphicon-volume-down"></span> .glyphicon .glyphicon-volume-down</li>
+							<li><span class="glyphicon glyphicon-volume-off"></span> .glyphicon .glyphicon-volume-off</li>
+							<li><span class="glyphicon glyphicon-volume-up"></span> .glyphicon .glyphicon-volume-up</li>
+							<li><span class="glyphicon glyphicon-warning-sign"></span> .glyphicon .glyphicon-warning-sign</li>
+							<li><span class="glyphicon glyphicon-wrench"></span> .glyphicon .glyphicon-wrench</li>
+							<li><span class="glyphicon glyphicon-zoom-in"></span> .glyphicon .glyphicon-zoom-in</li>
+							<li><span class="glyphicon glyphicon-zoom-out"></span> .glyphicon .glyphicon-zoom-out</li>
+						</ul>
+					</div>
+				</section>
+				<section id="pagination" title="页码">
+					<h2>页码及翻页<a name="pagination"></a></h2>
+					<div class="example">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#page_test > ul', 'pagination-default')"><input type="radio" name="btn_21" />.pagination-default</label>
+							<label class="btn btn-primary" onclick="chgClass('#page_test > ul', 'pagination-lg')"><input type="radio" name="btn_21" />.pagination-lg</label>
+							<label class="btn btn-primary" onclick="chgClass('#page_test > ul', 'pagination-sm')"><input type="radio" name="btn_21" />.pagination-sm</label>
+						</div>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#page_test', 'pagination-left')"><input type="radio" name="btn_22" />.pagination-left</label>
+							<label class="btn btn-primary" onclick="chgClass('#page_test', 'pagination-centered')"><input type="radio" name="btn_22" />.pagination-centered</label>
+							<label class="btn btn-primary" onclick="chgClass('#page_test', 'pagination-right')"><input type="radio" name="btn_22" />.pagination-right</label>
+						</div>
+						<div id="page_test">
+							<ul class="pagination">
+								<li><a href="#">&laquo;</a></li>
+								<li><a href="#">1</a></li>
+								<li class="disabled"><a href="#">...</a></li>
+								<li><a href="#">111</a></li>
+								<li><a href="#">112</a></li>
+								<li class="active"><a href="#">113</a></li>
+								<li><a href="#">114</a></li>
+								<li><a href="#">115</a></li>
+								<li class="disabled"><a href="#">...</a></li>
+								<li><a href="#">400</a></li>
+								<li><a href="#">&raquo;</a></li>
+							</ul>
+							<div>&nbsp;</div>
+							<ul class="pagination">
+								<li class="disabled"><a href="#">&laquo;</a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li class="disabled"><a href="#">...</a></li>
+								<li><a href="#">400</a></li>
+								<li><a href="#">&raquo;</a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="example">
+						<ul class="pager">
+							<li><a href="#">前一页</a></li>
+							<li class="disabled"><a href="#">后一页</a></li>
+						</ul>
+						<ul class="pager">
+							<li class="previous disabled"><a href="#">&larr; 上一篇</a></li>
+							<li class="next"><a href="#">下一篇 &rarr;</a></li>
+						</ul>
+					</div>
+				</section>
+				<section id="label" title="标签">
+					<h2>标签<a name="label"></a></h2>
+					<div class="example">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary active" onclick="chgClass('#label_test', 'label-default')"><input type="radio" name="btn_23" />.label-default</label>
+							<label class="btn btn-primary" onclick="chgClass('#label_test', 'label-primary')"><input type="radio" name="btn_23" />.label-primary</label>
+							<label class="btn btn-primary" onclick="chgClass('#label_test', 'label-success')"><input type="radio" name="btn_23" />.label-success</label>
+							<label class="btn btn-primary" onclick="chgClass('#label_test', 'label-warning')"><input type="radio" name="btn_23" />.label-warning</label>
+							<label class="btn btn-primary" onclick="chgClass('#label_test', 'label-danger')"><input type="radio" name="btn_23" />.label-danger</label>
+							<label class="btn btn-primary" onclick="chgClass('#label_test', 'label-info')"><input type="radio" name="btn_23" />.label-info</label>
+						</div>
+						<div><span id="label_test" class="label label-default">我是标签</span></div>
+					</div>
+				</section>
+				<section id="badge" title="徽章">
+					<h2>徽章<a name="badge"></a></h2>
+					<div class="example">
+						<div>
+							<ul class="nav nav-pills">
+								<li class="active"><a href="#">Home <span class="badge">42</span></a></li>
+								<li><a href="#">Profile</a></li>
+								<li><a href="#">Messages <span class="badge">3</span></a></li>
+							</ul>
+							<br>
+							<ul class="nav nav-pills nav-stacked" style="max-width: 260px;">
+								<li class="active">
+									<a href="#">
+										Home <span class="badge pull-right">42</span>
+									</a>
+								</li>
+								<li><a href="#">Profile</a></li>
+								<li>
+									<a href="#">
+										Messages <span class="badge pull-right">3</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				<section id="media" title="图文列表">
+					<h2>图文列表<a name="media"></a></h2>
+					<div class="example">
+						<ul class="media-list">
+							<li class="media">
+								<a class="pull-left" href="#"><img class="media-object" src="js/holder.js/96x96"></a>
+								<div class="media-body">
+									<h4 class="media-heading">文章标题</h4>
+									文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容
+								</div>
+							</li>
+							<li class="media">
+								<a class="pull-right" href="#"><img class="media-object" src="js/holder.js/96x96"></a>
+								<div class="media-body">
+									<h4 class="media-heading">文章标题</h4>
+									文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容
+								</div>
+							</li>
+							<li class="media">
+								<a class="pull-left" href="#"><img class="media-object" src="js/holder.js/96x96"></a>
+								<div class="media-body">
+									<h4 class="media-heading">文章标题</h4>
+									<p>文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容</p>
+									<!-- Nested media object -->
+									<div class="media">
+										<a class="pull-left" href="#"><img class="media-object" src="js/holder.js/96x96"></a>
+										<div class="media-body">
+											<h4 class="media-heading">Nested 文章标题</h4>
+											文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容
+											<!-- Nested media object -->
+											<div class="media">
+												<a class="pull-left" href="#"><img class="media-object" src="js/holder.js/96x96"></a>
+												<div class="media-body">
+													<h4 class="media-heading">Nested 文章标题</h4>
+													文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- Nested media object -->
+									<div class="media">
+										<a class="pull-left" href="#"><img class="media-object" src="js/holder.js/96x96"></a>
+										<div class="media-body">
+											<h4 class="media-heading">Nested 文章标题</h4>
+											文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section id="thumbnail" title="图片展示">
+					<h2>图片展示<a name="thumbnail"></a></h2>
+					<div class="example">
+						<div class="row">
+							<div class="col-sm-6 col-md-3">
+								<a href="#" class="thumbnail">
+									<img data-src="holder.js/100%x180" alt="...">
+								</a>
+							</div>
+							<div class="col-sm-6 col-md-3">
+								<a href="#" class="thumbnail">
+									<img data-src="holder.js/100%x180" alt="...">
+								</a>
+							</div>
+							<div class="col-sm-6 col-md-3">
+								<a href="#" class="thumbnail">
+									<img data-src="holder.js/100%x180" alt="...">
+								</a>
+							</div>
+							<div class="col-sm-6 col-md-3">
+								<a href="#" class="thumbnail">
+									<img data-src="holder.js/100%x180" alt="...">
+								</a>
+							</div>
+						</div>
+						<div>&nbsp;</div>
+						<div class="row">
+							<div class="col-sm-6 col-md-4">
+								<div class="thumbnail">
+									<img data-src="holder.js/300x200" alt="...">
+									<div class="caption">
+										<h3>图片标题</h3>
+										<p>图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明</p>
+										<p align="center"><a href="#" class="btn btn-primary">操作一</a> <a href="#" class="btn btn-default">操作二</a></p>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-4">
+								<div class="thumbnail">
+									<img data-src="holder.js/300x200" alt="...">
+									<div class="caption">
+										<h3>图片标题</h3>
+										<p>图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明</p>
+										<p align="center"><a href="#" class="btn btn-primary">操作一</a> <a href="#" class="btn btn-default">操作二</a></p>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-4">
+								<div class="thumbnail">
+									<img data-src="holder.js/300x200" alt="...">
+									<div class="caption">
+										<h3>图片标题</h3>
+										<p>图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明图片说明</p>
+										<p align="center"><a href="#" class="btn btn-primary">操作一</a> <a href="#" class="btn btn-default">操作二</a></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="example">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary" onclick="chgClass('#image_test img', 'img-rectangle')"><input type="radio" name="btn_27" />.img-rectangle</label>
+							<label class="btn btn-primary" onclick="chgClass('#image_test img', 'img-rounded')"><input type="radio" name="btn_27" />.img-rounded</label>
+							<label class="btn btn-primary" onclick="chgClass('#image_test img', 'img-circle')"><input type="radio" name="btn_27" />.img-circle</label>
+						</div>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary" onclick="setClass('#image_test a', 'thumbnail');setClass('#image_test img', 'img-thumbnail');"><input type="checkbox" name="btn_28" />.img-thumbnail</label>
+						</div>
+						<div>&nbsp;</div>
+						<div class="row" id="image_test">
+							<div class="col-md-5">
+								<a href="#" class="thumbnail">
+									<img src="js/holder.js/100%x260" alt="">
+								</a>
+							</div>
+							<div class="col-md-4">
+								<a href="#" class="thumbnail">
+									<img src="js/holder.js/100%x120" alt="">
+								</a>
+							</div>
+							<div class="col-md-3">
+								<a href="#" class="thumbnail">
+									<img src="js/holder.js/100%x120" alt="">
+								</a>
+							</div>
+							<div class="col-md-4">
+								<a href="#" class="thumbnail">
+									<img src="js/holder.js/100%x120" alt="">
+								</a>
+							</div>
+							<div class="col-md-3">
+								<a href="#" class="thumbnail">
+									<img src="js/holder.js/100%x120" alt="">
+								</a>
+							</div>
+						</div>
+					</div>
+				</section>
+			</section>
+		</div>
+	</div>
+
+	<div id="show_code" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3 class="modal-title">代码显示</h4>
+				</div>
+				<div class="modal-body">
+					<div class="highlight">
+						<pre><div style="max-height:500px;overflow:auto;"><code class="language-html"></code></div></pre>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+						
+	<footer class="footer"> 
+			<p>Test Page - Footer</p>
+	</footer>
+
+</div>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/holder.js"></script>
+<script src="js/highlight.js"></script>
+<script src="js/test.js"></script>
+</body>
+</html>

@@ -48,7 +48,7 @@
 				如果存在同名模板，现有模板将被覆盖，请注意确认！<br /><br />
 				<input type="button" name="Submit" value=" 上 传 " onclick="check()" />
 				&nbsp; &nbsp; &nbsp;
-				<input type="button" name="Close" value=" 关 闭 " onclick="if(parent==null){self.close();}else{parent.$.closePopupLayer();}" />
+				<input type="button" name="Close" value=" 关 闭 " onclick="$.closePopupLayer()" />
 			</td>
 		</tr>
 		<tr id=wait style="display:none">

@@ -1,4 +1,5 @@
 <?php
+$ms_sign = 1;
 require("inc.php");
 $api = $mystep->getInstance("MyApi");
 $para = explode("|", $req->getServer("QUERY_STRING"));

@@ -5,7 +5,7 @@ class sess_mystep {
 	public static function sess_open($sess_path, $sess_name) {
 		self::$skip = false;
 		$agent = strtolower($_SERVER['HTTP_USER_AGENT']);
-		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) self::$skip = true;
+		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false || checkSign(1)) self::$skip = true;
 	}
 	public static function sess_close() {
 		if(self::$skip) return true;
@@ -34,10 +34,6 @@ class sess_mystep {
 		$sess_data['ip'] = mysql_escape_string($sess_data['ip']);
 		$sess_data['userinfo'] = mysql_escape_string(serialize($sess_data['userinfo']));
 		extract($sess_data);
-		
-		$file_list = array("ajax.php", "merge.php", "vcode.php","language.js.php", "setting.js.php");
-		$file_this = array_shift(explode('?', basename($url)));
-		if(array_search($file_this, $file_list)!==false) return true;
 		
 		include(ROOT_PATH."/include/config.php");
 		$reflash = $_SERVER["REQUEST_TIME"];

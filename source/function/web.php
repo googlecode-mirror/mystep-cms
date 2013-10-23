@@ -303,6 +303,10 @@ function getParaInfo($idx, $col, $value) {
 	}
 	return false;
 }
+function checkSign($sign) {
+	global $ms_sign;
+	return $ms_sign!=null && ($ms_sign & $sign = $sign);
+}
 /*---------------------------------------Functions For Parameter End-------------------------------------*/
 
 /*---------------------------------------Functions For Web Start-------------------------------------*/

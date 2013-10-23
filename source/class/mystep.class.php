@@ -215,6 +215,7 @@ mystep;
 			call_user_func($this->func_start[$i]);
 		}
 		
+		if(checkSign(1)) return;
 		$username = $req->getSession("username");
 		if((empty($username) || $username=="Guest")) $this->logcheck();
 		$req->setSession("url", "http://".$req->getServer("HTTP_HOST").$req->getServer("URL"));

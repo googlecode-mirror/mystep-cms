@@ -25,6 +25,11 @@ if($v=="check") {
 	array_shift($version);
 	echo toJson($version, $setting['gen']['charset']);
 } elseif($v!="" && isset($_GET['check'])) {
+	$version_main = substr($v, 0, 1);
+	if(file_exists("version_".$version_main.".php")) {
+		unset($version);
+		include("version_".$version_main.".php");
+	}
 	$version_info = $version;
 	foreach($version as $key => $value) {
 		if($key<=$v) {
@@ -35,6 +40,11 @@ if($v=="check") {
 	}
 	echo toJson($version_info, $setting['gen']['charset']);
 } elseif($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
+	$version_main = substr($v, 0, 1);
+	if(file_exists("version_".$version_main.".php")) {
+		unset($version);
+		include("version_".$version_main.".php");
+	}
 	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver'].$cs);
 	if(file_exists($cache_file)) {
 		$update = GetFile($cache_file);

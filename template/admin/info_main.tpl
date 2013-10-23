@@ -1,73 +1,72 @@
 <div class="title">网站基本信息</div>
-<div>&nbsp;</div>
+<div id="info">&nbsp;</div>
 <div>
-	<table width="900" cellspacing="0" cellpadding="0" align="center" border="0">
+	<table id="list_area" width="900" cellspacing="0" cellpadding="0" align="center" border="0">
 		<tr>
-			<td class="cat" width="250">网站程序版本</td>
+			<td class="cat" width="120">网站程序版本</td>
 			<td class="row">
 				V<?=$ms_version['ver']?> （<?=$ms_version['language']?>/<?=$ms_version['charset']?>/<?=$ms_version['date']?>）
-				<a href="###" onclick="checkUpdate()">检查升级</a>
-				 |
 				<a href="###" onclick="confirm('请选择校验方式：\n\n本机校验：通过本地生成的校验信息校验网站文件\n\n网络校验：通过更新服务器上的校验文件校验', 'checkModify', ['本机校验','网络校验'], '文件校验')">检查文件改动</a>
 				 |
 				<a href="###" onclick="confirm('更新校验信息会造成自动升级时将已改动文件错误覆盖！\n&nbsp;\n是否继续？', 'updateModify', ['确 定','取 消'], '更新本地校验')">更新本地校验</a>
-				<div style="margin-top:5px;display:<?=(file_exists("../update/")?"block":"none")?>">
+				<span style="display:<?=(file_exists("../update/")?"inline":"none")?>">
+					 |
 					<a href="###" onclick="emptyUpdate()">清空升级信息</a>
 					 |
 					<a href="###" onclick="exportUpdate()">导出升级信息</a>
-				</div>
+				</span>
 			</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">网站运行时间</td>
+			<td class="cat">网站运行时间</td>
 			<td class="row"><?=$db->GetSingleResult("select count(*) from ".$setting['db']['pre']."counter")?> 天</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">注册会员数</td>
+			<td class="cat">注册会员数</td>
 			<td class="row"><?=$db->GetSingleResult("select count(*) from ".$setting['db']['pre']."users")?> 人</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">登录新闻数量</td>
+			<td class="cat">登录新闻数量</td>
 			<td class="row"><?=$db->GetSingleResult("select count(*) from ".$setting['db']['pre']."news_show")?> 条</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">当前在线人数</td>
+			<td class="cat">当前在线人数</td>
 			<td class="row"><?=$db->GetSingleResult("select count(*) from ".$setting['db']['pre']."user_online")?> 人</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">最高在线人数</td>
+			<td class="cat">最高在线人数</td>
 			<td class="row"><?=$db->GetSingleResult("select max(online) from ".$setting['db']['pre']."counter")?> 人</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">今日页面访问量</td>
+			<td class="cat">今日页面访问量</td>
 			<td class="row"><?=$db->GetSingleResult("select pv from ".$setting['db']['pre']."counter where date=curdate()")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">最高日页面访问量</td>
+			<td class="cat">最高日页面访问量</td>
 			<td class="row"><?=$db->GetSingleResult("select max(pv) from ".$setting['db']['pre']."counter")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">网站页面日均访问量</td>
+			<td class="cat">网站页面日均访问量</td>
 			<td class="row"><?=(int)$db->GetSingleResult("select avg(pv) from ".$setting['db']['pre']."counter")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">网站页面总访问量</td>
+			<td class="cat">网站页面总访问量</td>
 			<td class="row"><?=$db->GetSingleResult("select sum(pv) from ".$setting['db']['pre']."counter")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">今日 IP 访问量</td>
+			<td class="cat">今日 IP 访问量</td>
 			<td class="row"><?=$db->GetSingleResult("select iv from ".$setting['db']['pre']."counter where date=curdate()")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">最高日 IP 访问量</td>
+			<td class="cat">最高日 IP 访问量</td>
 			<td class="row"><?=$db->GetSingleResult("select max(iv) from ".$setting['db']['pre']."counter")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">网站日均 IP 访问量</td>
+			<td class="cat">网站日均 IP 访问量</td>
 			<td class="row"><?=(int)$db->GetSingleResult("select avg(iv) from ".$setting['db']['pre']."counter")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat" width="250">网站总 IP 访问量</td>
+			<td class="cat">网站总 IP 访问量</td>
 			<td class="row"><?=$db->GetSingleResult("select sum(iv) from ".$setting['db']['pre']."counter")?> 次</td>
 		</tr>
 	</table>
@@ -75,38 +74,35 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 var cur_ver = <?=toJson($ms_version, $setting['gen']['charset']);?>;
+var update_info = null;
 function checkUpdate() {
-	loadingShow("正在连接服务器，检测更新。。。");
-	$.get("update.php?"+Math.random(), function(ver_info){
-		loadingShow();
-		if(ver_info==null) {
-			alert("系统当前版本已为最新，无需更新！");
-			retrun;
-		}
-		var result = "";
-		result += '\
+	if(update_info==null) {
+		alert("系统当前版本已为最新，无需更新！");
+		return;
+	}
+	var result = "";
+	result += '\
 <div align="center">\
 	<span style="font-weight:bold;font-size:16px;">更新详情</span><br /><br />\
 </div>\
 <hr />\
 ';
-		try {
-			for(var ver in ver_info) {
-				result += '\
+	try {
+		for(var ver in update_info) {
+			result += '\
 <div>\
 	<div style="font-weight:bold;">Version: '+ver+'</div>\
-	<div>'+ver_info[ver].info.replace(/[\r\n]+/g, "<br />")+'</div>\
+	<div>'+update_info[ver].info.replace(/[\r\n]+/g, "<br />")+'</div>\
 	<div>&nbsp;</div>\
-	<div><a href="###" onclick="showFiles($(this).next())">[查看更新文件]</a><div style="display:none;">'+ver_info[ver].file.join("<br />")+'</div></div>\
+	<div><a href="###" onclick="showFiles($(this).next())">[查看更新文件]</a><div style="display:none;">'+update_info[ver].file.join("<br />")+'</div></div>\
 </div>\
 <hr />\
 ';
-			}
-			confirm(result, "applyUpdate", [" 下载更新 ", " 自动更新 "], "系统更新", false);
-		} catch(e) {
-			alert("获取更新服务器信息失败，请检查相关设置！");
 		}
-	}, "json");
+		confirm(result, "applyUpdate", [" 下载更新 ", " 自动更新 "], "系统更新", false);
+	} catch(e) {
+		alert("获取更新服务器信息有误，请刷新重试！");
+	}
 }
 function showFiles(obj) {
 	var theObj=$("#popupLayer_info_show_content").find(".info");
@@ -192,5 +188,13 @@ function updateModify(mode) {
 function exportUpdate() {
 	window.open("update.php?export");
 }
+$(function(){
+	$.get("update.php?"+Math.random(), function(ver_info){
+		if(ver_info==null) return;
+		$('<a href="###" onclick="checkUpdate()">系统有新版本可更新，点击本链接查看详情！</a>').appendTo("#info");
+		$("#info").css({'text-align':'center','padding':'10px','font-size':'18px','font-weight':'bold'});
+		update_info = ver_info;
+	}, "json");
+});
 //]]> 
 </script>
