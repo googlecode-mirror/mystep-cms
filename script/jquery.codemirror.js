@@ -220,7 +220,7 @@ By windy2000<windy2006@gmail.com> from www.mysteps.cn
 				if(the_content.length==0) the_content = obj.text();
 				the_content += "\n";
 				CodeMirror.runMode(the_content.replace(/\t/g, String.fromCharCode(160)+String.fromCharCode(160)).replace(/ /g, String.fromCharCode(160)), settings.mode, callback);
-				var width_side = Math.ceil(gutter.length/100)*0.5+1;
+				var width_side = Math.ceil(gutter.length/100)*0.5+2;
 				var new_obj = $('\
 <div class="CodeMirror" style="height:auto;">\
 	<div class="CodeMirror-scroll">\

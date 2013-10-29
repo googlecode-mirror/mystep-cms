@@ -611,6 +611,60 @@ function MakeDir($dir) {
 	}
 	return $flag;
 }
+function MultiCopy($source, $destination, $overwrite = false) {
+	//Coded By Windy2000 20131028 v1.0
+	if(substr($source, -1)=="/" || substr($source, -1)=="\\") $destination = $destination."/".basename($source);
+	if(is_dir($destination)) {
+		if(is_file($source)) {
+			$file_name = basename($source);
+			if(is_file($destination."/".$file_name)) {
+				if($overwrite) {
+					unlink($destination."/".$file_name);
+				} else {
+					rename($destination."/".$file_name, $destination."/".$file_name.".".time());
+				}
+			}
+		}
+	} elseif(is_file($destination)) {
+		if($overwrite) {
+			unlink($destination);
+		} else {
+			rename($destination, $destination.".".time());
+		}
+	} else {
+		if(is_file($source)) {
+			$info = pathinfo($destination);
+			if(isset($info['extension'])) {
+				MakeDir($info['dirname'], 0777);
+			} else {
+				MakeDir($destination);
+				$destination = $destination."/".basename($source);
+			}
+		} else {
+			MakeDir($destination);
+		}
+	}
+	
+	if(is_file($source)) {
+		copy($source, $destination);
+	} elseif(is_dir($source)) {
+		$handle=dir($source);
+		while(false !== ($file=$handle->read())) {
+			if($file=="." || $file=="..") continue;
+			if(is_dir($source."/".$file)) {
+				MultiCopy($source."/".$file, $destination."/".$file, $overwrite);
+			} else {
+				if(file_exists($destination."/".$file) && !$overwrite) {
+					rename($destination."/".$file, $destination."/".$file.".".time());
+				}
+				copy($source."/".$file, $destination."/".$file);
+			}
+		}
+	} else {
+		return false;
+	}
+	return true;
+}
 function MultiDel($dir, $file_list="") {
 	//Coded By Windy2000 20031001 v1.0
 	if(is_dir($dir)) {

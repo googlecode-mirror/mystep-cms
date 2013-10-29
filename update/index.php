@@ -41,9 +41,12 @@ if($v=="check") {
 	echo toJson($version_info, $setting['gen']['charset']);
 } elseif($v!="" && !empty($_SERVER["HTTP_REFERER"])) {
 	$version_main = substr($v, 0, 1);
+	$path_ver = "/";
 	if(file_exists("version_".$version_main.".php")) {
 		unset($version);
 		include("version_".$version_main.".php");
+		$path_ver = "/update/".$version_main."/";
+		if(!is_dir(ROOT_PATH.$path_ver)) $path_ver = "/";
 	}
 	$cache_file = ROOT_PATH."/".$setting['path']['cache']."/update/".md5($v.$ms_version['ver'].$cs);
 	if(file_exists($cache_file)) {
@@ -73,7 +76,7 @@ if($v=="check") {
 				if(is_dir(ROOT_PATH."/".$update_info['file'][$i])) {
 					$update_info['content'][$i] = ".";
 				} else {
-					$update_info['content'][$i] = GetFile(ROOT_PATH."/".$update_info['file'][$i]);
+					$update_info['content'][$i] = GetFile(ROOT_PATH.$path_ver.$update_info['file'][$i]);
 					$path_parts = pathinfo($update_info['file'][$i]);
 					if(!empty($cs) && strpos(".php,.tpl,.html,.htm,.sql", $path_parts["extension"])!==false) {
 						$update_info['content'][$i] = str_ireplace(strtolower($setting['gen']['charset']), strtolower($cs), $update_info['content'][$i]);

@@ -3568,6 +3568,31 @@ $setting = $cur_setting;
 				'template/admin/user_online.tpl',
 			),
 			'code' => '
+if(!function_exists("changeSetting")) {
+	function changeSetting($setting_new, $para_new = array(), $if_write = true) {
+		require(ROOT_PATH."/include/config.php");
+		$setting = arrayMerge($setting, $setting_new);
+		if(isset($para_new["rewrite"])) $rewrite_list = $para_new["rewrite"];
+		if(isset($para_new["expire"])) $expire_list = $para_new["expire"];
+		if(isset($para_new["authority"])) $authority = $para_new["authority"];
+		$rewrite_list_str = var_export($rewrite_list, true);
+		$expire_list_str = var_export($expire_list, true);
+		$content = <<<mystep
+	<?php
+	\$setting = array();
+	
+	/*--settings--*/
+	\$rewrite_list = {$rewrite_list_str};
+	\$expire_list = {$expire_list_str};
+	\$authority = "{$authority}";
+	?>
+	mystep;
+		$content = str_replace("/*--settings--*/", makeVarsCode($setting, \'$setting\'), $content);
+		if($if_write) WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
+		return $content;
+	}
+}
+
 $para_new = array();
 $para_new["rewrite"] = $rewrite_list;
 $para_new["rewrite"][0][0] = "article/[^\\/]+/(\\d+)(_(\\w+))?\\.html";

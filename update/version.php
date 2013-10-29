@@ -67,6 +67,30 @@ $version = array(
 				'template/admin/web_template.tpl',
 				'vcode.php'
 			),
+	'1.0.2' => array(
+		'info' => '
+				1.增加了更新回滚功能，本功能独立于系统，位于 admin/rollback/
+				2.修正了附件功能的两处错误
+				3.修正了codemirror的一处显示问题
+				4.增加了 MultiCopy 函数，用于目录复制
+				5.修正了基础在线更新的小问题
+				一些其他调整……
+			',
+		'file' => array(
+				'admin/rollback',
+				'admin/rollback/index.php',
+				'admin/update.php',
+				'files/index.php',
+				'include/config.php',
+				'include/parameter.php',
+				'script/jquery.codemirror.js',
+				'source/class/myuploader.class.php',
+				'source/function/global.php',
+				'update/index.php',
+				'update/version.php',
+				'update/version_0.php',
+			),
+	),
 	),
 );
 ?>

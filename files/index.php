@@ -1,5 +1,4 @@
 <?php
-$ms_sign = 1;
 $id = $_SERVER['QUERY_STRING'];
 $show_thumb = (strpos($id, "_")===false);
 $id = trim($id, "_");

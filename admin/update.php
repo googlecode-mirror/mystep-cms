@@ -42,6 +42,11 @@ switch($method) {
 		$update_info = preg_replace("/(^|[\r\n]+)([\w]{0,6})[\r\n]+/", "", $update_info);
 		$update_info = base64_decode($update_info);
 		$update_info = unserialize($update_info);
+		
+		$path_rollback = ROOT_PATH."/admin/rollback/".$ms_version['ver']."/";
+		MultiDel($path_rollback);
+		
+		WriteFile($path_rollback."include/config.php", GetFile(ROOT_PATH."/include/config.php"), "wb");
 		if(count($update_info['setting'])>0) {
 			$setting_org = $setting;
 			require(ROOT_PATH."/include/config.php");
@@ -49,7 +54,9 @@ switch($method) {
 			$content = changeSetting($update_info['setting'], array(), false);
 			if($method=="update") WriteFile(ROOT_PATH."/include/config.php", $content, "wb");
 			$setting = $setting_org;
+			WriteFile($path_rollback.$ms_version['ver']."_config.php", $content, "wb");
 		}
+		
 		$pre_list = array();
 		foreach($website as $cur_web) {
 			$cur_setting = getSubSetting($cur_web['web_id']);
@@ -63,41 +70,41 @@ switch($method) {
 				foreach($pre_list as $cur_pre) {
 					$cur_sql = str_replace("{pre}", $cur_pre, $update_info['sql'][$i]);
 					$cur_sql = str_replace($strFind, $strReplace, $cur_sql);
-					if($method=="update") {
-						$db->Query($cur_sql);
-					} else {
-						$sql_list[] = $cur_sql;
-					}
+					$sql_list[] = $cur_sql;
 				}
 			} else {
-				if($method=="update") {
-					$db->Query(str_replace($strFind, $strReplace, $update_info['sql'][$i]));
-				} else {
-					$sql_list[] = str_replace($strFind, $strReplace, $update_info['sql'][$i]);
-				}
+				$sql_list[] = str_replace($strFind, $strReplace, $update_info['sql'][$i]);
 			}
 		}
-		if($method=="update" && $m>0) {
+		if($method=="update" && count($sql_list)>0) {
+			$db->BatchExec($sql_list);
 			$result['info'] = sprintf($setting['language']['admin_update_sql'], $m);
 		} else {
 			$result['info'] = "";
 		}
+		if(count($sql_list)>0) WriteFile($path_rollback.$ms_version['ver']."_update.sql", implode(";\n", $sql_list), "wb");
 		
 		if($method=="update") {
 			for($i=0,$m=count($update_info['code']); $i<$m; $i++) {
 				@eval($update_info['code'][$i]);
 			}
 		}
+		if(count($update_info['code'])>0) WriteFile($path_rollback.$ms_version['ver']."_update.php", implode("\n//------------------------------\n", $update_info['code']), "wb");
 		
 		$check_file_list = checkFile();
 		if($check_file_list==false) $check_file_list = array();
 		$check_file_list= $check_file_list['mod'];
 		$list = array();
 		for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
+			$backup_file = $path_rollback.$update_info['file'][$i];
+			if(is_file(ROOT_PATH."/".$update_info['file'][$i])) {
+				MakeDir(dirname($backup_file));
+				copy(ROOT_PATH."/".$update_info['file'][$i], $backup_file);
+			}
 			if(strpos(strtolower($update_info['file'][$i]), "config.php")!==false) continue;
 			if($method=="update" && isWriteable(ROOT_PATH."/".$update_info['file'][$i]) && array_search("/".$update_info['file'][$i], $check_file_list)===false) {
 				if(empty($update_info['content'][$i])) {
-					@unlink(ROOT_PATH."/".$update_info['file'][$i]);
+					MultiDel(ROOT_PATH."/".$update_info['file'][$i]);
 				} elseif($update_info['content'][$i]==".") {
 					MakeDir(ROOT_PATH."/".$update_info['file'][$i]);
 				} else {
@@ -202,7 +209,7 @@ mystep;
 		if($method=="update") checkFile(ROOT_PATH, 0, "y");
 		
 		write_log($setting['language']['admin_update_done']);
-		echo toJson($result, $setting['db']['charset']);
+		echo toJson($result, $setting['gen']['charset']);
 		break;
 	case "build":
 		if(!checkFile(ROOT_PATH, 0, "y")) {
