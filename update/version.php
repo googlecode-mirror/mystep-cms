@@ -67,6 +67,7 @@ $version = array(
 				'template/admin/web_template.tpl',
 				'vcode.php'
 			),
+	),
 	'1.0.2' => array(
 		'info' => '
 				1.增加了更新回滚功能，本功能独立于系统，位于 admin/rollback/
@@ -90,7 +91,6 @@ $version = array(
 				'update/version.php',
 				'update/version_0.php',
 			),
-	),
 	),
 );
 ?>
