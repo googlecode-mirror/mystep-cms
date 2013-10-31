@@ -43,7 +43,6 @@ switch($step) {
 		unset($_POST);
 		$rewrite_list = var_export($rewrite_list, true);
 		$expire_list = var_export($expire_list, true);
-		$ignore_list = var_export($ignore_list, true);
 		$result = <<<mystep
 <?php
 \$setting = array();
@@ -51,7 +50,6 @@ switch($step) {
 /*--settings--*/
 \$rewrite_list = {$rewrite_list};
 \$expire_list = {$expire_list};
-\$ignore_list = {$ignore_list};
 \$authority = "{$authority}";
 ?>
 mystep;

@@ -158,7 +158,7 @@ function delTplCache($tpl="", $file="") {
 }
 
 function checkFile($dir="", $layer=0, $check="") {
-	global $file_list, $file_list_md5, $ignore_list;
+	global $file_list, $file_list_md5;
 	if($layer==0) {
 		$file_list = array();
 		$file_list_md5 = array();
@@ -166,17 +166,22 @@ function checkFile($dir="", $layer=0, $check="") {
 	$the_file = ROOT_PATH."/cache/checkfile.php";
 	if(empty($dir)) $dir = ROOT_PATH;
 	if(($handle = opendir($dir))===false) return false;
+	$ignore = array();
+	if(is_file($dir."/ignore")) {
+		$ignore = file_get_contents($dir."/ignore");
+		if(strlen($ignore)==0) return;
+		$ignore = str_replace("\r", "", $ignore);
+		$ignore = explode("\n", $ignore);
+	}
 	if($check!="") {
-		if(!is_dir($dir)) return false;
 		while (false !== ($file = readdir($handle))) {
-			if(array_search($file, $ignore_list)===false) {
-				$the_name = $dir."/".$file;
-				if(is_dir($the_name)) {
-					checkFile($the_name, $layer+1, "y");
-				} else {
-					$file_list[] = str_replace(ROOT_PATH, "", $the_name);
-					$file_list_md5[] = md5_file($the_name);
-				}
+			if(trim($file, ".") == "" || $file == "ignore" || array_search($file, $ignore)!==false) continue;
+			$the_name = $dir."/".$file;
+			if(is_dir($the_name)) {
+				checkFile($the_name, $layer+1, "y");
+			} else {
+				$file_list[] = str_replace(ROOT_PATH, "", $the_name);
+				$file_list_md5[] = md5_file($the_name);
 			}
 		}
 		if($layer==0) {
@@ -199,29 +204,28 @@ $file_list_md5 = '.var_export($file_list_md5, true).';
 		);
 		$info = array();
 		while (false !== ($file = readdir($handle))) {
+			if(trim($file, ".") == "" || $file == "ignore" || array_search($file, $ignore)!==false) continue;
 			$the_name = $dir."/".$file;
-			if(array_search($file, $ignore_list)===false) {
-				if(is_dir($the_name)) {
-					$result_new = checkFile($the_name, $layer+1);
-					$result['new'] = array_merge($result['new'], $result_new['new']);
-					$result['mod'] = array_merge($result['mod'], $result_new['mod']);
-					$result['miss'] = array_merge($result['miss'], $result_new['miss']);
+			if(is_dir($the_name)) {
+				$result_new = checkFile($the_name, $layer+1);
+				$result['new'] = array_merge($result['new'], $result_new['new']);
+				$result['mod'] = array_merge($result['mod'], $result_new['mod']);
+				$result['miss'] = array_merge($result['miss'], $result_new['miss']);
+			} else {
+				$the_name = str_replace(ROOT_PATH, "", $the_name);
+				if(strpos($the_name, "/config")!==false) continue;
+				if(strpos($the_name, "/template")===0 && stripos($the_name, ".php")===false) continue;
+				if(strpos($the_name, "/images")===0 && stripos($the_name, ".php")===false) continue;
+				if(strpos($the_name, "/plugin/")===0) {
+					if(strpos(str_replace("/plugin/", "", $the_name), "/")!==false && strpos($the_name, "/plugin/offical/")!==0) continue;
+				}
+				if(false !== ($key = array_search($the_name, $file_list))) {
+					if(md5_file(ROOT_PATH.$the_name)!=$file_list_md5[$key]) {
+						$result['mod'][] = $the_name;
+					}
+					unset($file_list[$key]);
 				} else {
-					$the_name = str_replace(ROOT_PATH, "", $the_name);
-					if(strpos($the_name, "/config")!==false) continue;
-					if(strpos($the_name, "/template")===0 && stripos($the_name, ".php")===false) continue;
-					if(strpos($the_name, "/images")===0 && stripos($the_name, ".php")===false) continue;
-					if(strpos($the_name, "/plugin/")===0) {
-						if(strpos(str_replace("/plugin/", "", $the_name), "/")!==false && strpos($the_name, "/plugin/offical/")!==0) continue;
-					}
-					if(false !== ($key = array_search($the_name, $file_list))) {
-						if(md5_file(ROOT_PATH.$the_name)!=$file_list_md5[$key]) {
-							$result['mod'][] = $the_name;
-						}
-						unset($file_list[$key]);
-					} else {
-						$result['new'][] = $the_name;
-					}
+					$result['new'][] = $the_name;
 				}
 			}
 		}

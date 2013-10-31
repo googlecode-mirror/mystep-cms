@@ -45,16 +45,29 @@ class myPack {
 
 	protected function PackFile($dir=".", $separator="|") {
 		$dir = str_replace("//", "/", $dir);
-		if(stristr("|".join("|",$this->file_ignore)."|", "|".basename($dir)."|")) return;
+		
+		$ignore = array();
+		if(is_file($dir."/ignore")) {
+			$ignore = file_get_contents($dir."/ignore");
+			if(strlen($ignore)==0) return;
+			$ignore = str_replace("\r", "", $ignore);
+			$ignore = explode("\n", $ignore);
+		}
+		
+		for($i=0,$m=count($this->file_ignore);$i<$m;$i++) {
+			if(substr($dir, -(strlen($this->file_ignore[$i])))==$this->file_ignore[$i]) return;
+		}
+		
 		if(is_dir($dir)) {
 			$content = "dir".$separator.str_replace($this->pack_dir, "", $dir).$separator.filemtime($dir)."\n";
 			fwrite($this->pack_fp, $content);
 			$mydir = opendir($dir);
 			while($file = readdir($mydir)){
-				if(trim($file, ".") != "") $this->PackFile($dir."/".$file);
+				if(trim($file, ".") == "" || $file == "ignore" || array_search($file, $ignore)!==false) continue;
+				$this->PackFile($dir."/".$file);
 			}
 			closedir($mydir);
-		}elseif(file_exists($dir)) {
+		} elseif(is_file($dir)) {
 			$content  =  "file".$separator.str_replace($this->pack_dir, "", $dir).$separator.filesize($dir).$separator.filemtime($dir)."\n";
 			if(isset($this->charset['file_ext'])) {
 				$file_content = GetFile($dir);
@@ -140,146 +153,5 @@ class myPack {
 		array_push($this->pack_result,"<br />File Count: {$this->file_count} File(s)");
 		return $filename;
 	}
-}
-
-function GetFile($file, $length=0, $offset=0) {
-	//Coded By Windy2000 20020503 v1.5
-	if(!is_file($file)) return "";
-	if($length==0 && $offset==0) {
-		$data = file_get_contents($file);
-	} else {
-		if($length==0) $length = 8192;
-		$fp = fopen($file, "rb");
-		fseek($fp, $offset);
-		$data = fread($fp, $length);
-		fclose($fp);
-	}
-	if(get_magic_quotes_runtime()) $data = stripcslashes($data);
-	return $data;
-}
-
-function GetFileSize($file) {
-	if(is_file($file)) {
-		$filesize = filesize($file);
-	} else {
-		if(is_numeric($file)) {
-			$filesize = $file;
-		} else {
-			return 0;
-		}
-	}
-	if($filesize <1024){
-		$filesize = (string)$filesize . " Bytes";
-	}else if($filesize <(1024 * 1024)){
-		$filesize = number_format((double)($filesize / 1024), 1) . " KB";
-	}else if($filesize <(1024 * 1024 * 1024)){
-		$filesize = number_format((double)($filesize / (1024 * 1024)), 1) . " MB";
-	}else{
-		$filesize = number_format((double)($filesize / (1024 * 1024 * 1024)), 1) . " GB";
-	}
-	return $filesize;
-}
-
-function WriteFile($file_name, $content, $mode="wb") {
-	//Coded By Windy2000 20040410 v1.0
-	MakeDir(dirname($file_name));
-	if($fp = fopen($file_name, $mode)) {
-		if(flock($fp, LOCK_EX)) {
-			fwrite($fp, $content);
-			flock($fp, LOCK_UN);
-		} else {
-			fwrite($fp, $content);
-		}
-		fclose($fp);
-		@chmod($file_name, 0777);
-	}
-	return $fp;
-}
-
-function MakeDir($dir) {
-	//Coded By Windy2000 20031001 v1.0
-	$dir = str_replace("\\", "/", $dir);
-	$dir = preg_replace("/\/+/", "/", $dir);
-	$flag = true;
-	if(!is_dir($dir)) {
-		$dir_list = explode("/", $dir);
-		$this_dir = "";
-		$oldumask=umask(0);
-		$max_count = count($dir_list);
-		for($i=0; $i<$max_count; $i++) {
-			if(empty($dir_list[$i])) continue;
-			$this_dir .= $dir_list[$i]."/";
-			if(!is_dir($this_dir)) {
-				if(!mkdir($this_dir,0777)) {
-					$flag = false;
-				}
-			}
-		}
-		umask($oldumask);
-	}
-	return $flag;
-}
-
-function MultiDel($dir, $file_list=""){
-	//Coded By Windy2000 20031001 v1.0
-	if(is_dir($dir)){
-		$mydir = opendir($dir);
-		while(($file = readdir($mydir)) !== false) {
-			if($file!="." && $file!="..") {
-				$the_name = $dir."/".$file;
-				if(is_dir($the_name)) {
-					if(empty($file_list) || strpos($file_list, $file)!==false) {
-						MultiDel($the_name);
-					} else {
-						MultiDel($the_name, $file_list);
-					}
-				} else {
-					if(empty($file_list) || strpos($file_list, $file)!==false) {
-						@unlink($the_name);
-					}
-				}
-				//is_dir($the_name) ? MultiDel($the_name) : @unlink($the_name);
-			}
-		}
-		closedir($mydir);
-		@rmdir($dir);
-	}else{
-		if(is_file($dir)) unlink($dir);
-	}
-	return;
-}
-
-function chg_charset($content, $from="gbk", $to="utf-8") {
-	if(strtolower($from)==strtolower($to)) return $content;
-	$result = null;
-	if(is_string($content)){
-		$result = iconv($from, $to.'//TRANSLIT//IGNORE', $content);
-		if($result===false && function_exists("mb_detect_encoding")) {
-			$encode = mb_detect_encoding($content, array("ASCII","GB2312","GBK","BIG5","UTF-8","EUC-CN","ISO-8859-1"));
-			$content = str_replace(chr(0x0A), chr(0x20), $content);
-			if($encode!="" && strtolower($encode)!=strtolower($to)) {
-				$result = mb_convert_encoding($content, $to, $encode);
-			} else {
-				$result = $content;
-			}
-		}
-	} elseif(is_array($content)) {
-		foreach($content as $key => $value) {
-			$result[$key] = chg_charset($value, $from, $to);
-		}
-	} else {
-		$result = $content;
-	}
-	return $result;
-}
-
-function debug() {
-	//Coded By Windy2000 20040410 v1.5
-	echo "<pre>";
-	for($i = 0; $i < func_num_args(); $i++) {
-		var_dump(func_get_arg($i));
-	}
-	echo "</pre>";
-	exit;
 }
 ?>

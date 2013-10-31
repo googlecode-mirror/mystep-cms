@@ -62,16 +62,29 @@ class myPack extends class_common {
 		$main_dir = $this->pack_dir;
 		if($no_folder) $main_dir = dirname($this->pack_dir)."/";
 		$dir = str_replace("//", "/", $dir);
-		if(stristr("|".join("|",$this->file_ignore)."|", "|".basename($dir)."|")) return;
+		
+		$ignore = array();
+		if(is_file($dir."/ignore")) {
+			$ignore = file_get_contents($dir."/ignore");
+			if(strlen($ignore)==0) return;
+			$ignore = str_replace("\r", "", $ignore);
+			$ignore = explode("\n", $ignore);
+		}
+		
+		for($i=0,$m=count($this->file_ignore);$i<$m;$i++) {
+			if(substr($dir, -(strlen($this->file_ignore[$i])))==$this->file_ignore[$i]) return;
+		}
+		
 		if(is_dir($dir)) {
 			$content = "dir".$separator.str_replace($main_dir, "", $dir).$separator.filemtime($dir)."\n";
 			fwrite($this->pack_fp, $content);
 			$mydir = opendir($dir);
 			while($file = readdir($mydir)){
-				if(trim($file, ".") != "") $this->PackFile($dir."/".$file);
+				if(trim($file, ".") == "" || $file == "ignore" || array_search($file, $ignore)!==false) continue;
+				$this->PackFile($dir."/".$file);
 			}
 			closedir($mydir);
-		}elseif(file_exists($dir)) {
+		} elseif(is_file($dir)) {
 			$content  =  "file".$separator.str_replace($main_dir, "", $dir).$separator.filesize($dir).$separator.filemtime($dir)."\n";
 			$content .= $this->GetFile($dir);
 			fwrite($this->pack_fp, $content);

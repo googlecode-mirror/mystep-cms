@@ -1,7 +1,7 @@
 <?php
 $ms_version = array(
-	'ver' => '1.0.2',
-	'date' => '2013-10-29',
+	'ver' => '1.0.3',
+	'date' => '2013-10-31',
 	'charset' => 'GBK',
 	'language' => 'CHS',
 );
@@ -36,27 +36,6 @@ $class_list = array(
 	"HTC_Parser" => "htc_parser.class.php",
 	"HTC_Parser_Highlight" => "htc_parser.class.php",
 	"HTC_Parser_Append" => "htc_parser.class.php",
-);
-
-$ignore_list = array (
-  '.',
-  '..',
-  '_maker',
-  'cache',
-  'update',
-  'install.lock',
-  'article',
-  'pic',
-  'tmp',
-  'web.config',
-  'aspnet_client',
-  '.svn',
-  '2011',
-  '2012',
-  '2013',
-  '2014',
-  'install',
-  'xcache',
 );
 
 $sess_handle = array(

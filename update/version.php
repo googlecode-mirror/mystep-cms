@@ -92,5 +92,26 @@ $version = array(
 				'update/version_0.php',
 			),
 	),
+	'1.0.3' => array(
+		'info' => '
+				1.修正了忽略模式（主要用于安装包和校验文件生成），不希望包含的目录只要放一个空的名为“ignore”的文件即可，若只是忽略某些文件，则只要在“ignore”文件中注明
+				2.修正了官方插件中一处标志判断代码
+				3.增加了主机端下载记录及查看
+				一些其他调整……
+			',
+		'file' => array(
+				'_maker/index.php',
+				'_maker/intro.txt',
+				'_maker/mypack.class.php',
+				'cache/ignore',
+				'files/ignore',
+				'include/ignore',
+				'include/parameter.php',
+				'plugin/offical/class.php',
+				'source/class/mypack.class.php',
+				'source/function/admin.php',
+				'template/admin/info_main.tpl',
+			),
+	),
 );
 ?>

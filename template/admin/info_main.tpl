@@ -14,6 +14,8 @@
 					<a href="###" onclick="emptyUpdate()">清空升级信息</a>
 					 |
 					<a href="###" onclick="exportUpdate()">导出升级信息</a>
+					 |
+					<a href="/_maker/log.txt" target="_blank">查看下载记录</a>
 				</span>
 			</td>
 		</tr>

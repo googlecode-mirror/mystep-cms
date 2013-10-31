@@ -54,7 +54,7 @@ class plugin_offical implements plugin {
 		$agent = strtolower($_SERVER['HTTP_USER_AGENT']);
 		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) return;
 		$file = basename($_SERVER["PHP_SELF"]);
-		if(strpos($file, ".js.php")!==false || strpos($file, "ajax")!==false || strpos($file, "api")!==false) return;
+		if(checkSign(1)) return;
 		$setting = self::setting();
 		if(!$setting['counter']) return;
 		global $db, $req;

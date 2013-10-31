@@ -3,6 +3,7 @@ set_time_limit(0);
 ini_set('memory_limit', '512M');
 ini_set('magic_quotes_runtime', 0);
 require("../include/parameter.php");
+require("../source/function/global.php");
 require("mypack.class.php");
 require("chs2cht.dic");
 list($cs, $lng_type) = explode(",", $_SERVER["QUERY_STRING"]);
@@ -10,6 +11,20 @@ $pack_dir = str_replace("\\", "/", realpath(dirname(__FILE__)."/../"));
 $result_dir = "mystep".(!empty($cs)?("_".$cs):"").(!empty($lng_type)?("_".$lng_type):"")."_v".$ms_version['ver'];
 
 echo "Making setup pack, be patient...";
+
+$log_file = "log.txt";
+$log = array(
+	'time' => date("Y-m-d H:i:s"),
+	'ip' => getIp(),
+	'agent' => $_SERVER['HTTP_USER_AGENT'],
+);
+
+if(strpos($log['agent'], "spider")!==false || strpos($log['agent'], "bot")!==false) {
+	header("HTTP/1.0 404 Not Found");
+	exit;
+}
+
+WriteFile($log_file, implode(",", $log)."\n", "ab");
 
 if(!file_exists($result_dir.".zip")) {
 	$pack_file = $result_dir."/"."mystep.pack";
@@ -20,8 +35,8 @@ if(!file_exists($result_dir.".zip")) {
 	mkdir($result_dir);
 	
 	$mypack = new MyPack($pack_dir, $pack_file);
-	$mypack->AddIgnore(basename(dirname(__FILE__)), ".svn", "_bak", "cache", "update", "install.lock", "2011", "article", "pic", "tmp", "colorway", "ciguang","news_show", "web.config", "aspnet_client","config_main.php","config_test.php","config-bak.php");
-	if(!empty($cs)) $mypack->setCharset("gbk", $cs, $lng_type,".php,.tpl,.html,.htm,.sql");
+	$mypack->AddIgnore(basename(dirname(__FILE__)), ".svn", "web.config", "aspnet_client", "include/install.lock");
+	if(!empty($cs)) $mypack->setCharset("gbk", $cs, $lng_type, ".php,.tpl,.html,.htm,.sql");
 	
 	$mypack->DoIt();
 	//echo $mypack->GetResult();
