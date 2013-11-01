@@ -107,6 +107,7 @@ $version = array(
 				'source/class/mypack.class.php',
 				'source/function/admin.php',
 				'template/admin/info_main.tpl',
+				'template/ignore',
 			),
 	),
 );
