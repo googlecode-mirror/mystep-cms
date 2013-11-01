@@ -91,6 +91,7 @@ if($v=="check") {
 		$update = base64_encode(serialize($update_info));
 		WriteFile($cache_file, $update, "wb");
 	}
+	if(empty($cs)) $cs = $setting['gen']['charset'];
 	$mydb = new MyDB;
 	$mydb->init("update", ROOT_PATH."/".$setting['path']['cache']."/update/");
 	if(!$mydb->checkTBL()) {

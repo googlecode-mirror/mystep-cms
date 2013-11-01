@@ -87,9 +87,6 @@ $version = array(
 				'script/jquery.codemirror.js',
 				'source/class/myuploader.class.php',
 				'source/function/global.php',
-				'update/index.php',
-				'update/version.php',
-				'update/version_0.php',
 			),
 	),
 	'1.0.3' => array(
@@ -100,9 +97,8 @@ $version = array(
 				一些其他调整……
 			',
 		'file' => array(
-				'_maker/index.php',
-				'_maker/intro.txt',
-				'_maker/mypack.class.php',
+				'ignore',
+				'admin/update.php',
 				'cache/ignore',
 				'files/ignore',
 				'include/ignore',
