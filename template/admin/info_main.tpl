@@ -15,7 +15,7 @@
 					 |
 					<a href="###" onclick="exportUpdate()">导出升级信息</a>
 					 |
-					<a href="/_maker/log.txt" target="_blank">查看下载记录</a>
+					<a href="/pack/log.txt" target="_blank">查看下载记录</a>
 				</span>
 			</td>
 		</tr>
