@@ -20,7 +20,21 @@ if($method=="update" && count($_POST)>0) {
 		$para_new["rewrite"][] = array($_POST['rule'][$i], $_POST['jump'][$i]);
 	}
 	changeSetting($setting_new, $para_new);
-	if(!empty($_POST['rule_new'])) WriteFile(ROOT_PATH."/.htaccess", $_POST['rule_new'], "wb");
+	if(!empty($_POST['rule_new'])) {
+		if($_POST['write_type']=="IIS7") {
+			if(is_file(ROOT_PATH."/web.config")) {
+				$iis_setting = GetFile(ROOT_PATH."/web.config");
+				if(preg_match("/<rewrite>.+<\/rewrite>/ism",$iis_setting,$match)) {
+					$iis_setting = str_replace($match[0], $_POST['rule_new'], $iis_setting);
+				} else {
+					$iis_setting = str_replace("</system.webServer>", $_POST['rule_new']."</system.webServer>", $iis_setting);
+				}
+				WriteFile(ROOT_PATH."/web.config", $iis_setting, "wb");
+			}
+		} else {
+			WriteFile(ROOT_PATH."/.htaccess", $_POST['rule_new'], "wb");
+		}
+	}
 } else {
 	$tpl_info['idx'] = "web_rewrite";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);

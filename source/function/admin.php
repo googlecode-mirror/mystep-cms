@@ -174,6 +174,18 @@ function checkFile($dir="", $layer=0, $check="") {
 		$ignore = explode("\n", $ignore);
 	}
 	if($check!="") {
+		if(file_exists(ROOT_PATH."/update/")) {
+			$cs_list = array("GBK","UTF-8","BIG5");
+			$charset = $GLOBALS['setting']['gen']['charset'];
+			global $file_list_md5_ext;
+			if($layer==0) {
+				$file_list_md5_ext = array();
+				foreach ($cs_list as $item) {
+					$item = strtoupper($item);
+					$file_list_md5_ext[$item] = array();
+				}
+			}
+		}
 		while (false !== ($file = readdir($handle))) {
 			if(trim($file, ".") == "" || $file == "ignore" || array_search($file, $ignore)!==false) continue;
 			$the_name = $dir."/".$file;
@@ -182,12 +194,19 @@ function checkFile($dir="", $layer=0, $check="") {
 			} else {
 				$file_list[] = str_replace(ROOT_PATH, "", $the_name);
 				$file_list_md5[] = md5_file($the_name);
+				if(isset($cs_list, $file_list_md5_ext)) {
+					foreach ($cs_list as $item) {
+						$item = strtoupper($item);
+						$file_list_md5_ext[$item][] = md5_file_cs($the_name, $item, $charset);
+					}
+				}
 			}
 		}
 		if($layer==0) {
 			$content = '<?php
 $file_list = '.var_export($file_list, true).';
 $file_list_md5 = '.var_export($file_list_md5, true).';
+'.(isset($file_list_md5_ext)?('$file_list_md5_ext = '.var_export($file_list_md5_ext, true)):'').'
 ?>';
 			WriteFile($the_file, $content, "wb");
 		}

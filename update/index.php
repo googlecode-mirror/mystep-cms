@@ -15,9 +15,19 @@ if($v=="check") {
 	if(file_exists($the_file)) {
 		include($the_file);
 		$check_info['file_list'] = $file_list;
-		$check_info['file_list_md5'] = $file_list_md5;
+		if(empty($cs)) {
+			$check_info['file_list_md5'] = $file_list_md5;
+			echo toJson($check_info, $setting['gen']['charset']);
+		} else {
+			$cs = strtoupper($cs);
+			if(isset($file_list_md5_ext[$cs])) {
+				$check_info['file_list_md5'] = $file_list_md5_ext[$cs];
+				echo toJson($check_info, $setting['gen']['charset']);
+			} else {
+				echo "";
+			}
+		}
 		unset($file_list, $file_list_md5);
-		echo toJson($check_info, $setting['gen']['charset']);
 	} else {
 		echo "";
 	}

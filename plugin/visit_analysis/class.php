@@ -108,7 +108,7 @@ mystep;
 				$referer = mysql_real_escape_string($referer);
 				if(strlen($referer)>250) $referer = substrPro($referer, 0, 250);
 				if(!empty($keyword)) {
-					$keyword = getString($keyword);
+					$keyword = safeEncoding($keyword, $setting['gen']['charset']);
 					$keyword = substrPro($keyword, 0, 190);
 					$keyword = mysql_real_escape_string($keyword);
 					$url = "http://".$req->getServer("HTTP_HOST").getString($req->getServer("REQUEST_URI"));

@@ -110,5 +110,25 @@ $version = array(
 				'template/ignore',
 			),
 	),
+	'1.0.4' => array(
+		'info' => '
+				1.服务器端文件校验增加了多字符集校验
+				2.修正了rewrite功能的一个bug，并可以直接写入iis或apache的配置文件
+				3.增加了一些字符集相关的函数，避免乱码
+				一些其他调整……
+			',
+		'file' => array(
+				'admin/update.php',
+				'admin/web_rewrite.php',
+				'ignore',
+				'include/config.php',
+				'include/parameter.php',
+				'plugin/visit_analysis/class.php',
+				'source/function/admin.php',
+				'source/function/global.php',
+				'template/admin/info_main.tpl',
+				'template/admin/web_rewrite.tpl',
+			),
+	),
 );
 ?>

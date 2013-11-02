@@ -149,7 +149,11 @@ function checkModify(mode) {
 	$.get(url, function(info){
 		loadingShow();
 		if(info==false) {
-			alert("校验失败，请确认校验信息是否已成功建立！");
+			if(mode==0) {
+				alert("校验失败，请确认校验信息是否已成功建立！");
+			} else {
+				alert("服务器连接失败，或不存在本网站对应字符集的校验信息");
+			}
 		} else {
 			var result = "";
 			if(info['new']!=null) {

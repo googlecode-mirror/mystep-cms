@@ -37,10 +37,16 @@
 				</td>
 			</tr>
 			<tr>
-				<td class="row" colspan="4" align="center">
-					<input type="checkbox" id="set_rule" onclick="setRule(this.checked)"> <label for="set_rule">写入.htaccess</label>
+				<td class="cat" colspan="4" align="center">
+					<select name="write_type" onchange="setRule(this.value)">
+						<option value="">写入配置文件</option>
+						<option value="Apache">写入 .htaccess （Apache）</option>
+						<option value="IIS7">写入 web.config （IIS）</option>
+					</select>
 					<input type="hidden" name="rule_new" />
-					<br /><br />
+			</tr>
+			<tr>
+				<td class="row" colspan="4" align="center">
 					<input class="btn" type="Submit" value=" 确认修改 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重置数据 " />&nbsp;&nbsp;
 				</td>
@@ -59,10 +65,10 @@
 		</tr>
 <!--loop:start key="rewrite_plugin"-->
 		<tr>
-			<td class="cat"><!--rewrite_plugin_idx--></td>
+			<td class="cat" align="center"><!--rewrite_plugin_idx--></td>
 			<td class="row"><input name="rule[]" type="text" size="10" value="<!--rewrite_plugin_rule-->" need="" /></td>
 			<td class="row"><input name="jump[]" type="text" size="10" value="<!--rewrite_plugin_jump-->" need="" /></td>
-			<td class="row"><!--rewrite_plugin_plugin--></td>
+			<td class="row" align="center"><!--rewrite_plugin_plugin--></td>
 		</tr>
 <!--loop:end-->
 	</table>
@@ -71,7 +77,7 @@
 		<tr>
 			<td class="cat" colspan="4">
 				规则生成：
-				<select name="type" onchange="createRule(this.value)">
+				<select id="rule_type" name="type" onchange="createRule(this.value)">
 					<option>Apache</option>
 					<option>Nginx</option>
 					<option>IIS7</option>
@@ -120,7 +126,6 @@ function createRule(type) {
 				result += '\n\
 		<rule name="rule_'+i+'" stopProcessing="true">\n\
 			<match url="'+rules[i][0]+'$" ignoreCase="true" />\n\
-			<conditions logincalGrouping="MatchAll" trackAllCaptures="false" />\n\
 			<action type="Rewrite" url="'+rules[i][1].replace(/\/(\d+)/g, "{R:$1}").replace(/&/g,"&amp;")+'" appendQueryString="true" />\n\
 		</rule>';
 			}
@@ -137,14 +142,13 @@ function createRule(type) {
 	return;
 }
 function setRule(mode) {
-	var rule_cur = $("#rule").val();
-	createRule();
-	if(mode) {
-		$("input[name=rule_new]").val($("#rule").val());
-	} else {
+	if(mode=="") {
 		$("input[name=rule_new]").val("");
+	} else {
+		$("#rule_type").val(mode);
+		createRule(mode);
+		$("input[name=rule_new]").val($("#rule").val());
 	}
-	$("#rule").val(rule_cur);
 	return;
 }
 $(function(){

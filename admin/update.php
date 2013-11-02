@@ -221,7 +221,7 @@ mystep;
 		echo toJson($result, $setting['gen']['charset']);
 		break;
 	case "check_server":
-		$check_info = GetRemoteContent($setting['gen']['update']."?v=check");
+		$check_info = GetRemoteContent($setting['gen']['update']."?v=check&cs=".$setting['gen']['charset']);
 		if(!empty($check_info)) {
 			$check_info = json_decode($check_info);
 			$the_file = ROOT_PATH."/cache/checkfile.php";

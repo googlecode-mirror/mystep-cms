@@ -247,16 +247,27 @@ function html2js($str) {
 	}
 	return $result;
 }
+function encoding_detect($str) {
+	if(function_exists("iconv")) {
+		$cs_list = array("GBK","UTF-8","BIG5","ASCII");
+		foreach ($cs_list as $item) {
+			$sample = iconv($item, $item, $str);
+			if (md5($sample) == md5($str)) return $item;
+		}
+	} elseif(function_exists("mb_detect_encoding")) {
+		return mb_detect_encoding($content, array("ASCII","GB2312","GBK","BIG5","UTF-8","EUC-CN","ISO-8859-1","windows-1251","Shift-JIS"));
+	}
+	return null;
+}
 function chg_charset($content, $from="gbk", $to="utf-8") {
 	if(strtolower($from)==strtolower($to)) return $content;
 	$result = null;
 	if(is_string($content)) {
 		$result = iconv($from, $to.'//TRANSLIT//IGNORE', $content);
 		if($result===false && function_exists("mb_detect_encoding")) {
-			$encode = mb_detect_encoding($content, array("ASCII","GB2312","GBK","BIG5","UTF-8","EUC-CN","ISO-8859-1"));
-			$content = str_replace(chr(0x0A), chr(0x20), $content);
-			if($encode!="" && strtolower($encode)!=strtolower($to)) {
-				$result = mb_convert_encoding($content, $to, $encode);
+			$encoding = encoding_detect($content);
+			if($encoding!="" && strtolower($encoding)!=strtolower($to)) {
+				$result = mb_convert_encoding($content, $to, $encoding);
 			} else {
 				$result = $content;
 			}
@@ -276,7 +287,7 @@ function chg_charset_file($file_src, $file_dst, $from="gbk", $to="utf-8") {
 	$content = iconv($from, $to.'//TRANSLIT//IGNORE',$content);
 	return WriteFile($file_dst, $content, "wb");
 }
-function getSafeCode($str, $charset) {
+function getSafeCode($str, $charset='UTF-8') {
 	if(is_array($str)) {
 		foreach($str as $key => $value) {
 			$str[$key] = getSafeCode($value, $charset);
@@ -292,6 +303,43 @@ function getSafeCode($str, $charset) {
 			return $str_1;
 		}
 	}
+}
+function safeEncoding($str, $charset='UTF-8') {
+	$encoding = "UTF-8";
+	for($i=0; $i<strlen($str); $i++) {
+		if(ord($str{$i})<128) {
+			continue;
+		} elseif((ord($str{$i})&224)==224) {
+			$char = $str{++$i};
+			if((ord($char)&128)==128) {
+				$char = $str{++$i};
+				if((ord($char)&128)==128) {
+					$encoding = "UTF-8";
+					break;
+				}
+			}
+		} elseif((ord($str{$i})&192)==192) {
+			$char = $str{++$i};
+			if((ord($char)&128)==128) {
+				$encoding = "GBK";
+				break;
+			}
+		}
+	}
+	if(strtoupper($encoding) != strtoupper($charset)) {
+		$str = chg_charset($str, $encoding, $charset);
+	}
+	return $str;
+}
+function md5_file_cs($file, $charset="", $encoding="") {
+	if(empty($charset) || strtolower($charset)==strtolower($encoding) || strpos(GetFile($file,100), chr(0))!==false) return md5_file($file);
+	$content = GetFile($file);
+	if(empty($encoding)) $encoding = encoding_detect($content);
+	if(!empty($encoding)) {
+		$content = chg_charset($content, $encoding, $charset);
+		return md5($content);
+	}
+	return md5_file($file);
 }
 function json_decode_js($json, $assoc = FALSE) {
 	$json = str_replace(array("\n","\r"),"",$json);
