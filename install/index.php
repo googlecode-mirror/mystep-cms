@@ -149,7 +149,7 @@ if(is_file("./step_{$step}.php")) {
 }
 
 echo <<<mystep
-	<DIV class=footer>&copy;2010 - 2012 <A href="mailto:windy2006@gmail.com">Windy2000</A></DIV>
+	<DIV class=footer>&copy;2010 - 2014 <A href="http://www.mysteps.cn">Mysteps.cn</A></DIV>
 </DIV>
 </BODY>
 </HTML>

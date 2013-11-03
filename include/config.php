@@ -36,7 +36,7 @@ $setting['gen']['etag'] = 20131027;
 $setting['gen']['show_info'] = false;
 
 $setting['rewrite'] = array();
-$setting['rewrite']['enable'] = false;
+$setting['rewrite']['enable'] = true;
 $setting['rewrite']['read'] = 'article';
 $setting['rewrite']['list'] = 'catalog';
 $setting['rewrite']['tag'] = 'tag';

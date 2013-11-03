@@ -38,6 +38,7 @@ abstract class class_common {
 		if($para=="instatnce") {
 			eval('return (new '.get_called_class().'());');
 		} else {
+			if($this->paras == null) return null;
 			return array_key_exists($para, $this->paras) ? $this->paras[$para] : null;
 		}
 	}

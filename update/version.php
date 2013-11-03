@@ -130,5 +130,21 @@ $version = array(
 				'template/admin/web_rewrite.tpl',
 			),
 	),
+	'1.0.5' => array(
+		'info' => '
+				1.修正了安装包生成的几个错误
+				2.修正了基类里的一个错误
+				一些其他调整……
+			',
+		'file' => array(
+				'include/config.php',
+				'include/ignore',
+				'include/parameter.php',
+				'pack/index.php',
+				'pack/mypack.class.php',
+				'pack/setup.php',
+				'source/class/abstract.class.php',
+			),
+	),
 );
 ?>

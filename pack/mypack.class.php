@@ -63,7 +63,7 @@ class myPack {
 			fwrite($this->pack_fp, $content);
 			$mydir = opendir($dir);
 			while($file = readdir($mydir)){
-				if(trim($file, ".") == "" || $file == "ignore" || array_search($file, $ignore)!==false) continue;
+				if(trim($file, ".") == "" || ($file!="install" && array_search($file, $ignore)!==false)) continue;
 				$this->PackFile($dir."/".$file);
 			}
 			closedir($mydir);

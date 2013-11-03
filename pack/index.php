@@ -26,7 +26,7 @@ if(strpos($log['agent'], "spider")!==false || strpos($log['agent'], "bot")!==fal
 
 WriteFile($log_file, implode(",", $log)."\n", "ab");
 
-if(!file_exists($result_dir.".zip")) {
+if(!file_exists("build/".$result_dir.".zip")) {
 	$pack_file = $result_dir."/"."mystep.pack";
 	$target_file = $result_dir."/"."mystep.php";
 	@unlink($target_file);
@@ -35,7 +35,7 @@ if(!file_exists($result_dir.".zip")) {
 	mkdir($result_dir);
 	
 	$mypack = new MyPack($pack_dir, $pack_file);
-	$mypack->AddIgnore(basename(dirname(__FILE__)), ".svn", "web.config", "aspnet_client", "include/install.lock");
+	$mypack->AddIgnore(basename(dirname(__FILE__)), ".svn", "web.config", "aspnet_client", "include/install.lock", "bak", "xcache", "_test", "config_test.php", "config-bak.php", "cfna_mis");
 	if(!empty($cs)) $mypack->setCharset("gbk", $cs, $lng_type, ".php,.tpl,.html,.htm,.sql");
 	
 	$mypack->DoIt();
@@ -51,10 +51,10 @@ if(!file_exists($result_dir.".zip")) {
 	copy("intro.txt", $result_dir."/readme.txt");
 	require("../source/class/myzip.class.php");
 	rename($result_dir, "upload");
-	zip("upload", $result_dir.".zip");
+	zip("upload", "build/".$result_dir.".zip");
 	MultiDel("upload");
 }
 ?>
 <script language="JavaScript">
-location.href = "<?=$result_dir?>.zip";
+location.href = "build/<?=$result_dir?>.zip";
 </script>
