@@ -5,7 +5,14 @@ $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $id = $req->getReq("id");
 $log_info = "";
-if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
+
+if(!empty($id)) {
+	$cur_img= $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_image where id = '{$id}'");
+	if($cur_info==false || (!$op_mode && $web_id!=$cur_img['web_id'])) {
+		echo showInfo($setting['language']['admin_art_image_error']);
+		$mystep->pageEnd(false);
+	}
+}
 
 switch($method) {
 	case "add":
@@ -14,18 +21,14 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		if(!$op_mode && $web_id!=$_POST['web_id']) {
-			$goto_url = $setting['info']['self'];
-		} else {
-			$log_info = $setting['language']['admin_art_image_delete'];
-			$db->Query("delete from ".$setting['db']['pre']."news_image where id = '{$id}'");
-		}
+		$log_info = $setting['language']['admin_art_image_delete'];
+		$db->Query("delete from ".$setting['db']['pre']."news_image where id = '{$id}'");
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
 			$goto_url = $setting['info']['self'];
-		} elseif(!$op_mode && $web_id!=$_POST['web_id']) {
+		} elseif(!$op_mode && $web_id!=$cur_img['web_id']) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$_POST['image'] = str_replace("//", "/", $_POST['image']);

@@ -35,7 +35,7 @@ if(!file_exists("build/".$result_dir.".zip")) {
 	mkdir($result_dir);
 	
 	$mypack = new MyPack($pack_dir, $pack_file);
-	$mypack->AddIgnore(basename(dirname(__FILE__)), ".svn", "web.config", "aspnet_client", "include/install.lock", "bak", "xcache", "_test", "config_test.php", "config-bak.php", "cfna_mis");
+	$mypack->AddIgnore(basename(dirname(__FILE__)), ".svn", "web.config", "aspnet_client", "include/install.lock", "Thumbs.db", "bak", "xcache", "_test", "config_test.php", "config-bak.php", "cfna_mis");
 	if(!empty($cs)) $mypack->setCharset("gbk", $cs, $lng_type, ".php,.tpl,.html,.htm,.sql");
 	
 	$mypack->DoIt();

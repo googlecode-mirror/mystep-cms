@@ -15,7 +15,7 @@
 			<td><!--record_name--></td>
 			<td><!--record_keyword--></td>
 			<td><img src="<!--record_image-->" height="60" /></td>
-			<td align="center"><a href="?method=edit&id=<!--record_id-->">编辑</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('该操作将不可恢复！请按确定继续。')">删除</a></td>
+			<td align="center"><a href="?method=edit&web_id=<!--record_web_id-->&id=<!--record_id-->">编辑</a> <a href="?method=delete&web_id=<!--record_web_id-->&id=<!--record_id-->" onclick="return confirm('该操作将不可恢复！请按确定继续。')">删除</a></td>
 		</tr>
 <!--loop:end-->
 	</table>

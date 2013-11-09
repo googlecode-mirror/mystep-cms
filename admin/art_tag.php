@@ -4,8 +4,6 @@ require("inc.php");
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $id = $req->getGet("id");
-$web_id = $req->getReq("web_id");
-if(!$op_mode || empty($web_id)) $web_id = $setting['info']['web']['web_id'];
 $log_info = "";
 
 $setting_sub = getSubSetting($web_id);

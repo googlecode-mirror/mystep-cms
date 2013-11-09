@@ -33,10 +33,11 @@ BODY {font-size:12px; text-align:left; padding:0px; margin:auto; cursor:default;
 
 #page_ole {margin:auto; text-align:left; width:100%; min-width:980px;}
 
-#page_top {background-color:#f2f9fd; clear:both; margin:auto auto auto auto; text-align:left; width:100%; min-width:800px; height:72px; border-bottom:2px #739ace solid;}
-#page_top .l {float:left; padding:10px 0px 0px 10px;}
+#page_top {background-color:#f2f9fd; clear:both; margin:auto auto auto auto; text-align:left; width:100%; height:73px; border-bottom:2px #739ace solid;}
+#page_top .l {float:left; padding:10px 0px 0px 10px;width:220px;}
 #page_top .r {float:right;}
 #page_top .r .info {text-align:right; padding:10px 10px 0px 10px; white-space:nowrap; word-wrap:keep-all;}
+#page_top .r ul {float:right;}
 
 #menu_nav {margin-right:20px;}
 #menu_nav li {z-index:100; position:relative; text-align:center; display:block; float:left; letter-spacing:1px; font-size:14px; font-weight:bold; white-space:nowrap; word-wrap:normal; word-break:keep-all;}

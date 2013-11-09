@@ -8,7 +8,7 @@ includeCache("website");
 includeCache("news_cat", false);
 $tpl->Set_Variable("username", $req->getSession('username'));
 $tpl->Set_Variable("usergroup", $group['group_name']);
-$tpl->Set_Variable("web_id", $setting['info']['web']['web_id']);
+$tpl->Set_Variable("web_id", $web_id);
 $tpl->Set_Variable("group", toJson($group, $setting['gen']['charset']));
 if($op_mode) {
 	$tpl->Set_Variable("admin_cat", toJson($admin_cat, $setting['gen']['charset']));

@@ -26,7 +26,7 @@
 				登录用户：<!--username-->（<!--usergroup-->） [<a href="###" onclick="showPop('modi_pwd','更改密码','id','modi_pwd',300);return false;" target="_top">更改密码</a>] [<a href="login.php?logout" target="_top">退出</a>]
 			</div>
 			<div id="menu_nav">
-				<ul></ul>
+				<ul>list</ul>
 			</div>
 		</div>
 	</div>
@@ -134,21 +134,30 @@ function showCat(theOle, theObjs, renew) {
 	return;
 }
 function setPos() {
-	var theWidth = $(document).width() - 200;
-	var theHeight = $(document).height() - 120;
+	var now = (new Date()).getTime();
+	if($("#menu_nav").data("time")!=null) {
+		if(now - $("#menu_nav").data("time") < 200) return;
+	}
+	$("#menu_nav").data("time", now);
+	
+	var theWidth = $(document.body).width() - 200;
+	var theHeight = $(document.body).height() - 120;
 	$("#main").width(theWidth);
 	$("#main").height(theHeight);
 	$("#cat_tree").height(theHeight - 50);
+	
+	$("#page_ole").css("min-width", "auto");
+	$("#page_top .r").width("auto");
+	if($("#page_top .l").position().top < $("#page_top .r").position().top) {
+		$("#page_top .r").width($("#page_top").width()-$("#page_top .l").outerWidth(true) - 20);
+	}
 	if($("#nav_more").length>0) {
 		$("#nav_more").find("a").addClass("nav");
 		$("#nav_more").find("li").appendTo("#menu_nav > UL");
 		$("#nav_more").remove();
-		$("#menu_nav").css("width",$(top.window).width());
 	}
-	var nav_width = $("#menu_nav").width();
-	theWidth = $(top.window).width() - 300;
-	if(nav_width > theWidth) {
-		$("#menu_nav").css("width",theWidth);
+	
+	if($("#menu_nav ul:first").height() > 60) {
 		var item_list = $("#menu_nav").find("li");
 		var item_more = $("<ul/>");
 		var cur_item = null;
@@ -176,6 +185,12 @@ function setPos() {
 				$(this).children("ul").stop(true,true).hide();
 		});
 	}
+	
+	setTimeout(function(){
+		if($("#page_top .l").position().top < $("#page_top .r").position().top || $("#menu_nav ul:first").height() > 60) {
+			setPos();
+		}
+	}, 200);
 }
 function setNav() {
 	var listOLE = $("#menu_nav ul:first");

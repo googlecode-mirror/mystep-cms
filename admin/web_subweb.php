@@ -4,9 +4,7 @@ require("inc.php");
 includeCache("website");
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
-$web_id = $req->getGet("web_id");
 if(!$op_mode) {
-	$web_id = $setting['info']['web']['web_id'];
 	if($method!="edit_ok") $method = "edit";
 }
 $log_info = "";
@@ -18,30 +16,35 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		$log_info = $setting['language']['admin_web_subweb_delete'];
-		$web_id = $req->getGet("web_id");
-		$web_info = getParaInfo("website", "web_id", $web_id);
-		if($web_id>1) {
-			$cfg_file = ROOT_PATH."/include/config_".$web_info['idx'].".php";
-			include($cfg_file);
-			if($setting['db']['name']!=$setting_sub['db']['name']) {
-				$db->Query("drop database ".$setting_sub['db']['name']);
-			} elseif($setting['db']['pre']!=$setting_sub['db']['pre']) {
-				$db->Query("drop table ".$setting_sub['db']['pre']."news_show");
-				$db->Query("drop table ".$setting_sub['db']['pre']."news_detail");
-				$db->Query("drop table ".$setting_sub['db']['pre']."news_tag");
+		if(!$op_mode) {
+				$goto_url = $setting['info']['self'];
 			} else {
-				$db->Query("update ".$setting['db']['pre']."news_cat set web_id=1 where web_id='{$web_id}'");
-				$db->Query("update ".$setting['db']['pre']."news_show set web_id=1 where web_id='{$web_id}'");
+				$log_info = $setting['language']['admin_web_subweb_delete'];
+				$web_id = $req->getGet("web_id");
+				if($web_info = getParaInfo("website", "web_id", $web_id)) {
+					$cfg_file = ROOT_PATH."/include/config_".$web_info['idx'].".php";
+					include($cfg_file);
+					if($setting['db']['name']!=$setting_sub['db']['name']) {
+						$db->Query("drop database ".$setting_sub['db']['name']);
+					} elseif($setting['db']['pre']!=$setting_sub['db']['pre']) {
+						$db->Query("drop table ".$setting_sub['db']['pre']."news_show");
+						$db->Query("drop table ".$setting_sub['db']['pre']."news_detail");
+						$db->Query("drop table ".$setting_sub['db']['pre']."news_tag");
+					} else {
+						$db->Query("update ".$setting['db']['pre']."news_cat set web_id=1 where web_id='{$web_id}'");
+						$db->Query("update ".$setting['db']['pre']."news_show set web_id=1 where web_id='{$web_id}'");
+					}
+					unlink($cfg_file);
+					$db->Query("delete from ".$setting['db']['pre']."website where web_id='{$web_id}'");
+					deleteCache("website");
+				} else {
+					$goto_url = $setting['info']['self'];
+				}
 			}
-			unlink($cfg_file);
-			$db->Query("delete from ".$setting['db']['pre']."website where web_id='{$web_id}'");
-			deleteCache("website");
-		}
 		break;
 	case "add_ok":
 	case "edit_ok":
-		if(count($_POST) == 0) {
+		if(count($_POST) == 0 || (!$op_mode && $method=="add_ok")) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$log_info = ($method=="add_ok"?$setting['language']['admin_web_subweb_add']:$setting['language']['admin_web_subweb_edit']);

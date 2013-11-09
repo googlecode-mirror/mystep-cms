@@ -2,7 +2,7 @@
 		<DIV class="licenseblock">
 			<DIV class="license">
 				<H1>中文版授权协议 适用于中文用户</H1>
-				<P>版权所有 (c) 2010-2012，Windy2000(windy2006@gmail.com)</P>
+				<P>版权所有 (c) 2010-2014，Windy2000(windy2006@gmail.com)</P>
 				<P>感谢您选择 MyStep 内容管理系统。希望我们的努力能为您提供一个高效快速和强大的网站解决方案。</P>
 				<P>本授权协议适用且仅适用于 MyStepCMS 1.x 版本，作者本人拥有对本授权协议的最终解释权。</P>
 				<H3>I. 协议许可的权利</H3>

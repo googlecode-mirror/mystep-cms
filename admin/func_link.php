@@ -7,7 +7,15 @@ if(empty($method)) $method = "list";
 $id = $req->getReq("id");
 $idx = $req->getReq("idx");
 $log_info = "";
-if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
+
+if(!empty($id)) {
+	$cur_link = getParaInfo("link_txt", "id", $id);
+	if($cur_link==false) $cur_link = getParaInfo("link_img", "id", $id);
+	if($cur_link==false || (!$op_mode && $web_id!=$cur_link['web_id'])) {
+		echo showInfo($setting['language']['admin_func_link_error']);
+		$mystep->pageEnd(false);
+	}
+}
 
 switch($method) {
 	case "add":
@@ -16,13 +24,9 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		if(!$op_mode && $web_id!=$_POST['web_id']) {
-			$goto_url = $setting['info']['self'];
-		} else {
-			$log_info = $setting['language']['admin_func_link_delete'];
-			$db->Query("delete from ".$setting['db']['pre']."links where id = '$id'");
-			deleteCache("link");
-		}
+		$log_info = $setting['language']['admin_func_link_delete'];
+		$db->Query("delete from ".$setting['db']['pre']."links where id = '$id'");
+		deleteCache("link");
 		break;
 	case "add_ok":
 	case "edit_ok":
@@ -74,7 +78,6 @@ function build_page($method) {
 		$str_sql = "select * from ".$setting['db']['pre']."links where 1=1";
 		if(!empty($idx)) $str_sql .= " and idx='".$idx."'";
 		if(!empty($web_id)) $str_sql .= " and web_id='".$web_id."'";
-		if(!empty($idx)) $str_sql .= " where idx='".$idx."'";
 		if(empty($order)) $order="id";
 		$str_sql.= " order by $order {$order_type}".(($order=="id")?"":", id desc");
 		$str_sql.= " limit $page_start, $page_size";

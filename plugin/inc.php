@@ -39,4 +39,5 @@ if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "fil
 		$mystep->pageEnd(false);
 	}
 }
+if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
 ?>

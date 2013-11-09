@@ -7,10 +7,14 @@ if(empty($method)) $method = "list";
 $cat_id = $req->getReq("cat_id");
 $log_info = "";
 
-if($webInfo = getParaInfo("news_cat", "cat_id", $cat_id)) {
-	if(!$op_mode && $setting['info']['web']['web_id']!=$webInfo['web_id']) {
-		$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_catalog_error'], 0));
-		$mystep->show($tpl);
+if(!empty($cat_id)) {
+	if($webInfo = getParaInfo("news_cat", "cat_id", $cat_id)) {
+		if(!$op_mode && $web_id!=$webInfo['web_id']) {
+			echo showInfo($setting['language']['admin_art_catalog_error']);
+			$mystep->pageEnd(false);
+		}
+	} else {
+		echo showInfo($setting['language']['admin_art_catalog_error']);
 		$mystep->pageEnd(false);
 	}
 }

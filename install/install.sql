@@ -73,7 +73,7 @@ INSERT INTO `{pre}admin_cat` VALUES
 		
 		(0, 6, '参数设定', 'web_setting.php', '', 0, 0, '参数设定'),
 		(0, 6, '子站管理', 'web_subweb.php', '', 255, 0, '子站管理'),
-		(0, 6, '缓存管理', 'web_cache.php', '', 0, 0, '网站缓存'),
+		(0, 6, '缓存管理', 'web_cache.php', '', 255, 0, '网站缓存'),
 		(0, 6, '语言管理', 'web_language.php', '', 0, 0, '语言管理'),
 		(0, 6, '模板管理', 'web_template.php', '', 0, 0, '模板管理'),
 		

@@ -143,5 +143,33 @@ $version = array(
 				'source/class/abstract.class.php',
 			),
 	),
+	'1.0.6' => array(
+		'info' => '
+				1.修正了子网站管理模式的一个BUG
+				2.增强子网站管理模式的权限判断
+				3.修正了子网站管理页面的一个JS效果问题
+				4.修正了一个更新判断的JS脚本问题
+				一些其他调整……
+			',
+		'file' => array(
+				'admin/art_catalog.php',
+				'admin/art_content.php',
+				'admin/art_image.php',
+				'admin/art_info.php',
+				'admin/art_tag.php',
+				'admin/func_link.php',
+				'admin/inc.php',
+				'admin/index.php',
+				'admin/style.css',
+				'admin/web_subweb.php',
+				'include/parameter.php',
+				'plugin/inc.php',
+				'script/addon.js',
+				'template/admin/info_main.tpl',
+				'template/admin_simple/art_image_list.tpl',
+				'template/admin_simple/art_info_list.tpl',
+				'template/admin_simple/index.tpl',
+			),
+	),
 );
 ?>

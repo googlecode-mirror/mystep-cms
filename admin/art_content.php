@@ -7,9 +7,15 @@ $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $news_id = $req->getReq("news_id");
 $cat_id = $req->getReq("cat_id");
-$web_id = $req->getReq("web_id");
 $log_info = "";
-if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
+
+if(!empty($news_id)) {
+	$news_info = $db->GetSingleRecord("select web_id from ".$setting['db']['pre']."news_show where news_id = '{$news_id}'");
+	if($news_info==false || (!$op_mode && $web_id!=$news_info['web_id'])) {
+		echo showInfo($setting['language']['admin_art_content_error']);
+		$mystep->pageEnd(false);
+	}
+}
 
 includeCache("news_cat");
 $setting_sub = getSubSetting($web_id);
@@ -246,7 +252,7 @@ function build_page($method) {
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
 		$condition = "1=1";
-		if($web_id!=="") $condition .= " and a.web_id ='{$web_id}'";
+		if(!empty($web_id)) $condition .= " and a.web_id ='{$web_id}'";
 		if(!empty($cat_id))$condition .= " and a.cat_id ='{$cat_id}'";
 		if(!empty($keyword)) $condition .= " and (a.subject like '%$keyword%' or a.tag like '%$keyword%')";
 		if($group['power_cat']!="all") $condition .= " and a.cat_id in (".$group['power_cat'].")";

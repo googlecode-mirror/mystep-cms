@@ -11,7 +11,7 @@
 		<tr class="row" align="center">
 			<td align="left"><!--record_subject--></td>
 			<td align="left"><!--record_content--></td>
-			<td align="center"><a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('请按确定继续。')">删除</a></td>
+			<td align="center"><a href="?method=edit&web_id=<!--record_web_id-->&id=<!--record_id-->">修改</a> <a href="?method=delete&web_id=<!--record_web_id-->&id=<!--record_id-->" onclick="return confirm('请按确定继续。')">删除</a></td>
 		</tr>
 <!--loop:end-->
 	</table>

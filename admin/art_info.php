@@ -4,9 +4,15 @@ require("inc.php");
 $method = $req->getGet("method");
 if(empty($method)) $method = "list";
 $id = $req->getReq("id");
-$web_id = $req->getReq("web_id");
 $log_info = "";
-if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
+
+if(!empty($id)) {
+	$cur_info = $db->GetSingleRecord("select * from ".$setting['db']['pre']."info_show where id = '{$id}'");
+	if($cur_info==false || (!$op_mode && $web_id!=$cur_info['web_id'])) {
+		echo showInfo($setting['language']['admin_art_info_error']);
+		$mystep->pageEnd(false);
+	}
+}
 
 switch($method) {
 	case "add":
@@ -15,18 +21,12 @@ switch($method) {
 		build_page($method);
 		break;
 	case "delete":
-		if(!$op_mode && $web_id!=$_POST['web_id']) {
-			$goto_url = $setting['info']['self'];
-		} else {
-			$log_info = $setting['language']['admin_art_info_delete'];
-			$db->Query("delete from ".$setting['db']['pre']."info_show where id = '{$id}'");
-		}
+		$log_info = $setting['language']['admin_art_info_delete'];
+		$db->Query("delete from ".$setting['db']['pre']."info_show where id = '{$id}'");
 		break;
 	case "add_ok":
 	case "edit_ok":
-		if(count($_POST) == 0) {
-			$goto_url = $setting['info']['self'];
-		} elseif(!$op_mode && $web_id!=$_POST['web_id']) {
+		if(count($_POST) == 0 || (!$op_mode && $web_id!=$cur_info['web_id'])) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			if($method=="add_ok") {

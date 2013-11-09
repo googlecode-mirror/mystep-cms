@@ -60,4 +60,7 @@ $tpl_info = array(
 		"path" => ROOT_PATH."/".$setting['path']['template'],
 		);
 $tpl = $mystep->getInstance("MyTpl", $tpl_info);
+
+if(!$op_mode) $web_id = $setting['info']['web']['web_id'];
+if($op_mode && $req->getReq("web_id")!="") $web_id = $req->getReq("web_id");
 ?>

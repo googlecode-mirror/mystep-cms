@@ -154,6 +154,7 @@ function checkModify(mode) {
 			} else {
 				alert("服务器连接失败，或不存在本网站对应字符集的校验信息");
 			}
+			return;
 		} else {
 			var result = "";
 			if(info['new']!=null) {

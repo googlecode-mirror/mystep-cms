@@ -11,30 +11,22 @@
 **************************************************/
 
 function setSlide() {
-	var objs = $(".slide");
-	if(objs.length==0) return;
-	var items = null;
-	var temp_num = "";
-	for(var i=0; i<objs.length; i++) {
-		items = objs[i].getElementsByTagName("DL");
+	$(".slide").each(function(){
+		var items = null;
+		var temp_num = "";
+		obj = $(this);
+		obj.parent().css("position", "relative");
+		items = obj.find("DL");
 		if(items.length>0) {
 			temp_num = "";
 			for(var j=0, m=items.length; j<m; j++){
 				temp_num += "<li>"+(j+1)+"</li>";
 			}
 			temp_num = "<ul>"+temp_num+"</ul>";
-			$("<div/>").addClass("slide-num").html(temp_num).appendTo(objs[i]);
+			$("<div/>").addClass("slide-num").html(temp_num).appendTo(obj);
 		}
-		$("<div/>").addClass("slide-show").appendTo(objs[i]);
-		
-		$(".slide li").click(function(){
-			var theObj = $(this).parentsUntil(".slide").parent();
-			clearTimeout(theObj.data("timeout"));
-			theObj = theObj[0];
-			theObj.slide(parseInt(this.innerHTML)-1);
-		});
-		
-		objs[i].slide = function(idx) {
+		$("<div/>").addClass("slide-show").appendTo(obj);
+		obj.slide = function(idx) {
 			var max = $(this).find("dl").length;
 			if(idx>=max) idx = 0;
 			$(this).find("DL").hide();
@@ -46,8 +38,12 @@ function setSlide() {
 			var self = this;
 			$(this).data("timeout", setTimeout(function(){self.slide(idx+1)}, 5000));
 		}
-		objs[i].slide(0);
-	}
+		obj.find("li").click(function(){
+			clearTimeout(obj.data("timeout"));
+			obj.slide(parseInt(this.innerHTML)-1);
+		});
+		obj.slide(0);
+	});
 }
 
 function setSwitch() {
@@ -104,8 +100,8 @@ function loadingShow(info) {
 		$('#screenLocker').width($(document.body).outerWidth(true) + $(window).scrollLeft());
 		$('#screenLocker').fadeIn();
 		
-		var theTop = ($(window).height() - $("#bar_loading").height())/2 + $(document.body).scrollTop();
-		var theLeft = ($(window).width() - $("#bar_loading").width())/2 + $(document.body).scrollLeft();
+		var theTop = ($(document.body).height() - $("#bar_loading").height())/2 + $(document.body).scrollTop();
+		var theLeft = ($(document.body).width() - $("#bar_loading").width())/2 + $(document.body).scrollLeft();
 		$("#bar_loading > img").attr("href", rlt_path+"images/loading.gif");
 		$("#bar_loading").css({"opacity":"0.7", "top":theTop, "left":theLeft});
 		if(info==null) info = language.ajax_sending;
