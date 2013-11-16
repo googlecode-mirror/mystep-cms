@@ -42,7 +42,7 @@
 		</tr></table>
 	</div>
 	<div id="page_bottom">
-		Powered by ¡º MyStep Content Managerment System 1.0 ¡»&nbsp;Copyright&copy; 2010-2011 <a href="mailto:windy2006@gmail.com">Windy2000</a>
+		Powered by ¡º MyStep Content Managerment System V<!--ms_version_ver--> (<!--ms_version_charset-->/<!--ms_version_language-->/<!--ms_version_date-->) ¡»&nbsp;Copyright&copy; 2010-<!--year--> <a href="mailto:windy2006@gmail.com">Windy2000</a>
 	</div>
 </div>
 <div id="modi_pwd" style="display:none;">
@@ -142,6 +142,7 @@ function setPos() {
 	
 	var theWidth = $(document.body).width() - 200;
 	var theHeight = $(document.body).height() - 120;
+	theHeight = $("#page_bottom").position().top - 75;
 	$("#main").width(theWidth);
 	$("#main").height(theHeight);
 	$("#cat_tree").height(theHeight - 50);

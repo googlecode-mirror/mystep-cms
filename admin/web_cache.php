@@ -29,6 +29,12 @@ if($method=="update" && count($_POST)>0) {
 	if(empty($ccList)) $ccList = implode(",", $req->getPost('ccache'));
 	$ccList = ",".$ccList.",";
 	
+	foreach($website as $cur_web) {
+		$cur_setting = getSubSetting($cur_web['web_id']);
+		$db->query("update `".$cur_setting['db']['name']."`.`".$cur_setting['db']['pre']."news_show` set `expire`=null, `setop`=0, `order`=0 where expire is not null and expire < now()");
+	}
+	unset($cur_web, $cur_setting);
+	
 	if(strpos($ccList, ",1,")!==false) {
 		$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
 		if($handle = opendir($cache_path)) {

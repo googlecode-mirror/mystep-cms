@@ -4,7 +4,7 @@ $mode = $req->getGet("mode");
 $keyword = $req->getGet("k");
 
 if(strlen($keyword)>=4) {
-	$keyword = getString($keyword);
+	$keyword = safeEncoding($keyword, $setting['gen']['charset']);
 	$keyword = mysql_real_escape_string($keyword);
 	if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."search_keyword where keyword = '{$keyword}'")) {
 		$record['chg_date'] = time();

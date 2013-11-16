@@ -152,7 +152,7 @@ mystep;
 		ini_set('magic_quotes_runtime', 0);
 		ini_set('mysql.connect_timeout', 300);
 		ini_set('default_socket_timeout', 300);
-		if(get_magic_quotes_gpc()) {
+		if(function_exists("magic_quotes_gpc") && get_magic_quotes_gpc()) {
 			strip_slash($_POST);
 			strip_slash($_GET);
 			strip_slash($_COOKIE);

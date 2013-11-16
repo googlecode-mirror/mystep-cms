@@ -1,6 +1,6 @@
 #
 # robots.txt
-# MyStepCMS.com
+# MyStep CMS
 #
 
 User-agent: *
@@ -13,3 +13,5 @@ Disallow: /template/
 Disallow: /script/
 Disallow: /plugin/
 Disallow: /install/
+Disallow: /install/
+Disallow: /pack/

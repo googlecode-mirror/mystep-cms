@@ -51,7 +51,9 @@ mystep;
 			echo <<<mystep
 						<input name="{$key}" type="file" value="" size="50" />
 mystep;
-			$value['comment'] = "<a href='file.php?mid=".$mid."&id=".$id."&f=".$key."' target='_blank'>Check</a>";
+			if(!empty($record[$key])) {
+				$value['comment'] = "<a href='file.php?mid=".$mid."&id=".$id."&f=".$key."' target='_blank'>œ¬‘ÿ’’∆¨</a>";
+			}
 			break;
 		case "radio":
 			for($i=0; $i<count($value['value']['cn']); $i++) {

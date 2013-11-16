@@ -130,7 +130,7 @@ switch($method) {
 		$sql_item['web_id'] = $_POST['web_id'];
 		$sql_item['name'] = $_POST['name'];
 		$sql_item['name_en'] = $_POST['name_en'];
-		$sql_item['expire'] = $_POST['expire'];
+		if(!empty($_POST['expire'])) $sql_item['expire'] = $_POST['expire'];
 		$sql_item['notes'] = $_POST['notes'];
 		$sql_item['add_date'] = date("Y-m-d H:i:s");
 		$str_sql = $db->buildSQL($setting['db']['pre']."custom_form", $sql_item, "insert", "");
@@ -270,7 +270,7 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 		$sql_item['web_id'] = $_POST['web_id'];
 		$sql_item['name'] = $_POST['name'];
 		$sql_item['name_en'] = $_POST['name_en'];
-		$sql_item['expire'] = $_POST['expire'];
+		if(!empty($_POST['expire'])) $sql_item['expire'] = $_POST['expire'];
 		$sql_item['notes'] = $_POST['notes'];
 		$str_sql = $db->buildSQL($setting['db']['pre']."custom_form", $sql_item, "update", "mid={$mid}");
 		$db->Query($str_sql);

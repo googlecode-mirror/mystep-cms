@@ -48,6 +48,7 @@ function HTMLEncode(input) {
 
 function HTMLDecode(input) {
 	var converter = document.createElement("DIV");
+	input = input.replace(/\r/g, "").replace(/\n/g, "<br />");
 	converter.innerHTML = input;
 	var output = converter.innerText;
 	converter = null;

@@ -425,6 +425,18 @@ function is_utf8($string) {
 	| \xF4[\x80-\x8F][\x80-\xBF]{2} # plane 16
 	)*$%xs', $string);
 }
+function recursion_func($func, $para) {
+	if(function_exists($func)) {
+		if(is_array($para)) {
+			foreach($para as $key => $value) {
+				$para[$key] = recursion_func($func, $value);
+			}
+		} else {
+			$para = $func($para);
+		}
+	}
+	return $para;
+}
 /*---------------------------------------String Functions End-------------------------------------*/
 
 

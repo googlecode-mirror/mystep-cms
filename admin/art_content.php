@@ -9,20 +9,20 @@ $news_id = $req->getReq("news_id");
 $cat_id = $req->getReq("cat_id");
 $log_info = "";
 
-if(!empty($news_id)) {
-	$news_info = $db->GetSingleRecord("select web_id from ".$setting['db']['pre']."news_show where news_id = '{$news_id}'");
-	if($news_info==false || (!$op_mode && $web_id!=$news_info['web_id'])) {
-		echo showInfo($setting['language']['admin_art_content_error']);
-		$mystep->pageEnd(false);
-	}
-}
-
 includeCache("news_cat");
 $setting_sub = getSubSetting($web_id);
 if($setting['db']['name']==$setting_sub['db']['name']) {
 	$setting['db']['pre_sub'] = $setting_sub['db']['pre'];
 } else {
 	$setting['db']['pre_sub'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
+}
+
+if(!empty($news_id)) {
+	$news_info = $db->GetSingleRecord("select web_id from ".$setting['db']['pre']."news_show where news_id = '{$news_id}'");
+	if($news_info==false || (!$op_mode && $web_id!=$news_info['web_id'])) {
+		echo showInfo($setting['language']['admin_art_content_error']);
+		$mystep->pageEnd(false);
+	}
 }
 
 if($method=="edit_ok" || $method=="delete") {

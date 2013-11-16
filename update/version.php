@@ -171,5 +171,30 @@ $version = array(
 				'template/admin_simple/index.tpl',
 			),
 	),
+	'1.0.7' => array(
+		'info' => '
+				1.修正了文章录入页子站权限判断的一个问题
+				2.在清除缓存功能中增加了重置过期置顶文章的功能
+				3.去掉了 BootStrap 2.0 版本的插件
+				4.修正了自定义表单过期判断的一个bug
+				5.修正了tinymce编辑器中源代码插件的一个bug（但是在IE下还是需要双击才能响应）
+				6.增加了递归调用函数，可用于任意字符串函数的数组递归
+				一些其他调整……
+			',
+		'file' => array(
+				'admin/art_content.php',
+				'admin/web_cache.php',
+				'include/parameter.php',
+				'plugin/custom_form/custom_form.php',
+				'plugin/custom_form/tpl/edit_data.tpl',
+				'plugin/ignore',
+				'plugin/search/show.php',
+				'robots.txt',
+				'script/tinymce/plugins/source_code/js/source_code.js',
+				'source/class/mystep.class.php',
+				'source/function/global.php',
+				'template/admin_simple/index.tpl',
+			),
+	),
 );
 ?>
