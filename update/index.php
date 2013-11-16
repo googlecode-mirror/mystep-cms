@@ -118,7 +118,7 @@ if($v=="check") {
 	}
 	$data = array (
 		date("Y-m-d H:i:s"),
-		md5($v.$ms_version['ver']),
+		md5($v.$ms_version['ver'].$cs),
 		$v,
 		$ms_version['ver'],
 		GetIp(),
