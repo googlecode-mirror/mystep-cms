@@ -179,12 +179,14 @@ $version = array(
 				4.修正了自定义表单过期判断的一个bug
 				5.修正了tinymce编辑器中源代码插件的一个bug（但是在IE下还是需要双击才能响应）
 				6.增加了递归调用函数，可用于任意字符串函数的数组递归
+				7.修复了校验功能中的一个bug
 				一些其他调整……
 			',
 		'file' => array(
 				'admin/art_content.php',
 				'admin/web_cache.php',
 				'include/parameter.php',
+				'list.php',
 				'plugin/custom_form/custom_form.php',
 				'plugin/custom_form/tpl/edit_data.tpl',
 				'plugin/ignore',
@@ -192,6 +194,7 @@ $version = array(
 				'robots.txt',
 				'script/tinymce/plugins/source_code/js/source_code.js',
 				'source/class/mystep.class.php',
+				'source/function/admin.php',
 				'source/function/global.php',
 				'template/admin_simple/index.tpl',
 			),

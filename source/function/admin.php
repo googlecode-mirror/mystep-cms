@@ -189,6 +189,7 @@ function checkFile($dir="", $layer=0, $check="") {
 		while (false !== ($file = readdir($handle))) {
 			if(trim($file, ".") == "" || $file == "ignore" || array_search($file, $ignore)!==false) continue;
 			$the_name = $dir."/".$file;
+			if($the_name==$the_file) continue;
 			if(is_dir($the_name)) {
 				checkFile($the_name, $layer+1, "y");
 			} else {
@@ -221,18 +222,19 @@ $file_list_md5 = '.var_export($file_list_md5, true).';
 			"mod" => array(),
 			"miss" => array()
 		);
-		$info = array();
 		while (false !== ($file = readdir($handle))) {
 			if(trim($file, ".") == "" || $file == "ignore" || array_search($file, $ignore)!==false) continue;
 			$the_name = $dir."/".$file;
+			if($the_name==$the_file || $the_name==$the_file.".bak") continue;
 			if(is_dir($the_name)) {
 				$result_new = checkFile($the_name, $layer+1);
+				if($result_new==null) continue;
 				$result['new'] = array_merge($result['new'], $result_new['new']);
 				$result['mod'] = array_merge($result['mod'], $result_new['mod']);
 				$result['miss'] = array_merge($result['miss'], $result_new['miss']);
 			} else {
 				$the_name = str_replace(ROOT_PATH, "", $the_name);
-				if(strpos($the_name, "/config")!==false) continue;
+				if(strpos($the_name, "/config.php")!==false) continue;
 				if(strpos($the_name, "/template")===0 && stripos($the_name, ".php")===false) continue;
 				if(strpos($the_name, "/images")===0 && stripos($the_name, ".php")===false) continue;
 				if(strpos($the_name, "/plugin/")===0) {
@@ -250,7 +252,7 @@ $file_list_md5 = '.var_export($file_list_md5, true).';
 		}
 		if($layer==0) {
 			foreach($file_list as $the_name) {
-				if(strpos($the_name, "/config")!==false) continue;
+				if(strpos($the_name, "/config.php")!==false) continue;
 				if(strpos($the_name, "/template")===0 && stripos($the_name, ".php")===false) continue;
 				if(strpos($the_name, "/images")===0 && stripos($the_name, ".php")===false) continue;
 				if(strpos($the_name, "/plugin/")===0) {
