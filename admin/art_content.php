@@ -18,7 +18,7 @@ if($setting['db']['name']==$setting_sub['db']['name']) {
 }
 
 if(!empty($news_id)) {
-	$news_info = $db->GetSingleRecord("select web_id from ".$setting['db']['pre']."news_show where news_id = '{$news_id}'");
+	$news_info = $db->GetSingleRecord("select web_id from ".$setting['db']['pre_sub']."news_show where news_id = '{$news_id}'");
 	if($news_info==false || (!$op_mode && $web_id!=$news_info['web_id'])) {
 		echo showInfo($setting['language']['admin_art_content_error']);
 		$mystep->pageEnd(false);
