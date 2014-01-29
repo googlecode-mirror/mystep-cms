@@ -13,6 +13,15 @@
 		</select>
 	</div>
 	<table align="center" width="560" border="1" bordercolorlight="#000000" bordercolordark="#FFFFFF" cellpadding="0" cellspacing="0">
+		<tr class="cat">
+			<td colspan="7">
+				<input id="check_all" type="checkbox" onclick="check_it(this.checked)"> <label for="check_all">全部选取</label>
+				<select onchange="chg_cat(this.value);this.selectedIndex=0;">
+					<option>批量选择列别</option>
+					<!--style_select-->
+				</select>
+			</td>
+		</tr>
 		<tr class="cat" align="center">
 			<td width="30">No.</td>
 			<td width="30">添加</td>
@@ -34,13 +43,17 @@
 		<tr class="cat">
 			<td colspan="7">
 				<input id="check_all" type="checkbox" onclick="check_it(this.checked)"> <label for="check_all">全部选取</label>
+				<select onchange="chg_cat(this.value);this.selectedIndex=0;">
+					<option>批量选择列别</option>
+					<!--style_select-->
+				</select>
 			</td>
 		</tr>
 	</table>
 	<table align="center">
 		<tr>
 			<td align="center" colspan="2"><br>
-				<input type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
+				<input type="Submit" value=" 提 交 " name="Submit">&nbsp;&nbsp;
 				<input type="button" value=" 关 闭 " name="return" onClick="parent.$.closePopupLayer()">
 			</td>
 		</tr>
@@ -56,6 +69,9 @@ if(all_box.length==0) {
 function check_it(mode) {
 	all_box.attr("checked", mode);
 	return;
+}
+function chg_cat(val){
+	$("select[name='cat_list[]']").val(val);
 }
 $(function(){
 	parent.setIframe('searchArticle');

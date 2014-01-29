@@ -21,7 +21,7 @@ Welcome to <b>"<!--name_en-->"</b>！
 <br />
 Your online registration has been received. Please confirm the following information has been recorded correctly:<br /><br />
 <?php
-global $record;
+global $record,$id,$mid;
 foreach($para as $key => $value) {
 	if(empty($value['title_en'])) continue;
 	if(is_array($value['value'])) {
@@ -78,6 +78,7 @@ Please remit your registration fee <!--record_total--> RMB:<br />
 <script language="JavaScript" type="text/JavaScript">
 //<![CDATA[
 var the_email = "<?=$record['email']?>";
+var the_host = "<?=$setting['email']['host']?>";
 
 function send_mail_app(email, subject, content)	{
 	if(the_email.length<5) {
@@ -108,6 +109,10 @@ function send_mail_app(email, subject, content)	{
 }
 
 function send_mail() {
+	if(the_host.length<5) {
+		alert("尚未设置邮件发送服务器信息！");
+		return false;	
+	}
 	if(the_email.length<5) {
 		alert("无可用 Email，请核实数据！");
 		return false;	

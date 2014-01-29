@@ -17,7 +17,7 @@
 			<td class="cat" width="120"><a href="?keyword=<!--keyword-->&order=topic_name&order_type=<!--order_type-->"><font color="#000000">专题名称</font</a></td>
 			<td class="cat"><font color="#000000">专题介绍</font></td>
 			<td class="cat" width="120"><a href="?keyword=<!--keyword-->&order=add_date&order_type=<!--order_type-->"><font color="#000000">录入日期</font></a></td>
-			<td class="cat" width="60">相关操作</td>
+			<td class="cat" width="100">相关操作</td>
 		</tr>
 <!--loop:start key="record" time="20"-->
 		<tr align="center">
@@ -25,7 +25,11 @@
 			<td class="row" align="left"><a href="<!--record_topic_link-->" target="_blank"><!--record_topic_name--></a></td>
 			<td class="row" align="left"><!--record_topic_intro--></td>
 			<td class="row"><!--record_add_date--></td>
-			<td class="row"><a href="?method=edit&topic_id=<!--record_topic_id-->">修改</a> <a href="?method=delete&topic_id=<!--record_topic_id-->" onclick="return confirm('是否确认删除该项目？')">删除</a></td>
+			<td class="row">
+				<a href="?method=edit&topic_id=<!--record_topic_id-->">修改</a> 
+				<a href="?method=delete&topic_id=<!--record_topic_id-->" onclick="return confirm('是否确认删除该项目？')">删除</a> 
+				<a href="<!--record_topic_link-->" target="_blank">查看</a> 
+			</td>
 		</tr>
 <!--loop:end-->
 	</table>

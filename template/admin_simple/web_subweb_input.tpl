@@ -41,6 +41,7 @@ $setting_skip['web']['title'] = '';
 $setting_skip['web']['s_user'] = '';
 $setting_skip['web']['s_pass'] = '';
 $setting_skip['web']['cache_mode'] = '';
+$setting_skip['web']['sign'] = '';
 $setting_skip['db'] = array();
 $setting_skip['db']['host'] = '';
 $setting_skip['db']['user'] = '';

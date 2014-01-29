@@ -12,8 +12,8 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['admin_func_attach_delete'];
-		$db->Query("select * from ".$setting['db']['pre']."attachment where id={$id}");
-		if($record = $db->GetRS()) {
+		$record = $db->record($setting['db']['pre']."attachment", "*", array("id", "n=", $id));
+		if($record !== false) {
 			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/", substr($record['file_time'],0, 10));
 			$the_ext = GetFileExt($record['file_name']);
 			if($the_ext=="php") $the_ext = "txt";
@@ -22,20 +22,19 @@ switch($method) {
 			MultiDel($the_path."preview/".$the_file);
 			MultiDel($the_path."cache/".$the_file);
 			MultiDel($the_path."preview/cache/".$the_file);
-			$db->Query("delete from ".$setting['db']['pre']."attachment where id={$id}");
+			$db->delete($setting['db']['pre']."attachment", array("id", "n=", $id));
 		}
 		$db->Free();
 		break;
 	case "clear":
 		$log_info = $setting['language']['admin_func_attach_clean'];
 		$file_list = array();
-		$db->Query("select * from ".$setting['db']['pre']."attachment where news_id=0 and file_count<5 and file_time<((UNIX_TIMESTAMP()-60*60*24*3)*1000)");
+		$db->select($setting['db']['pre']."attachment", "*", array(array("news_id","n=",0),array("file_count","n<",5,"and"),array("file_count","f<","((UNIX_TIMESTAMP()-60*60*24*3)*1000)","and")));
 		while($record = $db->GetRS()) {
 			$file_list[] = $record;
 		}
 		$db->Free();
-		$max_count = count($file_list);
-		for($i=0; $i<$max_count; $i++) {
+		for($i=0,$m=count($file_list); $i<$m; $i++) {
 			$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/", substr($record['file_time'],0, 10));
 			$the_ext = GetFileExt($record['file_name']);
 			if($the_ext=="php") $the_ext = "txt";
@@ -44,7 +43,7 @@ switch($method) {
 			MultiDel($the_path."preview/".$the_file);
 			MultiDel($the_path."cache/".$the_file);
 			MultiDel($the_path."preview/cache/".$the_file);
-			$db->Query("delete from ".$setting['db']['pre']."attachment where id={$file_list[$i]['id']}");
+			$db->delete($setting['db']['pre']."attachment", array("id", "n=", $file_list[$i]['id']));
 		}
 		break;
 	default:
@@ -68,20 +67,19 @@ function build_page() {
 	if(empty($order_type)) $order_type = "desc";
 	$keyword = $req->getGet("keyword");
 	$tpl_tmp->Set_Variable('keyword', $keyword);
-
-	$str_sql = "select count(*) as counter from ".$setting['db']['pre']."attachment";
-	if(!empty($keyword)) $str_sql.= " where file_name like '%{$keyword}%'";
-	$counter = $db->GetSingleResult($str_sql);
+	
+	$condition = array();
+	if(!empty($keyword)) $condition[] = array("file_name","like",$keyword);
+	$counter = $db->result($setting['db']['pre']."attachment","count(*)",$condition);
 	$page = $req->getGet("page");
 	list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 	$tpl_tmp->Set_Variables($page_arr);
 
-	$str_sql = "select * from ".$setting['db']['pre']."attachment";
-	if(!empty($keyword)) $str_sql.= " where file_name like '%{$keyword}%'";
 	if(empty($order)) $order="id";
-	$str_sql.= " order by $order {$order_type}".(($order=="id")?"":", id desc");
-	$str_sql.= " limit $page_start, $page_size";
-	$db->Query($str_sql);
+	$the_order = array();
+	$the_order[] = "$order $order_type";
+	if($order!="id") $the_order[] = "id desc";
+	$db->select($setting['db']['pre']."attachment", "*", $condition, array("order"=>$the_order,"limit"=>"$page_start, $page_size"));
 	$tpl_tmp->Set_Variable('order_type_org', $order_type);
 	if($order_type=="desc") {
 		$order_type = "asc";

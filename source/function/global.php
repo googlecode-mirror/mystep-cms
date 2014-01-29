@@ -305,31 +305,38 @@ function getSafeCode($str, $charset='UTF-8') {
 	}
 }
 function safeEncoding($str, $charset='UTF-8') {
-	$encoding = "UTF-8";
-	for($i=0; $i<strlen($str); $i++) {
-		if(ord($str{$i})<128) {
-			continue;
-		} elseif((ord($str{$i})&224)==224) {
-			$char = $str{++$i};
-			if((ord($char)&128)==128) {
+	if(is_array($str)) {
+		foreach($str as $key => $value) {
+			$str[$key] = safeEncoding($value, $charset);
+		}
+		return $str;
+	} else {
+		$encoding = "UTF-8";
+		for($i=0; $i<strlen($str); $i++) {
+			if(ord($str{$i})<128) {
+				continue;
+			} elseif((ord($str{$i})&224)==224) {
 				$char = $str{++$i};
 				if((ord($char)&128)==128) {
-					$encoding = "UTF-8";
+					$char = $str{++$i};
+					if((ord($char)&128)==128) {
+						$encoding = "UTF-8";
+						break;
+					}
+				}
+			} elseif((ord($str{$i})&192)==192) {
+				$char = $str{++$i};
+				if((ord($char)&128)==128) {
+					$encoding = "GBK";
 					break;
 				}
 			}
-		} elseif((ord($str{$i})&192)==192) {
-			$char = $str{++$i};
-			if((ord($char)&128)==128) {
-				$encoding = "GBK";
-				break;
-			}
 		}
+		if(strtoupper($encoding) != strtoupper($charset)) {
+			$str = chg_charset($str, $encoding, $charset);
+		}
+		return $str;
 	}
-	if(strtoupper($encoding) != strtoupper($charset)) {
-		$str = chg_charset($str, $encoding, $charset);
-	}
-	return $str;
 }
 function md5_file_cs($file, $charset="", $encoding="") {
 	if(empty($charset) || strtolower($charset)==strtolower($encoding) || strpos(GetFile($file,100), chr(0))!==false) return md5_file($file);
@@ -423,7 +430,7 @@ function is_utf8($string) {
 	| \xF0[\x90-\xBF][\x80-\xBF]{2} # planes 1-3
 	| [\xF1-\xF3][\x80-\xBF]{3} # planes 4-15
 	| \xF4[\x80-\x8F][\x80-\xBF]{2} # plane 16
-	)*$%xs', $string);
+	)*.{0,2}$%xs', $string);
 }
 function recursion_func($func, $para) {
 	if(function_exists($func)) {
@@ -436,6 +443,23 @@ function recursion_func($func, $para) {
 		}
 	}
 	return $para;
+}
+function recursion_func_pro($func, $para, $val_idx=false) {
+	if($val_idx===false) {
+		return recursion_func($func, $para);
+	} else {
+		if(!function_exists($func) || !isset($para[$val_idx])) return null;
+		$the_val = $para[$val_idx];
+		if(is_array($the_val)) {
+			foreach($the_val as $key => $value) {
+				$para[$val_idx] = $value;
+				$the_val[$key] = call_user_func("recursion_func_pro", $func, $para, $val_idx);
+			}
+		} else {
+			$the_val = call_user_func_array($func, $para);
+		}
+		return $the_val;
+	}
 }
 /*---------------------------------------String Functions End-------------------------------------*/
 
@@ -509,7 +533,7 @@ function GetRemoteContent($url, $header=array(), $method="GET", $data=array(), $
 	$content = stream_get_contents($fp);
 	fclose($fp);
 	if($gzip) {
-		$content = preg_replace("/[\r\n]*\w{3}[\r\n]+/", "", $content);
+		$content = preg_replace("/(^|[\r\n]+)(\w{3})([\r\n]+|$)/", "", $content);
 		$content = gzdecode($content);
 	}
 	//if($gzip) $content = gzinflate(substr($content,10));
@@ -1036,7 +1060,7 @@ function vertify_img($str, $font = "font.ttc", $fontsize = 16) {
 /*---------------------------------------Misc Functions Start-------------------------------------*/
 function GetIp() {
 	//Modified By Windy2000 20020601
-	$ip_org = $_SERVER["REMOTE_ADDR"];
+	$ip = $ip_org = $_SERVER["REMOTE_ADDR"];
 	if(isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
 		$ip = $_SERVER["HTTP_X_FORWARDED_FOR"];
 		$ip_list = explode(",", $ip);
@@ -1044,12 +1068,12 @@ function GetIp() {
 	} elseif(isset($_SERVER["HTTP_CLIENT_IP"])) {
 		$ip = $_SERVER["HTTP_CLIENT_IP"];
 	}
-	if(preg_match("/[a-z]+/i", $ip)) $ip = "";
 	if(!empty($ip) && $ip!=$ip_org) {
 		$ip = $ip_org.",".$ip;
 	} else {
 		$ip = $ip_org;
 	}
+	$ip = preg_replace("/[^\w\.\-,]+/", "", $ip);
 	return $ip;
 }
 function GetMicrotime($rate = 3) {
@@ -1070,7 +1094,17 @@ function GetTimeDiff($time_start, $decimal = 3, $micro = true) {
 	$time = preg_replace("/^([\d]+.[\d]{".$decimal."})[\d]*$/","\\1",(string)$time);
 	return $time;
 }
+function session_started($auto_start = false) {
+	//Coded By Windy2000 20131228 v1.0
+	$flag = 0;
+	if(isset($_SESSION)) {
+		$flag = count($_SESSION)>0 ? 1 : -1;
+	}
+	if($flag==0 && $auto_start) session_start();
+	return $flag;
+}
 function getDate_cn($date="") {
+	//Coded By Windy2000 20120612 v1.0
 	if(empty($date)) $date=time();
 	if(!is_numeric($date)) $date = strtotime($date);
 	$the_year = (STRING)date("Y", $date);

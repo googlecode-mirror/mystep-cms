@@ -64,6 +64,16 @@ class imageCreator extends class_common {
 		$color_lst = array(),
 		$font = "";
 
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		} else {
+			call_user_func(array($this, "init"));
+		}
+		return;
+	}
+	
 	public function init($width = 400, $height = 400, $cr = false) {
 		$this->width = $width;
 		$this->height = $height;
@@ -548,6 +558,7 @@ class imageCreator extends class_common {
 		for($i=$point[1]+$mask; $i>$point[1]; $i--) {
 			$max_count = count($data);
 			for($j=1; $j<=$max_count; $j++) {
+				if($angle_sum[$j-1] == $angle_sum[$j]) continue;
 				$point_cur = $point;
 				if($distance>0) {
 					$point_cur[0] += round($distance * cos(deg2rad($angle_sum[$j] - $angle[$j-1] / 2)));
@@ -561,6 +572,7 @@ class imageCreator extends class_common {
 		
 		$max_count = count($data);
 		for($j=1; $j<=$max_count; $j++) {
+			if($angle_sum[$j-1] == $angle_sum[$j]) continue;
 			$point_cur = $point;
 			if($distance>0) {
 				$point_cur[0] += round($distance * cos(deg2rad($angle_sum[$j] - $angle[$j-1] / 2)));
@@ -679,6 +691,7 @@ class imageCreator extends class_common {
 				$func($img);
 			}
 		} else {
+			$this->MakeDir(dirname($file));
 			if($func == "imagebmp") {
 				$this->imagebmp($img, $file);
 			} else	{
@@ -860,6 +873,16 @@ class coordinateMaker extends imageCreator {
 		$text_y = "Y",
 		$fix_x = 10,
 		$fix_y = -10;
+
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		} else {
+			call_user_func(array($this, "init"));
+		}
+		return;
+	}
 
 	public function init($width = 400, $height = 400, $origin = array(0, 0), $cr = false) {
 		$this->width = $width;
@@ -1111,10 +1134,11 @@ class coordinateMaker extends imageCreator {
 			} else {
 				$value = ceil($data[$i]*100/$data_sum)."%";
 			}
+			$value_show = $data_str[$i]."\n".$value;
 			$radian = deg2rad($angle_sum[$i]+$angle[$i]/2);
 			$the_point = array(ceil($point[0]+$radius*cos($radian)*($width/$height)), ceil($point[1]+$radius*sin($radian)));
-			$this->drawString($value, array($the_point[0]+1, $the_point[1]+1), "white");
-			$this->drawString($value, $the_point, "black");
+			$this->drawString($value_show, array($the_point[0]+1, $the_point[1]+1), "white");
+			$this->drawString($value_show, $the_point, "black");
 
 			if($legend!=0) {
 				$the_point = array($legend_left, $legend_top);
@@ -1145,6 +1169,14 @@ class imageCreator_file extends imageCreator {
 		$file = "",
 		$file_date = array(),
 		$true_color = false;
+
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		}
+		return;
+	}
 
 	public function init($file) {
 		$data = array();

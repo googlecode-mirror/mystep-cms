@@ -32,6 +32,16 @@ class myPack extends class_common {
 		$pack_fp		= null,
 		$pack_result	= array();
 
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		} else {
+			call_user_func(array($this, "init"));
+		}
+		return;
+	}
+	
 	public function init($pack_dir = "./", $pack_file = "mypack.pkg") {
 		$this->pack_dir		= str_replace("//", "/", $pack_dir);
 		$this->pack_file	= $pack_file;

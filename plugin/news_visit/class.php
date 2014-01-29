@@ -13,8 +13,8 @@ class plugin_news_visit implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_news_visit", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 5, '".$info['cat_name']."', 'news_visit.php', '../plugin/news_visit/', 0, 0, '".$info['cat_desc']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_news_visit",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name'],'news_visit.php', '../plugin/news_visit/', 0, 0,$info['cat_desc']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -42,10 +42,10 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."news_visit");
-		$db->query("drop table ".$setting['db']['pre']."news_visit");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='news_visit.php'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."news_visit");
+		$db->exec("drop","table",$setting['db']['pre']."news_visit");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","=","news_visit.php"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -86,10 +86,10 @@ mystep;
 		$agent = strtolower($req->getServer('HTTP_USER_AGENT'));
 		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) return;
 		if($setting['info']['self']!="read.php" || empty($cat_id)) return;
-		$info_count = $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_visit where web_id='".$setting['info']['web']['web_id']."' and news_id='".$news_id."'");
+		$info_count = $db->record($setting['db']['pre']."news_visit","*",array(array("web_id","n=",$setting['info']['web']['web_id']),array("news_id","n=",$news_id)));
 		$subject = mysql_real_escape_string($subject);
 		if($info_count===false) {
-			$db->Query("insert into ".$setting['db']['pre']."news_visit values('".$setting['info']['web']['web_id']."', '{$news_id}', '{$cat_id}', '{$subject}', 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1, unix_timestamp(), 1)");
+			$db->insert($setting['db']['pre']."news_visit",array($setting['info']['web']['web_id'],$news_id,$cat_id,$subject,1, "unix_timestamp()", 1, "unix_timestamp()", 1, "unix_timestamp()", 1, "unix_timestamp()", 1, "unix_timestamp()", 1, "unix_timestamp()", 1, "unix_timestamp()", 1, "unix_timestamp()", 1));
 		} else {
 			$info_count['views'] += 1;
 			if(date("d") != date("d", $info_count['day_start'])) {
@@ -132,12 +132,12 @@ mystep;
 					$info_count['year_max_time'] = $_SERVER['REQUEST_TIME'];
 				}
 			}
-			$db->Query($db->buildSQL($setting['db']['pre']."news_visit", $info_count, "replace"));
+			$db->replace($setting['db']['pre']."news_visit", $info_count);
 		}
 	}
 	
 	public static function parse_news(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting,$db;
 		$result = "";
 		if(!isset($att_list['template'])) $att_list['template'] = "classic";
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = $setting['info']['web']['web_id'];
@@ -148,29 +148,26 @@ mystep;
 		if(!isset($att_list['loop'])) $att_list['loop'] = 0;
 		if(!isset($att_list['during'])) $att_list['during'] = "year";
 	
-		$str_sql = "select * from ".$setting['db']['pre']."news_visit where 1=1";
-		if(!empty($att_list['web_id'])) $str_sql .= " and web_id in ({$att_list['web_id']})";
-		if(!empty($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
-		$str_sql .= " order by ";
-		
 		switch($att_list['during']) {
 			case "day":
-				$str_sql .= "day_count desc";
+				$att_list['order'] = "day_count desc";
 				break;
 			case "week":
-				$str_sql .= "week_count desc";
+				$att_list['order'] = "week_count desc";
 				break;
 			case "month":
-				$str_sql .= "month_count desc";
+				$att_list['order'] = "month_count desc";
 				break;
 			default:
-				$str_sql .= "year_count desc";
+				$att_list['order'] = "year_count desc";
 				break;
 		}
-		$str_sql .= ", news_id desc";
+		$att_list['order'] .= ", news_id desc";
 		
-		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
-		//$str_sql = addslashes($str_sql);
+		$condition = array();
+		if(!empty($att_list['web_id'])) $condition[] = array("web_id","nin",$att_list['web_id']);
+		if(!empty($att_list['cat_id'])) $condition[] = array("cat_id","nin",$att_list['cat_id']);
+		$sql = $db->buildSel($setting['db']['pre']."news_visit","*",$condition,$att_list);
 		
 		$cur_content = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_{$att_list['template']}.tpl", $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_classic.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
@@ -184,8 +181,7 @@ mystep;
 <?php
 global \$plugin_setting;
 \$n = 0;
-\$str_sql = str_replace(" and cat_id in (0)", "", "{$str_sql}");
-\$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
+\$result = getData("{$sql}", "all", \$plugin_setting['offical']['ct_news']);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];

@@ -13,8 +13,8 @@ class plugin_ticket implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_ticket", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 3, '".$info['cat_name']."', 'ticket.php', '../plugin/ticket/', 0, 0, '".$info['cat_desc']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_ticket",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name'],'ticket.php', '../plugin/ticket/', 0, 0,$info['cat_desc']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -42,12 +42,16 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."ticket");
-		$db->query("drop table ".$setting['db']['pre']."ticket");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'ticket.php%'");
+		$db->delete($setting['db']['pre']."ticket");
+		$db->exec("drop","table",$setting['db']['pre']."ticket");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","=","ticket.php"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
+		$content = "<?PHP
+\$ticket_list = array();			
+?>";
+		WriteFile(dirname(__FILE__)."/list.php", $content, "wb");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_uninstall']."

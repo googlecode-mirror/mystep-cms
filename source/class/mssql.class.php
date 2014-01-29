@@ -52,7 +52,14 @@ class MSSQL extends class_common {
 		$DB_count	= 0,
 		$DB_RStype	= 1;
 
-
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0){
+			call_user_func_array(array($this, "init"), $argList);
+		}
+		return;
+	}
+	
 	public function init($host, $user, $pass) {
 		$this->DB_host = $host;
 		$this->DB_user = $user;

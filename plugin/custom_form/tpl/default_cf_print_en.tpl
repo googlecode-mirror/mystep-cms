@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title><!--web_title--> - 后台管理</title>
+<title><!--web_title--></title>
 <meta http-equiv="Pragma" contect="no-cache">
 <meta http-equiv="Expires" contect="-1">
 <meta http-equiv="windows-Target" contect="_top">
@@ -24,6 +24,7 @@
 		<br />
 		<table width="780" border="0" class="cf_form" align="center" cellpadding="2" cellspacing="1">
 <?php
+global $para;
 foreach($para as $key => $value) {
 	if($value['manager']=='true') continue;
 	if(empty($value['title_en'])) continue;
@@ -56,6 +57,16 @@ mystep;
 			}
 			echo implode(" | ", $theValue);
 			break;
+		case "file":
+			if(!empty($_POST[$key])) {
+				$cur_file = explode("::", $_POST[$key]);
+				if(strpos($cur_file[1],"image")!==false) {
+					echo '<img src="/plugin/custom_form/file.php?mid='.$mid.'&id='.$_POST['id'].'&f='.$key.'" width="200" alt="'.$cur_file[0].'" />';
+				} else {
+					echo $cur_file[0];
+				}
+			}
+			break;
 		default:
 			break;
 	}
@@ -66,7 +77,7 @@ mystep;
 }
 ?>
 			<tr>
-				<td colspan="2" style="padding: 20px" align="center"><input type="button" value="打印文章" onclick="this.style.visibility='hidden';window.print();this.style.visibility='visible'"></td>
+				<td colspan="2" style="padding: 20px" align="center"><input type="button" style="padding: 20px" value="打印文章" onclick="this.style.visibility='hidden';window.print();this.style.visibility='visible'"></td>
 			</tr>
 		</table>
 	</div>

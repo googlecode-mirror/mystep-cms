@@ -12,6 +12,13 @@
 ********************************************/
 
 class eAccelerator extends class_common {
+	public function __construct() {
+		if(call_user_func(array($this, "init"))==false) {
+			trigger_error("Cannot load eAccelerator Module!", E_USER_ERROR);
+		}
+		return;
+	}
+	
 	public function init() {
 		if(function_exists("eaccelerator_get")) {
 			eaccelerator_caching(true);

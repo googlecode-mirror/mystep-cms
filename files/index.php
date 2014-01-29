@@ -6,6 +6,7 @@ if(!is_numeric($id) || empty($id)) {
 	header("HTTP/1.0 404 Not Found");
 	exit();
 }
+$id = intval($id);
 
 define('ROOT_PATH', str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 include(ROOT_PATH."/include/config.php");
@@ -24,7 +25,22 @@ $mystep->pageStart(false);
 ob_end_clean();
 set_time_limit(1200);
 
-if($record=getData("select a.*, b.view_lvl from ".$setting['db']['pre']."attachment a left join ".$setting['db']['pre']."news_show b on a.web_id=b.web_id and a.news_id=b.news_id where id = ".$id, "record", 1800)) {
+$sql = $db->buildSel(array(
+		array(
+			"name" => $setting['db']['pre']."attachment",
+			"idx" => "a",
+			"col" => "*",
+			"condition" => array("id", "n=", $id)
+		),
+		array(
+			"name" => $setting['db']['pre']."news_show",
+			"idx" => "b",
+			"col" => "view_lvl",
+			"join" => "web_id,news_id"
+		)
+	));
+
+if($record=getData($sql, "record", 1800)) {
 	if($record['view_lvl']>$setting['info']['user']['type']['view_lvl']) {
 		$db->close();
 		header("location: ".getUrl("read", $record['news_id'], 1, $record['web_id']));

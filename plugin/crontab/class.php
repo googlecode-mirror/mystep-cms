@@ -13,8 +13,8 @@ class plugin_crontab implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_crontab", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, ",")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'crontab.php', '../plugin/crontab/', 0, 0, '".$info['cat_desc']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_crontab",1,$info['intro'],$info['copyright'],1,","));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name'],'crontab.php', '../plugin/crontab/', 0, 0,$info['cat_desc']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -42,10 +42,10 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."crontab");
-		$db->query("drop table ".$setting['db']['pre']."crontab");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='crontab.php'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."crontab");
+		$db->exec("drop","table",$setting['db']['pre']."crontab");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","=","crontab.php"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -102,7 +102,7 @@ mystep;
 		if(strpos($agent, "spider")===false && strpos($agent, "bot")===false) return;
 		$log_date = filemtime(dirname(__FILE__)."/log.txt");
 		if((time()-$log_date)>$plugin_setting['crontab']['interval'] && !empty($GLOBALS['authority']) && file_get_contents(dirname(__FILE__)."/status.txt")=="run") {
-			if($record = $db->GetSingleRecord("select exe_date, next_date from ".$setting['db']['pre']."crontab where next_date<now() and exe_date!='0000-00-00' and (expire='0000-00-00' || expire>now()) order by next_date limit 1")) {
+			if($record = $db->record($setting['db']['pre']."crontab", "exe_date, next_date", array(array("next_date","f<","now()"),array("exe_date","!=","0000-00-00","and"),array(array("expire","=","0000-00-00"),array("expire","f>","now()","or"),"and")), array("order"=>"next_date","limit"=>"1"))) {
 				$record['exe_date'] = strtotime($record['exe_date']);
 				$record['next_date'] = strtotime($record['next_date']);
 				if((time()-$log_date) > ($record['next_date']-$record['exe_date']+$plugin_setting['crontab']['interval'])) {

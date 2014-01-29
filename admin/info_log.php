@@ -7,11 +7,11 @@ $log_info = "";
 
 if($method=="clean") {
 	$log_info = $setting['language']['admin_info_log_clean'];
-	$db->Query("truncate table ".$setting['db']['pre']."modify_log");
+	$db->delete($setting['db']['pre']."modify_log");
 	$goto_url = $setting['info']['self'];
 } elseif($method=="download") {
 	$log_info = $setting['language']['admin_info_log_download'];
-	$db->Query("select * from ".$setting['db']['pre']."modify_log order by id desc");
+	$db->select($setting['db']['pre']."modify_log", "*", array(), array("order"=>"id desc"));
 	$content = "";
 	while($record = $db->GetRS()) {
 		$content .= join(",", $record)."\n";
@@ -42,18 +42,21 @@ $order_type = $req->getGet("order_type");
 if(empty($order_type)) $order_type = "desc";
 
 //navigation
-$str_sql = "select count(*) as counter from ".$setting['db']['pre']."modify_log".(empty($keyword)?"":" where user like '%$keyword%'");
-$counter = $db->GetSingleResult($str_sql);
+$condition = array();
+if(!empty($keyword)) $condition[] = array("user","like",$keyword);
+$counter = $db->result($setting['db']['pre']."modify_log","count(*)",$condition);
 $tpl_tmp->Set_If('empty', ($counter==0));
 $page = $req->getGet("page");
 list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 $tpl_tmp->Set_Variables($page_arr);
 
 //main list
-$str_sql = "select * from ".$setting['db']['pre']."modify_log".(empty($keyword)?"":" where user like '%$keyword%'");
-$str_sql.= " order by".(empty($order)?" ":" {$order} {$order_type}, ")."id {$order_type}";
-$str_sql.= " limit {$page_start}, {$page_size}";
-$db->Query($str_sql);
+if(empty($order)) $order="id";
+$the_order = array();
+$the_order[] = "$order $order_type";
+if($order!="id") $the_order[] = "id desc";
+$db->select($setting['db']['pre']."modify_log", "*", $condition, array("order"=>$the_order,"limit"=>"$page_start, $page_size"));
+
 $tpl_tmp->Set_Variable('order_type_org', $order_type);
 if($order_type=="asc") {
 	$order_type = "desc";

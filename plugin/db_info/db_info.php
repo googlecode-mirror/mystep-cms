@@ -12,14 +12,12 @@ $tpl_info = array(
 $tpl = $mystep->getInstance("MyTpl", $tpl_info);
 if(empty($tbl)){
 	$title = $setting['language']['plugin_db_info_db'] . " - " . $db_name;
-	$str_sql = "select table_name as Name, Engine, table_rows as Rows, (data_length+index_length) as Data_length, Create_time, table_collation as Collation, table_comment as Comment from information_schema.tables where table_schema='".$db_name."';";
-	$db->Query($str_sql);
+	$db->select("information_schema.tables","table_name as Name, Engine, table_rows as Rows, (data_length+index_length) as Data_length, Create_time, table_collation as Collation, table_comment as Comment",array("table_schema","=",$db_name));
 	$root_mode = true;
 	if($db->CheckError()) {
 		$db->free();
 		$db->clearError();
-		$str_sql = "SHOW TABLE STATUS FROM ".$db_name;
-		$db->Query($str_sql);
+		$db->Query("SHOW TABLE STATUS FROM ".$db_name);
 		$root_mode = false;
 	}
 	$n = 1;
@@ -37,8 +35,7 @@ if(empty($tbl)){
 } else {
 	$title = $setting['language']['plugin_db_info_tbl'] . " - " . $db_name . " - " . $tbl;
 	$tbl_info = $db->GetTabSetting($tbl, $db_name);
-	$str_sql = "describe ".$db_name.".".$tbl;
-	$db->Query($str_sql);
+	$db->Query("describe ".$db_name.".".$tbl);
 	$n = 1;
 	while($record = $db->GetRS()) {
 		HtmlTrans(&$record);

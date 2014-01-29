@@ -16,12 +16,12 @@
 </div>
 <table id="list_area" cellSpacing="0" cellPadding="0" align="center">
 	<tr class="cat" align="center">
-		<td class="cat" width="40"><a href="?method=mine&keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
-		<td class="cat" width="55"><a href="?method=mine&keyword=<!--keyword-->&order_type=<!--order_type-->&order=news_id"><font color="#000000">索引</font></a></td>
+		<td class="cat" width="30"><a href="?method=mine&keyword=<!--keyword-->&order_type=<!--order_type-->"><font color="#000000">编号</font></a></td>
+		<td class="cat" width="30"><a href="?method=mine&keyword=<!--keyword-->&order_type=<!--order_type-->&order=news_id"><font color="#000000">索引</font></a></td>
 		<td class="cat"><a href="?method=mine&keyword=<!--keyword-->&order_type=<!--order_type-->&order=file_name"><font color="#000000">名称</font></a></td>
-		<td class="cat" width="100"><a href="?method=mine&keyword=<!--keyword-->&order_type=<!--order_type-->&order=file_type"><font color="#000000">类型</font></a></td>
-		<td class="cat" width="60"><a href="?method=mine&keyword=<!--keyword-->&order_type=<!--order_type-->&order=file_size"><font color="#000000">大小</font></a></td>
-		<td class="cat" width="55">操作</td>
+		<td class="cat" width="80"><a href="?method=mine&keyword=<!--keyword-->&order_type=<!--order_type-->&order=file_type"><font color="#000000">类型</font></a></td>
+		<td class="cat" width="60"><a href="?method=mine&keyword=<!--keyword-->&order_type=<!--order_type-->&order=file_time"><font color="#000000">时间</font></a></td>
+		<td class="cat" width="30">操作</td>
 	</tr>
 <!--loop:start key="record"-->
 	<tr class="item" align="center">
@@ -29,7 +29,7 @@
 		<td class="row"><!--record_news_id--></td>
 		<td class="row" align="left"><a href="javascript:" onclick="attach_add('<!--record_id-->', '<!--record_news_id-->', '<!--record_file_name-->', '<!--record_file_type-->')"><!--record_file_name--></a><img src="<!--record_web_url-->/files?<!--record_id-->" width="0" height="0" /></td>
 		<td class="row"><!--record_file_type--></td>
-		<td class="row"><!--record_file_size--></td>
+		<td class="row"><!--record_file_time--></td>
 		<td class="row"><a href="javascript:" onclick="attach_add('<!--record_id-->', '<!--record_news_id-->', '<!--record_file_name-->', '<!--record_file_type-->')">插入</a></td>
 	</tr>
 <!--loop:end-->

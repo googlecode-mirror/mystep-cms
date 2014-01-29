@@ -28,6 +28,25 @@ class MyStep extends class_common {
 	
 	public static $func_log_s = array();
 	
+	public function __construct() {
+		global $setting;
+		error_reporting(E_ALL ^ E_NOTICE);
+		date_default_timezone_set($setting['gen']['timezone']);
+		set_error_handler("ErrorHandler");
+		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
+		set_time_limit(30);
+		ini_set('memory_limit', '128M');
+		ini_set('magic_quotes_runtime', 0);
+		ini_set('mysql.connect_timeout', 300);
+		ini_set('default_socket_timeout', 300);
+		if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
+			strip_slash($_POST);
+			strip_slash($_GET);
+			strip_slash($_COOKIE);
+		}
+		return;
+	}
+	
 	public function getInstance($calledClass = "") {
 		global $setting, $class_list;
 		if(!class_exists($calledClass)) {
@@ -146,21 +165,6 @@ mystep;
 	
 	public function pageStart($setPlugin = false) {
 		global $setting, $db, $req, $cache;
-		header("Content-Type: text/html; charset=".$setting['gen']['charset']);
-		set_time_limit(30);
-		ini_set('memory_limit', '128M');
-		ini_set('magic_quotes_runtime', 0);
-		ini_set('mysql.connect_timeout', 300);
-		ini_set('default_socket_timeout', 300);
-		if(function_exists("magic_quotes_gpc") && get_magic_quotes_gpc()) {
-			strip_slash($_POST);
-			strip_slash($_GET);
-			strip_slash($_COOKIE);
-		}
-		
-		error_reporting(E_ALL ^ E_NOTICE);
-		set_error_handler("ErrorHandler");
-		date_default_timezone_set($setting['gen']['timezone']);
 		
 		ob_start();
 		ob_implicit_flush(false);
@@ -181,7 +185,6 @@ mystep;
 		$setting['info']['self'] = strtolower(basename($req->getServer("PHP_SELF")));
 		$setting['info']['web'] = null;
 		$host = $req->getServer("HTTP_HOST");
-		//$setting['info']['web'] = getParaInfo("website", "host", $host);
 		for($i=0,$m=count($GLOBALS['website']);$i<$m;$i++) {
 			if(strpos(",".$GLOBALS['website'][$i]['host'].",", ",".$host.",")!==false) {
 				$GLOBALS['website'][$i]['host'] = $host;
@@ -381,7 +384,8 @@ mystep;
 			$userinfo = array();
 			if(!empty($ms_user)) {
 				list($user_id, $user_pwd)=explode("\t",$ms_user);
-				if($userinfo = getData("SELECT user_id, group_id, type_id, username, email from ".$setting['db']['pre']."users where (user_id='".mysql_real_escape_string($user_id)."' || username='".mysql_real_escape_string($user_id)."') and password='".mysql_real_escape_string($user_pwd)."'", "record", 1200)) {
+				$sql = $db->buildSel($setting['db']['pre']."users","user_id, group_id, type_id, username, email",array(array(array("user_id","n=",$user_id),array("username","=",$user_id,"or")),array("password","=",$user_pwd,"and")));
+				if($userinfo = getData($sql, "record", 1200)) {
 					$req->setSession("username", $userinfo['username']);
 					$req->setSession("usergroup", $userinfo['group_id']);
 					$req->setSession("usertype", $userinfo['type_id']);
@@ -443,8 +447,8 @@ mystep;
 		global $setting, $db;
 		$username = $_SESSION['username'];
 		if($username==$setting['web']['s_user'] && md5($psw_org)==$setting['web']['s_pass']) return $setting['language']['psw_reset_err_op'];
-		if($user_id = $db->getSingleRecord("select user_id from ".$setting['db']['pre']."users where username='".mysql_real_escape_string($username)."' and password='".md5($psw_org)."'")) {
-			$db->query("update ".$setting['db']['pre']."users set password='".md5($psw_new)."' where username='".mysql_real_escape_string($username)."'");
+		if($user_id = $db->record($setting['db']['pre']."users","user_id",array(array("username","=",$username), array("password","=",md5($psw_org))))) {
+			$db->update($setting['db']['pre']."users", array("password"=>md5($psw_new)), array("username","=",$username));
 			return "";
 		} else {
 			return $setting['language']['psw_reset_err'];

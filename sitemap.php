@@ -1,4 +1,5 @@
 <?php
+$ms_sign = 1;
 require("inc.php");
 set_time_limit(300);
 $tpl_info['idx'] = "sitemap";
@@ -29,15 +30,18 @@ $record['date'] = date("Y-m-d");
 $record['priority'] = "1";
 $tpl->Set_Loop("record", $record);
 
-$news_count_max = getData("select max(news_count) from (select count(*) as news_count from ".$setting['db']['pre_sub']."news_show where web_id=".$setting['info']['web']['web_id']." group by cat_id) as news_count", "result", 86400);
+$sql = $db->buildSel($setting['db']['pre_sub']."news_show", "count(*) as news_count", array("web_id", "n=", $setting['info']['web']['web_id']), array("group"=>"cat_id", "order"=>"news_count desc", "limit"=>"1"));
+$news_count_max = getData($sql, "result", 86400);
 for($i=0, $m=count($news_cat); $i<$m; $i++) {
 	if($news_cat[$i]['web_id']!=$setting['info']['web']['web_id']) continue;
 	$record = array();
 	$record['url'] = getUrl("list", $news_cat[$i]['cat_idx'], 1, $setting['info']['web']['web_id']);
 	$record['url'] = str_replace($from, $to, $record['url']);
-	$record['date'] = substr(getData("select max(add_date) from ".$setting['db']['pre_sub']."news_show where cat_id=".$news_cat[$i]['cat_id'], "result", 86400), 0, 10);
+	$sql = $db->buildSel($setting['db']['pre_sub']."news_show", "max(add_date)", array("cat_id", "n=", $news_cat[$i]['cat_id']));
+	$record['date'] = substr(getData($sql, "result", 86400), 0, 10);
 	if(empty($record['date'])) $record['date'] = date("Y-m-d");
-	$news_count_current = getData("select count(*) from ".$setting['db']['pre_sub']."news_show where cat_id=".$news_cat[$i]['cat_id'], "result", 86400);
+	$sql = $db->buildSel($setting['db']['pre_sub']."news_show", "count(*)", array("cat_id", "n=", $news_cat[$i]['cat_id']));
+	$news_count_current = getData($sql, "result", 86400);
 	$record['priority'] = $news_count_current/$news_count_max;
 	if($news_count_current>0) $record['priority'] += 0.1;
 	$record['priority'] = round(ceil($record['priority']*10)/10, 1);

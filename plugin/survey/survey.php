@@ -15,7 +15,7 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['plugin_survey_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."survey where id = '$id'");
+		$db->delete($setting['db']['pre']."survey", array("id","n=",$id));
 		$mydb->resetDB("survey_{$id}");
 		$mydb->deleteTBL();
 		$mydb->resetDB("user_{$id}");
@@ -29,13 +29,12 @@ switch($method) {
 			if($method=="add_ok") {
 				$log_info = $setting['language']['plugin_survey_add'];;
 				$_POST['add_date'] = $setting['info']['time_start']/1000;
-				$str_sql = $db->buildSQL($setting['db']['pre']."survey", $_POST, "insert", "a");
+				$db->insert($setting['db']['pre']."survey", $_POST, true);
 			} else {
 				$log_info = $setting['language']['plugin_survey_edit'];
 				unset($_POST['id']);
-				$str_sql = $db->buildSQL($setting['db']['pre']."survey", $_POST, "update", "id={$id}");
+				$db->update($setting['db']['pre']."survey", $_POST, array("id","n=",$id));
 			}
-			$db->Query($str_sql);
 			
 			if($method=="add_ok") {
 				$id = $db->GetInsertId();
@@ -112,7 +111,7 @@ switch($method) {
 		break;
 	case "export":
 		$log_info = $setting['language']['plugin_survey_export'];
-		$xls = $mystep->getInstance("MyXls", $db->getSingleResult("select subject from ".$setting['db']['pre']."survey where id='{$id}'"), $setting['language']['plugin_survey_export_title']);
+		$xls = $mystep->getInstance("MyXls", $db->result($setting['db']['pre']."survey","subject", array("id","n=",$id)), $setting['language']['plugin_survey_export_title']);
 		$mydb->resetDB("survey_{$id}");
 		$record = $mydb->queryAll();
 		$xls->addRow();
@@ -168,15 +167,15 @@ function build_page($method) {
 		$order = $req->getGet("order");
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
-		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."survey");
+		$counter = $db->result($setting['db']['pre']."survey", "count(*)");
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?order={$order}&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
 		if($counter>0) {
-			$str_sql = "select * from ".$setting['db']['pre']."survey";
 			if(empty($order)) $order="id";
-			$str_sql.= " order by $order {$order_type}".(($order=="id")?"":", id desc");
-			$str_sql.= " limit $page_start, $page_size";
-			$db->Query($str_sql);
+			$the_order = array();
+			$the_order[] = "{$order} {$order_type}";
+			if($order!="id") $the_order[] = "id desc";
+			$db->select($setting['db']['pre']."survey", "*", "", array("order"=>$the_order,"limit"=>"$page_start, $page_size"));
 			while($record = $db->GetRS()) {
 				HtmlTrans(&$record);
 				switch($record['max_select']) {
@@ -202,10 +201,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_survey_title']);
 	} else {
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."survey where id='{$id}'");
-			$record  = $db->GetRS();
-			$db->Free();
-			if(!$record) {
+			$record = $db->record($setting['db']['pre']."survey", "*", array("id","n=",$id));
+			if($record===false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['plugin_survey_error'], 0));
 				$mystep->show($tpl);
 				return;
@@ -226,6 +223,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('item_list', $item_list, true);
 			$mydb->closeTBL();
 		} else {
+			$record['user_lvl'] = 0;
 			$record['max_select'] = 1;
 		}
 		$tpl_tmp->Set_Variables($record, "record");

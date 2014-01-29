@@ -35,6 +35,7 @@ function commentShow(page) {
 	if(comment_page_size==0) comment_page_size = commentData.length;
 	for(var i=(page-1)*comment_page_size, m=page*comment_page_size; i<m; i++) {
 		if(i>=commentData.length) break;
+		if(commentData[i].user_name.length==0) commentData[i].user_name = commentData[i].ip;
 		cur_comment = tpl;
 		cur_comment = cur_comment.replace(/\[comment_no\]/g, i+1);
 		cur_comment = cur_comment.replace(/\[comment_id\]/g, commentData[i].id);

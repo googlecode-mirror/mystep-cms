@@ -49,12 +49,12 @@
 			<tr>
 				<td class="cat">显示级别：</td>
 				<td class="row">
-					<input name="level" type="text" size="40" maxlength="50" value="<!--level-->" need="digital_">
+					<input name="level" type="text" size="40" maxlength="50" value="<!--level-->" need="digital">
 				</td>
 			</tr>
 			<tr class="row">
 				<td colspan="2" align="center">
-					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 提 交 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>

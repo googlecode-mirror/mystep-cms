@@ -42,11 +42,11 @@ while(true) {
 		$mystep->pageEnd(false);
 	}
 	touch($file_status);
-	if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."crontab where next_date<now() and (expire='0000-00-00' || expire>now()) order by next_date limit 1")) {
+	if($record = $db->record($setting['db']['pre']."crontab", "*", array(array("next_date","f<","now()"),array(array("expire","=","0000-00-00"),array("expire","f>","now()","or"),"and")), array("order"=>"next_date","limit"=>"1"))) {
 		$next_date = getNextTime($record['mode'], $record['schedule']);
 		WriteFile($file_log, $record['name']." - ".date("Y-m-d H:i:s")." / ".$next_date."\n", "ab");
 		echo $record['name']." - ".date("Y-m-d H:i:s")."<br />\n";
-		$db->Query("update ".$setting['db']['pre']."crontab set `exe_date`=now(), `exe_count`=`exe_count`+1, `next_date`='".$next_date."' where id=".$record['id']);
+		$db->update($setting['db']['pre']."crontab", array("exe_date"=>"now()","exe_count"=>"+1","next_date"=>$next_date),array("id","n=",$record['id']));
 		if(!empty($record['code'])) {
 			eval($record['code']);
 		}

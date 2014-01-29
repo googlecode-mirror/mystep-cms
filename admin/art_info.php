@@ -7,9 +7,9 @@ $id = $req->getReq("id");
 $log_info = "";
 
 if(!empty($id)) {
-	$cur_info = $db->GetSingleRecord("select * from ".$setting['db']['pre']."info_show where id = '{$id}'");
-	if($cur_info==false || (!$op_mode && $web_id!=$cur_info['web_id'])) {
-		echo showInfo($setting['language']['admin_art_info_error']);
+	$cur_web_id = $db->result($setting['db']['pre']."info_show", "web_id", array("id","n=",$id));
+	if(!$op_mode && $web_id!=$cur_web_id) {
+		echo showInfo($setting['language']['admin_art_image_error']);
 		$mystep->pageEnd(false);
 	}
 }
@@ -22,21 +22,20 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['admin_art_info_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."info_show where id = '{$id}'");
+		$db->delete($setting['db']['pre']."info_show", array("id","n=",$id));
 		break;
 	case "add_ok":
 	case "edit_ok":
-		if(count($_POST) == 0 || (!$op_mode && $web_id!=$cur_info['web_id'])) {
+		if(count($_POST) == 0) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			if($method=="add_ok") {
 				$log_info = $setting['language']['admin_art_info_add'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."info_show", $_POST, "insert", "a");
+				$db->insert($setting['db']['pre']."info_show", $_POST, true);
 			} else {
 				$log_info = $setting['language']['admin_art_info_edit'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."info_show", $_POST, "update", "id={$id}");
+				$db->update($setting['db']['pre']."info_show", $_POST, array("id","n=",$id));
 			}
-			$db->Query($str_sql);
 		}
 		break;
 	default:
@@ -56,10 +55,9 @@ function build_page($method) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	if($method == "list") {
-		$str_sql = "select * from ".$setting['db']['pre']."info_show";
-		if(!empty($web_id)) $str_sql .= " where web_id='".$web_id."'";
-		$str_sql .= " order by id asc";
-		$db->Query($str_sql);
+		$condition = array();
+		if(!empty($web_id)) $condition = array("web_id","n=",$web_id);
+		$db->select($setting['db']['pre']."info_show", "*", $condition, array("order"=>"id asc"));
 		$n = 0;
 		while($record = $db->GetRS()) {
 			$n++;
@@ -75,10 +73,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('web_id', $web_id);
 	} else {
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."info_show where id='{$id}'");
-			$record  = $db->GetRS();
-			$db->Free();
-			if(!$record) {
+			$record = $db->record($setting['db']['pre']."info_show", "*", array("id","n=",$id));
+			if($record===false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_info_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);

@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "SQL Server 插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.1",
+	"ver" => "1.2",
 	"class" => "plugin_mssql",
 	"intro" => "建立 SQL Server 连接对象",
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

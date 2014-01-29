@@ -40,6 +40,7 @@ $setting_skip['web']['title'] = '';
 $setting_skip['web']['s_user'] = '';
 $setting_skip['web']['s_pass'] = '';
 $setting_skip['web']['cache_mode'] = '';
+$setting_skip['web']['sign'] = '';
 $setting_skip['db'] = array();
 $setting_skip['db']['host'] = '';
 $setting_skip['db']['user'] = '';
@@ -193,7 +194,7 @@ content;
 ?>
 			<tr class="row">
 				<td align="center" colspan=2">
-					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 提 交 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>

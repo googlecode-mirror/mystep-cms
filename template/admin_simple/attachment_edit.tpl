@@ -7,7 +7,7 @@
 <input type="hidden" id="watermark_yes" name="watermark_yes" value=""><input type="hidden" id="watermark_no" name="watermark_no" value="">
 <table id="list_area" cellSpacing="0" cellPadding="0" align="center" border="1">
 	<tr class="cat" align="center">
-		<td class="cat">删除</td><td class="cat">文件名</td><td class="cat">文件类型</td><td class="cat">文件大小</td><td class="cat">上传时间</td><td class="cat">下载次数</td><td class="cat">水印</td>
+		<td class="cat">删除</td><td class="cat">文件名</td><td class="cat">文件类型</td><td class="cat">文件大小</td><td class="cat">下载次数</td><td class="cat">水印</td>
 	</tr>
 <!--loop:start key="record"-->
 	<tr class='row'>
@@ -15,14 +15,13 @@
 		<td><a href="javascript:" onclick="attach_add('<!--record_id-->', '<!--record_news_id-->', '<!--record_file_name-->', '<!--record_file_type-->')"><!--record_file_name--></a></td>
 		<td><!--record_file_type--></td>
 		<td align='right'><!--record_file_size--></td>
-		<td><!--record_file_time--></td>
 		<td align='center'><!--record_file_count--></td>
 		<td align='center'><input type='checkbox' name='watermark[]' value='<!--record_id-->' <!--record_check--> /></td>
 	</tr>
 <!--loop:end-->
 	<tr>
 		<td class="cat" align='center'><input type="checkbox" onclick="check_it('del_att[]', this.checked)"></td>
-		<td class="cat" colspan="5" align="center">全部选取</td>
+		<td class="cat" colspan="4" align="center">全部选取</td>
 		<td class="cat" align='center'><input type="checkbox" onclick="check_it('watermark[]', this.checked)"></td>
 	</tr>
 </table>

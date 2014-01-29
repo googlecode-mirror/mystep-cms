@@ -18,15 +18,15 @@ if($setting['db']['name']==$setting_sub['db']['name']) {
 }
 
 if(!empty($news_id)) {
-	$news_info = $db->GetSingleRecord("select web_id from ".$setting['db']['pre_sub']."news_show where news_id = '{$news_id}'");
-	if($news_info==false || (!$op_mode && $web_id!=$news_info['web_id'])) {
+	$web_id_news = $db->result($setting['db']['pre_sub']."news_show","web_id",array("news_id","n=",$news_id));
+	if($web_id_news===false || (!$op_mode && $web_id!=$web_id_news)) {
 		echo showInfo($setting['language']['admin_art_content_error']);
 		$mystep->pageEnd(false);
 	}
 }
 
 if($method=="edit_ok" || $method=="delete") {
-	$record = $db->GetSingleRecord("select cat_id, add_date from ".$setting['db']['pre_sub']."news_show where `news_id` = '{$news_id}'");
+	$record = $db->record($setting['db']['pre_sub']."news_show", "cat_id, add_date", array("news_id","n=",$news_id));
 	$cat_id = $record['cat_id'];
 	$add_date = $record['add_date'];
 	unset($record);
@@ -55,9 +55,9 @@ switch($method) {
 		} else {
 			$log_info = $setting['language']['admin_art_content_delete'];
 			$sql_list = array();
-			$db->Query("delete from ".$setting['db']['pre_sub']."news_show where news_id = '{$news_id}'");
-			$db->Query("delete from ".$setting['db']['pre_sub']."news_detail where news_id = '{$news_id}'");
-			$db->Query("select * from ".$setting['db']['pre']."attachment where web_id='{$web_id}' and news_id={$news_id}");
+			$db->delete($setting['db']['pre_sub']."news_show", array("news_id","n=",$news_id));
+			$db->delete($setting['db']['pre_sub']."news_detail", array("news_id","n=",$news_id));
+			$db->select($setting['db']['pre_sub']."attachment", "*",array(array("web_id","n=",$web_id), array("news_id","n=",$news_id)));
 			while($record = $db->GetRS()) {
 				$the_path = ROOT_PATH."/".$setting['path']['upload'].date("/Y/m/d/", substr($record['file_time'],0, 10));
 				$the_ext = GetFileExt($record['file_name']);
@@ -67,13 +67,11 @@ switch($method) {
 				MultiDel($the_path."cache/".$the_file);
 				MultiDel($the_path."preview/".$the_file);
 				MultiDel($the_path."preview/cache/".$the_file);
-				$sql_list[] = "delete from ".$setting['db']['pre']."attachment where id=".$record['id'];
+				$sql_list[] = $db->delete($setting['db']['pre']."attachment", array("id", "n=", $record['id']), false);
 			}
 			$db->Free();
 			$db->BatchExec($sql_list);
 			delCacheFile($news_id, $setting_sub["info"]['web_id']);
-			getData("select cat_id, add_date, pages, subject, view_lvl from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "remove");
-			getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "remove");
 		}
 		break;
 	case "unlock":
@@ -81,7 +79,7 @@ switch($method) {
 			$goto_url = $req->getServer("HTTP_REFERER");
 		} else {
 			$log_info = $setting['language']['admin_art_content_unlock'];
-			$db->Query("update ".$setting['db']['pre_sub']."news_show set add_date=now() where news_id = '{$news_id}'");
+			$db->update($setting['db']['pre_sub']."news_show", array("add_date","now()"), array("news_id","n=",$news_id));
 		}
 		break;
 	case "add_ok":
@@ -150,26 +148,22 @@ switch($method) {
 					if(strlen(trim($tag[$n]))<2) continue;
 					$tag[$n] = substrPro($tag[$n], 0, 15);
 					$tag[$n] = mysql_real_escape_string($tag[$n]);
-					if($db->GetSingleResult("select id from ".$setting['db']['pre_sub']."news_tag where `tag` = '{$tag[$n]}'")) {
-						$db->Query("update ".$setting['db']['pre_sub']."news_tag set `count` = `count` + 1, update_date = UNIX_TIMESTAMP() where `tag` = '{$tag[$n]}'");
+					if($db->result($setting['db']['pre_sub']."news_tag", "id", array("tag", "=", $tag[$n]))) {
+						$db->update($setting['db']['pre_sub']."news_tag", array("count"=>"+1", "update_date"=>"UNIX_TIMESTAMP()"), array("tag", "=", $tag[$n]));
 					} else {
-						$db->Query("insert into ".$setting['db']['pre_sub']."news_tag values(0, '{$tag[$n]}', 1, 0, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+						$db->insert($setting['db']['pre_sub']."news_tag", array(0, $tag[$n], 1, 0, "UNIX_TIMESTAMP()", "UNIX_TIMESTAMP()"));
 					}
 				}
-				
-				$str_sql = $db->buildSQL($setting['db']['pre_sub']."news_show", $_POST, "insert");
+				$db->insert($setting['db']['pre_sub']."news_show", $_POST);
+				$news_id = $db->GetInsertId();
 			} else {
 				$log_info = $setting['language']['admin_art_content_edit'];
 				unset($_POST['news_id']);
-				$db->Query("delete from ".$setting['db']['pre_sub']."news_detail where news_id = '{$news_id}'");
-				$str_sql = $db->buildSQL($setting['db']['pre_sub']."news_show", $_POST, "update", "news_id={$news_id}");
+				$db->delete($setting['db']['pre_sub']."news_detail", array("news_id", "n=", $news_id));
+				$db->update($setting['db']['pre_sub']."news_show", $_POST, array("news_id", "n=", $news_id));
 				delCacheFile($news_id, $setting_sub["info"]['web_id']);
-				getData("select cat_id, add_date, pages, subject, view_lvl from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "remove");
-				getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "remove");
 			}
-			$db->Query($str_sql);
-	
-			if($method=="add_ok") $news_id = $db->GetInsertId();
+
 			$cur_rec = array();
 			$max_count = count($sub_title);
 			for($i=0; $i<$max_count; $i++) {
@@ -179,20 +173,21 @@ switch($method) {
 				$cur_rec['page'] = $i+1;
 				$cur_rec['sub_title'] = $sub_title[$i];
 				$cur_rec['content'] = $content[$i];
-				$db->Query($db->buildSQL($setting['db']['pre_sub']."news_detail", $cur_rec, "insert"));
+				$db->insert($setting['db']['pre_sub']."news_detail", $cur_rec);
 			}
 			
 			$attach_list = explode("|", $attach_list);
-			$att_chg = "";
-			$max_count = count($attach_list);
-			for($i=0; $i<$max_count; $i++) {
-				if(!empty($attach_list[$i])) $att_chg .= "id={$attach_list[$i]} or ";
+			$condition = array();
+			for($i=0,$m=count($attach_list); $i<$m; $i++) {
+				if(!empty($attach_list[$i])) {
+					$condition[] = array("id", "n=", $attach_list[$i], "or");
+				}
 			}
-			if(!empty($att_chg)) {
-				$db->Query("update ".$setting['db']['pre']."attachment set news_id='{$news_id}', web_id='{$web_id}' where ({$att_chg} 1=0)");
+			if(!empty($condition)) {
+				$db->update($setting['db']['pre']."attachment", array("news_id"=>$news_id, "web_id"=>$web_id), $condition);
 			}
-			$db->Query("update ".$setting['db']['pre']."attachment set tag='".mysql_real_escape_string($_POST['tag'])."' where news_id='{$news_id}'");
-			$db->Query("update ".$setting['db']['pre_sub']."news_show set pages='".count($sub_title)."' where news_id='{$news_id}'");
+			$db->update($setting['db']['pre']."attachment", array("tag"=>$_POST['tag']), array("news_id", "n=", $news_id));
+			$db->update($setting['db']['pre_sub']."news_show", array("pages"=>count($sub_title)), array("news_id", "n=", $news_id));
 			
 			if($get_remote_file) GetPictures_news($news_id, $web_id, $content);
 			
@@ -206,7 +201,7 @@ switch($method) {
 					$_POST['cat_id'] = $cid_list[$i];
 					$_POST['link'] = getUrl("read", array($news_id, $_POST['cat_id']), 1, $_POST['web_id']);
 					$_POST['add_date'] = "now()";
-					$sql_list[] = $db->buildSQL($setting['db']['pre_sub']."news_show", $_POST, "insert");
+					$sql_list[] = $db->insert($setting['db']['pre_sub']."news_show", $_POST, "", false);
 				}
 			}
 			$db->BatchExec($sql_list);
@@ -251,25 +246,39 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('order', $order);
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
-		$condition = "1=1";
-		if(!empty($web_id)) $condition .= " and a.web_id ='{$web_id}'";
-		if(!empty($cat_id))$condition .= " and a.cat_id ='{$cat_id}'";
-		if(!empty($keyword)) $condition .= " and (a.subject like '%$keyword%' or a.tag like '%$keyword%')";
-		if($group['power_cat']!="all") $condition .= " and a.cat_id in (".$group['power_cat'].")";
+		$condition = array();
+		if(!empty($web_id)) $condition[] = array("web_id", "n=", $web_id, "and");
+		if(!empty($cat_id)) $condition[] = array("cat_id", "n=", $cat_id, "and");
+		if(!empty($keyword)) $condition[] = array(array(array("subject", "like", $keyword), array("tag", "like", $keyword)), "and");
+		if($group['power_cat']!="all") $condition[] = array("cat_id", "nin", $group['power_cat'], "and");
 
 		//navigation
-		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre_sub']."news_show a where {$condition}");
+		$counter = $db->result($setting['db']['pre_sub']."news_show", "count(*)", $condition);
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&cat_id={$cat_id}&web_id={$web_id}&order={$order}&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
 		
 		//main list
-		$str_sql = "select a.*, b.cat_idx, b.cat_name from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where {$condition}";
-		$str_sql.= " order by ";
-		if(!empty($cat_id)) $str_sql.= "`order` desc, ";
-		if(!empty($order)) $str_sql.= "a.{$order} {$order_type}, ";
-		$str_sql.= "a.news_id {$order_type} ";
-		$str_sql.= "limit {$page_start}, {$page_size}";
-		$db->Query($str_sql);
+		$the_order = array();
+		if(!empty($cat_id) && $order!="setop") $the_order[] = "order desc";
+		if($order=="setop") $order_type = "desc";
+		if(!empty($order)) $the_order[] = "{$order} {$order_type}";
+		$the_order[] = "news_id {$order_type}";
+		$sql = $db->buildSel_join(array(
+				array(
+					"name" => $setting['db']['pre_sub']."news_show",
+					"idx" => "a",
+					"col" => "*",
+					"condition" => $condition,
+					"order" => $the_order
+				),
+				array(
+					"name" => $setting['db']['pre']."news_cat",
+					"idx" => "b",
+					"col" => "cat_idx, cat_name",
+					"join" => "cat_id",
+				)
+			), "", array("limit"=>"{$page_start}, {$page_size}"));
+		$db->Query($sql);
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if(empty($record['link'])) {
@@ -277,7 +286,7 @@ function build_page($method) {
 			}
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$title = empty($cat_id)?$setting['language']['admin_art_content_list_all']:$db->GetSingleResult("select cat_name from ".$setting['db']['pre']."news_cat where cat_id='{$cat_id}'");
+		$title = empty($cat_id) ? $setting['language']['admin_art_content_list_all'] : $db->result($setting['db']['pre']."news_cat", "cat_name", array("cat_id","n=",$cat_id));
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_content_list_article']." - ".$setting_sub['web']['title']." - ".$title);
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 		$tpl_tmp->Set_Variable('cat_id', $cat_id);
@@ -286,7 +295,7 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('order_type', $order_type);
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 	} elseif($method == "edit") {
-		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'");
+		$record = $db->record($setting['db']['pre_sub']."news_show", "*", array("news_id","n=",$news_id));
 		if(!$record) {
 			$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_error'], 0));
 			$mystep->show($tpl);
@@ -317,8 +326,8 @@ function build_page($method) {
 				$check_c = $theStyle[$i];
 			}
 		}
-		$db->Query("select * from ".$setting['db']['pre_sub']."news_detail where news_id = {$news_id} order by page");
 		$content = array();
+		$db->select($setting['db']['pre_sub']."news_detail", "*", array("news_id","n=",$news_id), array("order"=>"page"));
 		while($record = $db->GetRS()) {
 			$record['content'] = str_replace("&", "&#38;", $record['content']);
 			HtmlTrans(&$record);
@@ -369,10 +378,9 @@ function build_page($method) {
 	}
 	
 	//news image
-	$str_sql = "select * from ".$setting['db']['pre']."news_image";
-	if(!empty($web_id)) $str_sql .= " where web_id='".$web_id."'";
-	$str_sql .= " order by id asc";
-	$db->Query($str_sql);
+	$condition = array();
+	if(!empty($web_id)) $condition = array("web_id","n=",$web_id);
+	$db->select($setting['db']['pre']."news_image", "*", $condition, array("order"=>"id asc"));
 	while($record = $db->GetRS()) {
 		HtmlTrans(&$record);
 		$tpl_tmp->Set_Loop('news_image', $record);

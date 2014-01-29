@@ -1,7 +1,7 @@
 <?php
 $ms_sign = 1;
 $etag_expires = 604800;
-define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__file__)."/../")));
+define('ROOT_PATH', str_replace("\\", "/", realpath(dirname(__file__)."/../")));
 require(ROOT_PATH."/include/config.php");
 require(ROOT_PATH."/include/parameter.php");
 require(ROOT_PATH."/source/function/etag.php");

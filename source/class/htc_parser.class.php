@@ -106,6 +106,15 @@ class HTC_Parser extends class_common {
 			"EXECUTE"	=> '\1',
 		);
 
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		} else {
+			call_user_func(array($this, "init"));
+		}
+		return;
+	}
 	
 	public function init($str = "", $transURL = true, $ignoreList = "", $nestingParse = false) {
 		$this->HTC_str = $str;

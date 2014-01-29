@@ -15,8 +15,7 @@ if($upload->upload_result[0]['error'] == 0) {
 	$upload->upload_result[0]['name'] = substrPro($name, 0, 80).$ext;
 	$ext = str_replace(".", "", $ext);
 	$upload->upload_result[0]['new_name'] = str_replace(".upload", "", $upload->upload_result[0]['new_name']);
-	$str_sql = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$upload->upload_result[0]['name']."', '".$upload->upload_result[0]['type']."', '".$upload->upload_result[0]['size']."', '', '".substr($upload->upload_result[0]['new_name'],0,13)."', 0, '', '".$req->getSession('username')."', {$watermark})";
-	$db->Query($str_sql);
+	$db->insert($setting['db']['pre']."attachment", array(0,0,0,$upload->upload_result[0]['name'],$upload->upload_result[0]['type'],$upload->upload_result[0]['size'],'',substr($upload->upload_result[0]['new_name'],0,13),0,'',$req->getSession('username'),$watermark));
 	$new_id = $db->GetInsertId();
 	if($new_id != 0) {
 		$upload->upload_result[0]['att_id'] = $new_id;

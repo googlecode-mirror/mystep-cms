@@ -1,5 +1,5 @@
 <?php
-define(ROOT_PATH, str_replace("\\", "/", realpath(dirname(__FILE__)."/../")));
+define('ROOT_PATH', str_replace("\\", "/", realpath(dirname(__FILE__)."/../")));
 require(ROOT_PATH."/include/config.php");
 require(ROOT_PATH."/include/parameter.php");
 require(ROOT_PATH."/source/function/global.php");
@@ -36,32 +36,18 @@ switch($step) {
 	case 2:
 		break;
 	case 3:
-		$setting['cookie']['prefix'] = "ms_";
 		if(strtolower($_POST['setting']['db']['charset'])=="utf-8") $_POST['setting']['db']['charset'] = "utf8";
-		$setting = arrayMerge($setting, $_POST['setting']);
-		$setting['web']['s_pass'] = md5($setting['web']['s_pass']);
-		unset($_POST);
-		$rewrite_list = var_export($rewrite_list, true);
-		$expire_list = var_export($expire_list, true);
-		$result = <<<mystep
-<?php
-\$setting = array();
-
-/*--settings--*/
-\$rewrite_list = {$rewrite_list};
-\$expire_list = {$expire_list};
-\$authority = "{$authority}";
-?>
-mystep;
-		$result = str_replace("/*--settings--*/", makeVarsCode($setting, '$setting'), $result);
-		WriteFile(ROOT_PATH."/include/config.php", $result, "wb");
-		WriteFile(ROOT_PATH."/include/config-default.php", $result, "wb");
+		$_POST['setting']['web']['s_pass'] = md5($_POST['setting']['web']['s_pass']);
+		$_POST['setting']['cookie']['prefix'] = "ms_";
+		$_POST['setting']['web']['sign'] = md5($_POST['setting']['web']['title'].$req->GetServer("HTTP_HOST"));
+		$content = changeSetting($_POST['setting']);
+		WriteFile(ROOT_PATH."/include/config-default.php", $content, "wb");
 		$link = @mysql_connect($setting['db']['host'], $setting['db']['user'], $setting['db']['pass']);
 		if(!$link) {
 			$step = 21;
 		} else {
 			mysql_close($link);
-			$new_setting = $setting;
+			$new_setting = arrayMerge($setting, $_POST['setting']);
 			unset(
 				$new_setting['web']['s_user'],
 				$new_setting['web']['s_pass'],
@@ -116,6 +102,10 @@ mystep;
 		break;
 	case 4:
 		WriteFile("../include/install.lock", date("Y-m-d H:i:s"));
+		$header = array();
+		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST");
+		$header['ms_sign'] = $setting['web']['sign'];
+		$code = GetRemoteContent($setting['gen']['update']."/install.php?v=".$ms_version['ver']."&cs=".$setting['gen']['charset']."&email=".urlencode($setting['web']['email'])."&title=".urlencode($setting['web']['title']), $header);
 		break;
 	default:
 		break;

@@ -16,8 +16,8 @@ switch($method) {
 	case "delete":
 		$log_info = $setting['language']['admin_user_type_delete'];
 		if($type_id>3) {
-			$db->Query("update ".$setting['db']['pre']."users set type_id=2 where type_id = '{$type_id}'");
-			$db->Query("delete from ".$setting['db']['pre']."user_type where type_id = '{$type_id}'");
+			$db->update($setting['db']['pre']."users", array("type_id"=>2), array("type_id","n=",$type_id));
+			$db->delete($setting['db']['pre']."users", array("type_id","n=",$type_id));
 			deleteCache("user_type");
 		}
 		break;
@@ -27,8 +27,7 @@ switch($method) {
 			$goto_url = $setting['info']['self'];
 		} else {
 			$log_info = ($method=="add_ok"?$setting['language']['admin_user_type_add']:$setting['language']['admin_user_type_edit']);
-			$qry_str = $db->buildSQL($setting['db']['pre']."user_type", $_POST);
-			$db->Query($qry_str);
+			$db->replace($setting['db']['pre']."user_type", $_POST);
 			deleteCache("user_type");
 		}
 		break;
@@ -50,9 +49,8 @@ function build_page($method) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	if($method == "list") {
-		$str_sql = "select * from ".$setting['db']['pre']."user_type order by type_id";
-		$db->Query($str_sql);
 		$max_count = count($user_power);
+		$db->select($setting['db']['pre']."user_type","*","",array("order"=>"type_id"));
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			$record['user_power'] = "";
@@ -66,10 +64,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('title', ($method == "add"?$setting['language']['admin_user_type_add']:$setting['language']['admin_user_type_edit']));
 		
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."user_type where type_id='{$type_id}'");
-			if($record = $db->GetRS()) {
-				//nothing
-			} else {
+			$record = $db->record($setting['db']['pre']."user_type","*", array("type_id","n=",$type_id));
+			if($record === false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['admin_user_type_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);

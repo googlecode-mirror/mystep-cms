@@ -52,7 +52,7 @@
 			</tr>
 			<tr class="row">
 				<td colspan="2" align="center">
-					<input class="btn" type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 提 交 " name="Submit">&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " name="reset">&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 清 空 " name="empty" onClick="location.href='?method=empty&id=<!--record_id-->'">&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 导 出 " name="export" onClick="location.href='?method=export&id=<!--record_id-->'">&nbsp;&nbsp;
@@ -62,8 +62,41 @@
 		</table>
 	</form>
 </div>
-<div style="display:<!--show_item-->">
-	<div class="title">调查项目维护</div>
+
+<hr />
+<div style="margin-top:50px;">
+	<div style="text-align:center;font-weight:bold;font-size:18px;">调用代码生成</div>
+	<table id="input_area" cellspacing="0" cellpadding="0" align="center">
+		<tr>
+			<td class="cat">调用代码</td>
+			<td class="row" id="the_code">&lt;!--survey id="<!--record_id-->"--&gt;</td>
+		</tr>
+		<tr>
+			<td class="cat" width="80">排序依据：</td>
+			<td class="row">
+				<select id="the_order" onchange="changeCode()">
+					<option value="catalo desc">默认排序</option>
+					<option value="title">标题</option>
+					<option value="catalog">类别</option>
+					<option value="vote">票数</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td class="cat" width="80">显示模板：</td>
+			<td class="row">
+				<select id="the_tpl" onchange="changeCode()">
+					<option value="">默认模板</option>
+					<option value="classic">classic</option>
+					<option value="simple">simple</option>
+				</select> &nbsp; <font>（插件模板目录下命名为 block_survey_*.tpl 的文件）</font>
+			</td>
+		</tr>
+	</table>
+</div>
+<hr />
+<div style="margin-top:50px;display:<!--show_item-->">
+	<div style="text-align:center;font-weight:bold;font-size:18px;">调查项目维护</div>
 	<div align="center">
 		<form name="add_item" method="post" action="?method=add_item" onsubmit="return checkForm(this)">
 			<table id="input_area" cellspacing="0" cellpadding="0" align="center">
@@ -88,7 +121,7 @@
 				</tr>
 				<tr class="row">
 					<td colspan="2" align="center">
-						<input class="btn" type="Submit" value=" 确 定 " name="Submit">&nbsp;&nbsp;
+						<input class="btn" type="Submit" value=" 提 交 " name="Submit">&nbsp;&nbsp;
 						<input class="btn" type="reset" value=" 重 置 " name="reset">&nbsp;&nbsp;
 					</td>
 				</tr>
@@ -102,7 +135,7 @@
 						<input name="id" type="hidden" value="<!--record_id-->">
 						<input type='hidden' name='MAX_FILE_SIZE' value='<!--upload_max_filesize-->'>
 						<input type="file" name="the_file" style="width:500px;" need="">
-						<input class="btn" type="Submit" value=" 确 定 " name="Submit" />
+						<input class="btn" type="Submit" value=" 提 交 " name="Submit" />
 					</td>
 				</tr>
 			</table>
@@ -118,3 +151,14 @@
 		</table>
 	</div>
 </div>
+<script language="JavaScript">
+function changeCode(){
+	var the_code = '&lt;!--survey id="<!--record_id-->"';
+	var the_order = $("#the_order").val();
+	var the_tpl = $("#the_tpl").val();
+	if(the_order!="") the_code += ' order="'+the_order+'"';
+	if(the_tpl!="") the_code += ' template="'+the_tpl+'"';
+	the_code += '--&gt;';
+	$("#the_code").html(the_code);
+}
+</script>

@@ -13,8 +13,8 @@ class plugin_survey implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_survey", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'survey.php', '../plugin/survey/', 0, 0, '".$info['cat_desc']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_survey",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name'],'survey.php', '../plugin/survey/', 0, 0,$info['cat_desc']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -42,10 +42,10 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."survey");
-		$db->query("drop table ".$setting['db']['pre']."survey");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'survey.php%'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."survey");
+		$db->exec("drop","table",$setting['db']['pre']."survey");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","like","survey.php%"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -65,6 +65,7 @@ parent.admin_cat = {$admin_cat};
 parent.setNav();
 </script>
 mystep;
+			MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/survey/");
 			MultiDel(dirname(__FILE__)."/data/");
 			MakeDir(dirname(__FILE__)."/data/");
 			buildParaList("plugin");
@@ -97,7 +98,7 @@ mystep;
 	}
 	
 	public static function survey(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting,$db;
 		$result = "";
 		if(!isset($att_list['id'])) return "";
 		if(!isset($att_list['order'])) $att_list['order'] = "";
@@ -111,7 +112,7 @@ mystep;
 		$block = $block_all[0];
 		$unit = $block_all[1];
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."vote_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$vote_list[\$i]['\\1']}", $unit);
-		
+		$sql = $db->buildSel($setting['db']['pre']."survey", "*", array("id","n=",$att_list['id']));
 		$thePath = dirname(__FILE__)."/data/";
 		$result = <<<mytpl
 <?php
@@ -123,7 +124,7 @@ if("{$att_list['order']}"!="") {
 }
 \$mydb->closeTBL();
 unset(\$mydb);
-\$record = getData("select * from {$setting['db']['pre']}survey where id='{$att_list['id']}'", "record", 86400);
+\$record = getData("{$sql}", "record", 86400);
 \$theId = \$record['id'];
 \$theType = (\$record['type']=="1"?"radio":"checkbox");
 \$vote_sum = 0;
@@ -151,7 +152,8 @@ content;
 ?>
 mytpl;
 		$content = str_replace($block, $result, $content);
-		if(is_numeric($att_list['id']) && $record = getData("select * from ".$setting['db']['pre']."survey where id='".$att_list['id']."'", "record", 86400)) {
+		$sql = $db->buildSel($setting['db']['pre']."survey", "*", array("id","n=",$att_list['id']));
+		if(is_numeric($att_list['id']) && $record = getData($sql, "record", 86400)) {
 			$att_list['times'] = $record['times'];
 			$att_list['max_select'] = $record['max_select'];
 			$att_list['type'] = ($record['max_select']==1 ? "radio" : "checkbox");
@@ -175,12 +177,7 @@ mytpl;
 		if(!isset($att_list['show_date'])) $att_list['show_date'] = "";
 		if(!empty($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
 		
-		$str_sql = "select id, subject, add_date from ".$setting['db']['pre']."survey where 1=1";
-		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
-		$str_sql .= " order by ".$att_list['order'];
-		$str_sql .= " limit ".$att_list['limit'];
-		
-		
+		$sql = $db->buildSel($setting['db']['pre']."survey", "id, subject, add_date", "", $att_list);
 		$content = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_classic.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $content, $block_all);
 		$block = $block_all[0];
@@ -192,7 +189,7 @@ mytpl;
 		
 		$result = <<<mytpl
 <?php
-\$result = getData("{$str_sql}", "all", 86400);
+\$result = getData("{$sql}", "all", 86400);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
@@ -232,7 +229,8 @@ mytpl;
 	
 	public static function ajax_vote($id, $vote_list) {
 		global $db, $setting, $mystep;
-		if($record = getData("select * from ".$setting['db']['pre']."survey where id='{$id}'", "record", 3600)) {
+		$sql = $db->buildSel($setting['db']['pre']."survey", "*", array("id","n=",$id));
+		if($record = getData($sql, "record", 3600)) {
 			extract($record, EXTR_SKIP);
 		} else {
 			return array();
@@ -265,13 +263,13 @@ mytpl;
 						);
 					$mydb->updateDate($data, $row_pos, true);
 				}
-				$db->Query("update ".$setting['db']['pre']."survey set times = times+1 where id='{$id}'");
+				$db->update($setting['db']['pre']."survey", array("times"=>"+1"), array("id","n=",$id));
 				$result['info'] = $setting['language']['plugin_survey_info_done'];
 				$result['done'] = true;
 			}
 			$mydb->closeTBL();
 			unset($mydb);
-			$img_cache = ROOT_PATH."/".$setting['path']['cache']."/html/survey_{$id}.png";
+			$img_cache = ROOT_PATH."/".$setting['path']['cache']."/plugin/survey/{$id}.png";
 			if(file_exists($img_cache)) unlink($img_cache);
 		}
 		return $result;

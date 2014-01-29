@@ -1,4 +1,5 @@
 <?php
+$ms_sign = 8;
 require("../inc.php");
 
 $method = $req->getGet("method");
@@ -24,7 +25,7 @@ switch($method) {
 		$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 		$tpl_tmp->Set_Variable('keyword', urlencode($keyword));
 		
-		$style_list = explode(",", $db->getSingleResult("select topic_cat from ".$setting['db']['pre']."topic where topic_id='{$topic_id}'"));
+		$style_list = explode(",", $db->result($setting['db']['pre']."topic","topic_cat",array("topic_id","n=",$topic_id)));
 		$style_select = "";
 		$max_count = count($style_list);
 		for($i=0; $i<$max_count; $i++) {
@@ -40,8 +41,28 @@ switch($method) {
 		}
 		
 		$n=1;
-		$keyword = "(a.subject like '%".str_replace(" ", "%' and a.subject like '%", $keyword)."%')";
-		$db->Query("select a.news_id, a.subject, a.add_date, b.cat_name from ".$db_pre."news_show as a left join ".$setting['db']['pre']."news_cat as b on a.cat_id=b.cat_id where {$keyword} order by a.news_id desc limit 200");
+		$keyword = "a.subject like '%".str_replace(" ", "%' and a.subject like '%", $keyword)."%'";
+		$db->select(
+			array(
+				array(
+					"name" => $db_pre."news_show",
+					"idx" => "a",
+					"col" => "news_id, subject, add_date",
+				),
+				array(
+					"name" => $setting['db']['pre']."news_cat",
+					"idx" => "b",
+					"col" => "cat_name",
+					"join" => "cat_id"
+				),
+			),
+			"",
+			array(
+				"condition" => $keyword,
+				"order" => "a.news_id desc",
+				"limit" => 200
+			)
+		);		
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			$record['n'] = $n++;
@@ -51,6 +72,7 @@ switch($method) {
 		$db->Free();
 		$tpl_tmp->Set_Variable('topic_id', $topic_id);
 		$tpl_tmp->Set_Variable('script', $script);
+		$tpl_tmp->Set_Variable('style_select', $style_select);
 		$tpl->Set_Variable('path_admin', $setting['path']['admin']);
 		$tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 		unset($tpl_tmp);
@@ -59,21 +81,20 @@ switch($method) {
 	case "delete":
 		$log_info = $setting['language']['plugin_topic_delete_link'];
 		$id = $req->getReq("id");
-		$db->Query("delete from ".$setting['db']['pre']."topic_link where id='{$id}'");
-		$goto_url = $req->getServer("HTTP_REFERER");
+		$db->delete($setting['db']['pre']."topic_link", array("id","n=",$id));
+		$goto_url = $req->getServer("HTTP_REFERER")."#links";
 		break;
 	case "empty":
 		$log_info = $setting['language']['plugin_topic_empty_link'];
 		$id = $req->getReq("id");
-		$db->Query("delete from ".$setting['db']['pre']."topic_link where topic_id='{$topic_id}'");
-		$goto_url = $req->getServer("HTTP_REFERER");
+		$db->delete($setting['db']['pre']."topic_link", array("topic_id","n=",$topic_id));
+		$goto_url = $req->getServer("HTTP_REFERER")."#links";
 		break;
 	case "add":
 		$log_info = $setting['language']['plugin_topic_add_link'];
 		$_POST['add_date'] = date("Y-m-d H:i:s");
-		$str_sql = $db->buildSQL($setting['db']['pre']."topic_link", $_POST, "replace");
-		$db->Query($str_sql);
-		$goto_url = $req->getServer("HTTP_REFERER");
+		$db->replace($setting['db']['pre']."topic_link", $_POST);
+		$goto_url = $req->getServer("HTTP_REFERER")."#links";
 		break;
 	case "batch_add":
 		$log_info = $setting['language']['plugin_topic_add_link_batch'];
@@ -91,8 +112,7 @@ switch($method) {
 			$record['link_order'] = "0";
 			$record['add_date'] = date("Y-m-d H:i:s");
 			
-			$str_sql = $db->buildSQL($setting['db']['pre']."topic_link", $record, "replace");
-			$db->Query($str_sql);
+			$db->replace($setting['db']['pre']."topic_link", $record);
 		}
 		echo <<<mystep
 <script language="JavaScript">

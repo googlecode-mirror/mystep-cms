@@ -21,55 +21,56 @@
 		</tr>
 		<tr>
 			<td class="cat">网站运行时间</td>
-			<td class="row"><?=$db->GetSingleResult("select count(*) from ".$setting['db']['pre']."counter")?> 天</td>
+			<td class="row"><?=$db->result($setting['db']['pre']."counter","count(*)")?> 天</td>
 		</tr>
 		<tr>
-			<td class="cat">注册会员数</td>
-			<td class="row"><?=$db->GetSingleResult("select count(*) from ".$setting['db']['pre']."users")?> 人</td>
+			<td class="cat">网站成员数</td>
+			<td class="row"><?=$db->result($setting['db']['pre']."users","count(*)")?> 天</td>
 		</tr>
 		<tr>
 			<td class="cat">登录新闻数量</td>
-			<td class="row"><?=$db->GetSingleResult("select count(*) from ".$setting['db']['pre']."news_show")?> 条</td>
+			<td class="row">
+<?php
+global $website;
+foreach($website as $cur_web) {
+	$cur_setting = getSubSetting($cur_web['web_id']);
+	$pre = $cur_setting['db']['name'].".".$cur_setting['db']['pre'];
+	echo $cur_web['name']." - ".$db->result($pre."news_show", "count(*)")."<br />";
+}
+?>
+			</td>
 		</tr>
 		<tr>
 			<td class="cat">当前在线人数</td>
-			<td class="row"><?=$db->GetSingleResult("select count(*) from ".$setting['db']['pre']."user_online")?> 人</td>
+			<td class="row"><?=$db->result($setting['db']['pre']."user_online", "count(*)")?> 人</td>
 		</tr>
 		<tr>
 			<td class="cat">最高在线人数</td>
-			<td class="row"><?=$db->GetSingleResult("select max(online) from ".$setting['db']['pre']."counter")?> 人</td>
+			<td class="row"><?=$db->result($setting['db']['pre']."counter", "max(online)")?> 人</td>
 		</tr>
 		<tr>
-			<td class="cat">今日页面访问量</td>
-			<td class="row"><?=$db->GetSingleResult("select pv from ".$setting['db']['pre']."counter where date=curdate()")?> 次</td>
+			<td class="cat">今日访问量</td>
+			<td class="row"><?=$db->result($setting['db']['pre']."counter", "pv", array("date","f=", "curdate()"))?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat">最高日页面访问量</td>
-			<td class="row"><?=$db->GetSingleResult("select max(pv) from ".$setting['db']['pre']."counter")?> 次</td>
+			<td class="cat">最高日访问量</td>
+			<td class="row"><?=$db->result($setting['db']['pre']."counter", "max(pv)")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat">网站页面日均访问量</td>
-			<td class="row"><?=(int)$db->GetSingleResult("select avg(pv) from ".$setting['db']['pre']."counter")?> 次</td>
+			<td class="cat">网站日均访问量</td>
+			<td class="row"><?=(int)$db->result($setting['db']['pre']."counter", "avg(pv)")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat">网站页面总访问量</td>
-			<td class="row"><?=$db->GetSingleResult("select sum(pv) from ".$setting['db']['pre']."counter")?> 次</td>
+			<td class="cat">网站总访问量</td>
+			<td class="row"><?=$db->result($setting['db']['pre']."counter","sum(pv)")?> 次</td>
 		</tr>
 		<tr>
-			<td class="cat">今日 IP 访问量</td>
-			<td class="row"><?=$db->GetSingleResult("select iv from ".$setting['db']['pre']."counter where date=curdate()")?> 次</td>
+			<td class="cat">本月网站日均访问量</td>
+			<td class="row"><?=(int)$db->result($setting['db']['pre']."counter","avg(pv)",array("DATE_FORMAT(date, '%Y%m')","f=","DATE_FORMAT(curdate(), '%Y%m')"))?> 次</td>
 		</tr>
-		<tr>
-			<td class="cat">最高日 IP 访问量</td>
-			<td class="row"><?=$db->GetSingleResult("select max(iv) from ".$setting['db']['pre']."counter")?> 次</td>
-		</tr>
-		<tr>
-			<td class="cat">网站日均 IP 访问量</td>
-			<td class="row"><?=(int)$db->GetSingleResult("select avg(iv) from ".$setting['db']['pre']."counter")?> 次</td>
-		</tr>
-		<tr>
-			<td class="cat">网站总 IP 访问量</td>
-			<td class="row"><?=$db->GetSingleResult("select sum(iv) from ".$setting['db']['pre']."counter")?> 次</td>
+		<tr id="server_info">
+			<td class="cat">服务器推动信息</td>
+			<td class="row"></td>
 		</tr>
 	</table>
 </div>
@@ -144,7 +145,7 @@ function emptyUpdate() {
 }
 function checkModify(mode) {
 	loadingShow("正在检测系统文件的变更情况，请等待！");
-	var url = "update.php?check_server";
+	var url = "update.php?vertify";
 	if(mode==0) url = "update.php?check";
 	$.get(url, function(info){
 		loadingShow();
@@ -196,12 +197,26 @@ function exportUpdate() {
 	window.open("update.php?export");
 }
 $(function(){
-	$.get("update.php?"+Math.random(), function(ver_info){
-		if(ver_info==null) return;
-		$('<a href="###" onclick="checkUpdate()">系统有新版本可更新，点击本链接查看详情！</a>').appendTo("#info");
-		$("#info").css({'text-align':'center','padding':'10px','font-size':'18px','font-weight':'bold'});
-		update_info = ver_info;
-	}, "json");
+	$.get("update.php?u_update", function(link){
+		if(link!="") {
+			alert_org("系统更新模块已更新，请下载并覆盖网站现有文件！");
+			location.href = link;
+		} else {
+			$.get("update.php?"+Math.random(), function(ver_info){
+				if(ver_info==null) return;
+				if(typeof(ver_info.info)=="string") {
+					$("#server_info").show().find(".row").html(ver_info.info);
+				} else {
+					$("#server_info").hide();
+				}
+				if(typeof(ver_info.ver)!="undefined") {
+					$('<a href="###" onclick="checkUpdate()">系统有新版本可更新，点击本链接查看详情！</a>').appendTo("#info");
+					$("#info").css({'text-align':'center','padding':'10px','font-size':'18px','font-weight':'bold'});
+					update_info = ver_info.ver;
+				}
+			}, "json");
+		}
+	});
 });
 //]]> 
 </script>

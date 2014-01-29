@@ -13,9 +13,9 @@ class plugin_search implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_search", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_1']."', 'search.php?method=engine', '../plugin/search/', 0, 0, '".$info['cat_desc_1']."')");
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 5, '".$info['cat_name_2']."', 'search.php?method=keyword', '../plugin/search/', 0, 0, '".$info['cat_desc_2']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_search",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name_1'],'search.php?method=engine', '../plugin/search/', 0, 0,$info['cat_desc_1']));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,5,$info['cat_name_2'],'search.php?method=keyword', '../plugin/search/', 0, 0,$info['cat_desc_2']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -43,10 +43,10 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."search_keyword");
-		$db->query("drop table ".$setting['db']['pre']."search_keyword");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'search.php%'");
+		$db->delete($setting['db']['pre']."search_keyword");
+		$db->exec("drop","table",$setting['db']['pre']."search_keyword");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","like","search.php%"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -138,6 +138,7 @@ mytpl;
 	}
 	
 	public static function tag_keyword(MyTPL $tpl, $att_list = array()) {
+		global $db,$setting;
 		if(!isset($att_list['limit'])) $att_list['limit'] = 10;
 		if(!isset($att_list['order'])) $att_list['order'] = "chg_date";
 		$cur_content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/block_keyword.tpl");
@@ -148,11 +149,11 @@ mytpl;
 		$unit_blank = preg_replace("/<(td|li|p|dd|dt)([^>]*?)>.*?<\/\\1>/is", "<\\1\\2>&nbsp;</\\1>", $unit_blank);
 		$unit_blank = addslashes($unit_blank);
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."keyword_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
+		$sql = $db->buildSel($setting['db']['pre']."search_keyword","keyword", array(array("amount","n>","0","and"),array("chg_date","f>","UNIX_TIMESTAMP()-604800","and"),array("length(keyword)","n>","4","and"),array("length(keyword)","n<","30","and")),array("order"=>$att_list['order'],"limit"=>$att_list['limit']));
 		$result = <<<mytpl
 <?php
-\$result = getData("select keyword from ".\$setting['db']['pre']."search_keyword where (`amount`>0 and `chg_date`> UNIX_TIMESTAMP()-604800) and length(keyword)>4 and length(keyword)<30 order by {$att_list['order']} limit {$att_list['limit']}", "all", 60*60*24);
-\$max_count = count(\$result);
-for(\$num=0; \$num<\$max_count; \$num++) {
+\$result = getData("{$sql}", "all", 60*60*24);
+for(\$num=0,\$m=count(\$result); \$num<\$m; \$num++) {
 	\$record = \$result[\$num];
 	\$record["encode"] = urlencode(\$record["keyword"]);
 	\$record["url"] = getUrl("search", \$record["keyword"]);

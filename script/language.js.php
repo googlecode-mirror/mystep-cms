@@ -28,4 +28,4 @@ header("Accept-Ranges: bytes");
 header("Accept-Length: ".strlen($result));
 echo $result;
 $mystep->pageEnd(false);
-?>
+?>D:/Website/mystep/aa.txtD:/Website/mystep/aa.txt

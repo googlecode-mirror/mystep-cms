@@ -37,8 +37,9 @@ switch($method) {
 	case "download":
 		$result = array();
 		$header = array();
-		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST")."/update/";
-		$update_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver']."&cs=".$setting['gen']['charset'], $header);
+		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST");
+		$header['ms_sign'] = $setting['web']['sign'];
+		$update_info = GetRemoteContent($setting['gen']['update']."?m=update&v=".$ms_version['ver']."&cs=".$setting['gen']['charset']."&email=".urlencode($setting['web']['email'])."&title=".urlencode($setting['web']['title']), $header);
 		$update_info = preg_replace("/(^|[\r\n]+)([\w]{0,6})[\r\n]+/", "", $update_info);
 		$update_info = base64_decode($update_info);
 		$update_info = unserialize($update_info);
@@ -111,7 +112,7 @@ switch($method) {
 					WriteFile(ROOT_PATH."/".$update_info['file'][$i], $update_info['content'][$i], "wb");
 				}
 			} else {
-				$list[] = $i;
+				if(!empty($update_info['content'][$i])) $list[] = $i;
 			}
 		}
 		$result['link'] = "";
@@ -220,8 +221,11 @@ mystep;
 		$result = checkFile();
 		echo toJson($result, $setting['gen']['charset']);
 		break;
-	case "check_server":
-		$check_info = GetRemoteContent($setting['gen']['update']."?v=check&cs=".$setting['gen']['charset']);
+	case "vertify":
+		$header = array();
+		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST");
+		$header['ms_sign'] = $setting['web']['sign'];
+		$check_info = GetRemoteContent($setting['gen']['update']."?m=vertify&v=".$ms_version['ver']."&cs=".$setting['gen']['charset'], $header);
 		if(!empty($check_info)) {
 			$check_info = json_decode($check_info);
 			$the_file = ROOT_PATH."/cache/checkfile.php";
@@ -242,8 +246,55 @@ mystep;
 			echo "error";
 		}
 		break;
+	case "u_update":
+		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST");
+		$header['ms_sign'] = $setting['web']['sign'];
+		$update_info = GetRemoteContent($setting['gen']['update']."?m=u_update&v=".$ms_version['ver']."&cs=".$setting['gen']['charset'], $header);
+		if(!empty($update_info)) {
+			$update_info = preg_replace("/(^|[\r\n]+)([\w]{0,6})[\r\n]+/", "", $update_info);
+			$update_info = base64_decode($update_info);
+			$update_info = unserialize($update_info);
+			$list = array();
+			for($i=0,$m=count($update_info['file']); $i<$m; $i++) {
+				if(isWriteable(ROOT_PATH."/".$update_info['file'][$i])) {
+					if(empty($update_info['content'][$i])) {
+						MultiDel(ROOT_PATH."/".$update_info['file'][$i]);
+					} elseif($update_info['content'][$i]==".") {
+						MakeDir(ROOT_PATH."/".$update_info['file'][$i]);
+					} else {
+						WriteFile(ROOT_PATH."/".$update_info['file'][$i], $update_info['content'][$i], "wb");
+					}
+				} else {
+					if(!empty($update_info['content'][$i])) $list[] = $i;
+				}
+			}
+			$link = "";
+			$m = count($list);
+			if($m>0) {
+				require(ROOT_PATH."/source/class/myzip.class.php");
+				$dir = ROOT_PATH."/".$setting['path']['upload']."/tmp/";
+				$zipfile = $dir."update_".date("Ymd").".zip";
+				@unlink($zipfile);
+				$dir = $dir."update/".date("Ymd/");
+				$files = array();
+				for($i=0; $i<$m; $i++) {
+					if($update_info['content'][$list[$i]]==".") continue;
+					$files[$i] = $dir.$update_info['file'][$list[$i]];
+					WriteFile($files[$i], $update_info['content'][$list[$i]], "wb");
+				}
+				if(zip($files, $zipfile, $dir)) {
+					$link = $setting['web']['url']."/".$setting['path']['upload']."/tmp/".basename($zipfile);
+				}
+				MultiDel($dir);
+			}
+		}
+		echo $link;
+		break;
 	default:
-		$check_info = GetRemoteContent($setting['gen']['update']."?v=".$ms_version['ver']."&cs=".$setting['gen']['charset']."&check=yes");
+		$header = array();
+		$header['Referer'] = "http://".$req->GetServer("HTTP_HOST");
+		$header['ms_sign'] = $setting['web']['sign'];
+		$check_info = GetRemoteContent($setting['gen']['update']."?m=check&v=".$ms_version['ver']."&cs=".$setting['gen']['charset'], $header);
 		$check_info = chg_charset($check_info, "utf-8", $setting['gen']['charset']);
 		echo $check_info;
 		break;

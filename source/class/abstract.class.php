@@ -28,15 +28,15 @@ abstract class class_common {
 	
 	public function __destruct() {
 		$varList = array_keys(get_class_vars(get_class($this)));
-		$max_count = count($varList);
-		for($i=0; $i<$max_count; $i++) {
+		for($i=0,$m=count($varList);$i<$m;$i++) {
 			unset($this->{$varList[$i]});
 		}
 	}
 	
 	public function __get($para) {
 		if($para=="instatnce") {
-			eval('return (new '.get_called_class().'());');
+			$class_name = get_called_class();
+			return new $class_name();
 		} else {
 			if($this->paras == null) return null;
 			return array_key_exists($para, $this->paras) ? $this->paras[$para] : null;
@@ -83,6 +83,7 @@ abstract class class_common {
 				eval($GLOBALS['my_wakeup']);
 				return true;
 			} catch(Exception $e) {
+				trigger_error($e->getMessage(), E_USER_ERROR);
 				return false;
 			}
 		}
@@ -95,7 +96,7 @@ abstract class class_common {
 		} else {
 			foreach($this as $key => $val) {
 				if(is_array($val)){
-					$this->{$key} = unserialize(serialize($val));
+					$this->$key = unserialize(serialize($val));
 				} elseif(is_object($val)) {
 					$this->$key= clone($this->$key);
 				}
@@ -109,7 +110,7 @@ abstract class class_common {
 		$result['vars'] = array();
 		$vars = get_class_vars(get_class($this));
 		foreach($vars as $var => $value) {
-			$result['vars'][$var] = $this->{$var};
+			$result['vars'][$var] = $this->$var;
 		}
 		$result['methods'] = array();
 		$methods = get_class_methods(get_class($this));
@@ -121,15 +122,13 @@ abstract class class_common {
 
 	public function __invoke($para) {
 		if(is_string($para)) {
-			try {
-				eval($para);
-				return true;
-			} catch(Exception $e) {
-				return $e->getMessage();
-			}
-		} elseif(is_array($para)) {
+			return str_shuffle(md5($para));
+		} elseif(is_numeric($para)) {
+			mt_srand($para);
+			return mt_rand();
+		} elseif(is_array($para) || is_object($para)) {
 			foreach($para as $key => $value) {
-				$this->{$key} = $value;
+				$this->$key = $value;
 			}
 			return true;
 		} else {
@@ -137,58 +136,44 @@ abstract class class_common {
 		}
 	}
 	
-	public static function __set_state($para_arr, $exe = "") {
-		eval('$instance = new '.get_class($this).';');
+	public static function __set_state($para_arr) {
+		$class_name = get_class($this);
+		$instance = new $class_name();
 		foreach($para_arr as $key => $value) {
-			$instance->{$key} = $value;
+			$instance->$key = $value;
 		}
-		if(strlen($exe)>0) eval(str_replace('$instance', '$this', $exe));
 		return $instance;
 	}
 	
 	public function getInstance($calledClass = "") {
 		if(empty($calledClass)) $calledClass = get_class($this);
-		$arg_list_text = '';
 		$argList = func_get_args();
 		array_shift($argList);
-		if(count($argList)>0) {
-			if(is_string($argList[0])) $argList[0] = addslashes($argList[0]);
-			$arg_list_text = '$argList[0]';
-			$max_count = count($argList);
-			for($i=1; $i<$max_count; $i++) {
-				if(is_string($argList[$i]))$argList[$i] = addslashes($argList[$i]);
-				$arg_list_text .= ', $argList['.$i.']';
-			}
-		}
 		if($this->singleton) {
 			static $instanceList = array();
 			if(!isset($instanceList[$calledClass])) {
-				if(strlen($arg_list_text)>0) {
+				$instanceList[$calledClass] = new $calledClass();
+				if(count($argList)>0) {
 					if(is_callable(array($calledClass, "init"))) {
-						eval('$instanceList[$calledClass] = new '.$calledClass.'();');
-						eval('$instanceList[$calledClass]->init('.$arg_list_text.');');
+						call_user_func_array(array($instanceList[$calledClass], "init"), $argList);
 					} else {
-						eval('$instanceList[$calledClass] = new '.$calledClass.'('.$arg_list_text.');');
+						call_user_func_array(array($instanceList[$calledClass], '__construct'), $argList);
 					}
-				} else {
-					eval('$instanceList[$calledClass] = new '.$calledClass.'();');
 				}
 			} else {
-				if(is_callable(array($calledClass, "init")) && strlen($arg_list_text)>0) {
-					eval('$instanceList[$calledClass]->init('.$arg_list_text.');');
+				if(is_callable(array($calledClass, "init")) && count($argList)>0) {
+					call_user_func_array(array($instanceList[$calledClass], "init"), $argList);
 				}
 			}
 			return $instanceList[$calledClass];
 		} else {
-			if(strlen($arg_list_text)>0) {
+			$instance = new $calledClass();
+			if(count($argList)>0) {
 				if(method_exists($calledClass, "init")) {
-					eval('$instance = new '.$calledClass.'();');
-					eval('$instance->init('.$arg_list_text.');');
+					call_user_func_array(array($instance, "init"), $argList);
 				} else {
-					eval('$instance = new '.$calledClass.'('.$arg_list_text.');');
+					call_user_func_array(array($calledClass, '__construct'), $argList);
 				}
-			} else {
-				eval('$instance = new '.$calledClass.'();');
 			}
 			return $instance;
 		}
@@ -198,15 +183,16 @@ abstract class class_common {
 		$this->error_handle = (!empty($error_function) && is_callable($error_function)) ? $error_function : "";
 	}
 
-	protected function Error($msg="", $exit=false) {
+	protected function Error($msg, $exit=false) {
 		$err_msg  = "MyStep Error: \n";
 		$err_msg .= "Time: ".gmdate("Y-n-j G:i:s", $_SERVER['REQUEST_TIME'] + 8 * 3600)."\n";
+		$err_msg .= "URL: http://".$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']."\n";
 		$err_msg .= "File: ".$_SERVER["PHP_SELF"]."\n";
 		if(!empty($msg)) $err_msg .= "Info.: {$msg}\n";
 		$err_msg .= "Debug: \n";
 		$debug_info = debug_backtrace();
 		$n=0;
-		for($i=count($debug_info)-1; $i>=0; $i--){
+		for($i=count($debug_info)-1;$i>=0;$i--){
 			if(empty($debug_info[$i]['file'])) continue;
 			$err_msg .= (++$n)." - ".$debug_info[$i]['file']." (line:".$debug_info[$i]['line'].", function:".$debug_info[$i]['function'].")\n";
 		}

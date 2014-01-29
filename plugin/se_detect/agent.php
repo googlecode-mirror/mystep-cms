@@ -1,11 +1,11 @@
 <?PHP
 $agent = array (
-  '¹È¸è' => 'Google',
   '°Ù¶È' => 'Baidu',
   'ÑÅ»¢' => 'Yahoo',
   'ËÑËÑ' => 'Soso',
   'ËÑ¹·' => 'Sogou',
   'ÓÐµÀ' => 'youdao',
   '±ØÓ¦' => 'bingbot',
+  '¹È¸è' => 'Google',
 );			
 ?>

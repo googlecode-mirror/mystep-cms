@@ -10,7 +10,7 @@
 					<select name="cat_main" id="cat_main">
 						<option value="0">顶级栏目</option>
 <!--loop:start key="catalog"-->
-						<option value="<!--catalog_cat_id-->" webid=<!--catalog_web_id--> <!--catalog_selected-->><!--catalog_cat_name--></option>
+						<option value="<!--catalog_cat_id-->" webid="<!--catalog_web_id-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
 					</select>
 					<span class="comment">（当前栏目的父栏目）</span>

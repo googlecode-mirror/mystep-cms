@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "电子邮件插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.0",
+	"ver" => "1.1",
 	"class" => "plugin_email",
 	"intro" => "电子邮件群发",
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

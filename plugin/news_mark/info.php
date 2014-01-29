@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "新闻评价插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.1",
+	"ver" => "1.2",
 	"class" => "plugin_news_mark",
 	"intro" => "新闻评分、提升",
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

@@ -68,11 +68,11 @@ class plugin_offical implements plugin {
 			$req->setCookie("cnt_visitor", $ip, 60*60*24);
 			$add_ip = 1;
 		}
-		if($add_ip==1 && $db->query("select ip from ".$setting['db']['pre']."user_online where ip='".$ip."'")) {
+		if($add_ip==1 && $db->result($setting['db']['pre']."user_online","ip",array("ip","=",$ip))) {
 			$add_ip = 0;
 		}
-		$count_online = $db->GetSingleResult("select count(distinct ip) from ".$setting['db']['pre']."user_online");
-		if($record = $db->GetSingleRecord("select pv, iv, online from ".$setting['db']['pre']."counter where date=curdate()")) {
+		$count_online = $db->result($setting['db']['pre']."user_online","count(distinct ip)");
+		if($record = $db->record($setting['db']['pre']."counter","pv, iv, online",array("date","f=","curdate()"))) {
 			$pv = $record['pv'] + 1;
 			$iv = $record['iv'] + $add_ip;
 			$online = max($record['online'], $count_online);
@@ -81,7 +81,7 @@ class plugin_offical implements plugin {
 			$iv = 1;
 			$online = 1;
 		}
-		$result = $db->Query("replace into ".$setting['db']['pre']."counter values(curdate(), $pv, $iv, $online)");
+		return $db->replace($setting['db']['pre']."counter", array("curdate()",$pv,$iv,$online));
 	}
 	
 	public static function api_rss($id=0, $mode="cat") {
@@ -114,11 +114,27 @@ class plugin_offical implements plugin {
 		$tpl->Set_Variable('charset_tag', $charset_tag);
 		$tpl->Set_Variable('cat_txt', $cat_txt);
 		$tpl->Set_Variable('now', date("r"));
-		$db->Query("
-				select a.*, b.cat_name from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show a 
-					left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id 
-				where 1=1".(empty($cat_id)?"":" and a.cat_id=".$cat_id)." limit ".$setting['list']['rss']
-			);
+
+		$condition = array();
+		if(!empty($cat_id)) $condition[] = array("cat_id","n=",$cat_id);
+		$db->select(
+			array(
+				array(
+					"name" => $web_info['db']['name'].".".$web_info['db']['pre']."news_show",
+					"idx" => "a",
+					"col" => "*",
+					"condition" => $condition
+				),
+				array(
+					"name" => $setting['db']['pre']."news_cat",
+					"idx" => "b",
+					"col" => "cat_name",
+					"join" => "cat_id",
+				)
+			),
+			array(),
+			array("limit"=>$setting['list']['rss'])
+		);
 		while($record = $db->GetRS()) {
 			$record['link'] = getUrl("read", array($record['news_id'], $record['cat_idx']), 1, $record['web_id']);
 			$record['add_date'] = date("r", strtotime($record['add_date']));
@@ -133,11 +149,11 @@ class plugin_offical implements plugin {
 		global $setting, $db;
 		if(!is_numeric($id)) return;
 		$web_info = getSubSetting($web_id);
-		$result = $db->GetSingleRecord("select * from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show where news_id=".$id);
+		$result = $db->record($web_info['db']['name'].".".$web_info['db']['pre']."news_show", "*", array("news_id","n=",$id));
 		$result['link'] = getUrl("read", array($record['news_id'], $record['cat_idx']), 1, $record['web_id']);
 		$result['add_date'] = date("Y-m-d H:i:s", strtotime($result['add_date']));
 		$result['content'] = array();
-		$db->Query("select * from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_detail where news_id=".$id." order by page asc");
+		$db->select($web_info['db']['name'].".".$web_info['db']['pre']."news_detail","*", array("news_id","n=",$id), array("order"=>"page asc"));
 		while($record = $db->GetRS()) {
 			$result['content'][] = $record['content'];
 		}
@@ -158,12 +174,27 @@ class plugin_offical implements plugin {
 		} else {
 			$web_info = getSubSetting($id);
 		}
-		
-		$db->Query("
-				select a.*, b.cat_name from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show a 
-					left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id 
-				where 1=1".(empty($cat_id)?"":" and a.cat_id=".$cat_id)." limit ".$setting['list']['rss']
-			);
+
+		$condition = array();
+		if(!empty($cat_id)) $condition[] = array("cat_id","n=",$cat_id);
+		$db->select(
+			array(
+				array(
+					"name" => $web_info['db']['name'].".".$web_info['db']['pre']."news_show",
+					"idx" => "a",
+					"col" => "*",
+					"condition" => $condition
+				),
+				array(
+					"name" => $setting['db']['pre']."news_cat",
+					"idx" => "b",
+					"col" => "cat_name",
+					"join" => "cat_id",
+				)
+			),
+			array(),
+			array("limit"=>$setting['list']['rss'])
+		);
 		$result = array();
 		while($record = $db->GetRS()) {
 			$record['link'] = getUrl("read", array($record['news_id'], $record['cat_idx']), 1, $record['web_id']);
@@ -246,7 +277,7 @@ class plugin_offical implements plugin {
 	}
 	
 	public static function parse_news(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting, $db;
 		$result = "";
 		/*
 		foreach($att_list as $key => $value) {
@@ -284,42 +315,68 @@ class plugin_offical implements plugin {
 		if(!isset($att_list['show_date'])) $att_list['show_date'] = "";
 		if(!empty($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
 		if(!isset($att_list['tag'])) $att_list['tag'] = "";
+		if(!empty($att_list['cat_id'])) {
+			if($cat_info=getParaInfo("news_cat", "cat_id", $att_list['cat_id'])) $att_list['web_id'] = $cat_info['web_id'];
+		}
+		
+		$pre = "{db_pre}";
+		if(!empty($att_list['web_id'])) {
+			$setting_sub = getSubSetting($att_list['web_id']);
+			$pre = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
+		}
+		$condition = array();
+		if(!empty($att_list['expire'])) $condition[] = array(array("a.expire", "is", null), array("expire", "f>", "now()", "or"));
+		if(!empty($att_list['web_id'])) $condition[] = array("a.web_id", "n=", $att_list['web_id'],"and");
+		if(!empty($att_list['cat_id'])) {
+			if(is_numeric($att_list['cat_id'])) {
+				$condition[] = array(array("a.cat_id", "=", $att_list['cat_id']), array("b.cat_main", "=", $att_list['cat_id'], "or"), "and");
+			} else {
+				$condition[] = array(array("a.cat_id", "in", $att_list['cat_id']), array("b.cat_main", "in", $att_list['cat_id'], "or"), "and");
+			}
+		}
+		if(!empty($att_list['show_image'])) $condition[] = array("a.image", "!=", "", "and");
+		if(!empty($att_list['setop'])) $condition[] = array("(a.setop & {$att_list['setop']})", "n=", $att_list['setop'], "and");
+		if(!empty($att_list['xid'])) $condition[] = array("a.news_id", "not in", $att_list['xid'], "and");
+
 		$tag = "";
 		if(!empty($att_list['tag'])) {
 			if(strpos($att_list['tag'], '$GLOBALS')===false) {
-				$att_list['tag'] = "a.tag like '%".str_replace(",", "%' or a.tag like '%", $att_list['tag'])."%'";
+				$tag = explode(",",trim($att_list['tag']));
+				$att_list['tag'] = "";
 			} else {
-				$tag = $att_list['tag'];
-				$att_list['tag'] = "a.tag like '%[tag]%'";
+				$tag = array("{tag}");
 			}
-		}
-		if(!empty($att_list['cat_id'])) {
-			if($cat_info=getParaInfo("news_cat", "cat_id", $att_list['cat_id'])) $att_list['web_id'] = $cat_info['web_id'];
-		} else {
-			//$att_list['web_id'] = $setting['info']['web']['web_id'];
-		}
-		$str_sql = "select a.* from {db_pre}news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1";
-		if(!empty($att_list['expire'])) $str_sql .= " and (a.expire is null or a.expire>now())";
-		if(!empty($att_list['web_id'])) $str_sql .= " and a.web_id='{$att_list['web_id']}'";
-		if(!empty($att_list['cat_id'])) {
-			if(is_numeric($att_list['cat_id'])) {
-				$str_sql .= " and (a.cat_id ={$att_list['cat_id']} || b.cat_main={$att_list['cat_id']})";
-			} else {
-				$str_sql .= " and (a.cat_id in ({$att_list['cat_id']}) || b.cat_main in ({$att_list['cat_id']}))";
+			$tag_list = array();
+			for($i=0,$m=count($tag);$i<$m;$i++) {
+				$att_list['tag'][$i] = trim($tag[$i]);
+				if(strlen($tag[$i])<2) continue;
+				$tag_list[] = array("a.tag", "like", $tag[$i], "or");
 			}
+			$tag_list[] = "and";
+			$condition[] = $tag_list;
 		}
-		if(!empty($att_list['show_image'])) $str_sql .= " and a.image!=''";
-		if(!empty($att_list['setop'])) $str_sql .= " and (a.setop & {$att_list['setop']})={$att_list['setop']}";
-		if(!empty($att_list['tag'])) $str_sql .= " and (".$att_list['tag'].")";
-		if(!empty($att_list['xid'])) $str_sql .= " and a.news_id not in (".$att_list['xid'].")";
-		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
-		$str_sql .= " order by ".$att_list['order'];
-		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
+
+		$opt = array();
+		$opt["order"] = $att_list['order'];
+		if(!empty($att_list['limit'])) $opt["limit"] = $att_list['limit'];
+		if(!empty($att_list['condition'])) $opt["condition"] = $att_list['condition'];
 		
-		if(!empty($att_list['web_id'])) {
-			$setting_sub = getSubSetting($att_list['web_id']);
-			$str_sql = str_replace("{db_pre}", $setting_sub['db']['name'].".".$setting_sub['db']['pre'], $str_sql);
-		}
+		$sql = $db->buildSel(
+			array(
+				array(
+					"name" => $pre."news_show",
+					"idx" => "a",
+					"col" => "*",
+				),
+				array(
+					"name" => $setting['db']['pre']."news_cat",
+					"idx" => "b",
+					"join" => "cat_id",
+				)
+			),
+			$condition,
+			$opt
+		);
 		
 		$cur_content = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_{$att_list['template']}.tpl", $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_classic.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
@@ -329,13 +386,14 @@ class plugin_offical implements plugin {
 		$unit_blank = preg_replace("/<(td|li|p|dd|dt)([^>]*?)>.*?<\/\\1>/is", "<\\1\\2>&nbsp;</\\1>", $unit_blank);
 		$unit_blank = addslashes($unit_blank);
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."news_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
+		$tag = $att_list['tag'];
 		$result = <<<mytpl
 <?php
 global \$plugin_setting;
 \$n = 0;
-\$str_sql = str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}");
-\$str_sql = str_replace(" and (a.cat_id ='0' || b.cat_main='0')", "", \$str_sql);
-\$tag = "{$tag}";
+\$sql = str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$sql}");
+\$sql = str_replace("and  order", "order", \$sql);
+\$tag = "{$att_list['tag']}";
 if(!empty(\$tag)) {
 	\$tag = str_replace("'", "", \$tag);
 	\$tag = str_replace("£¬", ",", \$tag);
@@ -343,13 +401,12 @@ if(!empty(\$tag)) {
 	\$tag = preg_replace("/,+/", ",", \$tag);
 	\$tag = trim(\$tag, ",");
 	\$tag = str_replace(",", "%' or a.tag like '%", \$tag);
-	\$str_sql = str_replace("[tag]", \$tag, \$str_sql);
+	\$sql = str_replace("{tag}", \$tag, \$sql);
 } else {
-	\$str_sql = str_replace("and (a.tag like '%[tag]%')", "", \$str_sql);
+	\$sql = str_replace("(`a`.`tag` like '%{tag}%')", "true", \$sql);
 }
-\$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
-\$max_count = count(\$result);
-for(\$num=0; \$num<\$max_count; \$num++) {
+\$result = getData(\$sql, "all", \$plugin_setting['offical']['ct_news']);
+for(\$num=0,\$m=count(\$result); \$num<\$m; \$num++) {
 	\$record = \$result[\$num];
 	HtmlTrans(&\$record);
 	\$theStyle = explode(",", \$record['style']);
@@ -396,22 +453,21 @@ mytpl;
 	}
 
 	public static function parse_info(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting, $db;
 		$result = "";
-		$str_sql = "";
+		$condition = array();
 		if(isset($att_list['id'])) {
-			$str_sql = "select content from ".$setting['db']['pre']."info_show where id='".$att_list['id']."'";
+			$condition[] = array("id", "n=", $att_list['id']);
 		} elseif(isset($att_list['title'])) {
-			$str_sql = "select content from ".$setting['db']['pre']."info_show where subject='".$att_list['title']."'";
-		} else {
-			$str_sql = "";
+			$condition[] = array("subject", "=", $att_list['title']);
 		}
-		if(!empty($str_sql)) {
-			$str_sql .= " and (web_id=".$setting['info']['web']['web_id']." or web_id=0)";
+		if(!empty($condition)) {
+			$condition[] = array(array("web_id", "n=", $setting['info']['web']['web_id']), array("web_id", "n=", 0,"or"),"and");
+			$sql = $db->buildSel($setting['db']['pre']."info_show","content",$condition);
 			$result = <<<mytpl
 <?php
 global \$plugin_setting;
-echo getData("{$str_sql}", "result", \$plugin_setting['offical']['ct_info']);
+echo getData("{$sql}", "result", \$plugin_setting['offical']['ct_info']);
 ?>
 mytpl;
 		}
@@ -446,9 +502,8 @@ mytpl;
 		$unit = $block_all[1];
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."link_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$link_list[\$i]['\\1']}", $unit);
 		$result .= <<<mytpl
-\$max_count = count(\$link_list);
 \$n = 0;
-for(\$i=0; \$i<\$max_count; \$i++) {
+for(\$i=0,\$m=count(\$link_list); \$i<\$m; \$i++) {
 	if(\$link_list[\$i]['level']==0 || (\$link_list[\$i]['web_id']!=0 && \$link_list[\$i]['web_id']!={$setting['info']['web']['web_id']})) continue;
 	if(!empty(\$link_idx) && strpos(",".\$link_idx.",", ",".\$link_list[\$i]['idx'].",")===false) continue;
 	echo <<<content
@@ -465,7 +520,7 @@ mytpl;
 	}
 	
 	public static function parse_tag(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting, $db;
 		$result = "";
 		if(!isset($att_list['template'])) $att_list['template'] = "classic";
 		if(!isset($att_list['limit'])) $att_list['limit'] = 20;
@@ -477,8 +532,7 @@ mytpl;
 		$block = $block_all[0];
 		$unit = $block_all[1];
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."tag_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$tag_list[\$i]['\\1']}", $unit);
-		$str_sql = "select tag, count from {db_pre}news_tag where ".(empty($att_list['condition'])?"1=1":$att_list['condition'])." order by ".$att_list['order']." limit ".$att_list['limit'];
-		//$str_sql = addslashes($str_sql);
+		$sql = $db->buildSel("{db_pre}news_tag", "tag, count","",$att_list);
 		$result = <<<mytpl
 <?php
 global \$plugin_setting;
@@ -486,9 +540,8 @@ global \$plugin_setting;
 \$dyn_size = 32;
 \$count_max = 0;
 \$tag_list = array();
-\$result = getData(str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$str_sql}"), "all", \$plugin_setting['offical']['ct_tag']);
-\$max_count = count(\$result);
-for(\$num=0; \$num<\$max_count; \$num++) {
+\$result = getData(str_replace("{db_pre}", \$setting['db']['pre_sub'], "{$sql}"), "all", \$plugin_setting['offical']['ct_tag']);
+for(\$num=0,\$m=count(\$result); \$num<\$m; \$num++) {
 	\$record = \$result[\$num];
 	\$record['link'] = getUrl("tag", urlencode(\$record['tag']), 1, \$setting['info']['web']['web_id']);
 	\$record['size'] = \$base_size;
@@ -497,8 +550,7 @@ for(\$num=0; \$num<\$max_count; \$num++) {
 	unset(\$record);
 }
 unset(\$result);
-\$max_count = count(\$tag_list);
-for(\$i=0; \$i<\$max_count; \$i++) {
+for(\$i=0,\$m=count(\$tag_list); \$i<\$m; \$i++) {
 	\$tag_list[\$i]['size'] = \$base_size + round(\$dyn_size * \$tag_list[\$i]['count'] / \$count_max);
 	echo <<<content
 {$unit}
@@ -560,8 +612,7 @@ mytpl;
 			$deep_cur = 0;
 			$catInfo = getParaInfo("news_cat", "cat_id", $cat_id);
 			if(!$catInfo) $catInfo = array("cat_layer"=>1);
-			$max_count = count($news_cat);
-			for($i=0; $i<$max_count; $i++) {
+			for($i=0,$m=count($news_cat); $i<$m; $i++) {
 				if(!empty($web_id) && $web_id!=$news_cat[$i]['web_id']) continue;
 				if(empty($all)) {
 					if($deep_start==0 && $news_cat[$i]['cat_layer']!=$catInfo['cat_layer']) continue;

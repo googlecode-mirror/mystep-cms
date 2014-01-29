@@ -20,8 +20,7 @@ switch($method) {
 				$name = str_replace($ext, "", $upload->upload_result[$i]['name']);
 				$upload->upload_result[$i]['name'] = substrPro($name, 0, 80).$ext;
 				$upload->upload_result[$i]['new_name'] = str_replace(".upload", "", $upload->upload_result[$i]['new_name']);
-				$str_sql = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$upload->upload_result[$i]['name']."', '".$upload->upload_result[$i]['type']."', '".$upload->upload_result[$i]['size']."', '{$comment}', '".substr($upload->upload_result[$i]['new_name'],0,13)."', 0, '', '".$req->getSession('username')."', {$watermark})";
-				$db->Query($str_sql);
+				$db->insert($setting['db']['pre']."attachment", array(0, 0, 0, $upload->upload_result[$i]['name'], $upload->upload_result[$i]['type'], $upload->upload_result[$i]['size'], $comment, substr($upload->upload_result[$i]['new_name'],0,13), 0, '', $req->getSession('username'), $watermark));
 				$new_id = $db->GetInsertId();
 				if($new_id != 0) {
 					if(strpos($upload->upload_result[$i]['type'],"image")===0) {
@@ -85,7 +84,7 @@ mystep;
 				unlink($path_upload.date("/Y/m/d/", $time)."preview/".$the_file[1]);
 				unlink($path_upload.date("/Y/m/d/", $time)."cache/".$the_file[1]);
 				unlink($path_upload.date("/Y/m/d/", $time)."preview/cache/".$the_file[1]);
-				$db->Query("delete from ".$setting['db']['pre']."attachment where id = ".$the_file[0]);
+				$db->delete($setting['db']['pre']."attachment", array("id","n=",$the_file[0]));
 				$script .= <<<mystep
 						var theOLE = parent || opener;
 						theOLE.document.forms[0].attach_list.value = theOLE.document.forms[0].attach_list.value.replace('{$the_file[0]}|', '');
@@ -95,10 +94,10 @@ mystep;
 			}
 		}
 		if(strlen($watermark_yes)>2) {
-			$db->Query("update ".$setting['db']['pre']."attachment set watermark=1 where id in ({$watermark_yes})");
+			$db->update($setting['db']['pre']."attachment", array("watermark"=>1), array("id","nin",$watermark_yes));
 		}
 		if(strlen($watermark_no)>2) {
-			$db->Query("update ".$setting['db']['pre']."attachment set watermark=0 where id in ({$watermark_no})");
+			$db->update($setting['db']['pre']."attachment", array("watermark"=>0), array("id","nin",$watermark_no));
 		}
 		$script .= '
 			if(parent==null){
@@ -119,14 +118,14 @@ mystep;
 		$news_id = $req->getGet("news_id");
 		$attach_list = $req->getGet("attach_list");
 		$attach_list = explode("|", $attach_list);
-		$str_sql = "select * from ".$setting['db']['pre']."attachment where ";
-		$max_count = count($attach_list);
-		for($i=0; $i<$max_count; $i++) {
-			if(!empty($attach_list[$i])) $str_sql .= "id={$attach_list[$i]} or ";
+		
+		$condition = array();
+		for($i=0,$m=count($attach_list); $i<$m; $i++) {
+			if(!empty($attach_list[$i])) $condition[] = array("id","n=",$attach_list[$i],"or");
 		}
-		$str_sql .= (empty($news_id) ? "1=0" : "news_id={$news_id}");
-		$db->Query($str_sql);
+		if(!empty($news_id)) $condition[] = array("news_id","n=",$news_id,"or");
 		$att_more = true;
+		$db->select($setting['db']['pre']."attachment", "*", $condition);
 		while($record = $db->GetRS()) {
 			$att_more = false;
 			$record['check'] = $record['watermark'] ? "checked" : "";
@@ -160,19 +159,19 @@ mystep;
 		$keyword = $req->getGet("keyword");
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 
-		$str_sql = "select count(*) as counter from ".$setting['db']['pre']."attachment where add_user='".$_SESSION['username']."'";
-		if(!empty($keyword)) $str_sql.= " and file_name like '%{$keyword}%'";
-		$counter = $db->GetSingleResult($str_sql);
+		$condition = array();
+		$condition[] = array("add_user","=",$req->getSession("username"));
+		if(!empty($keyword)) $condition[] = array("file_name","like",$keyword,"and");
+		$counter = $db->result($setting['db']['pre']."attachment", "count(*)", $condition);
 		$page = $req->getGet("page");
-		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
+		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=mine&keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
 
-		$str_sql = "select * from ".$setting['db']['pre']."attachment where add_user='".$_SESSION['username']."'";
-		if(!empty($keyword)) $str_sql.= " and file_name like '%{$keyword}%'";
 		if(empty($order)) $order="id";
-		$str_sql.= " order by $order {$order_type}".(($order=="id")?"":", id desc");
-		$str_sql.= " limit $page_start, $page_size";
-		$db->Query($str_sql);
+		$the_order = array();
+		$the_order[] = "$order $order_type";
+		if($order!="id") $the_order[] = "id desc";
+		$db->select($setting['db']['pre']."attachment", "*", $condition, array("order"=>$the_order,"limit"=>"$page_start, $page_size"));
 		$att_more = true;
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);
 		if($order_type=="desc") {
@@ -210,13 +209,13 @@ mystep;
 		if(empty($id)) {
 			header("HTTP/1.0 404 Not Found");
 		} else {
-			$db->Query("select * from ".$setting['db']['pre']."attachment where id = '{$id}'");
-			if($record = $db->GetRS()) {
+			$record = $db->record($setting['db']['pre']."attachment", "*", array("id","n=",$id));
+			if($record!==false) {
 				$the_file = $path_upload.date("/Y/m/d/", substr($record['file_time'],0, 10)).$record['file_time'].strrchr($record['file_name'],".");
 				if(!is_file($the_file)) {
 					header("HTTP/1.0 404 Not Found");
 				} else {
-					$db->Query("update ".$setting['db']['pre']."attachment set file_count = file_count + 1 where id = {$id}");
+					$db->update($setting['db']['pre']."attachment", array("file_count"=>"+1"), array("id","n=",$id));
 					header("Content-type: ".$record['file_type']);
 					header("Accept-Ranges: bytes");
 					header("Accept-Length: ".$record['file_size']);

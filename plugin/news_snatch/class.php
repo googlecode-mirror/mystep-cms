@@ -13,9 +13,9 @@ class plugin_news_snatch implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_news_snatch", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 3, '".$info['cat_name_1']."', 'news_snatch.php?method=rule', '../plugin/news_snatch/', 0, 0, '".$info['cat_desc_1']."')");
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 3, '".$info['cat_name_2']."', 'news_snatch.php?method=news', '../plugin/news_snatch/', 0, 0, '".$info['cat_desc_2']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_news_snatch",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,3,$info['cat_name_1'],'news_snatch.php?method=rule', '../plugin/news_snatch/', 0, 0,$info['cat_desc_1']));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,3,$info['cat_name_2'],'news_snatch.php?method=news', '../plugin/news_snatch/', 0, 0,$info['cat_desc_2']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -43,10 +43,10 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."news_snatch");
-		$db->query("drop table ".$setting['db']['pre']."news_snatch");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'news_snatch.php%'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."news_snatch");
+		$db->exec("drop","table",$setting['db']['pre']."news_snatch");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","like","news_snatch.php%"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();

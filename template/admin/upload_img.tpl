@@ -23,6 +23,7 @@
 //<![CDATA[
 $(function(){
 	<!--script-->
+	
 	if(typeof(window.dialogArguments)=='undefined' && typeof(window.opener)=='undefined' && typeof(window.parent)=='undefined') {
 		window.opener = null;
 		self.close();
@@ -31,26 +32,24 @@ $(function(){
 	if(window.opener!='undefined') window.resizeTo(400,160);
 	$(document.body).css({"width":"420px", "height":"100px", "overflow":"hidden"});
 });
-
 function check_img(the_file){
 	var ext_list = "gif,jpg,png,swf";
 	if(the_file.lastIndexOf(".") == -1) return false;
 	var the_ext	= the_file.substr(the_file.lastIndexOf(".")+1).toLowerCase();
 	return ext_list.indexOf(the_ext)!=-1?true:false;
 }
-
 function check(){
 	if (document.upload.the_file.value.length==0){
-	alert("上传文件不能为空！");
-	document.upload.the_file.focus();
+		alert("上传文件不能为空！");
+		document.upload.the_file.focus();
 	}else if(check_img(document.upload.the_file.value)){
 		document.getElementById("load").style.display = "none";
 		document.getElementById("wait").style.display = "";
 		document.upload.submit();
 	}else{
-	alert("只能上传图形文件！");
-	document.upload.the_file.outerHTML = document.upload.the_file.outerHTML;
-	document.upload.the_file.focus();
+		alert("只能上传图形文件！");
+		document.upload.the_file.outerHTML = document.upload.the_file.outerHTML;
+		document.upload.the_file.focus();
 	}
 }
 //]]> 

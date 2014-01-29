@@ -1,6 +1,8 @@
 <div class="title"><!--title--></div>
+<script type="text/javascript" src="../../script/checkForm.js" Language="JavaScript1.2"></script>
+<script type="text/javascript" src="../../script/jquery.date_input.js" language="JavaScript1.2"></script>
 <div align="left">
-	<form method="post" action="?method=<!--method-->_ok">
+	<form method="post" action="?method=<!--method-->_ok" onsubmit="return checkForm(this)">
 		<table id="input_area" cellspacing="0" cellpadding="0">
 			<tr>
 				<td class="cat" colspan="2">基本信息</td>
@@ -28,6 +30,12 @@
 				<td class="cat">英文名称：</td>
 				<td class="row">
 					<input name="name_en" type="text" value="" maxlength="100" need="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="cat">过期时间：</td>
+				<td class="row">
+					<input name="expire" type="text" value="<!--expire-->" maxlength="100" need="date_" />
 				</td>
 			</tr>
 			<tr>
@@ -133,7 +141,7 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center" class="row">
-					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 提 交 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
@@ -227,12 +235,12 @@
 		&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 		<input type="checkbox" class="item" name="manager" /> 管理项目
 		<br /><br />
-		<input type="hidden" name="item" value="" /><input class="btn" type="button" onClick="confirmItem(this.previousSibling.value)" value=" 确 定 " />
+		<input type="hidden" name="item" value="" /><input class="btn" type="button" onClick="confirmItem(this.previousSibling.value)" value=" 提 交 " />
 	</div>
 </div>
 <div id="item_import" class="popshow">
 	<textarea style="width:96%;height:500px;"></textarea>
-	<div style="text-align:center;margin-top:10px;"><input class="btn" type="button" onClick="confirmImport()" value=" 确 定 " /></div>
+	<div style="text-align:center;margin-top:10px;"><input class="btn" type="button" onClick="confirmImport()" value=" 提 交 " /></div>
 </div>
 <script language="JavaScript">
 var cf_item=<!--cf_item-->;

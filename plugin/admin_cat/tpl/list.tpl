@@ -40,7 +40,7 @@
 				<tr>
 					<td colspan="8" align="center" class="cat">
 						<input class="btn" type="button" value=" 添 加 " onClick="location.href='?method=add'" />&nbsp;&nbsp;
-						<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+						<input class="btn" type="Submit" value=" 提 交 " />&nbsp;&nbsp;
 						<input class="btn" type="reset" value=" 重 置 " />
 					</td>
 				</tr>

@@ -15,7 +15,7 @@
 				<b>功能描述：</b><!--intro--><br />
 				<b>版权信息：</b><!--copyright--><br />
 				<b>检测信息：</b>
-				<div style="margin:-16px 0px 0px 66px;"><!--check--></div>
+				<div style="margin:-16px 0px 0px 66px;" id="check_info"><!--check--></div>
 				</td>
 			</tr>
 			<tr>
@@ -196,6 +196,7 @@ $(function(){
 		$("#err_info").show();
 		$("#refresh").show();
 		$("#install").hide();
+		$("#check_info > span").css("color","red");
 	}
 });
 //]]> 

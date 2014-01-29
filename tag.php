@@ -31,7 +31,8 @@ $db->Query("update ".$setting['db']['pre_sub']."news_tag set click=click+1 where
 $cur_tag = "";
 if(!empty($tag)) $cur_tag = " - ".$tag;
 
-$news_count = getData("select count(*) from ".$setting['db']['pre_sub']."news_show where tag like '%{$tag}%'", "result");
+$sql = $db->buildSel($setting['db']['pre_sub']."news_show", "count(*)", array("tag", "like", $tag));
+$news_count = getData($sql, "result");
 $tpl_tmp->Set_Variable('title', $setting['web']['title']);
 $tpl_tmp->Set_Variable('tag', $tag);
 $tpl_tmp->Set_Variable('cur_tag', $cur_tag);

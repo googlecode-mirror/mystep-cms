@@ -13,8 +13,8 @@ class plugin_comment implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_comment", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 4, '".$info['cat_name']."', 'comment.php', '../plugin/comment/', 0, 0, '".$info['cat_desc']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_comment",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,4,$info['cat_name'],'comment.php', '../plugin/comment/', 0, 0,$info['cat_desc']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -42,10 +42,10 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."comment");
-		$db->query("drop table ".$setting['db']['pre']."comment");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='comment.php'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."comment");
+		$db->exec("drop","table",$setting['db']['pre']."comment");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","=","comment.php"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -118,13 +118,45 @@ mystep;
 		$webInfo = getSubSetting($att_list['web_id']);
 		$pre_sub = $webInfo['db']['name'].".".$webInfo['db']['pre'];
 		if($att_list['count']) {
-			$str_sql = "select news_id, count(*) as counter from ".$setting['db']['pre']."comment where web_id=".$att_list['web_id']." group by news_id limit ".$att_list['limit'];
-			$str_sql = "select b.news_id, b.subject, b.web_id, b.cat_id, a.counter from (".$str_sql.") a left join ".$pre_sub."news_show b on a.news_id=b.news_id order by a.counter desc, news_id desc";
+			$sql = $db->buildSel($setting['db']['pre']."comment","news_id, count(*) as counter",array("web_id","n=",$att_list['web_id']),array("group"=>"news_id","limit"=>$att_list['limit']));
+			$sql = $db->buildSel(
+				array(
+					array(
+						"query" => $sql,
+						"idx" => "a",
+						"col" => "counter",
+						"order" => "counter desc, news_id desc"
+					),
+					array(
+						"name" => $pre_sub."news_show",
+						"idx" => "b",
+						"col" => "news_id, subject, web_id, cat_id",
+						"join" => "news_id",
+					)
+				)
+			);
 		} else {
-			$str_sql = "select a.*, a.`comment` as `describe`, b.subject, b.cat_id from ".$setting['db']['pre']."comment a left join ".$pre_sub."news_show b on a.news_id=b.news_id where a.web_id=".$att_list['web_id'];
-			if(!empty($att_list['news_id'])) $str_sql .= " and a.news_id='{$att_list['news_id']}'";
-			$str_sql .= " order by ".$att_list['order'];
-			$str_sql .= " limit ".$att_list['limit'];
+			$condition = array();
+			$condition[] = array("web_id","n=",$att_list['web_id']);
+			if(!empty($att_list['news_id'])) $condition[] = array("news_id","n=",$att_list['news_id']);
+			$sql = $db->buildSel(
+				array(
+					array(
+						"name" => $setting['db']['pre']."comment",
+						"idx" => "a",
+						"col" => array("*", "comment as describe"),
+						"condition" => $condition
+					),
+					array(
+						"name" => $pre_sub."news_show",
+						"idx" => "b",
+						"col" => "subject, cat_id",
+						"join" => "news_id",
+					)
+				),
+				"",
+				$att_list
+			);
 		}
 		
 		$cur_content = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_{$att_list['template']}.tpl", $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_classic.tpl");
@@ -138,9 +170,8 @@ mystep;
 		$result = <<<mytpl
 <?php
 global \$plugin_setting;
-\$str_sql = "{$str_sql}";
 \$n = 0;
-\$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
+\$result = getData("{$sql}", "all", \$plugin_setting['offical']['ct_news']);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
@@ -217,7 +248,7 @@ mystep;
 			$data['oppose'] = 0;
 			$data['report'] = 0;
 			$data['quote'] = empty($quote)?0:$quote;
-			$db->Query($db->buildSQL($setting['db']['pre']."comment", $data, "insert", "a"));
+			$db->insert($setting['db']['pre']."comment", $data, true);
 			$result['info'] = $setting['language']['plugin_comment_done'];
 			$result['done'] = true;
 			$result['id'] = $db->GetInsertId();
@@ -234,18 +265,19 @@ mystep;
 		global $db, $req, $setting;
 		$plugin_setting = self::setting();
 		$comment_id = mysql_real_escape_string($comment_id);
-		list($news_id, $web_id) = array_values(getData("select news_id, web_id from ".$setting['db']['pre']."comment where id = '{$comment_id}'", "record", 86400));
+		$sql = $db->buildSel($setting['db']['pre']."comment","news_id, web_id",array("id","n=",$comment_id));
+		list($news_id, $web_id) = array_values(getData($sql, "record", 86400));
 		if($req->getCookie("comment_check_".$news_id)!=md5(date("Y-m-d"))) return array("info"=>$setting['language']['plugin_comment_error_declined']);
 		$result = array();
 		if($req->getCookie("comment_rate")!="") {
 			$result['info'] = sprintf($setting['language']['plugin_comment_error_rate'], $plugin_setting['interval_rate']);
 		} else {
 			if($type==1) {
-				$db->Query("update ".$setting['db']['pre']."comment set agree = agree + 1 where id='{$comment_id}'");
+				$db->update($setting['db']['pre']."comment", array("agree"=>"+1"), array("id","n=",$comment_id));
 			} elseif($type==2) {
-				$db->Query("update ".$setting['db']['pre']."comment set oppose = oppose + 1 where id='{$comment_id}'");
+				$db->update($setting['db']['pre']."comment", array("oppose"=>"+1"), array("id","n=",$comment_id));
 			} else {
-				$db->Query("update ".$setting['db']['pre']."comment set report = report + 1, rpt_date=now() where id='{$comment_id}'");
+				$db->update($setting['db']['pre']."comment", array("report"=>"+1","rpt_date"=>"now()"), array("id","n=",$comment_id));
 			}
 			$result['info'] = $setting['language']['plugin_comment_report'];
 			self::build_list($news_id, $web_id);
@@ -257,8 +289,7 @@ mystep;
 	public static function build_list($news_id, $web_id) {
 		global $db, $setting;
 		$comment_list = array();
-		$str_sql = "select * from ".$setting['db']['pre']."comment where news_id='".$news_id."' and web_id='".$web_id."' order by id asc";
-		$db->Query($str_sql);
+		$db->select($setting['db']['pre']."comment","*",array(array("news_id","n=",$news_id),array("web_id","n=",$web_id,"and")),array("order"=>"id asc"));
 		while($comment=$db->GetRS($query)){
 			HtmlTrans($comment);
 			$comment['quote_txt'] = "";

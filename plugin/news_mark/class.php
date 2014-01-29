@@ -13,8 +13,8 @@ class plugin_news_mark implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_news_mark", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'news_mark.php', '../plugin/news_mark/', 0, 0, '".$info['cat_desc']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_news_mark",1,$info['intro'],$info['copyright'],1,","));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name'],'news_mark.php', '../plugin/news_mark/', 0, 0,$info['cat_desc']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -42,10 +42,10 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."news_mark");
-		$db->query("drop table ".$setting['db']['pre']."news_mark");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='news_mark.php'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."news_mark");
+		$db->exec("drop","table",$setting['db']['pre']."news_mark");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","=","news_mark.php"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -88,12 +88,12 @@ mystep;
 	}
 	
 	public static function news_rank(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting, $db;
 		$result = "";
 		if(!isset($att_list['news_id'])) $att_list['news_id'] = $GLOBALS['news_id'];
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = $setting['info']['web']['web_id'];
 		
-		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$att_list['news_id']."' and web_id='".$att_list['web_id']."'";
+		$sql = $db->buildSel($setting['db']['pre']."news_mark", "*", array(array("news_id","n=",$att_list['news_id']),array("web_id","n=",$att_list['web_id'])));
 		$content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/news_rank.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $content, $block_all);
 		
@@ -107,10 +107,10 @@ mystep;
 global \$plugin_setting;
 \$rank_max = \$plugin_setting['news_mark']['rank_max'];
 \$rank_min = \$plugin_setting['news_mark']['rank_min'];
-\$str_sql = "{$str_sql}";
-\$record = getData(\$str_sql, "record", 3600*24);
+\$sql = "{$sql}";
+\$record = getData(\$sql, "record", 3600*24);
 if(\$record===false) {
-	getData(\$str_sql, "remove");
+	getData(\$sql, "remove");
 	\$record = array();
 	\$record['rank_times']==0;
 	\$record['rank_total']==0;
@@ -136,12 +136,12 @@ mytpl;
 	}
 	
 	public static function news_jump(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting, $db;
 		$result = "";
 		if(!isset($att_list['news_id'])) $att_list['news_id'] = $GLOBALS['news_id'];
 		if(!isset($att_list['web_id'])) $att_list['web_id'] = $setting['info']['web']['web_id'];
 		
-		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$att_list['news_id']."' and web_id='".$att_list['web_id']."'";
+		$sql = $db->buildSel($setting['db']['pre']."news_mark", "*", array(array("news_id","n=",$att_list['news_id']),array("web_id","n=",$att_list['web_id'])));
 		$content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/news_jump.tpl");
 		
 		foreach($att_list as $key => $value) {
@@ -151,10 +151,10 @@ mytpl;
 		$content = preg_replace("/".preg_quote($tpl->delimiter_l)."(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$tpl_para['".$tpl->hash."']['para']['\\1']}", $content);
 		$result = <<<mytpl
 <?php
-\$str_sql = "{$str_sql}";
-\$record = getData(\$str_sql, "record", 3600*24);
+\$sql = "{$sql}";
+\$record = getData(\$sql, "record", 3600*24);
 if(\$record===false) {
-	getData(\$str_sql, "remove");
+	getData(\$sql, "remove");
 	\$record = array();
 	\$record['jump'] = 0;
 }
@@ -180,17 +180,19 @@ mytpl;
 		if(!isset($att_list['time'])) $att_list['time'] = 7;
 		$att_list['time'] *= 60*60*24;
 	
-		$str_sql = "select * from ".$setting['db']['pre']."news_mark where 1=1";
-		if(!empty($att_list['web_id'])) $str_sql .= " and web_id='{$att_list['web_id']}'";
-		if(!empty($att_list['cat_id'])) $str_sql .= " and cat_id in ({$att_list['cat_id']})";
+		$the_order = array();
+		$condition = array();
+		if(!empty($att_list['web_id'])) $condition[] = array("web_id","n=",$att_list['web_id']);
+		if(!empty($att_list['cat_id'])) $condition[] = array("cat_id","nin",$att_list['cat_id']);
 		if($att_list['type'] == "jump") {
-			$str_sql .= " and jump_time>(UNIX_TIMESTAMP()-".$att_list['time'].") order by jump desc";
+			$condition[] = array("jump_time","f>","UNIX_TIMESTAMP()-".$att_list['time']);
+			$the_order[] = "jump desc";
 		} else {
-			$str_sql .= " and rank_time>(UNIX_TIMESTAMP()-".$att_list['time'].") order by rank_total/rank_times desc";
+			$condition[] = array("rank_time","f>","UNIX_TIMESTAMP()-".$att_list['time']);
+			$the_order[] = "rank_total/rank_times desc";
 		}
-		$str_sql .= ", news_id desc";
-		
-		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
+		$the_order[] = "news_id desc";
+		$sql = $db->buildSel($setting['db']['pre']."news_mark", "*", $condition, array("order"=>$the_order,"limit"=>$att_list['limit']));
 		
 		$cur_content = $tpl->Get_TPL($tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_{$att_list['template']}.tpl", $tpl->tpl_info["path"]."/".$tpl->tpl_info["style"]."/block_news_classic.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
@@ -204,8 +206,7 @@ mytpl;
 <?php
 global \$plugin_setting;
 \$n = 0;
-\$str_sql = str_replace(" and cat_id in (0)", "", "{$str_sql}");
-\$result = getData(\$str_sql, "all", \$plugin_setting['offical']['ct_news']);
+\$result = getData("{$sql}", "all", \$plugin_setting['offical']['ct_news']);
 \$max_count = count(\$result);
 for(\$num=0; \$num<\$max_count; \$num++) {
 	\$record = \$result[\$num];
@@ -236,40 +237,40 @@ mytpl;
 	
 	public static function ajax_jump($news_id, $web_id, $type) {
 		global $db, $setting;
-		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
-		$record = getData($str_sql, "record", 3600*24);
+		$sql = $db->buildSel($setting['db']['pre']."news_mark", "*", array(array("news_id","n=",$news_id),array("web_id","n=",$web_id)));
+		$record = getData($sql, "record", 3600*24);
 		if($record===false) {
 			$webInfo = getSubSetting($web_id);
-			$newInfo = $db->getSingleRecord("select cat_id, subject from `".$webInfo['db']['name']."`.`".$webInfo['db']['pre']."news_show` where news_id='{$news_id}'");
+			$newInfo = $db->record($webInfo['db']['name'].".".$webInfo['db']['pre']."news_show","cat_id, subject",array("news_id","n=",$news_id));
 			if($newInfo===false) return array();
 			$subject = mysql_real_escape_string($newInfo['subject']);
 			$cat_id = $newInfo['cat_id'];
-			$db->query("insert into {$setting['db']['pre']}news_mark values('{$web_id}', '{$news_id}', '{$cat_id}', '{$subject}', 0, '0', 0, 0, '0')");
+			$db->insert($setting['db']['pre']."news_mark",array($web_id,$news_id,$cat_id,$subject,0, 0, 0, 0, 0));
 		}
 		$value = $type=="up"?"+1":"-1";
-		$db->query("update ".$setting['db']['pre']."news_mark set jump=jump".$value.", jump_time=UNIX_TIMESTAMP() where web_id='".$web_id."' and news_id='".$news_id."'");
-		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
-		getData($str_sql, "remove");
-		return getData($str_sql, "record", 3600*24);
+		$db->update($setting['db']['pre']."news_mark", array("jump"=>$value,"jump_time"=>"UNIX_TIMESTAMP()"),array(array("web_id","n=",$web_id),array("news_id","n=",$news_id,"and")));
+		$sql = $db->buildSel($setting['db']['pre']."news_mark","*",array(array("web_id","n=",$web_id),array("news_id","n=",$news_id,"and")));
+		getData($sql, "remove");
+		return getData($sql, "record", 3600*24);
 	}
 	
 	public static function ajax_rank($news_id, $web_id, $value) {
 		global $db, $setting;
-		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
-		$record = getData($str_sql, "record", 3600*24);
+		$sql = $db->buildSel($setting['db']['pre']."news_mark", "*", array(array("news_id","n=",$news_id),array("web_id","n=",$web_id)));
+		$record = getData($sql, "record", 3600*24);
 		if($record===false) {
 			$webInfo = getSubSetting($web_id);
-			$newInfo = $db->getSingleRecord("select cat_id, subject from `".$webInfo['db']['name']."`.`".$webInfo['db']['pre']."news_show` where news_id='{$news_id}'");
+			$newInfo = $db->record($webInfo['db']['name'].".".$webInfo['db']['pre']."news_show","cat_id, subject",array("news_id","n=",$news_id));
 			if($newInfo===false) return array();
 			$subject = mysql_real_escape_string($newInfo['subject']);
 			$cat_id = $newInfo['cat_id'];
-			$db->query("insert into {$setting['db']['pre']}news_mark values('{$web_id}', '{$news_id}', '{$cat_id}', '{$subject}', 0, '0', 0, 0, '0')");
+			$db->insert($setting['db']['pre']."news_mark",array($web_id,$news_id,$cat_id,$subject,0, 0, 0, 0, 0));
 		}
 		if(strpos($value, "-")===false) $value = "+".$value;
-		$db->query("update ".$setting['db']['pre']."news_mark set rank_total=rank_total".$value.", rank_times=rank_times+1, rank_time=UNIX_TIMESTAMP() where web_id='".$web_id."' and news_id='".$news_id."'");
-		$str_sql = "select * from ".$setting['db']['pre']."news_mark where news_id='".$news_id."' and web_id='".$web_id."'";
-		getData($str_sql, "remove");
-		return getData($str_sql, "record", 3600*24);
+		$db->update($setting['db']['pre']."news_mark", array("rank_total"=>$value,"rank_times"=>"+1","rank_time"=>"UNIX_TIMESTAMP()"),array(array("web_id","n=",$web_id),array("news_id","n=",$news_id,"and")));
+		$sql = $db->buildSel($setting['db']['pre']."news_mark","*",array(array("web_id","n=",$web_id),array("news_id","n=",$news_id,"and")));
+		getData($sql, "remove");
+		return getData($sql, "record", 3600*24);
 	}
 }
 ?>

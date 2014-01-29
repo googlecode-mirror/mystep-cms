@@ -39,14 +39,14 @@ if($setting['info']['self']=="login.php") {
 	}
 	
 	if($group['power_web']!="all" && strpos(",".$group['power_web'].",", ",".$setting['info']['web']['web_id'].",")===false) {
-		echo showInfo($setting['language']['admin_nopower']);
+		echo showInfo($setting['language']['admin_nopower'],false);
 		$mystep->pageEnd(false);
 	}
 	
 	includeCache("admin_cat");
 	if($group['power_func']!="all" && $cat_info = getParaInfo("admin_cat_plat", "file", $setting['info']['self'])) {
 		if(strpos(",".$group['power_func'].",", ",".$cat_info['id'].",")===false) {
-			echo showInfo($setting['language']['admin_nopower']);
+			echo showInfo($setting['language']['admin_nopower'],false);
 			$mystep->pageEnd(false);
 		}
 	}

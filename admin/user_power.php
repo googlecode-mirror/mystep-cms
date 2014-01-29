@@ -15,9 +15,10 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['admin_user_power_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."user_power where power_id = '{$power_id}'");
+		$db->delete($setting['db']['pre']."user_power", array("power_id","n=",$power_id));
 		$powerInfo = getParaInfo("user_power", "power_id", $power_id);
-		$db->Query("alter table ".$setting['db']['pre']."user_type drop ".$powerInfo['idx']);
+		$db->delete($setting['db']['pre']."user_power", array("power_id","n=",$power_id));
+		$db->exec("alter","table",$setting['db']['pre']."user_type","drop",$powerInfo['idx']);
 		deleteCache("user_type");
 		deleteCache("user_power");
 		break;
@@ -28,26 +29,27 @@ switch($method) {
 		} else {
 			
 			$formatList = array(
+				'string' => " Char(100) NOT NULL DEFAULT ''",
 				'digital' => " INT NOT NULL DEFAULT 0",
 				'date' => " Date NOT NULL DEFAULT '0000-00-00'",
 				'time' => " Time NOT NULL DEFAULT '00:00:00'",
 			);
-			$theFormat = ($_POST['format']==""?" Char(100) NOT NULL DEFAULT ''":$formatList[$_POST['format']]);
+			if(empty($_POST['format']) || !isset($formatList[$_POST['format']])) $_POST['format'] = "string";
+			$theFormat = $formatList[$_POST['format']];
 			
 			$idx_org = $_POST['idx_org'];
 			$format_org = $_POST['format_org'];
 			unset($_POST['idx_org'], $_POST['format_org']);
 			$log_info = ($method=="add_ok"?$setting['language']['admin_user_power_add']:$setting['language']['admin_user_power_edit']);
-			$qry_str = $db->buildSQL($setting['db']['pre']."user_power", $_POST);
-			$db->Query($qry_str);
+			$db->replace($setting['db']['pre']."user_power", $_POST);
 			if($method=="add_ok") {
-				$db->Query("alter table `".$setting['db']['pre']."user_type` add `".$_POST['idx']."` ".$theFormat);
-				$db->Query("update `".$setting['db']['pre']."user_type` set `".$_POST['idx']."`='".$_POST['value']."'");
+				$db->exec("alter","table",$setting['db']['pre']."user_type","add","`".$_POST['idx']."` ".$theFormat);
+				$db->update($setting['db']['pre']."user_type", array($_POST['idx']=>$_POST['value']));
 			} else {
 				if($idx_org!=$_POST['idx']) {
-					$db->Query("alter table `".$setting['db']['pre']."user_type` change `".$_POST['idx']."` ".$theFormat);
+					$db->Query("alter","table",$setting['db']['pre']."user_type","change","`".$idx_org."` `".$_POST['idx']."` ".$theFormat);
 				} elseif($format_org!=$_POST['format']) {
-					$db->Query("alter table `".$setting['db']['pre']."user_type` modify `".$_POST['idx']."` ".$theFormat);
+					$db->Query("alter","table",$setting['db']['pre']."user_type","modify","`".$_POST['idx']."` ".$theFormat);
 				}
 			}
 			deleteCache("user_type");
@@ -78,8 +80,7 @@ function build_page($method) {
 	);
 
 	if($method == "list") {
-		$str_sql = "select * from ".$setting['db']['pre']."user_power order by power_id";
-		$db->Query($str_sql);
+		$db->select($setting['db']['pre']."user_power","*","",array("order"=>"power_id"));
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			$record['format'] = $formatList[$record['format']];
@@ -90,14 +91,13 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('title', ($method == "add"?$setting['language']['admin_user_power_add']:$setting['language']['admin_user_power_edit']));
 		
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."user_power where power_id='{$power_id}'");
-			if($record = $db->GetRS()) {
-				$record['idx_org'] = $record['idx'];
-			} else {
+			$record = $db->record($setting['db']['pre']."user_power","*",array("power_id", "n=", $power_id));
+			if($record === false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['admin_user_power_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
 			}
+			$record['idx_org'] = $record['idx'];
 		} else {
 			$record['power_id'] = 0;
 			$record['idx'] = "";

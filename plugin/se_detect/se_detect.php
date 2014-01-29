@@ -16,9 +16,9 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['plugin_se_detect_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."se_detect where idx = '{$idx}'");
-		$db->Query("update ".$setting['db']['pre']."se_count set `".$setting['language']['etc']."` = `".$setting['language']['etc']."` + `{$idx}`");
-		$db->Query("alter table ".$setting['db']['pre']."se_count drop `{$idx}`");
+		$db->delete($setting['db']['pre']."se_detect",array("idx","=",$idx));
+		$db->update($setting['db']['pre']."se_count", array($setting['language']['etc']=>"((`".$setting['language']['etc']."` + `".$idx."`))"));
+		$db->exec("alter","table",$setting['db']['pre']."se_count","drop",$idx);
 		unset($agent[$idx]);
 		$content = "<?PHP
 \$agent = ".var_export($agent, true).";			
@@ -33,8 +33,7 @@ switch($method) {
 			unset($agent[$_POST['idx_org']]);
 			$agent[$_POST['idx']] = $_POST['keyword'];
 			$ip_info = array();
-			$str_sql = "select ip,`count` from ".$setting['db']['pre']."se_detect";
-			$db->Query($str_sql);
+			$db->select($setting['db']['pre']."se_detect", "ip,count");
 			while($record = $db->GetRS()) {
 				$ip_info[$record['ip']] = $record['count'];
 			}
@@ -42,12 +41,12 @@ switch($method) {
 			if($method=="add_ok") {
 				$log_info = $setting['language']['plugin_se_detect_add'];
 				$keys = array_keys($agent);
-				$db->Query("alter table ".$setting['db']['pre']."se_count add `{$idx}` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL after `".$keys[count($keys)-2]."`");
+				$db->exec("alter","table",$setting['db']['pre']."se_count","add","`{$idx}` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL after `".$keys[count($keys)-2]."`");
 			} else {
 				$log_info = $setting['language']['plugin_se_detect_edit'];
 				if($_POST['idx_org']!=$_POST['idx']) {
-					$db->Query("delete from ".$setting['db']['pre']."se_detect where idx = '".$_POST['idx_org']."'");
-					$db->Query("alter table ".$setting['db']['pre']."se_count change `".$_POST['idx_org']."` `".$_POST['idx']."` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL");
+					$db->delete($setting['db']['pre']."se_detect",array("idx",$_POST['idx_org']));
+					$db->exec("alter","table",$setting['db']['pre']."se_count","change","`".$_POST['idx_org']."` `".$_POST['idx']."` MEDIUMINT UNSIGNED DEFAULT 0 NOT NULL");
 				}
 			}
 			$_POST['ip'] = str_replace("\r", "", $_POST['ip']);
@@ -59,7 +58,7 @@ switch($method) {
 				$_POST['ip'] = str_replace("\n", "", $_POST['ip']);
 				$_POST['count'] = 0;
 				if(isset($ip_info[$_POST['ip']])) $_POST['count'] = $ip_info[$_POST['ip']];
-				$db->Query($db->buildSQL($setting['db']['pre']."se_detect", $_POST, "replace"));
+				$db->replace($setting['db']['pre']."se_detect", $_POST);
 			}
 			$content = "<?PHP
 \$agent = ".var_export($agent, true).";			
@@ -91,12 +90,12 @@ function build_page($method) {
 		foreach($agent as $key => $value) {
 			$record = array();
 			$record['idx'] = $key;
-			$record['counter'] = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."se_detect where idx='".$key."'");
+			$record['counter'] = $db->result($setting['db']['pre']."se_detect","count(*)",array("idx","=",$key));
 			$tpl_tmp->Set_Loop('record', $record);
 		}
 		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_se_detect_title']);
 	} elseif($method == "view") {
-		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."se_count");
+		$counter = $db->result($setting['db']['pre']."se_count","count(*)");
 		$tpl_tmp->Set_If('empty', ($counter==0));
 		$page = $req->getGet("page");
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=view", $page);
@@ -107,8 +106,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('se', array('idx'=>$fields[$i]));
 		}
 		$tpl_tmp->Set_Variable("field_count", $m);
-		$str_sql = "select * from ".$setting['db']['pre']."se_count order by date desc limit {$page_start}, {$page_size}";
-		$db->Query($str_sql);
+		$db->select($setting['db']['pre']."se_count","*","",array("order"=>"date desc", "limit"=>"{$page_start}, {$page_size}"));
 		while($record = $db->GetRS()) {
 			$detail = "";
 			foreach($record as $key => $value) {
@@ -130,7 +128,7 @@ function build_page($method) {
 			$record['idx'] = $idx;
 			$record['idx_org'] = $idx;
 			$record['keyword'] = $agent[$idx];
-			$db->Query("select ip from ".$setting['db']['pre']."se_detect where idx='{$idx}'");
+			$db->select($setting['db']['pre']."se_detect", "ip", array("idx","=",$idx));
 			while($tmp = $db->GetRS()) {
 				$record['ip'] .= $tmp['ip']."\n";
 			}

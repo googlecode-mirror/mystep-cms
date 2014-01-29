@@ -38,7 +38,7 @@ class MyTpl extends class_common {
 					'file' => '',
 					'expire' => 300
 			);
-			
+
 	public
 		$allow_script = false,
 		$hash = "",
@@ -46,6 +46,14 @@ class MyTpl extends class_common {
 		$delimiter_r = "-->",
 		$tpl_info = array();
 
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0){
+			call_user_func_array(array($this, "init"), $argList);
+		}
+		return;
+	}
+	
 	public function init($tpl_info, $cache_setting = false, $allow_script = false){
 		$this->allow_script = $allow_script;
 		if(!isset($tpl_info['idx'])) $tpl_info['idx'] = "";

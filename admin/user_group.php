@@ -20,7 +20,7 @@ switch($method) {
 		$log_info = $setting['language']['admin_user_group_delete'];
 		$group_id = $req->getGet("group_id");
 		if($group_id>2) {
-			$db->Query("delete from ".$setting['db']['pre']."user_group where group_id = '{$group_id}'");
+			$db->delete($setting['db']['pre']."user_group", array("group_id","n=",$group_id));
 			deleteCache("user_group");
 		}
 		break;
@@ -45,8 +45,7 @@ switch($method) {
 				$_POST['power_web'] = join($_POST['power_web'], ",");
 			}
 			$log_info = ($method=="add_ok"?$setting['language']['admin_user_group_add']:$setting['language']['admin_user_group_edit']);
-			$qry_str = $db->buildSQL($setting['db']['pre']."user_group", $_POST);
-			$db->Query($qry_str);
+			$db->replace($setting['db']['pre']."user_group", $_POST);
 			deleteCache("user_group");
 		}
 		break;
@@ -68,8 +67,7 @@ function build_page($method) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 
 	if($method == "list") {
-		$str_sql = "select * from ".$setting['db']['pre']."user_group order by group_id";
-		$db->Query($str_sql);
+		$db->select($setting['db']['pre']."user_group", "*", "", array("order"=>"group_id"));
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if($record['power_func']=="all") {
@@ -121,10 +119,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('title', ($method == "add"?$setting['language']['admin_user_group_add']:$setting['language']['admin_user_group_edit']));
 		
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."user_group where group_id='{$group_id}'");
-			if($record = $db->GetRS()) {
-				//nothing
-			} else {
+			$record = $db->record($setting['db']['pre']."user_group","*",array("group_id","n=",$group_id));
+			if($record === false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['admin_user_group_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);

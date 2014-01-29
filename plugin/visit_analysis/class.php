@@ -13,9 +13,9 @@ class plugin_visit_analysis implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_visit_analysis", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_1']."', 'visit_analysis.php?method=referer', '../plugin/visit_analysis/', 0, 0, '".$info['cat_desc_1']."')");
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_2']."', 'visit_analysis.php?method=keyword', '../plugin/visit_analysis/', 0, 0, '".$info['cat_desc_2']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_visit_analysis",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name_1'],'visit_analysis.php?method=referer', '../plugin/visit_analysis/', 0, 0,$info['cat_desc_1']));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name_2'],'visit_analysis.php?method=keyword', '../plugin/visit_analysis/', 0, 0,$info['cat_desc_2']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -43,12 +43,12 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."visit_analysis");
-		$db->query("drop table ".$setting['db']['pre']."visit_analysis");
-		$db->query("truncate table ".$setting['db']['pre']."visit_keyword");
-		$db->query("drop table ".$setting['db']['pre']."visit_keyword");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'visit_analysis.php%'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."visit_analysis");
+		$db->exec("drop","table",$setting['db']['pre']."visit_analysis");
+		$db->delete($setting['db']['pre']."visit_keyword");
+		$db->exec("drop","table",$setting['db']['pre']."visit_keyword");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","like","visit_analysis.php%"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -84,19 +84,21 @@ mystep;
 	}
 	
 	public static function referer_analysis() {
+		if(checkSign(255)) return;
 		global $db, $setting, $req;
 		$referer = $req->getServer("HTTP_REFERER");
 		$agent = strtolower($req->getServer('HTTP_USER_AGENT'));
 		if(strpos($agent, "spider")!==false || strpos($agent, "bot")!==false) return;
-		$db->Query("update ".$setting['db']['pre']."visit_analysis set count_month=0 where month(FROM_UNIXTIME(chg_date))!=month(now())");
-		$db->Query("update ".$setting['db']['pre']."visit_analysis set count_year=0 where year(FROM_UNIXTIME(chg_date))!=year(now())");
+		$db->update($setting['db']['pre']."visit_analysis",array("count_month"=>0),array("month(FROM_UNIXTIME(chg_date))","f!=","month(now())"));
+		$db->update($setting['db']['pre']."visit_analysis",array("count_year"=>0),array("year(FROM_UNIXTIME(chg_date))","f!=","year(now())"));
 		if(strlen($referer)>10) {
 			$url_info = parse_url($referer);
 			if(strpos($url_info['host'],$req->getServer("HTTP_HOST"))!==false) return;
-			if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_analysis where host='".$url_info['host']."'")) {
-				$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `count_month`=`count_month`+1, `count_year`=`count_year`+1, `chg_date`=UNIX_TIMESTAMP() where host='".$url_info['host']."'");
+			if(preg_match("/^[\w\.\-]+$/", $url_info['host'])==false) return;
+			if($record = $db->record($setting['db']['pre']."visit_analysis","*",array("host","=",$url_info['host']))) {
+				$db->update($setting['db']['pre']."visit_analysis", array("count"=>"+1","count_month"=>"+1","count_year"=>"+1","chg_date"=>"UNIX_TIMESTAMP()"),array("host","=",$url_info['host']));
 			} else {
-				$db->Query("insert into ".$setting['db']['pre']."visit_analysis values(0, '".$url_info['host']."', 1, 1, 1, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+				$db->insert($setting['db']['pre']."visit_analysis", array(0, $url_info['host'], 1, 1, 1, "UNIX_TIMESTAMP()", "UNIX_TIMESTAMP()"));
 			}
 			unset($record);
 			if(!empty($url_info['query'])) {
@@ -105,23 +107,23 @@ mystep;
 				$keyword = $query['k'].$query['q'].$query['wd'].$query['w'].$query['query'].$query['keyword'];
 				if(strpos($url_info['host'],"google")>0) $referer = "http://".$url_info['host']."/search?q=".urlencode($query['q']);
 				if(strpos($url_info['host'],"baidu")>0) $referer = "http://".$url_info['host']."/s?wd=".urlencode($query['wd']);
-				$referer = mysql_real_escape_string($referer);
 				if(strlen($referer)>250) $referer = substrPro($referer, 0, 250);
 				if(!empty($keyword)) {
 					$keyword = safeEncoding($keyword, $setting['gen']['charset']);
+					if(strpos($keyword, $setting['web']['title'])!==false) return;
 					$keyword = substrPro($keyword, 0, 190);
 					$keyword = mysql_real_escape_string($keyword);
-					$url = "http://".$req->getServer("HTTP_HOST").getString($req->getServer("REQUEST_URI"));
-					$url = mysql_real_escape_string($url);
-					if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."visit_keyword where keyword='".$keyword."'")) {
-						$db->Query("update ".$setting['db']['pre']."visit_keyword set `count`=`count`+1, `chg_date`=UNIX_TIMESTAMP(), `url`='".$url."', `referer`='".$referer."' where keyword='".$keyword."'");
+					$url = "http://".$req->getServer("HTTP_HOST").safeEncoding($req->getServer("REQUEST_URI"), $setting['gen']['charset']);
+					
+					if($record = $db->record($setting['db']['pre']."visit_keyword","*",array("keyword","=",$keyword))) {
+						$db->update($setting['db']['pre']."visit_keyword", array("count"=>"+1","chg_date"=>"UNIX_TIMESTAMP()","url"=>$url,"referer"=>$referer),array("keyword","=",$keyword));
 					} else {
-						$db->Query("insert into ".$setting['db']['pre']."visit_keyword values(0, '".$keyword."', 1, '".$url."', '".$referer."', UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+						$db->insert($setting['db']['pre']."visit_keyword", array(0, $keyword, 1, $url, $referer, "UNIX_TIMESTAMP()", "UNIX_TIMESTAMP()"));
 					}
 				}
 			}
 		} else {
-			$db->Query("update ".$setting['db']['pre']."visit_analysis set `count`=`count`+1, `count_month`=`count_month`+1, `count_year`=`count_year`+1, `chg_date`=UNIX_TIMESTAMP() where host='None'");
+			$db->update($setting['db']['pre']."visit_analysis", array("count"=>"+1","count_month"=>"+1","count_year"=>"+1","chg_date"=>"UNIX_TIMESTAMP()"),array("host","=","None"));
 		}
 		return;
 	}

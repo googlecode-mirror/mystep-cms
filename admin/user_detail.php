@@ -14,14 +14,14 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['admin_user_detail_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."users where user_id = '{$user_id}'");
+		$db->delete($setting['db']['pre']."users", array("user_id","n=",$user_id));
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
 			$goto_url = $setting['info']['self'];
 		} else {
-			if($_POST['username'] != $_POST['username_org'] && $db->GetSingleResult("select user_id from ".$setting['db']['pre']."users where username='".$_POST['username']."'")!= "") {
+			if($_POST['username'] != $_POST['username_org'] && $db->result($setting['db']['pre']."users","user_id",array("username","=",$_POST['username']))!==false) {
 				$tpl->Set_Variable('main', showInfo(sprintf($setting['language']['admin_user_detail_error2'], $_POST['username']), 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
@@ -35,11 +35,10 @@ switch($method) {
 				unset($_POST['user_id'], $_POST['username_org'], $_POST['password_c']);
 				if($method=="add_ok") {
 					$_POST['regdate'] = $_SERVER['REQUEST_TIME'];
-					$qry_str = $db->buildSQL($setting['db']['pre']."users", $_POST, "insert");
+					$db->insert($setting['db']['pre']."users", $_POST);
 				} else {
-					$qry_str = $db->buildSQL($setting['db']['pre']."users", $_POST, "update", "user_id=".$user_id);
+					$db->update($setting['db']['pre']."users", $_POST, array("user_id","n=",$user_id));
 				}
-				$db->Query($qry_str);
 			}
 		}
 		break;
@@ -67,25 +66,24 @@ function build_page($method) {
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
 		$keyword = $req->getGet("keyword");
-		
 		$group_id = $req->getGet("group_id");
 		$type_id = $req->getGet("type_id");
-		$condition = "1=1";
-		$condition .= empty($keyword)?"":" and username like '%$keyword%'";
-		$condition .= empty($group_id)?"":" and group_id='{$group_id}'";
-		$condition .= empty($type_id)?"":" and type_id='{$type_id}'";
+
+		$condition = array();
+		if(!empty($keyword)) $condition[] = array("username", "like", $keyword);
+		if(!empty($group_id)) $condition[] = array("group_id", "n=", $group_id);
+		if(!empty($type_id)) $condition[] = array("type_id", "n=", $type_id);
 		
-		$str_sql = "select count(*) as counter from ".$setting['db']['pre']."users where {$condition}";
-		$counter = $db->GetSingleResult($str_sql);
+		$counter = $db->result($setting['db']['pre']."users","count(*)",$condition);
 		$page = $req->getGet("page");
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&group_id={$group_id}&type_id={$type_id}&order={$order}&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
 
-		$str_sql = "select * from ".$setting['db']['pre']."users where {$condition}";
-		$str_sql.= " order by ".(empty($order)?"":"{$order} {$order_type}, ")."user_id {$order_type}";
-		$str_sql.= " limit {$page_start}, {$page_size}";
-
-		$db->Query($str_sql);
+		if(empty($order)) $order="user_id";
+		$the_order = array();
+		$the_order[] = "$order $order_type";
+		if($order!="user_id") $the_order[] = "user_id desc";
+		$db->select($setting['db']['pre']."users", "*", $condition, array("order"=>$the_order,"limit"=>"$page_start, $page_size"));
 		$tpl_tmp->para_list['record'] = array();
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
@@ -112,9 +110,8 @@ function build_page($method) {
 	} elseif($method=="edit") {
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_user_detail_edit']);
 		
-		$db->Query("select * from ".$setting['db']['pre']."users where user_id='{$user_id}'");
-		$record  = $db->GetRS();
-		if(!$record) {
+		$record  = $db->record($setting['db']['pre']."users", "*", array("user_id","n=",$user_id));
+		if($record!==false) {
 			$tpl->Set_Variable('main', showInfo($setting['language']['admin_user_detail_error'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);

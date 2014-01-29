@@ -293,6 +293,8 @@ var tinymce_setting = {
 		theme_advanced_resizing : false,
 		
 		// Custom settings
+    relative_urls: false,
+    remove_script_host: false,
 		preformatted : false,
 		remove_linebreaks : false,
 		apply_source_formatting : true,

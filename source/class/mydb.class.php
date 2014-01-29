@@ -49,6 +49,14 @@ class MyDB extends class_common {
 		$DB_maxlen	= 10,
 		$DB_separator	= "\0";
 
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0){
+			call_user_func_array(array($this, "init"), $argList);
+		}
+		return;
+	}
+	
 	public function init($DB_name, $DB_path="./", $DB_tlen=500) {
 		$this->DB_name = $DB_name;
 		$this->DB_path = $DB_path;

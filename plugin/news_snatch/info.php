@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "文章采集插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.2",
+	"ver" => "1.3",
 	"class" => "plugin_news_snatch",
 	"intro" => "通过用户定义规则抓取网页文章",
 	"cat_name_1" => "采集规则",

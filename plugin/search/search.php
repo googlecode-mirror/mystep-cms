@@ -14,9 +14,7 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['plugin_search_delete'];
-		$k = $req->getGet('k');
-		$k = mysql_real_escape_string($k);
-		$db->Query("delete from ".$setting['db']['pre']."search_keyword where keyword = '{$k}'");
+		$db->delete($setting['db']['pre']."search_keyword",array("keyword","=",$req->getGet('k')));
 		$goto_url = $req->getServer("HTTP_REFERER");
 		break;
 	case "update":
@@ -39,7 +37,7 @@ switch($method) {
 }
 
 if(!empty($log_info)) {
-	write_log($log_info, (isset($k)?"k={$k}":""));
+	write_log($log_info);
 }
 $mystep->pageEnd(false);
 
@@ -67,12 +65,12 @@ function build_page($method) {
 		$order = $req->getGet("order");
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
-		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."search_keyword");
+		$counter = $db->result($setting['db']['pre']."search_keyword", "count(*)");
 		$page = $req->getGet("page");
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=keyword&order=".$order."&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
-		$str_sql = "select * from ".$setting['db']['pre']."search_keyword order by ".(empty($order)?"chg_date":"{$order}")." {$order_type} limit {$page_start}, {$page_size}";
-		$db->Query($str_sql);
+		if(empty($order)) $order = "chg_date";
+		$db->select($setting['db']['pre']."search_keyword", "*", "", array("order"=>"{$order} {$order}","limit"=>"{$page_start}, {$page_size}"));
 		while($record = $db->GetRS()) {
 			$record['add_date'] = date("Y-m-d H:i:s", $record['add_date']);
 			$record['chg_date'] = date("Y-m-d H:i:s", $record['chg_date']);

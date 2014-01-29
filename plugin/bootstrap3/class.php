@@ -10,7 +10,7 @@ class plugin_bootstrap implements plugin {
 			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
 		global $db;
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_admin_cat", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, ",")');
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_admin_cat",1,$info['intro'],$info['copyright'],1,","));
 		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {
@@ -29,7 +29,7 @@ class plugin_bootstrap implements plugin {
 	public static function uninstall() {
 		global $db, $setting;
 		$info = self::info();
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."plugin",array("idx","=",$info['idx']));
 		deleteCache("plugin");
 		$err = array();
 		if($db->GetError($err)) {

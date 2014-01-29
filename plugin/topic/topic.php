@@ -14,8 +14,8 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['plugin_topic_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."topic where topic_id='{$topic_id}'");
-		$db->Query("delete from ".$setting['db']['pre']."topic_link where topic_id='{$topic_id}'");
+		$db->delete($setting['db']['pre']."topic",array("topic_id","n=",$topic_id));
+		$db->delete($setting['db']['pre']."topic_link",array("topic_id","n=",$topic_id));
 		unlink(dirname(__FILE__)."/topic/".$topic_id.".tpl");
 		$goto_url = $req->getServer("HTTP_REFERER");
 		break;
@@ -24,16 +24,17 @@ switch($method) {
 		$_POST['topic_cat'] = str_replace("£¬", ",", $_POST['topic_cat']);
 		$tpl_content = $_POST['topic_tpl'];
 		unset($_POST['topic_tpl']);
+		$tpl_content = str_replace("&#160;"," ",$tpl_content);
 		if($method=="add_ok") {
 			$log_info = $setting['language']['plugin_topic_add'];
 			$_POST['add_date'] = "now()";
-			$db->Query($db->buildSQL($setting['db']['pre']."topic", $_POST, "insert", "a"));
+			$db->insert($setting['db']['pre']."topic", $_POST, true);
 			$top_id = $db->GetInsertId();
 		} else {
 			$log_info = $setting['language']['plugin_topic_edit'];
 			$top_id = $_POST['topic_id'];
 			unset($_POST['topic_id']);
-			$db->Query($db->buildSQL($setting['db']['pre']."topic", $_POST, "update", "topic_id={$topic_id}"));
+			$db->update($setting['db']['pre']."topic", $_POST, array("topic_id","n=",$topic_id));
 		}
 		WriteFile("topic/".$top_id.".tpl", $tpl_content, "wb");
 		break;
@@ -70,20 +71,18 @@ function build_page($method) {
 		$keyword = $req->getGet("keyword");
 		$page = $req->getGet("page");
 		
-		$condition = "1=1";
-		$condition .= empty($keyword) ? "" : " and topic_name like '%{$keyword}%'";
-		$str_sql = "select count(*) as counter from ".$setting['db']['pre']."topic where {$condition}";
-		$counter = $db->GetSingleResult($str_sql);
+		$condition = array();
+		if(!empty($keyword)) $condition[] = array("topic_name","like",$keyword);
+		$counter = $db->result($setting['db']['pre']."topic", "count(*)",$condition);
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
 
-		$str_sql = "select * from ".$setting['db']['pre']."topic where {$condition}";
+		$the_order = array();
 		if(empty($order)) $order="topic_id";
-		$str_sql.= " order by $order {$order_type}".(($order=="topic_id")?"":", topic_id desc");
-		$str_sql.= " limit $page_start, $page_size";
-		$db->Query($str_sql);
+		$the_order[] = "{$order} {$order_type}";
+		if($order!="topic_id") $the_order[] = "topic_id {$order_type}";
+		$db->select($setting['db']['pre']."topic","*",$condition,array("order"=>$the_order,"limit"=>"$page_start, $page_size"));
 		while($record = $db->GetRS()) {
-			//HtmlTrans(&$record);
 			if(empty($record['topic_link'])) $record['topic_link'] = getUrl("topic", $record['topic_idx']);
 			$tpl_tmp->Set_Loop('record', $record);
 		}
@@ -100,10 +99,8 @@ function build_page($method) {
 	} else {
 		$record = array();
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."topic where topic_id='{$topic_id}'");
-			$record = $db->GetRS();
-			$db->Free();
-			if(!$record) {
+			$record = $db->record($setting['db']['pre']."topic","*",array("topic_id","n=",$topic_id));
+			if($record===false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['plugin_topic_error'], 0));
 				$mystep->show($tpl);
 				return;
@@ -116,9 +113,8 @@ function build_page($method) {
 				$tpl_tmp->Set_Loop('style_list', array("index"=>$i, "style"=>$style_list[$i]));
 			}
 			
-			$str_sql = "select * from ".$setting['db']['pre']."topic_link where topic_id='{$topic_id}' order by id desc";
-			$db->Query($str_sql);
 			$n = 1;
+			$db->select($setting['db']['pre']."topic_link","*",array("topic_id","n=",$topic_id),array("order"=>"link_order desc,id desc"));
 			while($links = $db->GetRS()) {
 				HtmlTrans(&$links);
 				$links['idx'] = $n++;

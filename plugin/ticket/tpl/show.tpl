@@ -64,7 +64,7 @@
 		</tr>
 		<tr class="row">
 			<td colspan="2" align="center">
-				<input class="btn" type="Submit" value=" 确 定 " /> &nbsp; &nbsp;
+				<input class="btn" type="Submit" value=" 提 交 " /> &nbsp; &nbsp;
 				<input class="btn" type="reset" value=" 重 置 " />
 			</td>
 		</tr>

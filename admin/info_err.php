@@ -21,6 +21,8 @@ if($method=="clean") {
 		header("Accept-Length: ".strlen($content));
 		header("Content-Disposition: attachment; filename=".date("Ymd")."_err.txt");
 		echo $content;
+	} else {
+		$goto_url = $setting['info']['self'];
 	}
 }
 

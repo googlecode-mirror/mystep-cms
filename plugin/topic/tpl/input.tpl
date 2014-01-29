@@ -58,12 +58,12 @@
 			</tr>
 			<tr>
 				<td class="row" colspan="2" style="padding:0px;">
-					<textarea id="topic_tpl" name="topic_tpl" style="width:100%;" rows="20" need="" /><!--topic_tpl--></textarea>
+					<textarea id="topic_tpl" name="topic_tpl" style="width:100%;" rows="20" /><!--topic_tpl--></textarea>
 				</td>
 			</tr>
 			<tr class="row">
 				<td colspan="2" align="center">
-					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 提 交 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="history.go(-1)" />
 				</td>
@@ -71,8 +71,49 @@
 		</table>
 	</form>
 </div>
-<div style="display:<!--show_link-->">
-	<div class="title">当前新闻专题链接维护</div>
+<div style="margin-top:50px;display:<!--show_link-->">
+	<hr />
+	<div style="margin-top:50px;">
+		<div style="text-align:center;font-weight:bold;font-size:18px;">链接调用代码生成</div>
+		<table id="input_area" cellspacing="0" cellpadding="0" align="center">
+			<tr>
+				<td class="cat">调用代码</td>
+				<td class="row" id="the_code">&lt;!--topic id="<!--topic_id-->" order="link_order desc,id desc" limit="10" loop="10"--&gt;</td>
+			</tr>
+			<tr>
+				<td class="cat" width="80">应用模板：</td>
+				<td class="row">
+					<select id="the_tpl" onchange="changeCode()">
+						<option value="">默认模板</option>
+						<option value="classic">classic</option>
+						<option value="simple">simple</option>
+						<option value="simple">plat</option>
+					</select> &nbsp; <font>（调用插件或网站模板目录下命名为 block_news_*.tpl 的文件）</font>
+				</td>
+			</tr>
+			<tr>
+				<td class="cat" width="80">日期显示：</td>
+				<td class="row">
+					<select id="the_date" onchange="changeCode()">
+						<option value="">不显示</option>
+						<option value="Y-m-d">精确到日期</option>
+						<option value="Y-m-d H:i:s">精确到时间</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="cat" width="80">显示分类：</td>
+				<td class="row">
+					<select id="the_cat" onchange="changeCode()">
+						<option value="">不显示</option>
+						<option value="y">全部显示</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<hr />
+	<div style="text-align:center;font-weight:bold;font-size:18px;"><a name="links">当前新闻专题链接维护</a></div>
 	<div align="left">
 		<form name="link_edit" method="post" action="topic_link.php?method=add" onsubmit="return checkForm(this)">
 			<table id="input_area" cellspacing="0" cellpadding="0" align="center">
@@ -108,7 +149,7 @@
 				</tr>
 				<tr class="row">
 					<td colspan="2" align="center">
-						<input class="btn" type="Submit" value=" 确 定 " name="Submit" />&nbsp;&nbsp;
+						<input class="btn" type="Submit" value=" 提 交 " name="Submit" />&nbsp;&nbsp;
 						<input class="btn" type="reset" value=" 重 置 " name="reset" />&nbsp;&nbsp;
 						<input class="btn" type="button" value=" 清 空 " name="empty" onclick="location.href='topic_link.php?method=empty&topic_id=<!--topic_id-->'" />
 					</td>
@@ -128,7 +169,7 @@
 <!--loop:start key="link_list"-->
 			<tr>
 				<td class="cat" width="90" align="right">专题链接 <!--link_list_idx-->：</td>
-				<td class="row">[<!--link_list_link_cat-->] <a href="<!--link_list_link_url-->" target="_blank"><!--link_list_link_name--></td>
+				<td class="row">[<!--link_list_link_cat-->] <a href="<!--link_list_link_url-->" target="_blank"><!--link_list_link_name--></a>（<!--link_list_link_order-->）</td>
 				<td class="row" width="150" align="center"><a href="topic_link.php?method=delete&id=<!--link_list_id-->&topic_id=<!--link_list_topic_id-->"><b>删除链接</b></a></td>
 			</tr>
 <!--loop:end-->
@@ -271,6 +312,23 @@ function setIframe(idx) {
 		$.setPopupLayersPosition();
 	}
 }
+function changeCode(){
+	var the_code = '&lt;!--topic id="<!--topic_id-->" order="link_order desc,id desc" limit="10" loop="10"';
+	var the_tpl = $("#the_tpl").val();
+	var the_date = $("#the_date").val();
+	var the_cat = $("#the_cat").val();
+	if(the_tpl!="") the_code += ' template="'+the_tpl+'"';
+	if(the_date!="") the_code += ' show_date="'+the_date+'"';
+	if(the_cat!="") {
+		if(the_cat=="y") {
+			the_code += ' show_catalog="'+the_cat+'"';
+		} else {
+			the_code += ' cat="'+the_cat+'"';
+		}
+	}
+	the_code += '--&gt;';
+	$("#the_code").html(the_code);
+}
 $(function() {
 	var new_setting = {};
 	new_setting.plugins = "safari,pagebreak,inlinepopups,preview,media,searchreplace,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template";
@@ -278,5 +336,10 @@ $(function() {
 	new_setting.theme_advanced_buttons2 = "";
 	new_setting.forced_root_block = "p";
 	tinyMCE_init("topic_intro", new_setting);
+	
+	var cat_list = ("<!--topic_cat-->").split(",");
+	for(var i=0,m=cat_list.length;i<m;i++){
+		$("<option>").html(cat_list[i]).appendTo("#the_cat");
+	}
 });
 </script>

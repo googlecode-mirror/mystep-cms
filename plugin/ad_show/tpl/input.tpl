@@ -67,7 +67,7 @@
 			</tr>
 			<tr class="row">
 				<td colspan="2" align="center">
-					<input class="btn" type="Submit" value=" 确 定 " name="Submit" />&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 提 交 " name="Submit" />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " name="reset" />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回	" name="return" onClick="location.href='<!--back_url-->'" />
 				</td>

@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "数据库信息查询插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.0",
+	"ver" => "1.1",
 	"class" => "plugin_db_info",
 	"intro" => "数据库信息查询",
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

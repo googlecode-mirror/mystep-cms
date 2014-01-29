@@ -7,8 +7,8 @@ $id = $req->getReq("id");
 $log_info = "";
 
 if(!empty($id)) {
-	$cur_img= $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_image where id = '{$id}'");
-	if($cur_info==false || (!$op_mode && $web_id!=$cur_img['web_id'])) {
+	$cur_web_id = $db->result($setting['db']['pre']."news_image", "web_id", array("id","n=",$id));
+	if(!$op_mode && $web_id!=$cur_web_id) {
 		echo showInfo($setting['language']['admin_art_image_error']);
 		$mystep->pageEnd(false);
 	}
@@ -22,24 +22,21 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['admin_art_image_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."news_image where id = '{$id}'");
+		$db->delete($setting['db']['pre']."news_image", array("id","n=",$id));
 		break;
 	case "add_ok":
 	case "edit_ok":
 		if(count($_POST) == 0) {
 			$goto_url = $setting['info']['self'];
-		} elseif(!$op_mode && $web_id!=$cur_img['web_id']) {
-			$goto_url = $setting['info']['self'];
 		} else {
 			$_POST['image'] = str_replace("//", "/", $_POST['image']);
 			if($method=="add_ok") {
 				$log_info = $setting['language']['admin_art_image_add'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."news_image", $_POST, "insert", "a");
+				$db->insert($setting['db']['pre']."news_image", $_POST, true);
 			} else {
 				$log_info = $setting['language']['admin_art_image_edit'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."news_image", $_POST, "update", "id={$id}");
+				$db->update($setting['db']['pre']."news_image", $_POST, array("id","n=",$id));
 			}
-			$db->Query($str_sql);
 		}
 		break;
 	default:
@@ -59,10 +56,9 @@ function build_page($method) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	if($method == "list") {
-		$str_sql = "select * from ".$setting['db']['pre']."news_image";
-		if(!empty($web_id)) $str_sql .= " where web_id='".$web_id."'";
-		$str_sql .= " order by id asc";
-		$db->Query($str_sql);
+		$condition = array();
+		if(!empty($web_id)) $condition = array("web_id","n=",$web_id);
+		$db->select($setting['db']['pre']."news_image", "*", $condition, array("order"=>"id asc"));
 		while($record = $db->GetRS()) {
 			if($webInfo = getParaInfo("website", "web_id", $record['web_id'])) {
 				$record['web_id'] = $webInfo['name'];
@@ -75,10 +71,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_art_image_title']);
 	} else {
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."news_image where id='{$id}'");
-			$record  = $db->GetRS();
-			$db->Free();
-			if(!$record) {
+			$record = $db->record($setting['db']['pre']."news_image", "*", array("id","n=",$id));
+			if($record===false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_image_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);

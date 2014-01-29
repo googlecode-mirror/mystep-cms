@@ -57,6 +57,14 @@ class MemoryCache extends class_common {
 		$mc_cnnopt = array(),
 		$mc_servers = array();
 
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0){
+			call_user_func_array(array($this, "init"), $argList);
+		}
+		return;
+	}
+	
 	public function init($options) {
 		if(!function_exists('memcache_get')) return false;
 		$this->mc = new Memcache;

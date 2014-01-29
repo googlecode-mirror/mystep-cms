@@ -48,11 +48,12 @@ mystep;
 mystep;
 			break;
 		case "file":
+			global $id, $mid;
 			echo <<<mystep
 						<input name="{$key}" type="file" value="" size="50" />
 mystep;
 			if(!empty($record[$key])) {
-				$value['comment'] = "<a href='file.php?mid=".$mid."&id=".$id."&f=".$key."' target='_blank'>下载照片</a>";
+				$value['comment'] = "<a href='file.php?mid=".$mid."&id=".$id."&f=".$key."' target='_blank'>下载附件</a>";
 			}
 			break;
 		case "radio":
@@ -100,7 +101,7 @@ mystep;
 				<tr>
 					<td class="cat" colspan="4" align="center">
 						<input type="hidden" name="keyword" value="<!--keyword-->" />
-						<input class="normal" type="Submit" value=" 确 定 " name="Submit" />&nbsp;&nbsp;
+						<input class="normal" type="Submit" value=" 提 交 " name="Submit" />&nbsp;&nbsp;
 						<input class="normal" type="reset" value=" 重 置 " name="reset" />&nbsp;&nbsp;
 						<input class="normal" type="button" value=" 返 回 " name="return" onClick="history.go(-1)" />
 					</td>

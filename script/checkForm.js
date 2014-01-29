@@ -126,18 +126,19 @@ function checkForm(the_form, myChecker){
 				}
 				break;
 			case "name":
-				if(!/^[\w\u4e00-\u9FA5 \uf900-\uFA2D]+$/.test(the_value)) {
+				if(!/^[\w\u4e00-\u9FA5 \uf900-\uFA2D\(\)]+$/.test(the_value)) {
 					alert(language.checkform_err_name);
 					highlightIt(the_obj);
 					return false;
 				}
 				break;
 			case "date":
-				if(!/^\d{4}([\/\-])\d{1,2}\1\d{1,2}$/.test(the_value)) {
+				if(!/^\d{4}([\/\-])\d{1,2}\1\d{1,2}(\s\d{1,2}:\d{1,2}:\d{1,2})?$/.test(the_value)) {
 					alert(language.checkform_err_date);
 					highlightIt(the_obj);
 					return false;
 				} else {
+					the_value = the_value.replace(/\s.+$/,"");
 					var the_list = the_value.split(/[\-\/]/g);
 					var cur_date = new Date((the_list[0]-0), (the_list[1]-1), (the_list[2]-0));
 					if(cur_date.getDate()!=(the_list[2]-0) || cur_date.getMonth()!=(the_list[1]-1) ) {

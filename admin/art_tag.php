@@ -19,11 +19,11 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['admin_art_tag_delete'];
-		$tag = $db->getSingleResult("select tag from ".$setting['db']['pre_sub']."news_tag where id = '{$id}'");
-		$db->Query("update ".$setting['db']['pre_sub']."news_show set tag='' where tag='{$tag}'");
-		$db->Query("update ".$setting['db']['pre_sub']."news_show set tag=REPLACE(tag, '{$tag},', '') where tag like '%{$tag}%'");
-		$db->Query("update ".$setting['db']['pre_sub']."news_show set tag=REPLACE(tag, ',{$tag}', '') where tag like '%{$tag}%'");
-		$db->Query("delete from ".$setting['db']['pre_sub']."news_tag where id = '{$id}'");
+		$tag = $db->result($setting['db']['pre_sub']."news_tag", "tag", array("id","n=",$id));
+		$db->update($setting['db']['pre_sub']."news_show", array("tag"=>''), array("id","n=",$id));
+		$db->update($setting['db']['pre_sub']."news_show", array("tag"=>"REPLACE(tag, '".$tag.",', '')"), array("tag","like",$tag));
+		$db->update($setting['db']['pre_sub']."news_show", array("tag"=>"REPLACE(tag, ',".$tag."', '')"), array("tag","like",$tag));
+		$db->delete($setting['db']['pre_sub']."news_tag", array("id","n=",$id));
 		break;
 	case "rebuild":
 		set_time_limit(0);
@@ -32,11 +32,11 @@ switch($method) {
 		$db_tmp->init($setting['db']['host'], $setting['db']['user'], $setting['db']['pass'], $setting['db']['charset']);
 		$db_tmp->Connect(false);
 		$db_tmp->SelectDB($setting['db']['name']);
-		$db_tmp->Query("update ".$setting['db']['pre_sub']."news_tag set `count`=0");
+		$db_tmp->update($setting['db']['pre_sub']."news_tag", array("count"=>0));
 		$db->ReConnect(true, $setting['db']['name']);
 		
 		$n = 1;
-		$db->Query("select news_id, tag from ".$setting['db']['pre_sub']."news_show order by news_id");
+		$db->select($setting['db']['pre_sub']."news_show", "news_id, tag", array(), array("order"=>"news_id"));
 		while($record = $db->GetRS()) {
 			$the_tag = $record['tag'];
 			$the_tag = str_replace("¡¢", ",", $the_tag);
@@ -49,32 +49,31 @@ switch($method) {
 				$the_tag[$n] = trim($the_tag[$n], "_");
 				$the_tag[$n] = mysql_real_escape_string($the_tag[$n]);
 				if(strlen($the_tag[$n])<3 || preg_match("/[\d\.]+/", $the_tag[$n])) {
-					$db_tmp->Query("update ".$setting['db']['pre_sub']."news_show set tag = replace('{$the_tag[$n]},', '', tag) where news_id='{$record['news_id']}'");
-					$db_tmp->Query("update ".$setting['db']['pre_sub']."news_show set tag = replace(',{$the_tag[$n]}', '', tag) where news_id='{$record['news_id']}'");
+					$db_tmp->update($setting['db']['pre_sub']."news_show", array("tag"=>"replace('".$the_tag[$n].",', '', tag)"), array("news_id", "n=", $record['news_id']));
+					$db_tmp->update($setting['db']['pre_sub']."news_show", array("tag"=>"replace(',".$the_tag[$n]."', '', tag)"), array("news_id", "n=", $record['news_id']));
 					continue;
 				}
 				if(strlen($the_tag[$n]>50)) {
 					$the_tag[$n] = substrPro($the_tag[$n], 0, 50);
-					//$db_tmp->Query("update ".$setting['db']['pre_sub']."news_show set tag = '".$the_tag[$n]."' where news_id='{$record['news_id']}'");
 				}
-				if($db_tmp->GetSingleResult("select id from ".$setting['db']['pre_sub']."news_tag where `tag` = '".$the_tag[$n]."'")) {
-					$db_tmp->Query("update ".$setting['db']['pre_sub']."news_tag set `count` = `count` + 1, update_date = UNIX_TIMESTAMP() where `tag` = '".$the_tag[$n]."'");
+				if($db_tmp->result($setting['db']['pre_sub']."news_tag", "id", array("tag","=",$the_tag[$n]))) {
+					$db_tmp->update($setting['db']['pre_sub']."news_tag", array("count"=>"+1","update_date"=>"UNIX_TIMESTAMP()"), array("tag","=",$the_tag[$n]));
 				} else {
-					$db_tmp->Query("insert into ".$setting['db']['pre_sub']."news_tag values(0, '".$the_tag[$n]."', 1, 0, UNIX_TIMESTAMP(), UNIX_TIMESTAMP())");
+					$db_tmp->insert($setting['db']['pre_sub']."news_tag", array(0, $the_tag[$n], 1, 0, "UNIX_TIMESTAMP()", "UNIX_TIMESTAMP()"));
 				}
 			}
 			if(++$n%50===0) {
 				$db_tmp->ReConnect(false, $setting['db']['name']);
 			}
 		}
-		$db_tmp->Query("delete from ".$setting['db']['pre_sub']."news_tag where `count`<2 and `click`<5 and `add_date`<UNIX_TIMESTAMP()-60*60*24*10");
+		$db_tmp->delete($setting['db']['pre_sub']."news_tag", array(array("count","n<",2), array("click","n<",5,"and"), array("add_date","f<","UNIX_TIMESTAMP()-60*60*24*10","and")));
 		$db->Free();
 
 		$n = 1;
-		$db->Query("select id, tag from ".$setting['db']['pre_sub']."news_tag");
+		$db->select($setting['db']['pre_sub']."news_tag", "id, tag");
 		while($record = $db->GetRS()) {
-			$counter = $db_tmp->GetSingleResult("select count(*) from ".$setting['db']['pre_sub']."news_show where tag like '%{$record['tag']}%'");
-			$db_tmp->Query("update ".$setting['db']['pre_sub']."news_tag set `count`='{$counter}' where id='{$record['id']}'");
+			$counter = $db_tmp->result($setting['db']['pre_sub']."news_show", "count(*)", array("tag","like",$record['tag']));
+			$db_tmp->update($setting['db']['pre_sub']."news_tag", array("count"=>$counter), array("id","n=",$record['id']));
 			if(++$n%50===0) {
 				$db_tmp->ReConnect(false, $setting['db']['name']);
 			}
@@ -99,23 +98,21 @@ function build_page($method) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	$order = $req->getGet("order");
+	if(empty($order)) $order = "id";
 	$order_type = $req->getGet("order_type");
 	if(empty($order_type)) $order_type = "desc";
 	$keyword = $req->getGet("keyword");
 	$tpl_tmp->Set_Variable('keyword', $keyword);
 
 	$page = $req->getGet("page");
-	$str_sql = "select count(*) as counter from ".$setting['db']['pre_sub']."news_tag where 1=1";
-	if(!empty($keyword)) $str_sql.= " and tag like '%{$keyword}%'";
-	$counter = $db->GetSingleResult($str_sql);
+	
+	$condition = array();
+	if(!empty($keyword)) $condition = array("tag","like",$keyword);
+	$counter = $db->result($setting['db']['pre_sub']."news_tag", "count(*)", $condition);
 	list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}&web_id={$web_id}", $page);
 	$tpl_tmp->Set_Variables($page_arr);
 	
-	$str_sql = "select * from ".$setting['db']['pre_sub']."news_tag where 1=1";
-	if(!empty($keyword)) $str_sql.= " and tag like '%{$keyword}%'";
-	$str_sql.= " order by ".(empty($order)?"id":"{$order}")." {$order_type}";
-	$str_sql.= " limit $page_start, $page_size";
-	$db->Query($str_sql);
+	$db->select($setting['db']['pre_sub']."news_tag", "*", $condition, array("order"=>"{$order} {$order_type}", "limit"=>"$page_start, $page_size"));
 	while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			$record['link'] = getUrl("tag", urlencode($record['tag']), 1, $web_id);

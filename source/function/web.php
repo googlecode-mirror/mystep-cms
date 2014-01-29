@@ -148,8 +148,7 @@ mystep;
 function getList($layer = 1, $cat_main = 0) {
 	global $catalog, $max_layer;
 	if($layer>$max_layer || !is_array($GLOBALS["catalog_{$layer}"])) return;
-	$max_count = count($GLOBALS["catalog_{$layer}"]);
-	for($i=0; $i<$max_count; $i++) {
+	for($i=0,$m=count($GLOBALS["catalog_{$layer}"]); $i<$m; $i++) {
 		if($GLOBALS["catalog_{$layer}"][$i]['cat_main']==$cat_main) {
 			$catalog[] = $GLOBALS["catalog_{$layer}"][$i];
 			if(isset($GLOBALS["catalog_".($layer+1)])) getList($layer+1, $GLOBALS["catalog_{$layer}"][$i]['cat_id']);
@@ -169,11 +168,11 @@ function buildParaList($idx) {
 	switch($idx) {
 		case "news_cat":
 			$catalog = array();
-			$max_layer = $db->GetSingleResult("select max(cat_layer) from ".$setting['db']['pre']."news_cat");
+			$max_layer = $db->result($setting['db']['pre']."news_cat", "max(cat_layer)");
 			if(empty($max_layer)) break;
 			for($i=1; $i<=$max_layer; $i++) {
 				$GLOBALS["catalog_{$i}"] = array();
-				$db->Query("select * from ".$setting['db']['pre']."news_cat where cat_layer={$i} order by web_id asc, cat_order asc");
+				$db->select($setting['db']['pre']."news_cat","*",array("cat_layer","n=",$i),array("order"=>"web_id asc, cat_order asc"));
 				while($record = $db->GetRS()) {
 					HtmlTrans(&$record);
 					$GLOBALS["catalog_{$i}"][] = $record;
@@ -182,9 +181,8 @@ function buildParaList($idx) {
 			$GLOBALS['catalog'] = $catalog;
 			$GLOBALS['max_layer'] = $max_layer;
 			getList();
-			$max_count = count($GLOBALS['catalog']);
-			for($i=0; $i<$max_count; $i++) {
-				$db->Query("update ".$setting['db']['pre']."news_cat set cat_order=".($i+1)." where cat_id='".$GLOBALS['catalog'][$i]['cat_id']."'");
+			for($i=0,$m=count($GLOBALS['catalog']); $i<$m; $i++) {
+				$db->update($setting['db']['pre']."news_cat", array("cat_order", $i+1), array("cat_id", "n=", $GLOBALS['catalog'][$i]['cat_id']));
 				$GLOBALS['catalog'][$i]['cat_order'] = $i+1;
 			}
 			$cache_para['news_cat'] = $GLOBALS['catalog'];
@@ -192,7 +190,7 @@ function buildParaList($idx) {
 		case "link":
 			$link_txt = array();
 			$link_img = array();
-			$db->Query("select * from ".$setting['db']['pre']."links order by level desc, id asc");
+			$db->select($setting['db']['pre']."links","*","",array("order"=>"level desc, id asc"));
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				if(empty($record["image"])) {
@@ -206,7 +204,7 @@ function buildParaList($idx) {
 			break;
 		case "website":
 			$theList = array();
-			$db->Query("select * from ".$setting['db']['pre']."website order by web_id");
+			$db->select($setting['db']['pre']."website","*","",array("order"=>"web_id"));
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				$theList[] = $record;
@@ -218,7 +216,7 @@ function buildParaList($idx) {
 		case "user_power":
 			$theIdx = str_replace("user_", "", $idx);
 			$theList = array();
-			$db->Query("select * from ".$setting['db']['pre'].$idx." order by ".$theIdx."_id");
+			$db->select($setting['db']['pre'].$idx,"*","",array("order"=>$theIdx."_id"));
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				$theList[] = $record;
@@ -227,16 +225,15 @@ function buildParaList($idx) {
 			break;
 		case "admin_cat":
 			$theList = array();
-			$db->Query("select * from ".$setting['db']['pre']."admin_cat where pid=0 order by `order` desc, id asc");
+			$db->select($setting['db']['pre']."admin_cat","*",array("pid","n=",0),array("order"=>"order desc, id asc"));
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				$record['url'] = $record['path'].$record['file'];
 				$theList[] = $record;
 			}
-			$max_count = count($theList);
-			for($i=0; $i<$max_count; $i++) {
+			for($i=0,$m=count($theList); $i<$m; $i++) {
 				$theList[$i]['sub'] = array();
-				$db->Query("select * from ".$setting['db']['pre']."admin_cat where pid=".$theList[$i]['id']." order by `order` desc, id asc");
+				$db->select($setting['db']['pre']."admin_cat","*",array("pid","n=",$theList[$i]['id']),array("order"=>"order desc, id asc"));
 				while($record=$db->GetRS()) {
 					HtmlTrans(&$record);
 					$record['url'] = $record['path'].$record['file'];
@@ -246,7 +243,7 @@ function buildParaList($idx) {
 			$cache_para[$idx] = $theList;
 			
 			$theList = array();
-			$db->Query("select * from ".$setting['db']['pre']."admin_cat order by `order` desc, id");
+			$db->select($setting['db']['pre']."admin_cat","*","",array("order"=>"order desc, id asc"));
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				$record['url'] = $record['path'].$record['file'];
@@ -256,7 +253,7 @@ function buildParaList($idx) {
 			break;
 		case "plugin":
 			$theList = array();
-			$db->Query("select * from ".$setting['db']['pre'].$idx." order by `order` desc, id asc");
+			$db->select($setting['db']['pre'].$idx,"*","",array("order"=>"order desc, id asc"));
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
 				$record['url'] = $record['path'].$record['file'];
@@ -266,7 +263,7 @@ function buildParaList($idx) {
 			break;
 		default:
 			$theList = array();
-			$db->Query("select * from ".$idx." order by id");
+			$db->select($idx,"*","",array("order"=>"id"));
 			if(isset($GLOBALS['errMsg'])) return false;
 			while($record=$db->GetRS()) {
 				HtmlTrans(&$record);
@@ -282,11 +279,10 @@ function buildParaList($idx) {
 	}
 	return $cache_para ? true : false;
 }
-function getParaInfo($idx, $col, $value) {
+function getParaInfo($idx, $col, $value, $like = false) {
 	if($idx=="news_cat_sub") {
 		global $setting;
-		$max_count = count($GLOBALS['news_cat']);
-		for($i=0; $i<$max_count; $i++) {
+		for($i=0,$m=count($GLOBALS['news_cat']); $i<$m; $i++) {
 			if(!isset($GLOBALS['news_cat'][$i][$col])) continue;
 			if(strtolower($GLOBALS['news_cat'][$i][$col]) == strtolower($value) && ($col=='cat_id' || ($col!='cat_id' && $GLOBALS['news_cat'][$i]['web_id']==$setting['info']['web']['web_id']))) {
 				return $GLOBALS['news_cat'][$i];
@@ -294,9 +290,11 @@ function getParaInfo($idx, $col, $value) {
 		}
 	}
 	if(!isset($GLOBALS[$idx]) || !is_array($GLOBALS[$idx]) ) return false;
-	$max_count = count($GLOBALS[$idx]);
-	for($i=0; $i<$max_count; $i++) {
+	for($i=0,$m=count($GLOBALS[$idx]); $i<$m; $i++) {
 		if(!isset($GLOBALS[$idx][$i][$col])) continue;
+		if($like && strpos(strtolower($GLOBALS[$idx][$i][$col]), strtolower($value))===0) {
+			return $GLOBALS[$idx][$i];
+		}
 		if(strtolower($GLOBALS[$idx][$i][$col]) == strtolower($value)) {
 			return $GLOBALS[$idx][$i];
 		} 
@@ -446,7 +444,22 @@ function delCacheFile($news_id, $web_id=0) {
 	if($web_id==0) $web_id=$setting['info']['web']['web_id'];
 	$setting_sub = getSubSetting($web_id);
 	$db_pre = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
-	list($cat_idx, $add_date, $page_count)=array_values($db->GetSingleRecord("select b.cat_idx, a.add_date, a.pages from ".$db_pre."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where a.news_id='{$news_id}'"));
+	
+	$sql = $db->buildSel(array(
+		array(
+			"name" => $db_pre."news_show",
+			"idx" => "a",
+			"col" => "add_date, pages",
+			"condition" => array("news_id", "n=", $news_id)
+		),
+		array(
+			"name" => $setting['db']['pre']."news_cat",
+			"idx" => "b",
+			"col" => "cat_idx",
+			"join" => "cat_id",
+		)
+	));
+	list($add_date, $page_count, $cat_idx)=$db->GetSingleRecord($sql, false);
 	if(is_null($cat_idx) || is_null($add_date)) return false;
 	$file_idx = ROOT_PATH."/".$setting['path']['cache']."/html/".$setting_sub['info']['idx']."/".date("Y/md",strtotime($add_date))."/".$news_id;
 	unlink($file_idx.$setting['gen']['cache_ext']);
@@ -654,14 +667,20 @@ function __autoload($class_name) {
 /*--------------------------------Functions For Web End--------------------------------------------*/
 
 /*--------------------------------Functions For Error Start------------------------------------------*/
-function getString($value) {
-	if(preg_match("/(\-[\w]{2})+/", $value)) $value = str_replace("-", "%", $value);	
-	if(preg_match("/(%[\w]{2})+/", $value)) $value = urldecode($value);
-	if(is_utf8($value)) {
-		global $setting;
-		$value = chg_charset($value, "utf-8", $setting['gen']['charset']);
+function getString($str) {
+	if(is_array($str)) {
+		foreach($str as $key => $value) {
+			$str[$key] = getString($value);
+		}
+	} else {
+		if(preg_match("/(\-[\w]{2})+/", $str)) $str = str_replace("-", "%", $str);
+		if(preg_match("/(%[\w]{2})+/", $str)) $str = urldecode($str);
+		if(is_utf8($str)) {
+			global $setting;
+			$str = chg_charset($str, "utf-8", $setting['gen']['charset']);
+		}
 	}
-	return $value;
+	return $str;
 }
 function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 	$err_type = array(
@@ -686,18 +705,10 @@ function ErrorHandler ($err_no, $err_msg, $err_file, $err_line, $err_context) {
 	$err_str .= "Time: ".date("Y-m-d H:i:s")."\n";
 	$err_str .= "Type: {$cur_err}\n";
 	$err_str .= "File: {$err_file}\n";
-	/*
-	$err_str .= "Line: {$err_line}\n";
-	if(is_file($err_file)) {
-		$content = file($err_file);
-		$err_script = $content[$err_line-1];
-		$err_str .= "Script: ".htmlspecialchars($err_script)."\n";
-	}
-	*/
 	$err_str .= "Info.: {$err_msg}\n";
+	$err_str .= "URL: http://".$_SERVER["HTTP_HOST"].$_SERVER['REQUEST_URI']."\n";
 	$err_str .= "Debug: \n";
 	$debug_info = debug_backtrace();
-	$max_count = count($debug_info);
 	$n=0;
 	for($i=count($debug_info)-1; $i>=0; $i--) {
 		if(empty($debug_info[$i]['file'])) continue;
@@ -723,13 +734,11 @@ function outputErrMsg() {
 <div style="background-color:#999;color:#FFF">&nbsp;<strong>{$lines[0]}</strong></div>
 
 mystep;
-	$max_count = count($lines);
-	for($i=1; $i<$max_count; $i++) {
+	for($i=1,$m=count($lines); $i<$m; $i++) {
 		if(empty($lines[$i])) {
 			break;
 		} elseif(preg_match("/^([\w\s\.]+\:)(.*)$/", $lines[$i], $matches)) {
 			echo "<div style=\"background-color:".($i%2?"#eee":"#fff")."\">&nbsp;<strong>".$matches[1]."</strong>".$matches[2]."</div>\n";
-			
 		} else {
 			echo "<div>&nbsp; &nbsp; ".$lines[$i]."</div>\n";
 		}

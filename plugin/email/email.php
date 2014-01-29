@@ -14,12 +14,12 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['plugin_email_delete'];
-		$attachment = $db->GetSingleResult("select attachment from ".$setting['db']['pre']."email where id = '{$id}'");
+		$attachment = $db->result($setting['db']['pre']."email","attachment",array("id","n=",$id));
 		preg_match_all("/(^|\n)(\d+)\|/", $attachment, $matches);
 		for($i=0,$m=count($matches[2]); $i<$m; $i++) {
 			@unlink(dirname(__FILE__)."/attachment/".$matches[2][$i]);
 		}
-		$db->Query("delete from ".$setting['db']['pre']."email where id = '{$id}'");
+		$db->delete($setting['db']['pre']."email",array("id","n=",$id));
 		break;
 	case "add_ok":
 	case "edit_ok":
@@ -30,12 +30,11 @@ switch($method) {
 			if(!isset($_POST['notification'])) $_POST['notification'] = "";
 			if($method=="add_ok") {
 				$log_info = $setting['language']['plugin_email_add'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."email", $_POST, "insert", "a");
+				$db->insert($setting['db']['pre']."email", $_POST, true);
 			} else {
 				$log_info = $setting['language']['plugin_email_edit'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."email", $_POST, "update", "id={$id}");
+				$db->update($setting['db']['pre']."email", $_POST, array("id","n=",$id));
 			}
-			$db->Query($str_sql);
 			if($method=="add_ok") {
 				$id = $db->GetInsertId();
 			}
@@ -67,8 +66,7 @@ function build_page($method) {
 	$tpl = $mystep->getInstance("MyTpl", $tpl_info);
 	
 	if($method == "list") {
-		$str_sql = "select * from ".$setting['db']['pre']."email order by id desc";
-		$db->Query($str_sql);
+		$db->select($setting['db']['pre']."email","*","",array("order"=>"id desc"));
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			$tpl->Set_Loop('record', $record);
@@ -77,10 +75,8 @@ function build_page($method) {
 		$tpl->Set_Variable('title', $setting['language']['plugin_email_title']);
 	} else {
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."email where id='{$id}'");
-			$record  = $db->GetRS();
-			$db->Free();
-			if(!$record) {
+			$record = $db->record($setting['db']['pre']."email","*",array("id","n=",$id));
+			if($record===false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['plugin_email_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
@@ -117,10 +113,8 @@ function send_mail($id) {
 	global $mystep, $req, $db, $setting, $id;
 	ignore_user_abort("on");
 	set_time_limit(0);
-	$db->Query("select * from ".$setting['db']['pre']."email where id='{$id}'");
-	$record  = $db->GetRS();
-	$db->Free();
-	if(!$record) return false;
+	$record = $db->record($setting['db']['pre']."email","*",array("id","n=",$id));
+	if($record===false) return false;
 	$mail = $mystep->getInstance("MyEmail", "", $setting['gen']['charset'], "send.log");
 	list($from, $name) = parse_mail($record['from']);
 	$mail->setFrom($from, $name, false);

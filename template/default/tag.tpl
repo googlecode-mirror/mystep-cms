@@ -25,7 +25,7 @@
 				<div class="taglist">
 					<h4>»»√≈±Í«©</h4>
 					<div>
-<!--tag limit="30" order="id desc"-->
+<!--tag limit="30" order="id desc" condition="`count`>2"-->
 					</div>
 				</div>
 				<div class="content after">

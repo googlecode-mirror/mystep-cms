@@ -21,7 +21,7 @@
 		</div>
 		<div class="fr page_main">
 			<div class="box">
-				<div class="title">当前位置： <a href="<!--web_url-->"><!--title--></a> <!--catalog_txt--> - 正文<input type="hidden" id="news_id" value="<!--record_news_id-->"></div>
+				<div class="title">当前位置： 投票 - <!--record_subject--></div>
 				<div class="page after"><!--prefix_list--></div>
 				<div class="content">
 					<div class="main">
@@ -31,7 +31,7 @@
 						</div>
 						<div align="center"><a href="module.php?m=survey&id=1&show" target="_blank"><img id="chart" src="module.php?m=survey&id=1&show" width="200" /></a></div>
 						<div id="content"><!--record_describe--></div>
-						<div class="reset" style="min-height:810px;">
+						<div class="reset">
 <!--survey id='$survey_id' order="catalog desc"-->
 						</div>
 					</div>

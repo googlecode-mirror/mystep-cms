@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "管理目录维护插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.0",
+	"ver" => "1.1",
 	"class" => "plugin_admin_cat",
 	"intro" => "管理目录添加、修改、删除、排序",
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

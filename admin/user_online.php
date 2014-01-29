@@ -10,19 +10,17 @@ if(empty($order_type)) $order_type = "desc";
 $keyword = $req->getGet("keyword");
 $tpl_tmp->Set_Variable('keyword', $keyword);
 
-$str_sql = "select count(*) as counter from ".$setting['db']['pre']."user_online where 1=1";
-if(!empty($keyword)) $str_sql.= " and username like '%{$keyword}%'";
-$str_sql .= " order by reflash desc";
-$counter = $db->GetSingleResult($str_sql);
+$condition = array();
+if(!empty($keyword)) $condition[] = array("username","like",$keyword);
+$counter = $db->result($setting['db']['pre']."user_online","count(*)",$condition);
+
 $page = $req->getGet("page");
 list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 $tpl_tmp->Set_Variables($page_arr);
 
-$str_sql = "select * from ".$setting['db']['pre']."user_online where 1=1";
-if(!empty($keyword)) $str_sql.= " and username like '%{$keyword}%'";
-$str_sql.= " order by ".(empty($order)?"reflash":"$order")." {$order_type}";
-$str_sql.= " limit $page_start, $page_size";
-$db->Query($str_sql);
+if(empty($order)) $order="reflash";
+$db->select($setting['db']['pre']."user_online", "*", $condition, array("order"=>"$order $order_type","limit"=>"$page_start, $page_size"));
+
 $tpl_tmp->Set_Variable('order_type_org', $order_type);
 if($order_type=="desc") {
 	$order_type = "asc";

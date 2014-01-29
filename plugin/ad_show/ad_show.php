@@ -26,7 +26,7 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['plugin_ad_show_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."ad_show where id = '$id'");
+		$db->delete($setting['db']['pre']."ad_show", array("id","n=",$id));
 		break;
 	case "add_ok":
 	case "edit_ok":
@@ -36,13 +36,12 @@ switch($method) {
 			if($method=="add_ok") {
 				$log_info = $setting['language']['plugin_ad_show_add'];
 				$_POST['add_date'] = date("Y-m-d H:i:s");
-				$str_sql = $db->buildSQL($setting['db']['pre']."ad_show", $_POST, "insert", "a");
+				$db->insert($setting['db']['pre']."ad_show", $_POST, true);
 			} else {
 				if(empty($_POST['expire'])) unset($_POST['expire']);
 				$log_info = $setting['language']['plugin_ad_show_edit'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."ad_show", $_POST, "update", "id={$id}");
+				$db->update($setting['db']['pre']."ad_show", $_POST, array("id","n=",$id));
 			}
-			$db->Query($str_sql);
 		}
 		break;
 	default:
@@ -72,16 +71,17 @@ function build_page($method) {
 		$order = $req->getGet("order");
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
-		$str_sql = "select count(*) as counter from ".$setting['db']['pre']."ad_show";
-		$counter = $db->GetSingleResult($str_sql);
+		$counter = $db->result($setting['db']['pre']."ad_show", "count(*)");
 		$page = $req->getGet("page");
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?order={$order}&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
 		
-		$str_sql = "select * from ".$setting['db']['pre']."ad_show";
 		if(empty($order)) $order="id";
-		$str_sql.= " order by $order {$order_type}".(($order=="id")?"":", id desc");
-		$str_sql.= " limit $page_start, $page_size";
+		$the_order = array();
+		$the_order[] = "$order $order_type";
+		if($order!="id") $the_order[] = "id desc";
+		$db->select($setting['db']['pre']."ad_show","*","",array("order"=>$the_order,"limit"=>"$page_start, $page_size"));
+		
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);
 		if($order_type=="desc") {
 			$order_type = "asc";
@@ -90,7 +90,7 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_Variable('order', $order);
 		$tpl_tmp->Set_Variable('order_type', $order_type);
-		$db->Query($str_sql);
+		
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			$record['ad_mode'] = $ad_mode[$record['ad_mode']];
@@ -100,10 +100,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_ad_show_title']);
 	} else {
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."ad_show where id='{$id}'");
-			$record = $db->GetRS();
-			$db->Free();
-			if(!$record) {
+			$record = $db->record($setting['db']['pre']."ad_show","*",array("id","n=",$id));
+			if($record===false) {
 				$tpl_tmp->Set_Variable('main', showInfo($setting['language']['plugin_ad_show_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);
@@ -129,7 +127,7 @@ function build_page($method) {
 			$tpl_tmp->Set_Loop('ad_mode', array("idx"=>$i, "mode"=>$ad_mode[$i], "selected"=>($i==$record['ad_mode']?"selected":"")));
 		}
 		
-		$db->Query("select distinct idx from ".$setting['db']['pre']."ad_show");
+		$db->select($setting['db']['pre']."ad_show", "distinct idx");
 		while($record = $db->GetRS()) {
 			$record['selected'] = $record['idx']==$idx?"selected":"";
 			$tpl_tmp->Set_Loop('idx', $record);

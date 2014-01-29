@@ -31,13 +31,27 @@ class MyUploader extends class_common {
 		$upload_rename	= false,
 		$upload_banlst	= "";
 
-	public function init($upload_path = 'upload/', $upload_rename = false, $relative = false, $banlst="php,exe,com,bat,pif") {
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		} else {
+			call_user_func(array($this, "init"));
+		}
+		return;
+	}
+	
+	public function init($upload_path = "", $upload_rename = false, $relative = false, $banlst="php,exe,com,bat,pif") {
 		if(empty($_FILES)) $this->Error("No Upload Files Exist !");
 		if($relative) $upload_path = realpath($upload_path);
-		$upload_path .= "/";
-		if(!$this->MakeDir($upload_path)) {
-			$this->Error("Operation Failed in Creating Directory {$upload_path} ,Please Check Your Power!");
-		};
+		if(!empty($upload_path)) {
+			$upload_path .= "/";
+			if(!$this->MakeDir($upload_path)) {
+				$this->Error("Operation Failed in Creating Directory {$upload_path} ,Please Check Your Power!");
+			};
+		} else {
+			$upload_path = "./";
+		}
 		$this->upload_path	= $upload_path;
 		$this->upload_rename	= $upload_rename;
 		$this->upload_banlst	= $banlst;

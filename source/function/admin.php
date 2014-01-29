@@ -18,11 +18,18 @@ function write_log($comment="", $q_str_addon="") {
 	$q_str = $req->getServer("QUERY_STRING");
 	if(!empty($q_str)) $link .= "?".$q_str;
 	if(!empty($q_str_addon)) $link .= (empty($q_str)?"?":"&").$q_str_addon;
-	$str_sql = "
-		insert into ".$setting['db']['pre']."modify_log (`id`,	`user`,			`group`,		`time`,		`link`, `comment`)
-				values (0,	'".$req->getSession('username')."',	'".$req->getSession('usertype')."',	".$req->getServer('REQUEST_TIME').",	'{$link}', '{$comment}');
-	";
-	$db->Query($str_sql);
+	if(preg_match("/(%[\w]{2})+/", $link)) $link = urldecode($link);
+	if(strlen($link)>250) $link = substrPro($link, 0, 250);
+	
+	$data = array(
+		"id" => 0,
+		"user" => $req->getSession('username'),
+		"group" => $req->getSession('usertype'),
+		"time" => $req->getServer('REQUEST_TIME'),
+		"link" => $link,
+		"comment" => $comment,
+	);
+	$db->insert($setting['db']['pre']."modify_log", $data);
 	return;
 }
 
@@ -62,8 +69,22 @@ function GetPictures_news($news_id, $web_id, $content, $zoom = 700) {
 		preg_match_all("/<img.+?src=(.?)(http.+?)\\1.*?>/is", $tmp[$n], $arr);
 		$attach_list .= localPicture($arr[2], $tmp[$n], $zoom);
 		$attach_list .= "0";
-		$db->Query("update ".$setting['db']['pre_sub']."news_detail set content='".mysql_real_escape_string($tmp[$n])."' where news_id={$news_id} and page=".($n+1));
-		$db->Query("update ".$setting['db']['pre']."attachment set news_id={$news_id}, web_id={$web_id} where id in ({$attach_list})");
+		$data = array(
+			"content" => $tmp[$n]
+		);
+		$condition = array(
+			array("news_id", "n=", $news_id),
+			array("page", "n=", n+1, "and"),
+		);
+		$db->update($setting['db']['pre_sub']."news_detail", $data, $condition);
+		$data = array(
+			"news_id" => $news_id,
+			"web_id" => $web_id
+		);
+		$condition = array(
+			array("id", "in", $attach_list),
+		);
+		$db->update($setting['db']['pre']."attachment", $data, $condition);
 	}
 	return;
 }
@@ -128,8 +149,22 @@ function localPicture($img_list, &$content, $zoom=700) {
 				$the_height *= $zoom/$the_width;
 				$the_width = $zoom;
 			}
-			$qrl_str = "insert into ".$setting['db']['pre']."attachment values(0, 0, 0, '".$old_name."', 'image".str_replace(".","/",$ext)."', '".filesize($the_path.$new_name)."', '', '".$the_time."', 0, '', '".$req->getSession('username')."', ".(($setting['watermark']['mode'] & 2) ? 1 : 0).")";
-			$db->Query($qrl_str);
+			
+			$data = array(
+				0,
+				0,
+				0,
+				$old_name,
+				"image".str_replace(".","/",$ext),
+				filesize($the_path.$new_name),
+				'',
+				$the_time,
+				0,
+				'',
+				$req->getSession('username'),
+				($setting['watermark']['mode'] & 2) ? 1 : 0
+			);
+			$db->insert($setting['db']['pre']."attachment", $data);
 			$new_id = $db->GetInsertId();
 			if($new_id != 0) {
 				$attach_list .= $new_id.",";

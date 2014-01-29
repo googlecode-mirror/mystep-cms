@@ -19,7 +19,7 @@
 			<td class="cat" width="60"><a href="?order_type=<!--order_type-->&order=expire"><font color="#000000">有效时间</font></a></td>
 			<td class="cat" width="60"><a href="?order_type=<!--order_type-->&order=user_lvl"><font color="#000000">投票级别</font></a></td>
 			<td class="cat" width="60"><a href="?order_type=<!--order_type-->&order=times"><font color="#000000">参与人数</font></a></td>
-			<td class="cat" width="90">相关操作</td>
+			<td class="cat" width="120">相关操作</td>
 		</tr>
 <!--loop:start key="record" time="20"-->
 		<tr align="center">
@@ -31,7 +31,12 @@
 			<td class="row"><!--record_expire--></td>
 			<td class="row"><!--record_user_lvl--></td>
 			<td class="row"><!--record_times--></td>
-			<td class="row"><a href="?method=export&id=<!--record_id-->">导出</a> <a href="?method=edit&id=<!--record_id-->">修改</a> <a href="?method=delete&id=<!--record_id-->" onclick="return confirm('是否确认删除该投票项目？')">删除</a></td>
+			<td class="row">
+				<a href="?method=export&id=<!--record_id-->">导出</a> 
+				<a href="?method=edit&id=<!--record_id-->">修改</a> 
+				<a href="?method=delete&id=<!--record_id-->" onclick="return confirm('是否确认删除该投票项目？')">删除</a>
+				<a href="/module.php?m=survey&id=<!--record_id-->" target="_blank">前台</a>
+			</td>
 		</tr>
 <!--loop:end-->
 	</table>

@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "子站文章数据转移插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.0",
+	"ver" => "1.1",
 	"class" => "plugin_data_trans",
 	"intro" => "将文章数据在不同子站中复制或转移",
 	"copyright" => "版权所有 2013 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

@@ -427,6 +427,6 @@ $(function(){
 		screenLockerBackground: "#000",
 		screenLockerOpacity: "0.4"
 	});
-	$("<div>").attr("id", "info_show").addClass("info_show").html('<div class="info">aaa</div><div class="button">bbb</div>').appendTo("body");
+	$("<div>").attr("id", "info_show").addClass("info_show").html('<div class="info"></div><div class="button"></div>').appendTo("body");
 	$("#css_jmpopups").attr("href", rlt_path+"script/jquery.jmpopups.css");
 });

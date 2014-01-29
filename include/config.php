@@ -12,6 +12,7 @@ $setting['web']['s_pass'] = 'e10adc3949ba59abbe56e057f20f883e';
 $setting['web']['close'] = false;
 $setting['web']['close_page'] = '/index.html';
 $setting['web']['cache_mode'] = 'file';
+$setting['web']['sign'] = '417ee21d75b106fdc0f0795d91bf8444';
 
 $setting['db'] = array();
 $setting['db']['host'] = '127.0.0.1:3306';
@@ -30,7 +31,7 @@ $setting['gen']['cache'] = false;
 $setting['gen']['cache_ext'] = '.html';
 $setting['gen']['template'] = 'default';
 $setting['gen']['timezone'] = 'Etc/GMT-8';
-$setting['gen']['update'] = 'http://www.mysteps.cn/update/';
+$setting['gen']['update'] = 'http://www.mystep.com/update/';
 $setting['gen']['minify'] = false;
 $setting['gen']['etag'] = 20131027;
 $setting['gen']['show_info'] = false;
@@ -45,7 +46,7 @@ $setting['email'] = array();
 $setting['email']['mode'] = 'smtp';
 $setting['email']['host'] = 'smtpx.sina.net';
 $setting['email']['port'] = 25;
-$setting['email']['user'] = 'cccfna@cccfna.org.cn';
+$setting['email']['user'] = 'sunkai@cccfna.org.cn';
 $setting['email']['password'] = 'cccfna2003';
 
 $setting['js'] = array();

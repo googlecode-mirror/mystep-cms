@@ -25,17 +25,17 @@ switch($method) {
 					$cfg_file = ROOT_PATH."/include/config_".$web_info['idx'].".php";
 					include($cfg_file);
 					if($setting['db']['name']!=$setting_sub['db']['name']) {
-						$db->Query("drop database ".$setting_sub['db']['name']);
+						$db->exec("drop","database",$setting_sub['db']['name']);
 					} elseif($setting['db']['pre']!=$setting_sub['db']['pre']) {
-						$db->Query("drop table ".$setting_sub['db']['pre']."news_show");
-						$db->Query("drop table ".$setting_sub['db']['pre']."news_detail");
-						$db->Query("drop table ".$setting_sub['db']['pre']."news_tag");
+						$db->exec("drop","table",$setting_sub['db']['pre']."news_show");
+						$db->exec("drop","table",$setting_sub['db']['pre']."news_detail");
+						$db->exec("drop","table",$setting_sub['db']['pre']."news_tag");
 					} else {
-						$db->Query("update ".$setting['db']['pre']."news_cat set web_id=1 where web_id='{$web_id}'");
-						$db->Query("update ".$setting['db']['pre']."news_show set web_id=1 where web_id='{$web_id}'");
+						$db->update($setting['db']['pre']."news_cat", array("web_id"=>1), array("web_id","n=",$web_id));
+						$db->update($setting['db']['pre']."news_show", array("web_id"=>1), array("web_id","n=",$web_id));
 					}
 					unlink($cfg_file);
-					$db->Query("delete from ".$setting['db']['pre']."website where web_id='{$web_id}'");
+					$db->delete($setting['db']['pre']."website", array("web_id","n=",$web_id));
 					deleteCache("website");
 				} else {
 					$goto_url = $setting['info']['self'];
@@ -66,10 +66,9 @@ mystep;
 				$strReplace = array($new_setting['db']['name'], $new_setting['db']['pre'], $setting['db']['charset'], $_POST['host'], $_POST['idx']);
 				$info = $db->ExeSqlFile("subweb.sql", $strFind, $strReplace);
 			}
-			$db->Query("use ".$setting['db']['name']);
+			$db->SelectDB($setting['db']['name']);
 			WriteFile(ROOT_PATH."/include/config_".$_POST['idx'].".php", $result, "w");
-			$qry_str = $db->buildSQL($setting['db']['pre']."website", $_POST);
-			$db->Query($qry_str);
+			$db->replace($setting['db']['pre']."website", $_POST);
 			deleteCache("website");
 		}
 		break;
@@ -92,8 +91,7 @@ function build_page($method) {
 	$tpl_tmp->allow_script = true;
 
 	if($method == "list") {
-		$str_sql = "select * from ".$setting['db']['pre']."website order by web_id";
-		$db->Query($str_sql);
+		$db->select($setting['db']['pre']."website", "*", "", array("order"=>"web_id"));
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			$tpl_tmp->Set_Loop('record', $record);
@@ -105,10 +103,8 @@ function build_page($method) {
 	} else {
 		$tpl_tmp->Set_Variable('title', ($method == "add"?$setting['language']['admin_web_subweb_add']:$setting['language']['admin_web_subweb_edit']));
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."website where web_id='{$web_id}'");
-			if($record = $db->GetRS()) {
-				//nothing
-			} else {
+			$record = $db->record($setting['db']['pre']."website","*",array("web_id","n=",$web_id));
+			if($record === false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['admin_web_subweb_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);

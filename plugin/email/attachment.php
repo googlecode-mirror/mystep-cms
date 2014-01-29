@@ -1,4 +1,5 @@
 <?php
+$ms_sign = 8;
 require("../inc.php");
 $method = $req->getGet("method");
 $log_info = "";
@@ -39,7 +40,7 @@ delAttachment("'.$idx.'");
 				if(!empty($message)) {
 					$script = '
 	alert("'.$message.'");
-	setAttachment('.json_encode($files).');
+	setAttachment('.toJson($files,$setting['gen']['charset']).');
 ';
 				}
 		}

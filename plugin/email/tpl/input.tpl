@@ -54,25 +54,25 @@
 			<tr>
 				<td class="cat">回复地址：</td>
 				<td class="row">
-					<textarea name="reply" style="width:100%;height:54px;" need="" /><!--reply--></textarea>
+					<textarea name="reply" style="width:100%;height:54px;" need=""><!--reply--></textarea>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">接收地址：</td>
 				<td class="row">
-					<textarea name="to" style="width:100%;height:54px;" /><!--to--></textarea>
+					<textarea name="to" style="width:100%;height:54px;"><!--to--></textarea>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">抄送地址：</td>
 				<td class="row">
-					<textarea name="cc" style="width:100%;height:54px;" /><!--cc--></textarea>
+					<textarea name="cc" style="width:100%;height:54px;"><!--cc--></textarea>
 				</td>
 			</tr>
 			<tr>
 				<td class="cat">暗送地址：</td>
 				<td class="row">
-					<textarea name="bcc" style="width:100%;height:54px;" /><!--bcc--></textarea>
+					<textarea name="bcc" style="width:100%;height:54px;"><!--bcc--></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -81,7 +81,7 @@
 			<tr>
 				<td class="cat">邮 件 头：</td>
 				<td class="row">
-					<textarea name="header" style="width:100%;height:54px;" need="" /><!--header--></textarea>
+					<textarea name="header" style="width:100%;height:54px;"><!--header--></textarea>
 				</td>
 			</tr>
 			<tr>

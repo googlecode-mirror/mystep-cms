@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "网站访问来源分析插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.5",
+	"ver" => "1.6",
 	"class" => "plugin_visit_analysis",
 	"intro" => "网站访问来源统计，关键字分析",
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

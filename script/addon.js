@@ -136,8 +136,10 @@ function showSubMenu(theObj) {
 	});
 }
 
-function anchorShow(){
-	$("<div>").attr("id", "anchor_show").html('<div>Top</div><div></div><div>Close</div>').css({"position":"fixed","width":"150px","top":"0px","right":"0px","cursor":"pointer"}).appendTo("body");
+function anchorShow(position,offset_top){
+	if(position==null) position = {"bottom":"0px","right":"0px"};
+	if(offset_top==null) offset_top = 0;
+	$("<div>").attr("id", "anchor_show").html('<div>Top</div><div></div><div>Close</div>').css({"position":"fixed","width":"150px","cursor":"pointer"}).css(position).appendTo("body");
 	$("#anchor_show > div").css({"background-color":"#7d0a2c","padding":"5px","border":"1px #fff solid","text-align":"center","color":"#fff"});
 	$("#anchor_show > div:eq(1)").css({"background-color":"#222","padding":"0px"});
 	$("#anchor_show > div:eq(0)").click(function(){
@@ -171,16 +173,18 @@ function anchorShow(){
 			}
 		).appendTo("#anchor_show > div:eq(1)");
 	}
+	
 	$(window).scroll(function(){
 		var the_top = $("#anchor_show").position().top;
 		$("#anchor_show > div:eq(1) > p").css("background-color","").attr("highlight", "0");
 		for(var i=anchor_list.length-1;i>=0;i--) {
-			if(the_top+400>=$(anchor_list.get(i)).position().top) {
+			if(the_top+offset_top>=$(anchor_list.get(i)).position().top) {
 				$("#anchor_show > div:eq(1) > p:eq("+i+")").css("background-color","#ff0052").attr("highlight", "1");
 				break;
 			}
 		}
 	});
+	$(window).scrollTop(1);
 }
 
 $(function() {

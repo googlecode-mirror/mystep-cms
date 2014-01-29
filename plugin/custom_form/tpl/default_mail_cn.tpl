@@ -19,7 +19,7 @@
 欢迎您参加<b>“<!--name-->”</b>！<br />
 您填表信息已经收到。请确认下列表单信息正确无误：<br /><br />
 <?php
-global $record;
+global $record,$id,$mid;
 foreach($para as $key => $value) {
 	if($value['manager']=='true') continue;
 	if(empty($value['title'])) continue;
@@ -62,6 +62,7 @@ foreach($para as $key => $value) {
 <script language="JavaScript" type="text/JavaScript">
 //<![CDATA[
 var the_email = "<?=$record['email']?>";
+var the_host = "<?=$setting['email']['host']?>";
 
 function send_mail_app(email, subject, content)	{
 	if(the_email.length<5) {
@@ -92,6 +93,10 @@ function send_mail_app(email, subject, content)	{
 }
 
 function send_mail() {
+	if(the_host.length<5) {
+		alert("尚未设置邮件发送服务器信息！");
+		return false;	
+	}
 	if(the_email.length<5) {
 		alert("无可用 Email，请核实数据！");
 		return false;	

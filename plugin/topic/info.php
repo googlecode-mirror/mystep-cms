@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "专题插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.2",
+	"ver" => "1.3",
 	"class" => "plugin_topic",
 	"intro" => "设置网站专题栏目",
 	"cat_name" => "网站专题",

@@ -13,9 +13,9 @@ class plugin_se_detect implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_se_detect", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name_1']."', 'se_detect.php', '../plugin/se_detect/', 0, 0, '".$info['cat_desc_1']."')");
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 5, '".$info['cat_name_2']."', 'se_detect.php?method=view', '../plugin/se_detect/', 0, 0, '".$info['cat_desc_2']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_se_detect",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name_1'],'se_detect.php', '../plugin/se_detect/', 0, 0,$info['cat_desc_1']));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,5,$info['cat_name_2'],'se_detect.php?method=view', '../plugin/se_detect/', 0, 0,$info['cat_desc_2']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -43,12 +43,12 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."se_detect");
-		$db->query("drop table ".$setting['db']['pre']."se_detect");
-		$db->query("truncate table ".$setting['db']['pre']."se_count");
-		$db->query("drop table ".$setting['db']['pre']."se_count");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'se_detect.php%'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."se_detect");
+		$db->exec("drop","table",$setting['db']['pre']."se_detect");
+		$db->delete($setting['db']['pre']."se_count");
+		$db->exec("drop","table",$setting['db']['pre']."se_count");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","like","se_detect.php"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -105,6 +105,7 @@ mystep;
 	}
 	
 	public static function page_start() {
+		if(checkSign(255)) return;
 		global $db, $setting;
 		$plugin_setting = self::setting();
 		include(dirname(__FILE__)."/agent.php");
@@ -115,7 +116,7 @@ mystep;
 		$GLOBALS['se_bot'] = "";
 		foreach($agent as $key => $value) {
 			if(strpos($agent_cur, strtolower($value))!==false) {
-				if($record = $db->getSingleRecord("select * from ".$setting['db']['pre']."se_detect where ip='{$ip}' || ip='{$ip2}'")) {
+				if($record = $db->record($setting['db']['pre']."se_detect","*",array(array("ip","=",$ip),array("ip","=",$ip2,"or")))) {
 					$record['count'] += 1;
 				} else {
 					$record = array();
@@ -123,17 +124,17 @@ mystep;
 					$record['ip'] = $ip;
 					$record['count'] = 1;
 				}
-				$db->Query($db->buildSQL($setting['db']['pre']."se_detect", $record, "replace"));
+				$db->replace($setting['db']['pre']."se_detect", $record);
 				
 				$theDate = date("Y-m-d");
-				if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date='".$theDate."'")) {
+				if($record = $db->record($setting['db']['pre']."se_count","*",array("date","=",$theDate))) {
 					$record[$key] += 1;
 				} else {
 					$record = array();
 					$record['date'] = $theDate;
 					$record[$key] = 1;
 				}
-				$db->Query($db->buildSQL($setting['db']['pre']."se_count", $record, "replace"));
+				$db->replace($setting['db']['pre']."se_count", $record);
 				if(strpos($plugin_setting['ban'], $key)!==false) {
 					header("HTTP/1.1 404 Not Found");
 					exit();
@@ -144,14 +145,14 @@ mystep;
 		}
 		if(empty($GLOBALS['se_bot']) && (strpos($agent_cur, "spider")!==false || strpos($agent_cur, "bot")!==false)) {
 			$theDate = date("Y-m-d");
-			if($record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."se_count where date='".$theDate."'")) {
-				if(isset($record['其他']))	$record['其他'] += 1;
+			if($record = $db->record($setting['db']['pre']."se_count","*",array("date","=",$theDate))) {
+				if(isset($record[$setting['language']['etc']]))	$record[$setting['language']['etc']] += 1;
 			} else {
 				$record = array();
 				$record['date'] = $theDate;
-				$record['其他'] = 1;
+				$record[$setting['language']['etc']] = 1;
 			}
-			$db->Query($db->buildSQL($setting['db']['pre']."se_count", $record, "replace"));
+			$db->replace($setting['db']['pre']."se_count", $record);
 			WriteFile(dirname(__FILE__)."/agent.txt", $agent_cur."\n");
 		}
 		return;

@@ -22,7 +22,7 @@ if(count($_POST)>0) {
 		$upload->DoIt(false);
 		if(count($upload->upload_result)>0) {
 			if($upload->upload_result[0]['error']==0) {
-				$db->Query("use ".$setting_sub['db']['name']);
+				$db->SelectDB($setting_sub['db']['name']);
 				if($upload->upload_result[0]['type']=="application/x-zip-compressed") {
 					require(ROOT_PATH."/source/class/myzip.class.php");
 					$dir = $path_upload.date("/Ymd_").rand(1000,9999)."/";
@@ -43,7 +43,7 @@ if(count($_POST)>0) {
 					$result = count($result_exe)>0?$setting['language']['admin_func_backup_import_done']:$setting['language']['admin_func_backup_import_failed'];
 				}
 				unlink($path_upload.$upload->upload_result[0]['new_name']);
-				$db->Query("use ".$setting['db']['name']);
+				$db->SelectDB($setting['db']['name']);
 			} else {
 				$result = $setting['language']['admin_func_backup_upload_failed'].$upload->upload_result[0]['message'];
 			}

@@ -33,8 +33,10 @@ mystep;
 mystep;
 			break;
 		case "file":
+			$format = "";
+			if($value['format']!=".") $format = ' need=""';
 			echo <<<mystep
-						<input name="{$key}" type="file" value="" size="50" />
+						<input name="{$key}" type="file" value="" size="50"{$format} />
 mystep;
 			break;
 		case "radio":

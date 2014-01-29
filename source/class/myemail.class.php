@@ -44,6 +44,16 @@ Class MyEmail extends class_common {
 		$file_count = 0,
 		$boundary = array(),
 		$log_fp = null;
+
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		} else {
+			call_user_func(array($this, "init"));
+		}
+		return;
+	}
 	
 	public function init($from="", $charset="UTF-8", $log_file="") {
 		if(!empty($from)) $this->setFrom($from);

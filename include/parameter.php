@@ -1,7 +1,7 @@
 <?php
 $ms_version = array(
-	'ver' => '1.0.7',
-	'date' => '2013-11-16',
+	'ver' => '1.0.8',
+	'date' => '2014-01-29',
 	'charset' => 'GBK',
 	'language' => 'CHS',
 );

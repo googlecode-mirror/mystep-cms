@@ -141,7 +141,7 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center" class="row">
-					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 提 交 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
@@ -235,7 +235,7 @@
 		&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
 		<input type="checkbox" class="item" name="manager" /> 管理项目
 		<br /><br />
-		<input type="hidden" name="item" value="" /><input class="btn" type="button" onClick="confirmItem(this.previousSibling.value)" value=" 确 定 " />
+		<input type="hidden" name="item" value="" /><input class="btn" type="button" onClick="confirmItem(this.previousSibling.value)" value=" 提 交 " />
 	</div>
 </div>
 <div id="item_export" class="popshow">

@@ -32,9 +32,12 @@ mystep;
 mystep;
 			break;
 		case "file":
+			$format = "";
+			if($value['format']!=".") $format = ' need=""';
 			echo <<<mystep
-						<input name="{$key}" type="file" value="" size="50" />
+						<input name="{$key}" type="file" value="" size="50"{$format} />
 mystep;
+			break;
 		case "radio":
 			for($i=0; $i<count($value['value']['en']); $i++) {
 				$selected = ($value['value']['en'][$i]==$value['default_en']?" checked":"");

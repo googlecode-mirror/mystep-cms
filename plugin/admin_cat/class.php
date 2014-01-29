@@ -10,8 +10,8 @@ class plugin_admin_cat implements plugin {
 			showInfo(sprintf($setting['language']['plugin_err_classname'], $info['name']));
 		}
 		global $db, $admin_cat;
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_admin_cat", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, ",")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 7, '".$info['cat_name']."', 'admin_cat.php', '../plugin/admin_cat/', 0, 0, '".$info['cat_desc']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_admin_cat",1,$info['intro'],$info['copyright'],1,","));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name'],'admin_cat.php','../plugin/admin_cat/',0,0,$info['cat_desc']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -39,8 +39,8 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='admin_cat.php'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."admin_cat",array("file","=","admin_cat.php"));
+		$db->delete($setting['db']['pre']."plugin",array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();

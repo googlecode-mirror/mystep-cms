@@ -40,7 +40,7 @@ switch($method) {
 			$xls = $mystep->getInstance("MyXls", $plugin_setting['custom_form']['name'], "表单提交情况");
 			$xls->addRow();
 			$xls->addCells($title_list);
-			$db->Query("select ".$col_list." from ".$setting['db']['pre']."custom_form_".$mid." order by id asc");
+			$db->select($setting['db']['pre']."custom_form_".$mid, $col_list,"",array("order"=>"id asc"));
 			while($record = $db->GetRS()) {
 				if(function_exists("ext_func")) ext_func();
 				$xls->addRow();
@@ -59,7 +59,7 @@ switch($method) {
 			if($upload->upload_result[0]['error'] == 0) {
 				$theFile = ROOT_PATH."/".$path_upload."/".$upload->upload_result[0]['new_name'];
 				include("setting/{$mid}.php");
-				if(!empty($_POST['empty'])) $db->query("truncate table ".$setting['db']['pre']."custom_form_".$mid);
+				if(!empty($_POST['empty'])) $db->delete($setting['db']['pre']."custom_form_".$mid);
 				$fp = fopen($theFile,"r");
 				while($data = fgetcsv($fp,1000,",")) {
 					if(!is_numeric(trim($data[0]))) continue;
@@ -76,9 +76,8 @@ switch($method) {
 					}
 					if(isset($data[$n])) $record['mailed'] = trim($data[$n++]);
 					if(isset($data[$n]) && strlen($data[$n])>10) $record['add_date'] = trim($data[$n]);
-					$sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $record, "replace");
+					$db->replace($setting['db']['pre']."custom_form_".$mid, $record);
 					unset($record);
-					$db->query($sql);
 				}
 				fclose($fp);
 			}
@@ -90,15 +89,13 @@ switch($method) {
 		if(!empty($_GET['name'])) {
 			$log_info = "添加表单数据";
 			if(function_exists("ext_func")) ext_func();
-			$db->Query("insert into ".$setting['db']['pre']."custom_form_{$mid} (id, name, add_date) values(0, '".$_GET['name']."', curdate())");
+			$db->insert($setting['db']['pre']."custom_form_".$mid,array("id"=>0,"name"=>$_GET['name'],"add_date"=>"curdate()"));
 			$id = $db->getInsertID();
 			$goto_url = $setting['info']['self']."?method=edit&mid={$mid}&id=".$id;
 		}
 		break;
 	case "edit_data_ok":
 		$log_info = "编辑表单数据";
-		if(empty($_POST['date_checkin'])) unset($_POST['date_checkin']);
-		if(empty($_POST['date_checkout'])) unset($_POST['date_checkout']);
 		$keyword=$_POST['keyword'];
 		unset($_POST['mid'], $_POST['keyword']);
 		foreach($_POST as $key => $value) {
@@ -118,8 +115,7 @@ switch($method) {
 		}
 		
 		if(function_exists("ext_func")) ext_func();
-		$str_sql = $db->buildSQL($setting['db']['pre']."custom_form_".$mid, $_POST, "update", "id={$id}");
-		$db->Query($str_sql);
+		$db->update($setting['db']['pre']."custom_form_".$mid, $_POST, array("id","n=",$id));
 		$goto_url = $setting['info']['self']."?mid={$mid}&keyword=".$keyword;
 		break;
 	case "add_ok":
@@ -133,10 +129,9 @@ switch($method) {
 		if(!empty($_POST['expire'])) $sql_item['expire'] = $_POST['expire'];
 		$sql_item['notes'] = $_POST['notes'];
 		$sql_item['add_date'] = date("Y-m-d H:i:s");
-		$str_sql = $db->buildSQL($setting['db']['pre']."custom_form", $sql_item, "insert", "");
-		$db->Query($str_sql);
+		$db->insert($setting['db']['pre']."custom_form", $sql_item);
 		$mid = $db->getInsertID();
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, {$catid}, '".mysql_real_escape_string($sql_item['name'])."', 'custom_form.php?mid={$mid}', '../plugin/custom_form/', {$sql_item['web_id']}, 0, '".$info['intro']."')");
+		$db->insert($setting['db']['pre']."admin_cat",array(0, $catid,$sql_item['name'],'custom_form.php?mid='.$mid,'../plugin/custom_form/',$sql_item['web_id'],0,$sql_item['name']));
 		if(empty($_POST["tpl_cf_submit_cn"])) $_POST["tpl_cf_submit_cn"] = GetFile("tpl/default_cf_submit_cn.tpl");
 		if(empty($_POST["tpl_cf_submit_en"])) $_POST["tpl_cf_submit_en"] = GetFile("tpl/default_cf_submit_en.tpl");
 		if(empty($_POST["tpl_cf_print_cn"])) $_POST["tpl_cf_print_cn"] = GetFile("tpl/default_cf_print_cn.tpl");
@@ -272,10 +267,9 @@ CREATE TABLE `".$setting['db']['pre']."custom_form_".$mid."` (
 		$sql_item['name_en'] = $_POST['name_en'];
 		if(!empty($_POST['expire'])) $sql_item['expire'] = $_POST['expire'];
 		$sql_item['notes'] = $_POST['notes'];
-		$str_sql = $db->buildSQL($setting['db']['pre']."custom_form", $sql_item, "update", "mid={$mid}");
-		$db->Query($str_sql);
+		$db->update($setting['db']['pre']."custom_form", $sql_item, array("mid","n=",$mid));
 		include("config.php");
-		$db->query("update ".$setting['db']['pre']."admin_cat set name='".mysql_real_escape_string($sql_item['name'])."', web_id='".$sql_item['web_id']."' where file='custom_form.php?mid={$mid}' and pid={$catid}");
+		$db->update($setting['db']['pre']."admin_cat", array("name"=>$sql_item['name'],"web_id"=>$sql_item['web_id']),array(array("file","=",'custom_form.php?mid='.$mid),array("pid","n=",$catid)));
 		if(empty($_POST["tpl_cf_submit_cn"])) $_POST["tpl_cf_submit_cn"] = GetFile("tpl/default_cf_submit_cn.tpl");
 		if(empty($_POST["tpl_cf_submit_en"])) $_POST["tpl_cf_submit_en"] = GetFile("tpl/default_cf_submit_en.tpl");
 		if(empty($_POST["tpl_cf_print_cn"])) $_POST["tpl_cf_print_cn"] = GetFile("tpl/default_cf_print_cn.tpl");
@@ -371,7 +365,7 @@ $para = '.str_replace("\r", "", $para).';
 						$item_type .= "`".$key."` Char(".$value['length'].")";
 						break;
 					case "file":
-						$str_sql .= "\n	`".$key."` Char(255)";
+						$item_type .= "`".$key."` Char(255)";
 						break;
 					case "radio":
 					case "select":
@@ -425,14 +419,14 @@ $para = '.var_export($para, true).';
 		if(function_exists("ext_func")) ext_func();
 		if(!empty($id)) {
 			$log_info = "删除表单信息";
-			$db->Query("delete from ".$setting['db']['pre']."custom_form_{$mid} where id = '{$id}'");
+			$db->delete($setting['db']['pre']."custom_form_".$mid,array("id","n=",$id));
 		} else {
 			$log_info = "删除表单";
 			include("config.php");
-			$db->query("truncate table ".$setting['db']['pre']."custom_form_".$mid);
-			$db->query("drop table ".$setting['db']['pre']."custom_form_".$mid);
-			$db->Query("delete from ".$setting['db']['pre']."custom_form where mid = '{$mid}'");
-			$db->query("delete from ".$setting['db']['pre']."admin_cat where file='custom_form.php?mid={$mid}' and pid={$catid}");
+			$db->delete($setting['db']['pre']."custom_form_".$mid);
+			$db->exec("drop","table",$setting['db']['pre']."custom_form_".$mid);
+			$db->delete($setting['db']['pre']."custom_form", array("mid","n=",$mid));
+			$db->delete($setting['db']['pre']."admin_cat", array(array("file","=",'custom_form.php?mid='.$mid),array("pid","n=",$catid)));
 			unlink("setting/{$mid}_cf_submit_cn.tpl");
 			unlink("setting/{$mid}_cf_submit_en.tpl");
 			unlink("setting/{$mid}_cf_print_cn.tpl");
@@ -447,6 +441,7 @@ $para = '.var_export($para, true).';
 			unlink("setting/{$mid}_list_data.tpl");
 			unlink("setting/{$mid}_ext_script.php");
 			unlink("setting/{$mid}.php");
+			MultiDel("setting/{$mid}/");
 			deleteCache("admin_cat");
 		}
 		$goto_url = $req->getServer("HTTP_REFERER");
@@ -459,7 +454,7 @@ $para = '.var_export($para, true).';
 		$mail = $mystep->getInstance("MyEmail", $setting['web']['email'], $setting['gen']['charset']);
 		$mail->addEmail($setting['web']['email'], $setting['web']['title'], "reply");
 		$mail->setSubject($_POST['subject']);
-		$mail->setContent(str_replace("http://".$setting['info']['web']['host'].dirname($_SERVER["PHP_SELF"])."/file.php?mid=", "file.php?mid=", $_POST['content']));
+		$mail->setContent(str_replace("file.php?mid=", "http://".$setting['info']['web']['host'].dirname($_SERVER["PHP_SELF"])."/file.php?mid=", $_POST['content']));
 		$mail->addEmail($_POST['email']);
 		$mail->addHeader("Disposition-Notification-To", $setting['web']['email']);
 		$flag = $mail->send($setting['email']);
@@ -500,82 +495,96 @@ function build_page($method) {
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
 	if($method=="confirm") {
 		global $para;
-		$record = $db->getSingleRecord("select * from ".$setting['db']['pre']."custom_form_{$mid} where id=".$id);
+		$record = $db->record($setting['db']['pre']."custom_form_".$mid,"*",array("id","n=",$id));
 		if($record===false || !file_exists("setting/{$mid}.php")) {
 			$tpl->Set_Variable('main', showInfo("指定的记录不存在或配置文件缺失！", 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);
 		}
 		if(function_exists("ext_func")) ext_func();
-		$db->Query("update ".$setting['db']['pre']."custom_form_{$mid} set mailed=1 where id='".$record['id']."'");
+		$db->update($setting['db']['pre']."custom_form_".$mid,array("mailed"=>1),array("id","n=",$record['id']));
 		include("setting/".$mid.".php");
 		$tpl_info['idx'] = "{$mid}_mail_".((empty($record['name']) && !empty($record['name_en']))?"en":"cn");
 		$tpl_tmp->ClearError();
 		$tpl_tmp->init($tpl_info);
 		if(empty($record['name'])) $record['name'] = $record['name_en'];
 		$tpl_tmp->Set_Variables($record, 'record');
-		$custom_form = $db->GetSingleRecord("select * from ".$setting['db']['pre']."custom_form where mid='{$mid}'");
+		$custom_form = $db->record($setting['db']['pre']."custom_form","*",array("mid","n=",$mid));
 		$tpl_tmp->Set_Variables($custom_form);
 		$tpl_tmp->allow_script = true;
 	} elseif($method == "list_data") {
 		$page = $req->getGet("page");
-		$keyword = mysql_real_escape_string($req->getGet("keyword"));
 		$order = $req->getGet("order");
 		$tpl_tmp->Set_Variable('order', $order);
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
-		$condition = "1=0";
+		include_once("setting/{$mid}.php");
+		$condition = array();
 		if(!empty($keyword)) {
-			include("setting/{$mid}.php");
-			if(is_numeric($keyword)) $condition .= " or `id`='".$keyword."'";
+			if(is_numeric($keyword)) $condition[] = array("id","n=",$keyword,"or");
 			foreach($para as $key => $value) {
 				if($para[$key]['search']=='true') {
 					switch($para[$key]['type']) {
+						case "file":
 						case "textarea":
-							$condition .= " or `{$key}` like '%".$keyword."%'";
+							$condition[] = array($key,"like",$keyword,"or");
 							break;
 						case "radio":
 						case "select":
-							$condition .= " or `{$key}` = '".$keyword."'";
+							$condition[] = array($key,"=",$keyword,"or");
 							break;
 						case "text":
 							if($para[$key]['format']=="digital" || $para[$key]['format']=="number") {
-								$condition .= " or `{$key}` = '".$keyword."'";
+								$condition[] = array($key,"=",$keyword,"or");
 							} else {
-								$condition .= " or `{$key}` like '%".$keyword."%'";
+								$condition[] = array($key,"like",$keyword,"or");
 							}
 							break;
 						case "checkbox":
 							break;
 						default:
-							$condition .= " or `{$key}` = '".$keyword."'";
+							$condition[] = array($key,"=",$keyword,"or");
 							break;
 					}
 				}
 			}
 		}
-		if($condition=="1=0") $condition = "1=1";
+		
+		$key_file = array();
+		foreach($para as $key => $value) {
+			if($para[$key]['type']=='file') $key_file[] = $key;
+		}
 
 		//navigation
-		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."custom_form_{$mid} where {$condition}");
+		$counter = $db->result($setting['db']['pre']."custom_form_".$mid,"count(*)", $condition);
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?mid={$mid}&keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
 		
 		//main list
-		$str_sql = "select * from ".$setting['db']['pre']."custom_form_{$mid} where {$condition}";
-		$str_sql.= " order by ".(empty($order)?" ":"{$order} {$order_type}, ")."id {$order_type}";
-		$str_sql.= " limit {$page_start}, {$page_size}";
-		$db->Query($str_sql);
+		if(empty($order)) $order="id";
+		$the_order = array();
+		$the_order[] = "$order $order_type";
+		if($order!="id") $the_order[] = "id ".$order_type;
+		$db->select($setting['db']['pre']."custom_form_".$mid, "*", $condition, array("order"=>$the_order,"limit"=>"$page_start, $page_size"));
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if(function_exists("ext_func")) ext_func();
 			if(empty($record['name']) && !empty($record['name_en'])) $record['name'] = $record['name_en'];
 			if(empty($record['company']) && !empty($record['company_en'])) $record['company'] = $record['company_en'];
+			foreach($key_file as $key){
+				if(empty($record[$key])) continue;
+				$cur_file = explode("::", $record[$key]);
+				if(strpos($cur_file[1],"image")!==false) {
+					$record[$key] = '<a href="file.php?mid='.$mid.'&id='.$record['id'].'&f='.$key.'" target="_blank"><img src="file.php?mid='.$mid.'&id='.$record['id'].'&f='.$key.'" width="120" alt="'.$cur_file[0].'" /></a>';
+				} else {
+					$record[$key] = '<a href="file.php?mid='.$mid.'&id='.$record['id'].'&f='.$key.'" target="_blank">'.$cur_file[0].'</a>';
+				}
+			}
 			$record['confirm'] = "";
 			if($record['mailed']!="已发") $record['confirm'] = ' &nbsp;<a href="?method=confirm&mid='.$mid.'&id='.$record['id'].'">确认</a>';
 			$tpl_tmp->Set_Loop('record', $record);
 		}
-		$tpl_tmp->Set_Variable('custom_form_name', $db->GetSingleResult("select name from ".$setting['db']['pre']."custom_form where mid=".$mid));
+		$tpl_tmp->Set_Variable('custom_form_name', $db->result($setting['db']['pre']."custom_form", "name", array("mid","n=",$mid)));
 		$tpl_tmp->Set_Variable('title', '表单信息浏览');
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 		$tpl_tmp->Set_Variable('order_type_org', $order_type);	
@@ -585,7 +594,7 @@ function build_page($method) {
 	} elseif($method == "edit_data") {
 		global $para, $record;
 		$keyword = mysql_real_escape_string($req->getGet("keyword"));
-		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."custom_form_{$mid} where id='{$id}'");
+		$record = $db->record($setting['db']['pre']."custom_form_".$mid,"*",array("id","n=",$id));
 		if($record===false || !file_exists("setting/{$mid}.php")) {
 			$tpl->Set_Variable('main', showInfo("指定的记录不存在或配置文件缺失！", 0));
 			$mystep->show($tpl);
@@ -594,14 +603,14 @@ function build_page($method) {
 		HtmlTrans(&$record);
 		if(function_exists("ext_func")) ext_func();
 		$tpl_tmp->Set_Variables($record, "record");
-		$tpl_tmp->Set_Variable('custom_form_name', $db->GetSingleResult("select name from ".$setting['db']['pre']."custom_form where mid=".$mid));
+		$tpl_tmp->Set_Variable('custom_form_name', $db->result($setting['db']['pre']."custom_form", "name", array("mid","n=",$mid)));
 		$tpl_tmp->Set_Variable('title', '表单信息更新');
 		$tpl_tmp->Set_Variable('method', 'edit_data');
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 		include("setting/{$mid}.php");
 		$tpl_tmp->allow_script = true;
 	} elseif($method == "list") {
-		$db->Query("select * from ".$setting['db']['pre']."custom_form order by mid desc");
+		$db->select($setting['db']['pre']."custom_form","*","",array("order"=>"mid desc"));
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			if($record['web_id']==0) {
@@ -623,7 +632,7 @@ function build_page($method) {
 		global $admin_cat;
 		$tpl_tmp->Set_Variable('admin_cat', toJson($admin_cat, $setting['gen']['charset']));
 	} elseif($method == "edit") {
-		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."custom_form where mid='{$mid}'");
+		$record = $db->record($setting['db']['pre']."custom_form","*",array("mid","n=",$mid));
 		if($record===false) {
 			$tpl->Set_Variable('main', showInfo("指定的记录不存在！", 0));
 			$mystep->show($tpl);
@@ -637,7 +646,6 @@ function build_page($method) {
 		for($i=0; $i<$max_count; $i++) {
 			$tpl_tmp->Set_Loop("website", $GLOBALS['website'][$i]);
 		}
-		$db->Free();
 		include("setting/{$mid}.php");
 		$tpl_tmp->Set_Variable('cf_item', toJson($para, $setting['gen']['charset']));
 		$tpl_tmp->Set_Variable('tpl_cf_submit_cn', htmlspecialchars(GetFile("setting/{$mid}_cf_submit_cn.tpl")));
@@ -660,7 +668,6 @@ function build_page($method) {
 		for($i=0; $i<$max_count; $i++) {
 			$tpl_tmp->Set_Loop("website", $GLOBALS['website'][$i]);
 		}
-		$db->Free();
 		if(file_exists("setting/".$mid.".php")) {
 			include("setting/".$mid.".php");
 			$tpl_tmp->Set_Variable('tpl_cf_submit_cn', htmlspecialchars(GetFile("setting/".$mid."_cf_submit_cn.tpl")));

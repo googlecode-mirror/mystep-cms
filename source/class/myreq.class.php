@@ -56,6 +56,16 @@ class MyReq extends class_common {
 		$session_gc = false,
 		$session_trans_sid = false;
 
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		} else {
+			call_user_func(array($this, "init"));
+		}
+		return;
+	}
+	
 	public function init($cookie_opt = array(), $session_opt = array()) {
 		$this->setCookieOpt($cookie_opt);
 		$this->setSessionOpt($session_opt);
@@ -153,89 +163,133 @@ class MyReq extends class_common {
 		return true;
 	}
 
-	public function getPara($type = "get", $para = "") {
+	public function getPara($type = "get", $para = "", $format = "") {
 		$type = strtolower($type);
 		$var = null;
 		switch($type) {
 			case "svr":
 			case "server":
-				$var = $_SERVER;
+				$var = &$_SERVER;
 				break;	
 			case "env":
-				$var = $_ENV;
+				$var = &$_ENV;
 				break;
 			case "get":
-				$var = $_GET;
+				$var = &$_GET;
 				break;
 			case "post":
-				$var = $_POST;
+				$var = &$_POST;
 				break;
 			case "req":
 			case "request":
-				$var = $_REQUEST;
+				$var = &$_REQUEST;
 				break;
 			case "file":
 			case "files":
-				$var = $_FILES;
+				$var = &$_FILES;
 				break;
 			case "cookie":
-				$var = $_COOKIE;
+				$var = &$_COOKIE;
 				break;
 			case "sess":
 			case "session":
-				$var = $_SESSION;
+				$var = &$_SESSION;
 				break;
 			default:
-				$var = $GLOBALS;
+				$var = &$GLOBALS;
 				break;
 		}
 		if(empty($para)) {
 			foreach($var as $key => $value) {
+				if(!empty($format)) $value = htmlspecialchars($value);
 				$this->setGlobal($key, $value);
 			}
 		} else {
-			return isset($var[$para]) ? $var[$para] : "";
+			$result = "";
+			if(isset($var[$para])) {
+				$result = $var[$para];
+				if(is_string($result)) {
+					if(empty($format)) {
+						if(strtolower($para)=="id" || substr(strtolower($para),-3)=="_id") {
+							$format = "int";
+						} else {
+							$format = "str";
+						}
+					}
+					switch($format) {
+						case "!":
+							break;
+						case "int":
+							$result = intval($result);
+							break;
+						case "uri":
+							$result = preg_replace("/[^\w\-\.]/", "", $result);
+							break;
+						case "char":
+							$result = preg_replace("/[^a-z]/i", "", $result);
+							break;
+						case "str":
+							//$result = preg_replace("/[".preg_quote("\"'`~!@#$%^&*()[]{};:<>?\\")."]/", "", $result);
+							$result = htmlspecialchars($result);
+							break;
+						default:
+							$result = preg_replace("/[^".$format."]/i", "", $result);
+							break;
+					}
+				}
+			}
+			return $result;
 		}
 		return true;
 	}
 
-	public function getGet($para = "") {
+	public function getGet($para = "", $format = "") {
 		if(empty($para)) {
 			$this->getPara("get");
 			return count($_GET);
 		} else {
-			return $this->getPara("get", $para);
+			return $this->getPara("get", $para, $format);
 		}
 	}
 
-	public function getPost($para = "") {
+	public function getPost($para = "", $format = "") {
 		if(empty($para)) {
 			$this->getPara("post");
 			return count($_POST);
 		} else {
-			return $this->getPara("post", $para);
+			return $this->getPara("post", $para, $format);
 		}
 	}
 
-	public function getReq($para = "") {
+	public function getReq($para = "", $format = "") {
 		if(empty($para)) {
 			$this->getPara("request");
 			return count($_REQUEST);
 		} else {
-			return $this->getPara("request", $para);
+			return $this->getPara("request", $para, $format);
 		}
 	}
 
-	public function getServer($para = "") {
+	public function getServer($para = "", $format = "") {
 		if(empty($para)) return "";
-		$return = $this->getPara("server", $para);
+		if(empty($format)) $format = "!";
+		$return = $this->getPara("server", $para, $format);
 		if(empty($return)) {
-			$return = $this->getPara("env", $para);
+			$return = $this->getPara("env", $para, $format);
 		}
 		return $return;
 	}
 
-	public function getGlobal($para = "") {
+	public function getEnv($para = "", $format = "") {
+		if(empty($para)) return "";
+		$return = $this->getPara("env", $para, $format);
+		if(empty($return)) {
+			$return = $this->getPara("server", $para, $format);
+		}
+		return $return;
+	}
+
+	public function getGlobal($para = "", $format = "") {
 		if(empty($para)) return "";
 		if(isset($GLOBALS[$para])) {
 			return $GLOBALS[$para];
@@ -250,7 +304,7 @@ class MyReq extends class_common {
 			return count($_COOKIE);
 		} else {
 			if($pre) $para = $this->cookie_prefix.$para;
-			return $this->getPara("cookie", $para);
+			return $this->getPara("cookie", $para, "!");
 		}
 	}
 	

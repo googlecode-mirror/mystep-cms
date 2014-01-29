@@ -69,7 +69,7 @@ switch($method) {
 		}
 		break;
 	case "delete":
-		if($record = $db->getSingleRecord("select idx from ".$setting['db']['pre']."plugin where `idx`='".$idx."'")) {
+		if($record = $db->result($setting['db']['pre']."plugin", "idx", array("idx","=",$idx))) {
 			build_page("list");
 		} else {
 			$log_info = $setting['language']['admin_web_plugin_delete'];
@@ -78,7 +78,7 @@ switch($method) {
 		break;
 	case "active":
 		$log_info = $setting['language']['admin_web_plugin_active'];
-		$db->Query("update ".$setting['db']['pre']."plugin set `active`=1-`active` where `idx`='".$idx."'");
+		$db->update($setting['db']['pre']."plugin", array("active"=>"((1-active))"), array("idx","=",$idx));
 		deleteCache("plugin");
 		MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
 		delTplCache($setting['gen']['template']);
@@ -87,7 +87,7 @@ switch($method) {
 		$log_info = $setting['language']['admin_web_plugin_order'];
 		for($i=0,$m=count($_POST['idx']); $i<$m; $i++) {
 			if(!is_numeric($_POST['order'][$i])) $_POST['order'][$i] = 1;
-			$db->Query("update ".$setting['db']['pre']."plugin set `order`=".$_POST['order'][$i]." where `idx`='".$_POST['idx'][$i]."'");
+			$db->update($setting['db']['pre']."plugin", array("order"=>$_POST['order'][$i]), array("idx","=",$_POST['idx'][$i]));
 		}
 		deleteCache("plugin");
 		MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
@@ -104,7 +104,17 @@ switch($method) {
 		}
 		deleteCache("plugin");
 		MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
-		
+
+		$cache_path = ROOT_PATH."/".$setting['path']['template']."/cache/";
+		if($handle = opendir($cache_path)) {
+			while (false !== ($file = readdir($handle))) {
+				if($file!="." && $file!="..") {
+					MultiDel($cache_path.$file);
+				}
+			}
+			closedir($handle);
+		}
+
 		if($method=="install") {
 			if(isset($_POST['subweb'])) {
 				if($_POST['subweb'][0]=="all") {
@@ -115,7 +125,7 @@ switch($method) {
 			} else {
 				$subweb = ",";
 			}
-			$db->Query('update '.$setting['db']['pre'].'plugin set subweb="'.$subweb.'" where idx="'.$idx.'"');
+			$db->update($setting['db']['pre']."plugin",array("subweb"=>$subweb),array("idx","=",$idx));
 			
 			if(isset($_POST['plugin_setting'])) {
 				foreach($_POST['plugin_setting'][$idx] as $key => $value) {
@@ -147,7 +157,7 @@ mystep;
 			} else {
 				$subweb = ",";
 			}
-			$db->Query('update '.$setting['db']['pre'].'plugin set subweb="'.$subweb.'" where idx="'.$idx.'"');
+			$db->update($setting['db']['pre']."plugin",array("subweb"=>$subweb),array("idx","=",$idx));
 			MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
 			deleteCache("plugin");
 			MultiDel(ROOT_PATH."/".$setting['path']['cache']."/plugin/");
@@ -317,7 +327,7 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('title', $setting['language']['admin_web_plugin_title']);
 		
 		global $db;
-		$db->Query("select file, count(*) as counter from ms_admin_cat where file!='###' group by file having counter>1");
+		$db->select($setting['db']['pre']."admin_cat", "file, count(*) as counter", array("file","!=","###"), array("group"=>"file","having"=>array("counter","n>",1)));
 		$dp_list = "";
 		while($cur = $db->getRS()) {
 			$dp_list .= $cur['file']."  (".$cur['counter'].")\\n";
@@ -361,7 +371,13 @@ function build_page($method) {
 		}
 		include($plugin_path.$idx."/class.php");
 		$check_info = call_user_func(array($info['class'], "check"));
-		if(empty($check_info)) $check_info = '<span style="color:green">'.$setting['language']['admin_web_plugin_check_ok'].'</span>';
+		$color = "black";
+		$info = $check_info;
+		if(empty($check_info)) {
+			$color = "green";
+			$info = $setting['language']['admin_web_plugin_check_ok'];
+		}
+		$check_info = '<span style="color:'.$color.'">'.$info.'</span>';
 		$tpl_tmp->Set_Variable('check', $check_info);
 		$tpl_tmp->Set_Variable('subweb', "");
 	}

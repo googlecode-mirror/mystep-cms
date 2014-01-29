@@ -57,7 +57,7 @@
 			</tr>
 			<tr>
 				<td class="cat">列表排序：<span>*</span></td>
-				<td class="row"><input name="order" type="text" maxlength="3" value="<!--record_order-->" need="digital" /> <span class="comment">（文章排序，序号越大越靠前，可达到文章置顶效果）</span></td>
+				<td class="row"><input name="order" type="text" maxlength="2" value="<!--record_order-->" need="digital" /> <span class="comment">（文章排序，序号越大越靠前，可达到文章置顶效果）</span></td>
 			</tr>
 			<tr>
 				<td class="cat">过期时间：</td>

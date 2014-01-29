@@ -51,7 +51,7 @@ switch($method) {
 		break;
 	case "delete_topic":
 		$log_info = $setting['language']['plugin_ticket_delete_topic'];
-		$db->Query("delete from ".$setting['db']['pre']."ticket where idx = '".$idx."'");
+		$db->delete($setting['db']['pre']."ticket", array("idx","=",$idx));
 		$new_ticket_list = array();
 		for($i=0,$m=count($ticket_list);$i<$m;$i++) {
 			if($ticket_list[$i]['idx'] == $idx) continue;
@@ -65,7 +65,7 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['plugin_ticket_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."ticket where id = '{$id}'");
+		$db->delete($setting['db']['pre']."ticket", array("id","=",$id));
 		$goto_url = $req->getServer("HTTP_REFERER");
 		break;
 	case "reply":
@@ -73,7 +73,7 @@ switch($method) {
 		unset($_POST['id']);
 		if(!empty($_POST['reply'])) {
 			if($_POST['status']==0) $_POST['status'] = 1;
-			$_POST['reply_date'] = $_SERVER['REQUEST_TIME']);
+			$_POST['reply_date'] = $_SERVER['REQUEST_TIME'];
 			if(isset($_POST['sendmail'])) {
 				$topic_info = array();
 				for($i=0,$m=count($ticket_list);$i<$m;$i++) {
@@ -95,7 +95,7 @@ switch($method) {
 				}
 			}
 		}
-		$db->Query($db->buildSQL($setting['db']['pre']."ticket", $_POST, "update", "id={$id}"));
+		$db->update($setting['db']['pre']."ticket", $_POST, array("id","n=",$id));
 		updateInfo($idx);
 		$goto_url = $setting['info']['self']."?method=list&idx=".$idx;
 		break;
@@ -107,11 +107,11 @@ function updateInfo($idx) {
 	global $ticket_list, $db, $setting;
 	for($i=0,$m=count($ticket_list);$i<$m;$i++) {
 		if($ticket_list[$i]['idx'] == $idx) {
-			$ticket_list[$i]['lastpost'] = $db->getSingleResult("select max(add_date) from ".$setting['db']['pre']."ticket where idx = '{$idx}'");
-			$ticket_list[$i]['total'] = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."ticket where idx = '{$idx}'");
-			$ticket_list[$i]['untreated'] = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."ticket where idx = '{$idx}' and `status`=0");
-			$ticket_list[$i]['processing'] = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."ticket where idx = '{$idx}' and `status`=1");
-			$ticket_list[$i]['done'] = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."ticket where idx = '{$idx}' and `status`=2");
+			$ticket_list[$i]['lastpost'] = $db->result($setting['db']['pre']."ticket", "max(add_date)", array("idx","=",$idx));
+			$ticket_list[$i]['total'] = $db->result($setting['db']['pre']."ticket", "count(*)", array("idx","=",$idx));
+			$ticket_list[$i]['untreated'] = $db->result($setting['db']['pre']."ticket", "count(*)", array(array("idx","=",$idx), array("status","n=",0,"and")));
+			$ticket_list[$i]['processing'] = $db->result($setting['db']['pre']."ticket", "count(*)", array(array("idx","=",$idx), array("status","n=",1,"and")));
+			$ticket_list[$i]['done'] = $db->result($setting['db']['pre']."ticket", "count(*)", array(array("idx","=",$idx), array("status","n=",2,"and")));
 			break;
 		}
 	}
@@ -145,14 +145,15 @@ function build_page($method) {
 		$order = $req->getGet("order");
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
-		$condition = "";
-		if(!empty($idx)) $condition = "where idx='".$idx."'";
-		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."ticket ".$condition);
+		$condition = array();
+		if(!empty($idx)) $condition[] = array("idx","=",$idx);
+		$counter = $db->result($setting['db']['pre']."ticket","count(*)",$condition);
 		$page = $req->getGet("page");
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=list&order=".$order."&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
-		$str_sql = "select * from ".$setting['db']['pre']."ticket ".$condition." order by ".(empty($order)?"id":"{$order}")." {$order_type} limit {$page_start}, {$page_size}";
-		$db->Query($str_sql);
+
+		if(empty($order)) $order = "id";
+		$db->select($setting['db']['pre']."ticket","*",$condition,array("order"=>"{$order} {$order_type}","limit"=>"{$page_start}, {$page_size}"));
 		while($record = $db->GetRS()) {
 			$record['add_date'] = date("Y-m-d H:i:s", $record['add_date']);
 			$tpl_tmp->Set_Loop('record', $record);
@@ -182,8 +183,8 @@ function build_page($method) {
 		}
 		$tpl_tmp->Set_Variable('title', $setting['language']['plugin_ticket_title']);	
 	} elseif($method=="check") {
-		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."ticket where id='{$id}'");
-		if(!$record) {
+		$record = $db->record($setting['db']['pre']."ticket","*",array("id","n=",$id));
+		if($record===false) {
 			$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_error'], 0));
 			$mystep->show($tpl);
 			$mystep->pageEnd(false);

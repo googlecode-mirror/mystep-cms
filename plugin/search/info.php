@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "文章内容检索插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.5",
+	"ver" => "1.6",
 	"class" => "plugin_search",
 	"intro" => "通过本网或搜索引擎检索网站内容",
 	"cat_name_1" => "文章检索",

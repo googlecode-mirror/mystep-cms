@@ -28,7 +28,7 @@ class sess_mystep {
 	}
 	
 	public static function sess_write($sid, $sess_data) {
-		if(self::$skip) return true;
+		if(self::$skip || checkSign(2)) return true;
 		
 		$sess_data = MyReq::sessDecode($sess_data);
 		$sess_data['ip'] = mysql_escape_string($sess_data['ip']);

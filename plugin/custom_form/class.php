@@ -13,8 +13,8 @@ class plugin_custom_form implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_custom_form", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 0, '表单', 'custom_form.php', '../plugin/custom_form/', 0, 0, '".$info['intro']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_custom_form",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,0,'表单','custom_form.php', '../plugin/custom_form/', 0, 0,$info['intro']));
 		$new_id = $db->GetInsertId();
 		deleteCache("admin_cat");
 		deleteCache("plugin");
@@ -46,7 +46,7 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->Query("select mid from ".$setting['db']['pre']."custom_form");
+		$db->select($setting['db']['pre']."custom_form","mid");
 		$sql_list = array();
 		while($record = $db->GetRS()) {
 			$sql_list[] = "truncate table ".$setting['db']['pre']."custom_form_".$record['mid'];
@@ -67,11 +67,11 @@ mystep;
 		$db->Free();
 		$db->BatchExec($sql_list);
 		include("config.php");
-		if(isset($catid) && $catid!=0)	$db->query("delete from ".$setting['db']['pre']."admin_cat where pid='".$catid."'");
-		$db->query("truncate table ".$setting['db']['pre']."custom_form");
-		$db->query("drop table ".$setting['db']['pre']."custom_form");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'custom_form.php%'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		if(isset($catid) && $catid!=0)	$db->delete($setting['db']['pre']."admin_cat", array("pid","n=",$catid));
+		$db->delete($setting['db']['pre']."custom_form");
+		$db->exec("drop","table",$setting['db']['pre']."custom_form");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","like","custom_form.php"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -153,7 +153,7 @@ $catid = 0;
 	}
 	
 	public static function tag_list(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting,$db;
 		$result = "";
 		if(!isset($att_list['mid'])) return "";
 		$mid = $att_list['mid'];
@@ -163,14 +163,10 @@ $catid = 0;
 		if(!isset($att_list['limit'])) $att_list['limit'] = 0;
 		if(!isset($att_list['loop'])) $att_list['loop'] = 0;
 		if(!isset($att_list['condition'])) $att_list['condition'] = "";
-		
-		$str_sql = "select * from ".$setting['db']['pre']."custom_form_".$mid." where 1=1";
-		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
-		$str_sql .= " order by ".$att_list['order'];
-		if(!empty($att_list['limit'])) $str_sql .= " limit ".$att_list['limit'];
+
+		$sql = $db->buildSel($setting['db']['pre']."custom_form_".$mid, "*", "",array("order"=>$att_list['order'],"limit"=>$att_list['limit'],"condition"=>$att_list['condition']));
 		
 		$tpl_file = dirname(__FILE__)."/setting/".$mid."_block_cf_list".($att_list['lng']=="en"?"_en":"_cn").".tpl";
-		
 		$cur_content = $tpl->Get_TPL($tpl_file);
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $cur_content, $block_all);
 		$block = $block_all[0];
@@ -181,7 +177,7 @@ $catid = 0;
 		$unit = preg_replace("/".preg_quote($tpl->delimiter_l)."cf_(\w+)".preg_quote($tpl->delimiter_r)."/i", "{\$record['\\1']}", $unit);
 		$result = <<<mytpl
 <?php
-\$db->Query("{$str_sql}");
+\$db->Query("{$sql}");
 while(\$record=\$db->getRS()) {
 	HtmlTrans(&\$record);
 	if("{$att_list['lng']}"=="cn" && \$record['name']=="") {

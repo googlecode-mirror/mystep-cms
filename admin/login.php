@@ -9,7 +9,7 @@ switch($method) {
 			if(strtolower($check_code) == strtolower($req->getCookie("vcode"))) {
 				$req->setCookie("ms_info");
 				$req->setCookie("vcode");
-				$user_info = $db->GetSingleRecord("select user_id, group_id, type_id from ".$setting['db']['pre']."users where username='{$user_name}' and password='".md5($user_psw)."'");
+				$user_info = $db->record($setting['db']['pre']."users","user_id, group_id, type_id",array(array("username","=",$username),array("password","=",md5($user_psw),"and")));
 				if($user_info)  list($uid, $groupid) = array_values($user_info);
 				if($user_name==$setting['web']['s_user'] && md5($user_psw)==$setting['web']['s_pass']) {
 					$uid=0;

@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "扩展代码",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.0",
+	"ver" => "1.1",
 	"class" => "plugin_xcode",
 	"intro" => "在页面脚本的开始或末尾执行指定代码",
 	"copyright" => "版权所有 2011 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "源代码显示插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.0",
+	"ver" => "1.1",
 	"class" => "plugin_source",
 	"intro" => "显示页面源代码",
 	"copyright" => "版权所有 2012 <a href='mailto:windy2006@gmail.com'>Windy2000</a>",

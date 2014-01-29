@@ -31,7 +31,7 @@ if($method=="update" && count($_POST)>0) {
 	
 	foreach($website as $cur_web) {
 		$cur_setting = getSubSetting($cur_web['web_id']);
-		$db->query("update `".$cur_setting['db']['name']."`.`".$cur_setting['db']['pre']."news_show` set `expire`=null, `setop`=0, `order`=0 where expire is not null and expire < now()");
+		$db->update($cur_setting['db']['name'].".".$cur_setting['db']['pre']."news_show", array("expire"=>null,"setop"=>0,"order"=>0),array(array("expire","is not",null),array("expire","f<","now()")));
 	}
 	unset($cur_web, $cur_setting);
 	

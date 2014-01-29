@@ -11,8 +11,7 @@ function importData($record, $para, $db=null) {
 	$item['tag'] = $record['item_3'];
 	$item['describe'] = $record['item_4'];
 	$item['image'] = $record['item_5'];
-
-	$db->Query($db->buildSQL($setting_sub['db']['pre']."news_show", $item, "insert"));
+	$db->insert($setting_sub['db']['pre']."news_show", $item);
 	unset($item);
 
 	$item = $news_detail;
@@ -25,9 +24,9 @@ function importData($record, $para, $db=null) {
 		$item['page'] = $i + 1;
 		$item['sub_title'] = $record['subject']." - ".$item['page'];
 		$item['content'] = $content[$i];
-		$db->Query($db->buildSQL($setting_sub['db']['pre']."news_detail", $item, "insert"));
+		$db->insert($setting_sub['db']['pre']."news_detail", $item);
 	}
-	$db->Query("update ".$setting_sub['db']['pre']."news_show set pages={$max_count} where news_id='{$item['news_id']}'");
+	$db->update($setting_sub['db']['pre']."news_show", array("pages"=>$max_count), array("news_id","n=",$item['news_id']));
 	unset($item);
 	return;
 }

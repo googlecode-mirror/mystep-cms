@@ -1,4 +1,5 @@
 <?php
+$ms_sign = 1;
 require("inc.php");
 $cat_idx = strtolower($req->getGet("cat"));
 if($cat_info = getParaInfo("news_cat", "cat_idx", $cat_idx)) {
@@ -38,8 +39,30 @@ $tpl->Set_Variable('charset_tag', $charset_tag);
 $tpl->Set_Variable('cat_txt', $cat_txt);
 $tpl->Set_Variable('now', date("r"));
 
-$db->Query("select a.*, b.cat_name from ".$web_info['db']['name'].".".$web_info['db']['pre']."news_show a left join ".$setting['db']['pre']."news_cat b on a.cat_id=b.cat_id where 1=1".(empty($cat_idx)?"":" and (b.cat_id='$cat_info[cat_id]' or b.cat_main='$cat_info[cat_id]')")." order by a.news_id desc limit ".$setting['list']['rss']);
+$condition = array();
+if(!empty($cat_idx)) {
+	$condition = array(
+		array("cat_id", "n=", $cat_info['cat_id']),
+		array("cat_main", "n=", $cat_info['cat_id'], "or"),
+	);
+}
+$sql = $db->buildSel_join(array(
+		array(
+			"name" => $web_info['db']['name'].".".$web_info['db']['pre']."news_show",
+			"idx" => "a",
+			"col" => "*",
+			"order" => "news_id desc"
+		),
+		array(
+			"name" => $setting['db']['pre']."news_cat",
+			"idx" => "b",
+			"col" => "cat_name",
+			"join" => "cat_id",
+			"condition" => $condition
+		)
+	), $setting['list']['rss']);
 
+$db->Query($sql);
 while($record = $db->GetRS()) {
 	$record['link'] = getUrl("read", array($record['news_id'], $record['cat_idx']), 1, $record['web_id']);
 	$record['add_date'] = date("r", strtotime($record['add_date']));

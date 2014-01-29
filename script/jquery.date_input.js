@@ -221,7 +221,7 @@ DateInput = (function($) {
 		
 		stringToDate: function(string) {
 			var matches;
-			if (matches = string.match(/^(\d{4,4})-(\d{2,2})-(\d{2,2})$/)) {
+			if (matches = string.match(/^(\d{4,4})-(\d{2,2})-(\d{2,2})[\s\d\:]+$/)) {
 				return new Date(matches[1], matches[2] - 1, matches[3]);
 			} else {
 				return null;

@@ -1,6 +1,6 @@
 <?php
 if(empty($_SERVER['HTTP_REFERER']) || strpos($_SERVER['HTTP_REFERER'],$_SERVER['SERVER_NAME'])!==7) die("NULL");
-$ms_sign = 1;
+$ms_sign = 2;
 require("inc.php");
 $ajax = $mystep->getInstance("MyAjax");
 $func = $req->getGet("func");

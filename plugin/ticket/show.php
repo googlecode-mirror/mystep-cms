@@ -12,8 +12,7 @@ if(!empty($topic_info)) {
 	$info = "";
 	if(count($_POST)>0) {
 		$_POST['add_date'] = time();
-		$str_sql = $db->buildSQL($setting['db']['pre']."ticket", $_POST, "insert", "a");
-		$db->Query($str_sql);
+		$db->insert($setting['db']['pre']."ticket", $_POST, true);
 		$info = $setting['language']['plugin_ticket_post'];
 		$mail = $mystep->getInstance("MyEmail", $_POST['email'], $setting['gen']['charset']);
 		$mail->addEmail($_POST['email'], $_POST['name'], "reply");
@@ -28,7 +27,8 @@ if(!empty($topic_info)) {
 	$tpl_info['idx'] = "show";
 	$tpl_info['style'] = "../plugin/".basename(realpath(dirname(__FILE__)))."/tpl/";
 	$tpl_tmp = $mystep->getInstance("MyTpl", $tpl_info);
-	$tickets = getData("select * from ".$setting['db']['pre']."ticket where idx='".mysql_real_escape_string($idx)."' and reply!='' order by reply_date desc", "all", 86400);
+	$sql = $db->buildSel($setting['db']['pre']."ticket", "*", array(array("idx","=",$idx),array("reply","!=","","and")), array("order"=>"reply_date desc"));
+	$tickets = getData($sql, "all", 86400);
 	for($i=0,$m=count($tickets);$i<$m;$i++) {
 		$tickets[$i]['id'] = $i+1;
 		$tickets[$i]['add_date'] = date("Y-m-d H:i:s", $tickets[$i]['add_date']);

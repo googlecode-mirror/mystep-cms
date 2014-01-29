@@ -57,7 +57,7 @@
 			</tr>
 			<tr>
 				<td class="cat">列表排序：<span>*</span></td>
-				<td class="row"><input name="order" type="text" maxlength="3" value="<!--record_order-->" need="digital" /> <span class="comment">（文章排序，序号越大越靠前，可达到文章置顶效果）</span></td>
+				<td class="row"><input name="order" type="text" maxlength="2" value="<!--record_order-->" need="digital" /> <span class="comment">（文章排序，序号越大越靠前，可达到文章置顶效果）</span></td>
 			</tr>
 			<tr>
 				<td class="cat">过期时间：</td>
@@ -117,7 +117,7 @@
 				<td colspan="2" align="center">
 					<input class="btn" type="hidden" name="attach_list" value="|">
 					<input class="btn" type="hidden" name="multi_cata" value="">
-					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 提 交 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 附 件 " onclick="attach_edit()" />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />

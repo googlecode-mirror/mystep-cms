@@ -8,17 +8,17 @@ if(empty($web_id) || !is_numeric($web_id)) $web_id = 1;
 if($method=="delete") {
 	$log_info = $setting['language']['plugin_comment_delete'];
 	$id = $req->getGet("id");
-	list($news_id, $web_id) = array_values($db->getSingleRecord("select news_id, web_id from ".$setting['db']['pre']."comment where id = '{$id}'"));
+	list($news_id, $web_id) = array_values($db->record($setting['db']['pre']."comment","news_id, web_id",array("id","n=",$id)));
 	$n = 1;
-	$db->Query("select id, quote from ".$setting['db']['pre']."comment where news_id='{$news_id}' order by id asc");
+	$db->select($setting['db']['pre']."comment","id, quote",array("news_id","n=",$news_id),array("order"=>"id asc"));
 	while($record = $db->GetRS()) {
 		if($record['id']==$id) break;
 		$n++;
 	}
 	$db->Free();
-	$db->Query("update ".$setting['db']['pre']."comment set quote=0 where quote={$n}");
-	$db->Query("update ".$setting['db']['pre']."comment set quote=quote-1 where quote>{$n}");
-	$db->Query("delete from ".$setting['db']['pre']."comment where id='{$id}'");
+	$db->update($setting['db']['pre']."comment", array("quote"=>0),array("quote","n=",$n));
+	$db->update($setting['db']['pre']."comment", array("quote"=>"-1"),array("quote","n>",$n));
+	$db->delete($setting['db']['pre']."comment", array("id","n=",$id));
 	plugin_comment::build_list($news_id, $web_id);
 	$goto_url = $req->getServer("HTTP_REFERER");
 	write_log($log_info, "id=".$id);
@@ -37,26 +37,39 @@ $order_type = $req->getGet("order_type");
 if(empty($order_type)) $order_type = "desc";
 $keyword = $req->getGet("keyword");
 $tpl->Set_Variable('keyword', $keyword);
-
 $page = $req->getGet("page");
-$str_sql = "select count(*) as counter from ".$setting['db']['pre']."comment where web_id=".$web_id;
-if(!empty($keyword)) $str_sql.= " and `comment` like '%{$keyword}%'";
-$counter = $db->GetSingleResult($str_sql);
+
+$condition = array();
+if(!empty($keyword)) $condition[] = array("comment","like",$keyword);
+$counter = $db->result($setting['db']['pre']."comment","count(*)",array("web_id","n=",$web_id));
 list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 $tpl->Set_Variables($page_arr);
 
-$str_sql = "select * from ".$setting['db']['pre']."comment where 1=1";
-if(!empty($keyword)) $str_sql.= " and subject like '%{$keyword}%'";
-$str_sql.= " order by ".(empty($order)?"news_id":"{$order}")." {$order_type}";
-$str_sql.= " limit $page_start, $page_size";
-
 $webInfo = getSubSetting($web_id);
 $pre_sub = $webInfo['db']['name'].".".$webInfo['db']['pre'];
-$str_sql = "select a.*, b.subject, b.cat_id from ".$setting['db']['pre']."comment a left join ".$pre_sub."news_show b on a.news_id=b.news_id where a.web_id=".$web_id;
-if(!empty($keyword)) $str_sql.= " and a.`comment` like '%{$keyword}%'";
-$str_sql.= " order by ".(empty($order)?"a.id":"a.{$order}")." {$order_type}";
-$str_sql.= " limit $page_start, $page_size";
-$db->Query($str_sql);
+$condition[] = array("web_id","n=",$web_id,"and");
+$the_order = array();
+if(empty($order)) $order = "id";
+$the_order[] = "{$order} {$order_type}";	
+$db->select(
+	array(
+		array(
+			"name" => $setting['db']['pre']."comment",
+			"idx" => "a",
+			"col" => "*",
+			"condition" => $condition,
+			"order" => $the_order
+		),
+		array(
+			"name" => $pre_sub."news_show",
+			"idx" => "b",
+			"col" => "subject, cat_id",
+			"join" => "news_id",
+		)
+	), 
+	"", 
+	array("limit"=>"{$page_start}, {$page_size}")
+);
 while($record = $db->GetRS()) {
 	HtmlTrans(&$record);
 	$record['link'] = getUrl("read", array($record['news_id'], $record['cat_id']), 1, $record['web_id']);

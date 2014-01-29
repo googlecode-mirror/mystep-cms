@@ -28,17 +28,16 @@ $keyword = $req->getGet("keyword");
 $tpl->Set_Variable('keyword', $keyword);
 
 $page = $req->getGet("page");
-$str_sql = "select count(*) as counter from ".$setting['db']['pre']."news_visit where web_id=".$web_id;
-if(!empty($keyword)) $str_sql.= " and subject like '%{$keyword}%'";
-$counter = $db->GetSingleResult($str_sql);
+
+$condition = array();
+$condition[] = array("web_id","n=",$web_id);
+if(!empty($keyword)) $condition[] = array("subject","like",$keyword,"and");
+$counter = $db->result($setting['db']['pre']."news_visit", "count(*)", $condition);
 list($page_arr, $page_start, $page_size) = GetPageList($counter, "?keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 $tpl->Set_Variables($page_arr);
 	
-$str_sql = "select * from ".$setting['db']['pre']."news_visit where web_id=".$web_id;
-if(!empty($keyword)) $str_sql.= " and subject like '%{$keyword}%'";
-$str_sql.= " order by ".(empty($order)?"news_id":"{$order}")." {$order_type}";
-$str_sql.= " limit $page_start, $page_size";
-$db->Query($str_sql);
+if(empty($order)) $order="news_id";
+$db->select($setting['db']['pre']."news_visit","*",$condition, array("order"=>"$order $order_type","limit"=>"$page_start, $page_size"));
 while($record = $db->GetRS()) {
 	HtmlTrans(&$record);
 	$record['day_start'] = date("Y-m-d", $record['day_start']);

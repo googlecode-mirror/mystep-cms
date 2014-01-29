@@ -17,7 +17,7 @@ if(count($_POST) > 0){
 			theOLE = parent.parent || parent.dialogArguments || parent.opener;
 			theOLE.document.forms[0].ad_file.value = '".$setting['web']['url']."/".str_replace(ROOT_PATH, "", $path_upload)."/".$upload->upload_result[0]['new_name']."';
 			if(parent.parent==null){parent.close();}else{parent.parent.$.closePopupLayer();}
-			
+			return;
 		";
 	} else {
 		$script = "

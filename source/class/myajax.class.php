@@ -19,9 +19,10 @@
 --------------------------------------------------------------------------------------------------------------------*/
 
 class MyAjax extends class_common {
-	protected
-		$methods = array();
-			
+	protected $methods = array();
+	
+	public function __construct() {}
+
 	public function init(){}
 	
 	public function regMethod($method, $func) {

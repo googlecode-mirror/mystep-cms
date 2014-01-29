@@ -30,7 +30,7 @@
 <!--loop:end-->
 		<tr>
 			<td class="row" colspan="5" align="center">
-				<input class="btn" type="Submit" value=" È· ¶¨ " />&nbsp;&nbsp;&nbsp;&nbsp;
+				<input class="btn" type="Submit" value=" ÅÅ Ðò " />&nbsp;&nbsp;&nbsp;&nbsp;
 				<input class="btn" type="reset" value=" ÖØ ÖÃ " />
 			</td>
 		</tr>

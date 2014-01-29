@@ -89,7 +89,7 @@ function build_page($method) {
 		}
 		$page = $req->getGet("page");
 		if(empty($page)) $page = 1;
-		$counter = $db->GetSingleResult("select count(*) as counter from (".$the_sql['sql'].") a");
+		$counter = $db->GetSingleResult("select count(*) from (".$the_sql['sql'].") a");
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=view&id=".$id, $page);
 		$tpl->Set_Variables($page_arr);
 		$the_sql['sql'] .= " limit {$page_start}, {$page_size}";
@@ -114,6 +114,7 @@ function build_page($method) {
 		$max_count = count($sql_list);
 		for($i=0; $i<$max_count; $i++) {
 			$sql_list[$i]['id'] = $i;
+			$sql_list[$i]['idx'] = $i+1;
 			$tpl->Set_Loop('record', $sql_list[$i]);
 		}
 		$tpl->Set_Variable('title', $setting['language']['plugin_custom_sql_title']);

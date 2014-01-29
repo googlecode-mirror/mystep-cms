@@ -14,7 +14,7 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['plugin_admin_cat_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."admin_cat where id = '{$id}'");
+		$db->delete($setting['db']['pre']."admin_cat", array("id","n=",$id));
 		deleteCache("admin_cat");
 		break;
 	case "pos":
@@ -23,9 +23,8 @@ switch($method) {
 		$max_count = count($_POST['id']);
 		for($i=0; $i<$max_count; $i++) {
 			if(!is_numeric($_POST['order'][$i])) continue;
-			$sql_list[] = "update ".$setting['db']['pre']."admin_cat set `order`='".$_POST['order'][$i]."' where id=".$_POST['id'][$i];
+			$db->update($setting['db']['pre']."admin_cat", array("order"=>$_POST['order'][$i]), array("id","n=",$_POST['id'][$i]));
 		}
-		$db->BatchExec($sql_list);
 		deleteCache("admin_cat");
 		break;
 	case "add_ok":
@@ -35,12 +34,11 @@ switch($method) {
 		} else {
 			if($method=="add_ok") {
 				$log_info = $setting['language']['plugin_admin_cat_add'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."admin_cat", $_POST, "insert", "a");
+				$db->insert($setting['db']['pre']."admin_cat", $_POST, true);
 			} else {
 				$log_info = $setting['language']['plugin_admin_cat_edit'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."admin_cat", $_POST, "update", "id={$id}");
+				$db->update($setting['db']['pre']."admin_cat", $_POST, array("id","n=",$id));
 			}
-			$db->Query($str_sql);
 			deleteCache("admin_cat");
 		}
 		break;
@@ -111,10 +109,8 @@ function build_page($method) {
 		$tpl->Set_Variable('title', $setting['language']['plugin_admin_cat_title']);
 	} else {
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."admin_cat where id='{$id}'");
-			$record  = $db->GetRS();
-			$db->Free();
-			if(!$record) {
+			$record = $db->record($setting['db']['pre']."admin_cat","*",array("id","n=",$id));
+			if($record===false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['plugin_admin_cat_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);

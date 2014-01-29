@@ -20,13 +20,13 @@ if(empty($method)) $method = "list";
 $mid = $req->getReq("mid");
 $id = $req->getReq("id");
 $field = $req->getReq("f");
-if(empty($field)) {
+if(empty($field) || empty($id)) {
 	header("HTTP/1.0 404 Not Found");
 	$db->close();
 	unset($db);
 	exit();
 }
-if($data = $db->getSingleResult("select ".$field." from ".$setting['db']['pre']."custom_form_{$mid} where id=".$id)) {
+if($data = $db->result($setting['db']['pre']."custom_form_".$mid,$field,array("id","n=",$id))) {
 	$data = explode("::", $data);
 	$the_file = dirname(__FILE__)."/setting/".$mid."/".$data[2];
 	if(file_exists($the_file)) {

@@ -5,7 +5,7 @@ $method = $req->getGet("method");
 if(empty($method)) $method = "referer";
 
 if($method=="del_keyword") {
-	$db->Query("delete from ".$setting['db']['pre']."visit_keyword where id='".$req->getGet("id")."'");
+	$db->delete($setting['db']['pre']."visit_keyword", array("id","n=",$req->getGet("id")));
 	$goto_url = $req->getServer("HTTP_REFERER");
 	$mystep->pageEnd(false);
 }
@@ -22,11 +22,12 @@ $order = $req->getGet("order");
 $order_type = $req->getGet("order_type");
 if(empty($order_type)) $order_type = "desc";
 if($method == "referer") {
-	$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."visit_analysis");
+	$counter = $db->result($setting['db']['pre']."visit_analysis","count(*)");
 	$page = $req->getGet("page");
 	list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=referer&order={$order}&order_type={$order_type}", $page);
 	$tpl_tmp->Set_Variables($page_arr);
-	$db->Query("select * from ".$setting['db']['pre']."visit_analysis order by ".(empty($order)?"id":"{$order}")." {$order_type} limit {$page_start}, {$page_size}");
+	if(empty($order)) $order = "id";
+	$db->select($setting['db']['pre']."visit_analysis","*","",array("order"=>"{$order} {$order_type}","limit"=>"{$page_start}, {$page_size}"));
 	while($record = $db->GetRS()) {
 		$record['add_date'] = date("Y-m-d H:i:s", $record['add_date']);
 		$record['chg_date'] = date("Y-m-d H:i:s", $record['chg_date']);
@@ -34,11 +35,12 @@ if($method == "referer") {
 	}
 	$db->Free();
 } elseif($method == "keyword") {
-	$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."visit_keyword");
+	$counter = $db->result($setting['db']['pre']."visit_keyword","count(*)");
 	$page = $req->getGet("page");
 	list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=keyword&order={$order}&order_type={$order_type}", $page);
 	$tpl_tmp->Set_Variables($page_arr);
-	$db->Query("select * from ".$setting['db']['pre']."visit_keyword order by ".(empty($order)?"id":"{$order}")." {$order_type} limit {$page_start}, {$page_size}");
+	if(empty($order)) $order = "id";
+	$db->select($setting['db']['pre']."visit_keyword","*","",array("order"=>"{$order} {$order_type}","limit"=>"{$page_start}, {$page_size}"));
 	while($record = $db->GetRS()) {
 		$record['keyword'] = stripcslashes($record['keyword']);
 		$record['add_date'] = date("Y-m-d H:i:s", $record['add_date']);

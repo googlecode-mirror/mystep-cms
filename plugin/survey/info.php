@@ -2,7 +2,7 @@
 $info_default = array(
 	"name" => "投票调查插件",
 	"idx" => basename(realpath(dirname(__FILE__))),
-	"ver" => "1.5",
+	"ver" => "1.6",
 	"class" => "plugin_survey",
 	"intro" => "调查统计自定义生成",
 	"cat_name" => "投票调查",

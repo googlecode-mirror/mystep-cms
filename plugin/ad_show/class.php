@@ -13,8 +13,8 @@ class plugin_ad_show implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_ad_show", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 3, '".$info['cat_name']."', 'ad_show.php', '../plugin/ad_show/', 0, 0, '".$info['cat_desc']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_ad_show",1,$info['intro'],$info['copyright'],1,''));
+		$db->insert($setting['db']['pre']."admin_cat", array(0,3,$info['cat_name'],'ad_show.php','../plugin/ad_show/',0,0,$info['cat_desc']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -42,12 +42,14 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."ad_show");
-		$db->query("drop table ".$setting['db']['pre']."ad_show");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file='ad_show.php'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","=","ad_show.php"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
+		$db->delete($setting['db']['pre']."ad_show");
+		$db->exec("drop","table",$setting['db']['pre']."ad_show");
 		deleteCache("admin_cat");
 		deleteCache("plugin");
+		MultiDel(dirname(__FILE__)."/ipdata/");
+		MakeDir(dirname(__FILE__)."/ipdata/");
 		$err = array();
 		if($db->GetError($err)) {
 			showInfo($setting['language']['plugin_err_uninstall']."
@@ -96,42 +98,39 @@ mystep;
 	}
 	
 	public static function ad_show(MyTPL $tpl, $att_list = array()) {
-		global $setting;
+		global $setting,$db;
 		$result = "";
 		$style = "overflow:hidden;";
 		if(!isset($att_list['limit'])) $att_list['limit'] = 1;
 		if(!isset($att_list['class'])) $att_list['class'] = "";
-		if(isset($att_list['css'])) $style .= $att_list['css'];
-		if(isset($att_list['width'])) $style .= "width:".$att_list['width']."px";
-		if(isset($att_list['height'])) $style .= "height:".$att_list['height']."px";
+		if(isset($att_list['css'])) $style .= $att_list['css'].";";
+		if(isset($att_list['width'])) $style .= "width:".$att_list['width']."px;";
+		if(isset($att_list['height'])) $style .= "height:".$att_list['height']."px;";
 		if(!isset($att_list['css_ad'])) $att_list['css_ad'] = "";
 		if(!isset($att_list['width_ad'])) $att_list['width_ad'] = "";
 		if(!isset($att_list['height_ad'])) $att_list['height_ad'] = "";
 		
-		$str_sql = "select * from ".$setting['db']['pre']."ad_show where exp_date>now()";
-		if(isset($att_list['idx']))  $str_sql .= " and idx='".$att_list['idx']."'";
-		$str_sql .= " order by ad_level desc";
-		if(isset($att_list['limit']))  $str_sql .= " limit ".$att_list['limit'];
+		$condition = array();
+		$condition[] = array("exp_date","f>","now()");
+		if(isset($att_list['idx']))  $condition[] = array("idx","=",$att_list['idx'],"and");
+		$sql = $db->buildSel($setting['db']['pre']."ad_show", "*", $condition, array("order"=>"ad_level desc","limit"=>$att_list['limit']));
+		
 		$the_path = dirname(__FILE__);
 		$result = <<<mytpl
 <?php
 global \$req;
-\$records = getData("{$str_sql}", "all", 3600*24);
+\$records = getData("{$sql}", "all", 3600*24);
 
 echo "<div class=\"{$att_list['class']}\" style=\"{$style}\">\n";
 for(\$i=0, \$m=count(\$records); \$i<\$m; \$i++) {
-	\$style = "overflow:hidden;";
-	if(\$i<\$m-1) \$style = "margin-left:10px;";
 	\$size = "";
 	if("{$att_list['width_ad']}"!="") {
-		\$style .= 'width:{$att_list[width_ad]}px;';
 		\$size .= ' width="{$att_list[width_ad]}"';
 	}
 	if("{$att_list['height_ad']}"!="") {
-		\$style .= 'height:{$att_list[height_ad]}px;';
 		\$size .= ' height="{$att_list[height_ad]}"';
 	}
-	echo "<span style=\"{\$style}{$att_list['css_ad']}\">\n";
+	echo "<span style=\"{$att_list['css_ad']}\">\n";
 	switch(\$records[\$i]['ad_mode']) {
 		case "1":
 			echo '<a href="module.php?m=ad_link&id='.\$records[\$i]['id'].'" target="_blank"><img src="'.\$records[\$i]['ad_file'].'" border="0" alt="'.\$records[\$i]['ad_text'].'" '.\$size.' /></a>';
@@ -160,7 +159,7 @@ for(\$i=0, \$m=count(\$records); \$i<\$m; \$i++) {
 			WriteFile("{$the_path}/ipdata/".\$records[\$i]['id'].".csv", "view,".GetIp().",".date("Y-m-d H:i:s")."\n", "ab");
 			\$new_ip = 1;
 		}
-		\$db->query("update ".\$setting['db']['pre']."ad_show set view=view+1, ip_view=ip_view+".\$new_ip." where id=".\$records[\$i]['id']);
+		\$db->update(\$setting['db']['pre']."ad_show", array("view"=>"+1","ip_view"=>"+".\$new_ip), array("id","n=",\$records[\$i]['id']));
 	}
 }
 echo "</div>\n";

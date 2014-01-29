@@ -37,6 +37,16 @@
 class MagickWand extends class_common { 
 	public $direct_show = false;
 	
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		} else {
+			call_user_func(array($this, "init"));
+		}
+		return;
+	}
+	
 	public function init($direct_show = false) { 
 		if(!function_exists('newMagickWand')) $this->Error('No MagickImage extends! ');
 		$this->direct_show = $direct_show;

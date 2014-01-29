@@ -13,8 +13,8 @@ class plugin_topic implements plugin {
 		$strFind = array("{pre}", "{charset}");
 		$strReplace = array($setting['db']['pre'], $setting['db']['charset']);
 		$result = $db->ExeSqlFile(dirname(__FILE__)."/install.sql", $strFind, $strReplace);
-		$db->query('insert into '.$setting['db']['pre'].'plugin VALUES (0, "'.$info['name'].'", "'.$info['idx'].'", "'.$info['ver'].'", "plugin_topic", 1, "'.$info['intro'].'", "'.$info['copyright'].'", 1, "")');
-		$db->query("insert into ".$setting['db']['pre']."admin_cat value (0, 4, '".$info['cat_name']."', 'topic.php', '../plugin/topic/', 0, 0, '".$info['cat_desc']."')");
+		$db->insert($setting['db']['pre'].'plugin', array(0,$info['name'],$info['idx'],$info['ver'],"plugin_topic",1,$info['intro'],$info['copyright'],1,""));
+		$db->insert($setting['db']['pre'].'admin_cat', array(0,7,$info['cat_name'],'topic.php', '../plugin/topic/', 0, 0,$info['cat_desc']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -42,12 +42,12 @@ mystep;
 	public static function uninstall() {
 		global $db, $setting, $admin_cat;
 		$info = self::info();
-		$db->query("truncate table ".$setting['db']['pre']."topic");
-		$db->query("drop table ".$setting['db']['pre']."topic");
-		$db->query("truncate table ".$setting['db']['pre']."topic_link");
-		$db->query("drop table ".$setting['db']['pre']."topic_link");
-		$db->query("delete from ".$setting['db']['pre']."admin_cat where file like 'topic.php%'");
-		$db->query("delete from ".$setting['db']['pre']."plugin where idx='".$info['idx']."'");
+		$db->delete($setting['db']['pre']."topic");
+		$db->exec("drop","table",$setting['db']['pre']."topic");
+		$db->delete($setting['db']['pre']."topic_link");
+		$db->exec("drop","table",$setting['db']['pre']."topic_link");
+		$db->delete($setting['db']['pre']."admin_cat", array("file","=","topic.php"));
+		$db->delete($setting['db']['pre']."plugin", array("idx","=",$info['idx']));
 		deleteCache("admin_cat");
 		deleteCache("plugin");
 		$err = array();
@@ -112,12 +112,13 @@ mystep;
 		if(!isset($att_list['show_date'])) $att_list['show_date'] = "";
 		if(!empty($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
 		
-		$style_list = mysql_real_escape_string($db->getSingleResult("select topic_cat from ".$setting['db']['pre']."topic where topic_id='{$att_list['id']}'"));
-		$str_sql = "select id, link_name as subject, link_cat, link_url, add_date from ".$setting['db']['pre']."topic_link where topic_id='{$att_list['id']}'";
-		if(!empty($att_list['cat'])) $str_sql .= " and link_cat=".$att_list['cat'];
-		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
-		$str_sql .= " order by ".$att_list['order'];
-		$str_sql .= " limit ".$att_list['limit'];
+		
+		$condition = array();
+		$condition[] = array("topic_id","n=",$att_list['id']);
+		$style_list = mysql_real_escape_string($db->result($setting['db']['pre']."topic","topic_cat",$condition));
+		
+		if(!empty($att_list['cat'])) $condition[] = array("link_cat","=",$att_list['cat']);
+		$sql = $db->buildSel($setting['db']['pre']."topic_link","id, link_name as subject, link_cat, link_url as link, add_date",$condition,array("order"=>$att_list['order'],"limit"=>$att_list['limit'],"condition"=>$att_list['condition']));
 		
 		$content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/block_news_".$att_list['template'].".tpl", dirname(__FILE__)."/tpl/block_news_classic.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $content, $block_all);
@@ -131,12 +132,11 @@ mystep;
 		$result = <<<mytpl
 <?php
 \$style_list = explode(",", "{$style_list}");
-\$result = getData("{$str_sql}", "all", 86400);
-\$max_count = count(\$result);
-for(\$num=0; \$num<\$max_count; \$num++) {
-	\$record = \$result[\$num];
+\$result = getData("{$sql}", "all", 86400);
+for(\$n=0,\$m=count(\$result); \$n<\$m; \$n++) {
+	\$record = \$result[\$n];
 	HtmlTrans(&\$record);
-	\$record['link'] = \$record['link_url'];
+	\$record['subject_org'] = \$record['subject'];
 	\$record['add_date'] = ("{$att_list['show_date']}"!="") ? date("{$att_list['show_date']}", strtotime(\$record['add_date'])) : "";
 	\$record['catalog'] = "";
 	if("{$att_list['show_catalog']}"!="") {
@@ -182,12 +182,8 @@ mytpl;
 		if(!isset($att_list['condition'])) $att_list['condition'] = "";
 		if(!isset($att_list['show_date'])) $att_list['show_date'] = "";
 		if(!empty($att_list['show_date']) && date($att_list['show_date'])==$att_list['show_date']) $att_list['show_date'] = "Y-m-d";
-		
-		$str_sql = "select topic_id as id, topic_name as subject, topic_idx, topic_link, add_date from ".$setting['db']['pre']."topic where 1=1";
-		if(!empty($att_list['condition'])) $str_sql .= " and (".$att_list['condition'].")";
-		$str_sql .= " order by ".$att_list['order'];
-		$str_sql .= " limit ".$att_list['limit'];
-		
+
+		$sql = $db->buildSel($setting['db']['pre']."topic","topic_id as id, topic_name as subject, topic_idx, topic_link, add_date","",$att_list);
 		$content = $tpl->Get_TPL(dirname(__FILE__)."/tpl/block_news_".$att_list['template'].".tpl", dirname(__FILE__)."/tpl/block_news_classic.tpl");
 		preg_match("/".preg_quote($tpl->delimiter_l)."loop:start".preg_quote($tpl->delimiter_r)."(.*)".preg_quote($tpl->delimiter_l)."loop:end".preg_quote($tpl->delimiter_r)."/isU", $content, $block_all);
 		$block = $block_all[0];
@@ -199,10 +195,9 @@ mytpl;
 		
 		$result = <<<mytpl
 <?php
-\$result = getData("{$str_sql}", "all", 86400);
-\$max_count = count(\$result);
-for(\$num=0; \$num<\$max_count; \$num++) {
-	\$record = \$result[\$num];
+\$result = getData("{$sql}", "all", 86400);
+for(\$n=0,\$m=count(\$result); \$n<\$m; \$n++) {
+	\$record = \$result[\$n];
 	HtmlTrans(&\$record);
 	if(empty(\$record['topic_link'])) {
 		\$record['link'] = getUrl("topic", \$record['topic_idx']);

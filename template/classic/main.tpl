@@ -53,7 +53,7 @@
 		</div>
 		<div class="r fr">
 			<marquee behavior="scroll" scrollamount="5" onmouseover="this.stop()" onmouseout="this.start()">
-<!--news limit="5" template="plat" setop1="txt" order="rand()" condition="DATEDIFF(add_date, NOW())<5" expire="y"-->
+<!--news limit="5" template="plat" setop="txt" order="rand()" condition="DATEDIFF(add_date, NOW())<5" expire="y"-->
 			</marquee>
 		</div>
 	</div>

@@ -6,7 +6,7 @@
 			<tr>
 				<td class="cat" width="80">所属网站：</td>
 				<td class="row">
-					<select name="web_id" id="web_id" onchange="$id('cat_main').selectedIndex=0" <!--web_disabled-->>
+					<select name="web_id" id="web_id" onchange="setCata()" <!--web_disabled-->>
 <!--loop:start key="website"-->
 						<option value="<!--website_web_id-->" <!--website_selected-->><!--website_name--></option>
 <!--loop:end-->
@@ -20,7 +20,7 @@
 					<select name="cat_main" id="cat_main" onchange="changeCata(this.selectedIndex)">
 						<option value="0">顶级栏目</option>
 <!--loop:start key="catalog"-->
-						<option value="<!--catalog_cat_id-->" webid=<!--catalog_web_id--> <!--catalog_selected-->><!--catalog_cat_name--></option>
+						<option value="<!--catalog_cat_id-->" webid="<!--catalog_web_id-->" <!--catalog_selected-->><!--catalog_cat_name--></option>
 <!--loop:end-->
 					</select>
 					<span style="display:<!--show_merge-->;"><input type="checkbox" id="merge" class="cbox" name="merge" value="1" /><label for="merge"> 合并到当前所选栏目</label></span>
@@ -119,7 +119,7 @@
 			</tr>
 			<tr class="row">
 				<td colspan="2" align="center">
-					<input class="btn" type="Submit" value=" 确 定 " />&nbsp;&nbsp;
+					<input class="btn" type="Submit" value=" 提 交 " />&nbsp;&nbsp;
 					<input class="btn" type="reset" value=" 重 置 " />&nbsp;&nbsp;
 					<input class="btn" type="button" value=" 返 回 " onClick="location.href='<!--back_url-->'" />
 				</td>
@@ -167,6 +167,14 @@ function showTpl(val) {
 	}
 }
 
+function setCata(){
+	var webid = $id("web_id").value;
+	$("#cat_main > option").hide();
+	$("#cat_main > option:first").show();
+	$("#cat_main > option[webid="+webid+"]").show();
+	$id('cat_main').selectedIndex=0;
+}
+
 function checkForm_append(theForm) {
 	if(theForm.cat_idx.value=="") theForm.cat_idx.value = theForm.cat_name.value;
 	if(theForm.cat_keyword.value=="") theForm.cat_keyword.value = theForm.cat_name.value;
@@ -175,6 +183,7 @@ function checkForm_append(theForm) {
 }
 
 $(function(){
+	setCata();
 	$.getScript("../script/jquery.codemirror.js", function(){
 		flag=true;
 		showTpl(<!--cat_type-->);

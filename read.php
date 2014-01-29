@@ -1,12 +1,8 @@
 <?php
 require("inc.php");
-
-$news_id = intval($req->getGet("id"));
-if(!is_numeric($news_id)) {
-	$goto_url = "/";
-	$mystep->pageEnd();
-}
-list($cat_id, $add_date, $page_count, $subject, $view_lvl, $link, $template)=array_values(getData("select cat_id, add_date, pages, subject, view_lvl, link, template from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record", 1200));
+$news_id = $req->getGet("id", "int");
+$sql = $db->buildSel($setting['db']['pre_sub']."news_show", "cat_id, add_date, pages, subject, view_lvl, link, template", array("news_id", "n=", $news_id));
+list($cat_id, $add_date, $page_count, $subject, $view_lvl, $link, $template)=array_values(getData($sql, "record", 1200));
 if(is_null($cat_id) || is_null($add_date)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
@@ -26,7 +22,7 @@ if($cat_info = getParaInfo("news_cat", "cat_id", $cat_id)) {
 	$goto_url = "/";
 	$mystep->pageEnd();
 }
-$db->Query("update ".$setting['db']['pre_sub']."news_show set views = views + 1 where news_id=".$news_id);
+$db->update($setting['db']['pre_sub']."news_show", array("views","((views + 1))"),array("news_id","n=",$news_id));
 $page = $req->getGet("page");
 if(empty($page)) $page = 1;
 if($page_count==1) $page=1;
@@ -37,7 +33,6 @@ if(!is_numeric($page)) {
 	if($page < 1) $page = 1;
 	if($page > $page_count) $page = $page_count;
 }
-
 if($setting['gen']['cache']) {
 	$cache_info = array(
 			'idx' => ($page==1?$news_id:"{$news_id}_{$page}"),
@@ -78,9 +73,11 @@ if($tpl->Is_Cached()) {
 }
 
 if($page=="all") {
-	$detail = getData("select * from ".$setting['db']['pre_sub']."news_show where news_id='{$news_id}'", "record", 1200);
+	$sql = $db->buildSel($setting['db']['pre_sub']."news_show", "*", array("news_id", "n=", $news_id));
+	$detail = getData($sql, "record", 1200);
 	if($detail!==false) {
-		$contents = getData("select * from ".$setting['db']['pre_sub']."news_detail where news_id='{$news_id}' order by page", "all", 1200);
+		$sql = $db->buildSel($setting['db']['pre_sub']."news_detail", "*", array("news_id", "n=", $news_id), array("order" => "page"));
+		$contents = getData($sql, "all", 1200);
 		$content = "";
 		for($i=0,$m=count($contents);$i<$m;$i++) {
 			$content .= <<<mystep
@@ -98,7 +95,22 @@ mystep;
 	}
 	$mystep->setAddedContent("end", '<script language="JavaScript" type="text/javascript">$(function(){anchorShow();});</script>');
 } else {
-	$detail = getData("select a.*, b.sub_title, b.content from ".$setting['db']['pre_sub']."news_show a left join ".$setting['db']['pre_sub']."news_detail b on a.news_id=b.news_id where a.news_id='{$news_id}' and b.page='{$page}'", "record", 1200);
+	$sql = $db->buildSel(array(
+			array(
+				"name" => $setting['db']['pre_sub']."news_show",
+				"idx" => "a",
+				"col" => "*",
+				"condition" => array("news_id", "n=", $news_id)
+			),
+			array(
+				"name" => $setting['db']['pre_sub']."news_detail",
+				"idx" => "b",
+				"col" => "sub_title,content",
+				"join" => "news_id",
+				"condition" => array("page", "n=", $page)
+			)
+		));
+	$detail = getData($sql, "record", 1200);
 }
 if($detail===false) {
 	$goto_url = "/";
@@ -133,7 +145,8 @@ $tpl_tmp->Set_Variables($detail, "record");
 if($page_count==1) {
 	$tpl_tmp->Set_Variable('sub_page', 'new Array()');
 } else {
-	$result = getData("select sub_title, page from ".$setting['db']['pre_sub']."news_detail where news_id='{$news_id}' order by page", "all", 1200);
+	$sql = $db->buildSel($setting['db']['pre_sub']."news_detail", "sub_title, page", array("news_id", "n=", $news_id), array("order"=>"page"));
+	$result = getData($sql, "all", 1200);
 	$max_count = count($result);
 	for($i=0; $i<$max_count; $i++) {
 		$result[$i]['url'] = getUrl("read", array($news_id, $cat_idx), $result[$i]['page'], $setting['info']['web']['web_id']);
@@ -147,7 +160,8 @@ if($page_count==1) {
 }
 
 //Prev. Article
-if($article = getData("select news_id, cat_id, subject, add_date from ".$setting['db']['pre_sub']."news_show where news_id<'{$news_id}' order by news_id desc limit 1", "record")) {
+$sql = $db->buildSel($setting['db']['pre_sub']."news_show", "news_id, cat_id, subject, add_date", array("news_id", "n<", $news_id), array("order"=>"news_id desc", "limit"=>"1"));
+if($article = getData($sql, "record")) {
 	if($cat_info = getParaInfo("news_cat", "cat_id", $article['cat_id'])) {
 		$cat_idx = $cat_info['cat_idx'];
 	} else {
@@ -161,7 +175,8 @@ if($article = getData("select news_id, cat_id, subject, add_date from ".$setting
 }
 
 //Next Article
-if($article = getData("select news_id, cat_id, subject, add_date from ".$setting['db']['pre_sub']."news_show where news_id>'{$news_id}' order by news_id asc limit 1", "record")) {
+$sql = $db->buildSel($setting['db']['pre_sub']."news_show", "news_id, cat_id, subject, add_date", array("news_id", "n>", $news_id), array("order"=>"news_id asc", "limit"=>"1"));
+if($article = getData($sql, "record")) {
 	if($cat_info = getParaInfo("news_cat", "cat_id", $article['cat_id'])) {
 		$cat_idx = $cat_info['cat_idx'];
 	} else {

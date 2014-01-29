@@ -12,7 +12,7 @@ switch($method) {
 		break;
 	case "delete":
 		$log_info = $setting['language']['plugin_crontab_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."crontab where id = '{$id}'");
+		$db->delete($setting['db']['pre']."crontab",array("id","n=",$id));
 		break;
 	case "add_ok":
 	case "edit_ok":
@@ -23,13 +23,12 @@ switch($method) {
 			$_POST['schedule'] = implode(",", $_POST['schedule']);
 			if($method=="add_ok") {
 				$log_info = $setting['language']['plugin_crontab_add'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."crontab", $_POST, "insert", "a");
+				$db->insert($setting['db']['pre']."crontab", $_POST, true);
 			} else {
 				if(empty($_POST['expire'])) unset($_POST['expire']);
 				$log_info = $setting['language']['plugin_crontab_edit'];
-				$str_sql = $db->buildSQL($setting['db']['pre']."crontab", $_POST, "update", "id={$id}");
+				$db->update($setting['db']['pre']."crontab", $_POST, array("id","n=",$id));
 			}
-			$db->Query($str_sql);
 		}
 		break;
 	case "start":
@@ -75,8 +74,7 @@ function build_page($method) {
 			$tpl->Set_Variable('status_link', 'javascript:crontab_start()');
 			$tpl->Set_Variable('status_txt', $setting['language']['plugin_crontab_status_run']);
 		}
-		$str_sql = "select * from ".$setting['db']['pre']."crontab order by id desc";
-		$db->Query($str_sql);
+		$db->select($setting['db']['pre']."crontab","*","",array("order"=>"id desc"));
 		while($record = $db->GetRS()) {
 			HtmlTrans(&$record);
 			$tpl->Set_Loop('record', $record);
@@ -85,10 +83,8 @@ function build_page($method) {
 		$tpl->Set_Variable('title', $setting['language']['plugin_crontab_title']);
 	} else {
 		if($method == "edit") {
-			$db->Query("select * from ".$setting['db']['pre']."crontab where id='{$id}'");
-			$record  = $db->GetRS();
-			$db->Free();
-			if(!$record) {
+			$record = $db->record($setting['db']['pre']."crontab","*",array("id","n=",$id));
+			if($record===false) {
 				$tpl->Set_Variable('main', showInfo($setting['language']['plugin_crontab_error'], 0));
 				$mystep->show($tpl);
 				$mystep->pageEnd(false);

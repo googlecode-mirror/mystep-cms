@@ -39,7 +39,7 @@
 			<tr>
 				<td class="cat">ÏÔÊ¾¼¶±ð£º</td>
 				<td class="row">
-					<input name="level" type="text" size="40" maxlength="50" value="<!--level-->" need="digital_">
+					<input name="level" type="text" size="40" maxlength="50" value="<!--level-->" need="digital">
 				</td>
 			</tr>
 			<tr class="row">

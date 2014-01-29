@@ -64,18 +64,18 @@ $rules = '.var_export($rules, true).';
 		break;
 	case "news_delete":
 		$log_info = $setting['language']['plugin_news_snatch_news_delete'];
-		$db->Query("delete from ".$setting['db']['pre']."news_snatch where id = '{$id}'");
+		$db->delete($setting['db']['pre']."news_snatch",array("id","n=",$id));
 		$goto_url = $setting['info']['self']."?method=news";
 		break;
 	case "news_edit_ok":
 		$log_info = $setting['language']['plugin_news_snatch_news_edit'];
 		unset($_POST['id']);
-		$db->Query($db->buildSQL($setting['db']['pre']."news_snatch", $_POST, "update", "id={$id}"));
+		$db->update($setting['db']['pre']."news_snatch", $_POST, array("id","n=",$id));
 		$goto_url = $setting['info']['self']."?method=news";
 		break;
 	case "news_truncate":
 		$log_info = $setting['language']['plugin_news_snatch_news_snatch'];
-		$db->Query("truncate table ".$setting['db']['pre']."news_snatch");
+		$db->delete($setting['db']['pre']."news_snatch");
 		$goto_url = $setting['info']['self']."?method=news";
 		break;
 	case "news_snatch":
@@ -176,27 +176,27 @@ $rules = '.var_export($rules, true).';
 		$setting_sub['db']['pre'] = $setting_sub['db']['name'].".".$setting_sub['db']['pre'];
 		require("rule/".$idx."_import.php");
 		if(!empty($id)) {
-			if($record=$db->getSingleRecord("select * from ".$setting['db']['pre']."news_snatch where id=".$id)) {
+			if($record=$db->record($setting['db']['pre']."news_snatch","*",array("id","n=",$id))) {
 				importData($record, $para);
-				$db->Query("delete from ".$setting['db']['pre']."news_snatch where id='".$id."'");
+				$db->delete($setting['db']['pre']."news_snatch", array("id","n=",$id));
 			}
 			$goto_url = $setting['info']['self']."?method=news";
 		} else {
 			$id_list = array();
-			$db->Query("select id from ".$setting['db']['pre']."news_snatch where idx='".$idx."' order by add_date asc, id asc");
+			$db->select($setting['db']['pre']."news_snatch","id",array("idx","=",$idx),array("order"=>"add_date asc, id asc"));
 			while($record=$db->GetRS()) {
 				$id_list[] = $record['id'];
 			}
 			import_log('<div class="page" style="font-size:16px;font-weight:bold;">'.$setting['language']['plugin_news_import_start'].'</div>');
 			for($i=0,$m=count($id_list);$i<$m;$i++) {
-				if($record=$db->getSingleRecord("select * from ".$setting['db']['pre']."news_snatch where id=".$id_list[$i])) {
-					if($check = $db->getSingleRecord("select news_id from ".$setting_sub['db']['pre']."news_show where subject='".mysql_real_escape_string($record['subject'])."' and add_date='".$record['add_date']."'")) {
+				if($record=$db->record($setting['db']['pre']."news_snatch","*",array("id","n=",$id_list[$i]))) {
+					if($check = $db->record($setting_sub['db']['pre']."news_show","news_id",array(array("subject","=",$record['subject']),array("add_date","=",$record['add_date'],"and")))) {
 						import_log('<div class="item">'.($i+1).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> <span class="failed" style="color:red;">'.$setting['language']['plugin_news_import_failed'].'</span></div>');
 					} else {
 						importData($record, $para);
 						import_log('<div class="item">'.($i+1).' - <a href="'.$record['url'].'" target="_blank">'.$record['subject'].'</a> <span class="succeed" style="color:green;">'.$setting['language']['plugin_news_import_succeed'].'</span></div>');		
 					}
-					$db->Query("delete from ".$setting['db']['pre']."news_snatch where id='".$record['id']."'");
+					$db->delete($setting['db']['pre']."news_snatch", array("id","n=",$record['id']));
 				}
 			}
 			import_log('<div class="page">'.sprintf($setting['language']['plugin_news_import_done'], $i).'</div>');
@@ -280,7 +280,7 @@ function build_page($method) {
 		foreach($rules as $key => $value) {
 			$value['no'] = $i++;
 			$value['id'] = $key;
-			$value['counter'] = $db->getSingleResult("select count(*) from ".$setting['db']['pre']."news_snatch where idx='".$value['idx']."'");
+			$value['counter'] = $db->result($setting['db']['pre']."news_snatch","count(*)", array("idx","=",$value['idx']));
 			$tpl_tmp->Set_Loop('record', $value);
 		}
 	} elseif($method=="rule_add") {
@@ -306,16 +306,17 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('order', $order);
 		$order_type = $req->getGet("order_type");
 		if(empty($order_type)) $order_type = "desc";
-		$condition = "1=1";
-		if(!empty($keyword)) $condition .= " and subject like '%".mysql_real_escape_string($keyword)."%'";
-		$counter = $db->GetSingleResult("select count(*) as counter from ".$setting['db']['pre']."news_snatch where {$condition}");
+		$condition = array();
+		if(!empty($keyword)) $condition[] = array("subject","like",$keyword);
+		$counter = $db->result($setting['db']['pre']."news_snatch","count(*)", $condition);
 		list($page_arr, $page_start, $page_size) = GetPageList($counter, "?method=news&keyword={$keyword}&order={$order}&order_type={$order_type}", $page);
 		$tpl_tmp->Set_Variables($page_arr);
 		if($counter>0) {
-			$str_sql = "select id, idx, url, original, subject from ".$setting['db']['pre']."news_snatch where {$condition}";
-			$str_sql.= " order by ".(empty($order)?" ":"{$order} {$order_type}, ")."id {$order_type}";
-			$str_sql.= " limit {$page_start}, {$page_size}";
-			$db->Query($str_sql);
+			if(empty($order)) $order="id";
+			$the_order = array();
+			$the_order[] = "$order $order_type";
+			if($order!="id") $the_order[] = "id desc";
+			$db->select($setting['db']['pre']."news_snatch", "id, idx, url, original, subject", $condition, array("order"=>$the_order,"limit"=>"$page_start, $page_size"));
 			while($record = $db->GetRS()) {
 				HtmlTrans(&$record);
 				$tpl_tmp->Set_Loop('record', $record);
@@ -327,8 +328,8 @@ function build_page($method) {
 		$tpl_tmp->Set_Variable('order_type', $order_type);
 		$tpl_tmp->Set_Variable('keyword', $keyword);
 	} elseif($method=="news_edit") {
-		$record = $db->GetSingleRecord("select * from ".$setting['db']['pre']."news_snatch where id='{$id}'");
-		if(!$record) {
+		$record = $db->record($setting['db']['pre']."news_snatch","*", array("id","n=",$id));
+		if($record===false) {
 			$tpl->Set_Variable('main', showInfo($setting['language']['admin_art_content_error'], 0));
 			echo $tpl->Read_Cache();
 			return;

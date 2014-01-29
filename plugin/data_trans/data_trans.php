@@ -28,31 +28,29 @@ switch($method) {
 			foreach($GLOBALS['news_cat'] as $cur_cat) {
 				if($cur_cat['web_id']!=$org_id) continue;
 				if($org_id!=$dst_id) {
-					$db->Query("update ".$setting['db']['pre']."news_cat set web_id='".$dst_id."' where cat_id='".$cur_cat['cat_id']."'");
+					$db->update($setting['db']['pre']."news_cat", array("web_id"=>$dst_id), array("cat_id","n=",$cur_cat['cat_id']));
 				}
-				$db->Query("select * from ".$pre_org."news_show where cat_id='".$cur_cat['cat_id']."'");
+				$db->select($pre_org."news_show","*",array("cat_id","n=",$cur_cat['cat_id']),array("order"=>"news_id asc"));
 				$id_list = array();
 				while($record = $db->GetRS()) {
 					$the_id = array();
 					$the_id['old'] = $record['news_id'];
 					$record['news_id'] = 0;
 					$record['web_id'] = $dst_id;
-					$str_sql = $db->buildSQL($pre_dst."news_show", $record, "insert", "a");
-					$db2->Query($str_sql);
+					$db2->insert($pre_dst."news_show", $record, true);
 					$the_id['new'] = $db2->GetInsertId();
 					$id_list[] = $the_id;
 				}
 				for($i=0,$m=count($id_list);$i<$m;$i++) {
 					if($id_list[$i]['new']==0) break;
-					$db->Query("select * from ".$pre_org."news_detail where news_id='".$id_list[$i]['old']."' order by news_id asc, page asc");
+					$db->select($pre_org."news_detail","*",array("news_id","n=",$id_list[$i]['old']),array("order"=>"news_id asc, page asc"));
 					while($record = $db->GetRS()) {
 						$record['id'] = 0;
 						$record['news_id'] = $id_list[$i]['new'];
-						$str_sql = $db->buildSQL($pre_dst."news_detail", $record, "insert", "a");
-						$db2->Query($str_sql);
+						$db2->insert($pre_dst."news_detail", $record, true);
 					}
-					$db2->Query("delete from ".$pre_org."news_show where news_id='".$id_list[$i]['old']."'");
-					$db2->Query("delete from ".$pre_org."news_detail where news_id='".$id_list[$i]['old']."'");
+					$db->delete($pre_org."news_show",array("news_id","n=",$id_list[$i]['old']));
+					$db->delete($pre_org."news_detail",array("news_id","n=",$id_list[$i]['old']));
 				}
 			}
 		} else {
@@ -70,31 +68,28 @@ switch($method) {
 					$cur_cat['web_id'] = $dst_id;
 					$cur_cat['cat_layer'] = $cur_cat['cat_layer']-($start_layer-1);
 					//unset($cur_cat['cat_id']);
-					$str_sql = $db->buildSQL($setting['db']['pre']."news_cat", $cur_cat, "replace", "cat_id='".$cur_cat['cat_id']."'");
-					$db2->Query($str_sql);
-					$db->Query("select * from ".$pre_org."news_show where cat_id='".$cur_cat['cat_id']."'");
+					$db->update($setting['db']['pre']."news_cat", $cur_cat, array("cat_id","n=",$cur_cat['cat_id']));
+					$db->select($pre_org."news_show","*",array("cat_id","n=",$cur_cat['cat_id']));
 					$id_list = array();
 					while($record = $db->GetRS()) {
 						$the_id = array();
 						$the_id['old'] = $record['news_id'];
 						$record['news_id'] = 0;
 						$record['web_id'] = $dst_id;
-						$str_sql = $db->buildSQL($pre_dst."news_show", $record, "insert", "a");
-						$db2->Query($str_sql);
+						$db2->insert($pre_dst."news_show", $record, true);
 						$the_id['new'] = $db2->GetInsertId();
 						$id_list[] = $the_id;
 					}
 					for($i=0,$m=count($id_list);$i<$m;$i++) {
 						if($id_list[$i]['new']==0) break;
-						$db->Query("select * from ".$pre_org."news_detail where news_id='".$id_list[$i]['old']."' order by news_id asc, page asc");
+						$db->select($pre_org."news_detail","*",array("news_id","n=",$id_list[$i]['old']),array("order"=>"news_id asc, page asc"));
 						while($record = $db->GetRS()) {
 							$record['id'] = 0;
 							$record['news_id'] = $id_list[$i]['new'];
-							$str_sql = $db->buildSQL($pre_dst."news_detail", $record, "insert", "a");
-							$db2->Query($str_sql);
+							$db2->insert($pre_dst."news_detail", $record, true);
 						}
-						$db2->Query("delete from ".$pre_org."news_show where news_id='".$id_list[$i]['old']."'");
-						$db2->Query("delete from ".$pre_org."news_detail where news_id='".$id_list[$i]['old']."'");
+						$db->delete($pre_org."news_show",array("news_id","n=",$id_list[$i]['old']));
+						$db->delete($pre_org."news_detail",array("news_id","n=",$id_list[$i]['old']));
 					}
 				}
 			}

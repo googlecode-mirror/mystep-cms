@@ -31,7 +31,17 @@ class MyXls extends class_common {
 		$xls_workSheet = array(),
 		$cur_workSheet = "",
 		$xls_name = "";
-		
+
+	public function __construct() {
+		$argList = func_get_args();
+		if(count($argList)>0 ){
+			call_user_func_array(array($this, "init"), $argList);
+		} else {
+			call_user_func(array($this, "init"));
+		}
+		return;
+	}
+	
 	public function init($file_name="", $sheet_name="") {
 		if(empty($file_name)) $file_name = "export";
 		if(empty($sheet_name)) $sheet_name = "sheet1";

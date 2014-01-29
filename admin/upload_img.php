@@ -26,7 +26,7 @@ if(count($_POST) > 0){
 			theOLE.document.forms[0].{$parent_element}.value = '".$web_url."/".$the_file."';
 			alert('".$setting['language']['admin_upload_img_ok']."');
 			if(parent.parent==null){parent.close();}else{parent.parent.$.closePopupLayer();}
-			
+			return;
 		";
 	} else {
 		$script = "
@@ -46,7 +46,6 @@ $tpl_tmp->Set_Variable('Max_size', $Max_size);
 $tpl_tmp->Set_Variable('MaxSize', GetFileSize($Max_size));
 $tpl->Set_Variable('main', $tpl_tmp->Get_Content('$db, $setting'));
 unset($tpl_tmp);
-$db->Free();
 $mystep->show($tpl);
 $mystep->pageEnd(false);
 ?>
