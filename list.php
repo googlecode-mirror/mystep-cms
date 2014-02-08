@@ -108,7 +108,7 @@ $sql = $db->buildSel(array(
 		"col" => "count(*)",
 	),
 	array(
-		"name" => $setting['db']['pre_sub']."news_cat",
+		"name" => $setting['db']['pre']."news_cat",
 		"idx" => "b",
 		"join" => "cat_id",
 	)
