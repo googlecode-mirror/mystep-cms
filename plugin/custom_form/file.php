@@ -38,6 +38,7 @@ if($data = $db->result($setting['db']['pre']."custom_form_".$mid,$field,array("i
 		exit();
 	}
 }
-header("HTTP/1.0 404 Not Found");
+//header("HTTP/1.0 404 Not Found");
+$goto_url = "noPhoto.jpg";
 $mystep->pageEnd(false);
 ?>
