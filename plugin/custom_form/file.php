@@ -23,7 +23,7 @@ $field = $req->getReq("f");
 if(empty($field) || empty($id)) {
 	header("HTTP/1.0 404 Not Found");
 	$db->close();
-	unset($db);
+	unset($db, $req);
 	exit();
 }
 if($data = $db->result($setting['db']['pre']."custom_form_".$mid,$field,array("id","n=",$id))) {
@@ -38,7 +38,6 @@ if($data = $db->result($setting['db']['pre']."custom_form_".$mid,$field,array("i
 		exit();
 	}
 }
-//header("HTTP/1.0 404 Not Found");
 $goto_url = "noPhoto.jpg";
 $mystep->pageEnd(false);
 ?>
